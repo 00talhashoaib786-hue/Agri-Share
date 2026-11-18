@@ -372,7 +372,10 @@ const T = {
     adp_wrong: "Wrong admin password.",
     adp_locked: "Too many attempts. Try again in {s} seconds.",
     adp_waiting: "The founder has not set an admin password yet.",
-    adp_load_err: "Could not load admin security settings. Check the connection and that firestore.rules are published.",
+    adp_load_err: "Could not refresh your account. Check the connection and try again.",
+    adp_offline: "Firestore could not be reached, so this browser's saved admin settings are used. They sync when the connection returns.",
+    adp_cloud_queued: "Saved on this device. It will sync to Firestore when the connection returns.",
+    adp_cloud_denied: "Saved on this device, but Firestore refused it. Publish the latest firestore.rules and make sure your email is verified.",
     adp_save_err: "Could not save. Check the connection and that firestore.rules are published.",
     ads_tab: "Security",
     ads_title: "Security & Admin Password",
@@ -6979,6 +6982,13 @@ function AdminVerifyEmail({ t, accounts, toast }) {
     try { const u = await accounts.refreshFbUser(); if (!u || !u.emailVerified) setMsg(t("adv_still")); } catch (e) { setMsg(t("adp_load_err")); }
     setBusy(false);
   };
+  // reload the Firebase user on open and whenever the founder comes back from the verification link
+  useEffect(() => {
+    const quiet = () => { accounts.refreshFbUser().catch(() => {}); };
+    quiet();
+    window.addEventListener("focus", quiet);
+    return () => window.removeEventListener("focus", quiet);
+  }, []); // eslint-disable-line
   return (
     <AdminShell icon={Mail} title={t("adv_title")} sub={t("adv_sub").replace("{email}", accounts.fbUser.email)}>
       {sent && <p className="mt-4 rounded-xl bg-leaf/15 p-3 text-sm font-semibold text-forest" role="status">{t("adv_sent")}</p>}
@@ -6992,11 +7002,50 @@ function AdminVerifyEmail({ t, accounts, toast }) {
 }
 
 const unlockKey = (uid, sec) => `${uid}:${sec && sec.hash ? sec.hash.slice(0, 16) : ""}`;
+// Admin password hash: Firestore admin_settings/security is the source of truth, with a copy in this
+// browser so the founder is never locked out while Firestore is unreachable or the rules lag behind.
+const secCacheKey = (uid) => "agrishare.admin.sec." + uid;
+const validSec = (d) => (d && typeof d.hash === "string" && typeof d.salt === "string" ? d : null);
+const TIMED_OUT = "__timeout__";
+// returns "ok" (saved in Firestore), "queued" (offline: Firestore sends it when back online) or "denied"
+async function saveAdminSecurity(uid, v) {
+  store.set(secCacheKey(uid), v);
+  try {
+    const r = await withTimeout(writeDoc(COL.settings, "security", v), 7000, TIMED_OUT);
+    return r === TIMED_OUT ? "queued" : "ok";
+  } catch (e) {
+    console.warn("[Agri-Share] Admin security not saved to Firestore:", e && e.code);
+    return e && e.code === "permission-denied" ? "denied" : "queued";
+  }
+}
+// Read admin_settings/security. A missing document is first-time setup (null), never an error.
+async function loadAdminSecurity(uid, isFounder) {
+  const cached = validSec(store.get(secCacheKey(uid), null));
+  let remote, reached = false;
+  for (let attempt = 0; attempt < 2 && !reached; attempt++) {
+    try {
+      const d = await withTimeout(readDoc(COL.settings, "security"), 7000, TIMED_OUT);
+      if (d !== TIMED_OUT) { remote = d; reached = true; }
+    } catch (e) {
+      console.warn("[Agri-Share] Admin security read failed:", e && e.code);
+      if (e && e.code === "not-found") { remote = null; reached = true; }
+      // a token issued before the email was verified is refused by the rules: refresh it and retry once
+      else if (attempt === 0) { try { await fbRefreshUser(); } catch (er) { /* offline */ } }
+    }
+  }
+  if (!reached) return { sec: cached, source: cached ? "cache" : "none-offline" };
+  const v = validSec(remote);
+  if (v) { store.set(secCacheKey(uid), v); return { sec: v, source: "cloud" }; }
+  // no document yet: first-time setup, unless this browser holds a password that never reached Firestore
+  if (cached && isFounder) { saveAdminSecurity(uid, cached); return { sec: cached, source: "cache" }; }
+  return { sec: null, source: "cloud" };
+}
 
 function AdminVault(props) {
   const { t, accounts } = props;
   const u = accounts.fbUser;
-  const [sec, setSec] = useState(undefined); // undefined loading | null not set | { hash, salt, ... } | "error"
+  const [sec, setSec] = useState(undefined); // undefined loading | null first-time setup | { hash, salt, ... }
+  const [note, setNote] = useState(""); // shown when Firestore could not be reached or refused the save
   const [unlocked, setUnlocked] = useState(false);
   const [pass, setPass] = useState("");
   const [pass2, setPass2] = useState("");
@@ -7009,14 +7058,17 @@ function AdminVault(props) {
 
   useEffect(() => {
     let alive = true;
-    readDoc(COL.settings, "security").then((d) => {
+    (async () => {
+      // reload the Firebase user first so emailVerified and the ID token are current
+      try { await accounts.refreshFbUser(); } catch (e) { /* offline: use the cached user */ }
+      const { sec: v, source } = await loadAdminSecurity(u.uid, accounts.isFounder);
       if (!alive) return;
-      const v = d && d.hash && d.salt ? d : null;
       setSec(v);
+      if (source !== "cloud") setNote(t("adp_offline"));
       try { if (v && window.sessionStorage.getItem("agrishare.admin.unlock") === unlockKey(u.uid, v)) setUnlocked(true); } catch (e) { /* ignore */ }
-    }).catch(() => { if (alive) setSec("error"); });
+    })();
     return () => { alive = false; };
-  }, [u.uid]);
+  }, [u.uid]); // eslint-disable-line
 
   const remember = (v) => { try { window.sessionStorage.setItem("agrishare.admin.unlock", unlockKey(u.uid, v)); } catch (e) { /* ignore */ } };
   const lock = () => { setUnlocked(false); setPass(""); try { window.sessionStorage.removeItem("agrishare.admin.unlock"); } catch (e) { /* ignore */ } };
@@ -7029,7 +7081,8 @@ function AdminVault(props) {
     try {
       const salt = randomSalt();
       const v = { hash: await adminHash(salt, pass), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
-      await writeDoc(COL.settings, "security", v);
+      const res = await saveAdminSecurity(u.uid, v);
+      if (res !== "ok") props.toast(t(res === "denied" ? "adp_cloud_denied" : "adp_cloud_queued"), { type: "warn", ms: 8000 });
       setSec(v); remember(v); setUnlocked(true); setPass(""); setPass2("");
     } catch (er) { setErr(t("adp_save_err")); }
     setBusy(false);
@@ -7047,7 +7100,6 @@ function AdminVault(props) {
   };
 
   if (sec === undefined) return <AdminShell icon={KeyRound} title={t("adp_enter_title")}><p className="mt-4 text-sm text-soil/70"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></p></AdminShell>;
-  if (sec === "error") return <AdminShell icon={TriangleAlert} title={t("adp_enter_title")} sub={t("adp_load_err")} />;
   if (unlocked) return <AdminConsole {...props} onLock={lock} sec={sec} setSec={(v) => { setSec(v); remember(v); }} />;
 
   const wait = Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
@@ -7061,6 +7113,7 @@ function AdminVault(props) {
     if (!accounts.isFounder) return <AdminShell icon={KeyRound} title={t("adp_create_title")} sub={t("adp_waiting")} />;
     return (
       <AdminShell icon={KeyRound} title={t("adp_create_title")} sub={t("adp_create_sub")}>
+        {note && <p className="mt-3 rounded-xl bg-gold/15 p-2.5 text-xs font-semibold text-soil">{note}</p>}
         <form onSubmit={create} noValidate>
           {pwInput("adp-new", t("adp_new"), pass, setPass, "new-password")}
           {pwInput("adp-new2", t("adp_confirm"), pass2, setPass2, "new-password")}
@@ -7072,6 +7125,7 @@ function AdminVault(props) {
   }
   return (
     <AdminShell icon={Lock} title={t("adp_enter_title")} sub={t("adp_enter_sub").replace("{email}", u.email)}>
+      {note && <p className="mt-3 rounded-xl bg-gold/15 p-2.5 text-xs font-semibold text-soil">{note}</p>}
       <form onSubmit={verify} noValidate>
         {pwInput("adp-pass", t("adp_pass"), pass, setPass, "current-password")}
         {(err || wait > 0) && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{wait > 0 ? t("adp_locked").replace("{s}", wait) : err}</p>}
@@ -7096,8 +7150,9 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
     try {
       const salt = randomSalt();
       const v = { hash: await adminHash(salt, nw), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
-      await writeDoc(COL.settings, "security", v);
-      setSec(v); setCur(""); setNw(""); setNw2(""); toast(t("ads_changed"));
+      const res = await saveAdminSecurity(u.uid, v);
+      setSec(v); setCur(""); setNw(""); setNw2("");
+      toast(res === "ok" ? t("ads_changed") : t(res === "denied" ? "adp_cloud_denied" : "adp_cloud_queued"), { type: res === "ok" ? "success" : "warn", ms: res === "ok" ? 4200 : 8000 });
     } catch (er) { setErr(t("adp_save_err")); }
     setBusy(false);
   };
