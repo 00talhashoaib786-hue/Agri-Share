@@ -719,6 +719,13 @@ const T = {
     au_err_exists: "An account is already registered from this login. Please sign in.",
     au_err_taken: "This email is already registered. Please sign in.",
     au_err_generic: "Something went wrong. Please try again.",
+    au_err_provider: "Email/Password sign-in is not enabled in Firebase. Turn it on in the Firebase console: Authentication > Sign-in method.",
+    au_err_network: "Could not reach Firebase. Check the internet connection and try again.",
+    au_err_admin_local: "Admin accounts must use a Firebase account. If you get \"wrong password\", use Sign up once to create it in Firebase.",
+    ad403_local: "You are signed in as {email} with an account saved only in this browser, not a Firebase account. Admin access needs a Firebase account.",
+    ad403_phone: "You are signed in with a phone number. Admin access needs the founder's email account.",
+    ad403_other: "You are signed in as {email}, which is not an authorised admin email.",
+    ad403_fix: "Sign out and sign in with Firebase",
     au_need: "Please sign in or create an account to continue.",
     au_local_note: "Saved in this browser only (shared records are not available here).",
     toast_welcome: "Welcome, {name}!",
@@ -6938,8 +6945,9 @@ function CloudBadge({ t, cloud }) {
 function AdminPanel(props) {
   const { t, accounts, openAuth } = props;
   const u = accounts.fbUser;
-  if (accounts.mode === "loading") return <section className="mx-auto max-w-md px-4 py-14 text-center text-sm text-soil/70">…</section>;
-  if (!accounts.isAdmin || !u) return <Admin403 t={t} signedIn={!!u} openAuth={openAuth} />;
+  // wait for Firebase Auth to report the user, otherwise a signed-in founder briefly sees 403
+  if (accounts.mode === "loading" || (accounts.mode === "firebase" && !accounts.fbReady)) return <section className="mx-auto max-w-md px-4 py-14 text-center text-sm text-soil/70"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></section>;
+  if (!accounts.isAdmin || !u) return <Admin403 t={t} accounts={accounts} openAuth={openAuth} />;
   if (!u.emailVerified) return <AdminVerifyEmail t={t} accounts={accounts} toast={props.toast} />;
   return <AdminVault key={u.uid} {...props} />;
 }
@@ -6957,11 +6965,19 @@ function AdminShell({ icon: Icon = Lock, title, sub, children }) {
   );
 }
 
-function Admin403({ t, signedIn, openAuth }) {
+function Admin403({ t, accounts, openAuth }) {
+  const u = accounts.fbUser, sess = accounts.session;
+  // tell the visitor exactly why access is refused
+  const why = u
+    ? (u.email ? t("ad403_other").replace("{email}", u.email) : t("ad403_phone"))
+    : sess ? (sess.email ? t("ad403_local").replace("{email}", sess.email) : t("ad403_phone")) : "";
+  const reSignIn = () => { accounts.signOut(); if (openAuth) setTimeout(() => openAuth("signin"), 0); };
   return (
     <AdminShell icon={Ban} title={t("ad403_title")} sub={t("ad403_sub")}>
+      {why && <p className="mt-4 rounded-xl bg-gold/15 p-3 text-start text-xs font-semibold text-soil">{why}</p>}
       <div className="mt-5 flex flex-col gap-2">
-        {!signedIn && openAuth && <button type="button" onClick={() => openAuth("signin")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><LogIn className="h-4 w-4" aria-hidden="true" />{t("ad403_signin")}</button>}
+        {!u && !sess && openAuth && <button type="button" onClick={() => openAuth("signin")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><LogIn className="h-4 w-4" aria-hidden="true" />{t("ad403_signin")}</button>}
+        {(u || sess) && openAuth && <button type="button" onClick={reSignIn} className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><LogIn className="h-4 w-4" aria-hidden="true" />{t("ad403_fix")}</button>}
         <a href="#marketplace" className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("ad403_home")}</a>
       </div>
     </AdminShell>
@@ -7561,6 +7577,7 @@ const profileLocation = (p) => (p && p.lat ? { country: p.country || locCountry(
 function useAccounts() {
   const [mode, setMode] = useState("loading"); // loading | cloud (Claude) | firebase | local
   const [fbUid, setFbUid] = useState(null);
+  const [fbReady, setFbReady] = useState(false); // true once Firebase Auth has reported the signed-in user (or none)
   const [session, setSessionState] = useState(() => store.get("agrishare.session", null));
   const [cloudOwner, setCloudOwner] = useState(false); // owner of the page when hosted in Claude (Members tab only)
   const [fbUser, setFbUser] = useState(null); // { uid, email, emailVerified } of the Firebase user
@@ -7603,6 +7620,7 @@ function useAccounts() {
   useEffect(() => {
     if (mode !== "firebase") return undefined;
     return watchAuth(async (user) => {
+      setFbReady(true);
       setFbUid(user ? user.uid : null);
       setFbUser(user ? { uid: user.uid, email: normEmail(user.email), emailVerified: !!user.emailVerified } : null);
       if (!user) {
@@ -7684,6 +7702,7 @@ function useAccounts() {
     return { ok: true, session: sess };
   };
 
+  const isAdminEmail = (email) => ADMIN_EMAILS.map(normEmail).includes(normEmail(email)) || teamEmails.includes(normEmail(email));
   const signUp = async (form) => {
     const email = cleanEmail(form.email);
     const loc = form.location || DEFAULT_LOC;
@@ -7704,6 +7723,9 @@ function useAccounts() {
         if (code === "auth/email-already-in-use") return { error: "au_err_taken" };
         if (code === "auth/invalid-email") return { error: "au_err_email" };
         if (code === "auth/weak-password") return { error: "au_err_pass" };
+        if (code === "auth/operation-not-allowed") return { error: "au_err_provider" };
+        // admin accounts must exist in Firebase Auth, never only in this browser
+        if (isAdminEmail(email)) return { error: code === "auth/network-request-failed" ? "au_err_network" : "au_err_generic" };
         // network down, Email/Password not enabled yet, or bad config: keep the account on this browser
         const r = signUpLocal(acct);
         return { ...r, localOnly: true };
@@ -7761,6 +7783,12 @@ function useAccounts() {
       } catch (e) {
         authBusyRef.current = false;
         const code = e && e.code;
+        if (code === "auth/operation-not-allowed") return { error: "au_err_provider" };
+        if (isAdminEmail(email)) {
+          if (code === "auth/network-request-failed") return { error: "au_err_network" };
+          if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/invalid-login-credentials" || code === "auth/user-not-found") return { error: "au_err_admin_local" };
+          return { error: "au_err_generic" };
+        }
         const local = localList().find((x) => x.email === email);
         if (!local) {
           if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/invalid-login-credentials") return { error: "au_err_wrong" };
@@ -7861,7 +7889,7 @@ function useAccounts() {
   // Firebase reset sends an email link, so the reset form only needs the email address
   const resetByEmail = mode === "firebase";
 
-  return { mode, session, isAdmin, isFounder, cloudOwner, fbUser, teamEmails, refreshFbUser, members, membersState, signUp, signIn, resetPassword, signOut, fbUid, resetByEmail, phoneAuth, startPhone, confirmPhone };
+  return { mode, session, isAdmin, isFounder, fbReady, cloudOwner, fbUser, teamEmails, refreshFbUser, members, membersState, signUp, signIn, resetPassword, signOut, fbUid, resetByEmail, phoneAuth, startPhone, confirmPhone };
 }
 
 function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone }) {
