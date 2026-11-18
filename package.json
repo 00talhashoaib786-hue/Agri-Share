@@ -1,0 +1,28 @@
+{
+  "name": "agri-share",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Agri-Share: peer-to-peer agricultural machinery rental marketplace for Punjab (BBIT semester project, UET Lahore)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0",
+    "lucide-react": "^1.74.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.3.8"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

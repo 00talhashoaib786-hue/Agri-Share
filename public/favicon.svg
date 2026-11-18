@@ -1,0 +1,49 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient id="as-ring" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#67A834" />
+          <stop offset="1" stop-color="#2E7D32" />
+        </linearGradient>
+        <linearGradient id="as-leafL" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8BC34A" />
+          <stop offset="1" stop-color="#4C9A2A" />
+        </linearGradient>
+        <linearGradient id="as-leafR" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#67A834" />
+          <stop offset="1" stop-color="#2F7D32" />
+        </linearGradient>
+        <clipPath id="as-bowl">
+          <path d="M18 126 Q100 108 182 126 Q176 178 100 192 Q24 178 18 126Z" />
+        </clipPath>
+      </defs>
+      
+      <circle cx="100" cy="104" r="82" fill="none" stroke="url(#as-ring)" stroke-width="9" stroke-linecap="round" stroke-dasharray="400 115.2" transform="rotate(-50.5 100 104)" />
+      
+      <path d="M100 58 C 90 52 72 42 66 16 C 88 16 101 32 100 58 Z" fill="url(#as-leafL)" />
+      <path d="M100 58 C 110 52 128 42 134 16 C 112 16 99 32 100 58 Z" fill="url(#as-leafR)" />
+      <path d="M99 55 C 92 44 82 32 72 22" stroke="#FAF8EE" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.8" />
+      <path d="M101 55 C 108 44 118 32 128 22" stroke="#FAF8EE" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.8" />
+      
+      <g id="as-farmer">
+        <path d="M40 136 C 40 114 50 102 68 100 C 78 99 85 103 89 109 L 101 116 C 104 118 103 123 99 123 L 88 121 C 87 127 87 132 87 136 Z" fill="#4C9A2A" />
+        <circle cx="68" cy="85" r="11.5" fill="#4C9A2A" />
+        <ellipse cx="68" cy="75" rx="19" ry="4.2" fill="#2F7D32" />
+        <path d="M58 75 C 58 64 62 61 68 61 C 74 61 78 64 78 75 Z" fill="#3E8E2E" />
+        <rect x="58" y="70" width="20" height="3" fill="#2A6B26" />
+      </g>
+      <use href="#as-farmer" xlink:href="#as-farmer" transform="translate(200 0) scale(-1 1)" />
+      
+      <path d="M92 114 C 96 110 104 110 108 114 C 110 117 108 121 104 121 L 96 121 C 92 121 90 117 92 114 Z" fill="#67A834" stroke="#2F7D32" stroke-width="1.4" />
+      <path d="M95 116 L 105 116 M 96 118.5 L 104 118.5" stroke="#2F7D32" stroke-width="1" />
+      
+      <circle cx="100" cy="136" r="16" fill="#E6B325" />
+      
+      <g clip-path="url(#as-bowl)">
+        <rect x="0" y="100" width="200" height="100" fill="#5C3A21" />
+        <path d="M10 150 Q60 128 100 142 Q140 128 190 150 L190 200 L10 200 Z" fill="#7A4E2D" />
+        <path d="M18 128 Q70 120 98 146" stroke="#FAF8EE" stroke-width="4" fill="none" />
+        <path d="M182 128 Q130 120 102 146" stroke="#FAF8EE" stroke-width="4" fill="none" />
+        <path d="M30 168 Q70 150 100 160 Q130 150 170 168" stroke="#FAF8EE" stroke-width="4" fill="none" />
+        <ellipse cx="40" cy="140" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 40 140)"/><ellipse cx="58" cy="136" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 58 136)"/><ellipse cx="75" cy="141" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 75 141)"/><ellipse cx="125" cy="141" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 125 141)"/><ellipse cx="142" cy="136" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 142 136)"/><ellipse cx="160" cy="140" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 160 140)"/><ellipse cx="52" cy="180" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 52 180)"/><ellipse cx="80" cy="172" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 80 172)"/><ellipse cx="120" cy="172" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 120 172)"/><ellipse cx="148" cy="180" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 148 180)"/><ellipse cx="100" cy="182" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 100 182)"/><ellipse cx="66" cy="156" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 66 156)"/><ellipse cx="134" cy="156" rx="3" ry="1.8" fill="#D9A441" opacity="0.9" transform="rotate(-20 134 156)"/>
+      </g>
+    </svg>
