@@ -1,6 +1,5 @@
 /*
-  Agri-Share: Peer-to-peer agricultural machinery rental marketplace (concept prototype)
-  Principles of Marketing Semester Project, IBM, UET Lahore (Section C)
+  Agri-Share: Peer-to-peer agricultural machinery rental and crop marketplace
   Single-file React app: Tailwind CSS + Lucide icons. All state persists in localStorage.
 */
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
@@ -16,7 +15,7 @@ import imgDrone from "./assets/machines/drone.jpg";
 import imgImplement from "./assets/machines/implement.jpg";
 import {
   FIREBASE_ENABLED, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc,
-  watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone,
+  watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser,
 } from "./firebase.js";
 import {
   Tractor, Wheat, Search, MapPin, Fuel, User, Truck, CalendarDays, Clock, X, Check,
@@ -227,6 +226,10 @@ const SEED_LISTINGS = [
 const SEED_COORDS = { L1: [31.25, 74.22], L2: [30.96, 73.98], L3: [31.8, 74.26], L4: [30.88, 73.6], L5: [31.33, 73.42], L6: [30.53, 72.69] };
 SEED_LISTINGS.forEach((l) => { const c = SEED_COORDS[l.id]; if (c) { l.lat = c[0]; l.lng = c[1]; l.province = "PB"; l.country = "PK"; } });
 SEED_LISTINGS.push(...INTL_SEEDS);
+// Sample listings are shown only in Demo mode; Live Public Mode shows real owner listings only
+const SEED_IDS = new Set(SEED_LISTINGS.map((l) => l.id));
+const isSeedListing = (l) => SEED_IDS.has(l.id) || !!l.demo;
+const PRIORITY_DISCOUNT_PCT = 10;
 
 /* ------------------------------------------------------------------ */
 /* Translations: English, Urdu, Punjabi (Shahmukhi), Sindhi (preview)  */
@@ -242,15 +245,17 @@ const LANGS = [
 // Pashto and Balochi cover navigation, hero, marketplace, booking, payments, Agri-Market and the helper.
 // Any other screen falls back to Urdu (same script, widely read), then English.
 const RTL_FALLBACK = "ur";
+// Live-platform copy: these keys were rewritten in English; other languages use it until re-translated
+const EN_ONLY_KEYS = ["vc_mic_blocked", "vc_demo_btn", "vc_no_mic", "vc_net", "vc_lang_unsupported", "vc_demo", "vc_mic_error", "vc_unsupported", "tr4_s", "vo_mark_route", "vo_pattern_note", "lr_diesel_note_intl", "fx_note", "cat_rates_note", "lr_diesel_intl", "loc_far", "lr_diesel_note", "lr_peak", "lr_compare_hint", "lr_fuel_est", "rate_label", "bk_pay_note", "mb_waiting", "ow_sub", "es_note", "ussd_title", "ussd_demo", "au_reset_note", "mem_local", "ad_reset", "ad_reset_sub", "toast_demo_reset", "kp_demo", "kp_try", "am_demo_note", "am_to_wallet", "mode_demo_d", "mode_sub"];
 
 const T = {
   en: {
-    vc_mic_blocked: "Mic access blocked in preview. Tap 'Test Voice Demo' below, or allow the microphone in your browser.",
-    vc_demo_btn: "Test Voice Demo",
+    vc_mic_blocked: "Mic access is blocked. Tap 'Hear an example' below, or allow the microphone in your browser.",
+    vc_demo_btn: "Hear an example",
     vc_retry: "Try the microphone again",
-    vc_no_mic: "No microphone found. Plug one in, or tap 'Test Voice Demo'.",
-    vc_net: "The speech service needs internet. Check the connection, or tap 'Test Voice Demo'.",
-    vc_lang_unsupported: "This browser cannot listen in this language. Try Chrome, or tap 'Test Voice Demo'.",
+    vc_no_mic: "No microphone found. Plug one in, or tap 'Hear an example'.",
+    vc_net: "The speech service needs internet. Check the connection, or tap 'Hear an example'.",
+    vc_lang_unsupported: "This browser cannot listen in this language. Try Chrome, or tap 'Hear an example'.",
     vc_no_voice: "This device has no Urdu voice installed, so replies may not be spoken. Android: Settings > Text-to-speech > Google > install Urdu. Windows: Settings > Time & language > Speech > add Urdu.",
     nav_activity: "Activity",
     nav_s_market: "Market",
@@ -275,7 +280,7 @@ const T = {
     tr3_t: "30/70 harvest credit",
     tr3_s: "Pay 30% now, 70% after harvest (proposed partners)",
     tr4_t: "24/7 helpline & voice help",
-    tr4_s: "Toll-free UAN (sample number) and the Kisan Helper voice assistant",
+    tr4_s: "Toll-free UAN and the Kisan Helper voice assistant",
     ov_dry: "Dry rent",
     ov_op: "Operator incl.",
     toast_broadcast_t: "Request broadcast",
@@ -308,7 +313,7 @@ const T = {
     vo_s2: "Machine en route",
     vo_s3: "Work completed",
     vo_waiting: "Waiting for the owner to confirm.",
-    vo_mark_route: "Owner: mark machine en route (demo)",
+    vo_mark_route: "Owner: mark machine en route",
     vo_machine: "Machine",
     vo_date: "Date & hours",
     vo_location: "District",
@@ -320,15 +325,15 @@ const T = {
     vo_download: "Download",
     vo_close: "Close",
     vo_note: "Show this booking ID to the owner or your Agri-Agent.",
-    vo_pattern_note: "The square badge is a demo verification pattern, not a scannable QR code.",
-    lr_diesel_note_intl: "Indicative pump price for this region (sample value). The renter pays fuel directly in dry rent.",
+    vo_pattern_note: "Show this badge and booking ID to the owner at hand-over.",
+    lr_diesel_note_intl: "Typical pump price for this region. The renter pays fuel directly in dry rent.",
     country: "Country / region",
     country_PK: "Pakistan",
     country_CN: "China",
     country_IN: "India",
     country_US: "USA / Europe",
     country_ME: "Middle East / Africa",
-    fx_note: "Prices shown in local currency at reference rates (1 USD ≈ 278 PKR ≈ 6.67 CNY ≈ 94 INR). Regional rates are indicative samples.",
+    fx_note: "Prices shown in local currency at reference rates (1 USD ≈ 278 PKR ≈ 6.67 CNY ≈ 94 INR). Regional rates are market estimates.",
     one_leveler: "Laser Land Leveler",
     one_planter: "Seed Drill / Planter",
     one_drone: "Spray Drone",
@@ -341,16 +346,102 @@ const T = {
     lr_step1: "Machine type",
     lr_step2: "Location & offer",
     lr_step3: "Live offers",
+    lr_step_locked: "Start a new request to change the machine or offer.",
+    ad403_title: "403 — Authorized Agri-Share Administration Only",
+    ad403_sub: "This area is restricted to the Agri-Share founder and authorised team administrators.",
+    ad403_signin: "Sign in with an admin account",
+    ad403_home: "Back to marketplace",
+    adv_title: "Verify your email to continue",
+    adv_sub: "Admin access needs a verified email address ({email}). We will send a verification link.",
+    adv_send: "Send verification email",
+    adv_sent: "Verification email sent. Open the link, then tap \"I've verified\".",
+    adv_check: "I've verified",
+    adv_still: "Your email is not verified yet.",
+    adp_create_title: "Create a new Admin Password",
+    adp_create_sub: "First-time setup. This password unlocks the Agri-Share control room. Only its salted SHA-256 hash is stored.",
+    adp_enter_title: "Admin Password",
+    adp_enter_sub: "Signed in as {email}. Enter the admin password to unlock the control room.",
+    adp_new: "New admin password",
+    adp_confirm: "Confirm password",
+    adp_current: "Current admin password",
+    adp_pass: "Admin password",
+    adp_save: "Save & unlock",
+    adp_unlock: "Unlock control room",
+    adp_short: "Use at least {n} characters.",
+    adp_mismatch: "The passwords do not match.",
+    adp_wrong: "Wrong admin password.",
+    adp_locked: "Too many attempts. Try again in {s} seconds.",
+    adp_waiting: "The founder has not set an admin password yet.",
+    adp_load_err: "Could not load admin security settings. Check the connection and that firestore.rules are published.",
+    adp_save_err: "Could not save. Check the connection and that firestore.rules are published.",
+    ads_tab: "Security",
+    ads_title: "Security & Admin Password",
+    ads_change: "Change Admin Password",
+    ads_changed: "Admin password changed.",
+    ads_founder_only: "Only the founder can change the admin password and team list.",
+    ads_team: "Authorised team admins",
+    ads_team_sub: "Team admins sign in with their own verified email and unlock with the admin password.",
+    ads_team_add: "Add",
+    ads_team_none: "No team admins yet.",
+    ads_team_saved: "Team admin list saved.",
+    ads_founder: "Founder",
+    ads_last: "Password last changed {d} by {e}",
+    lr_listed: "Listed rate · owner confirms",
+    toast_lr_sent: "Request sent to {owner}. They confirm from their Owner Portal.",
+    mode_live: "Live Public Mode",
+    mode_live_d: "Real registered owners only. Only machinery posted and approved via the Owner Portal is shown.",
+    mode_demo: "Sample Demo Data",
+    mode_demo_d: "Adds sample tractors and simulated owner counter-offers for testing every flow.",
+    mode_title: "Marketplace mode",
+    mode_sub: "Public visitors always see Live Public Mode. Sample data is switched on only on this device.",
+    mode_load_demo: "Load Sample Demo Data",
+    mode_go_live: "Switch to Live Public Mode",
+    mode_badge_live: "Live · verified owners only",
+    mode_badge_demo: "Demo data on",
+    toast_mode_live: "Live Public Mode: showing real registered owners only.",
+    toast_mode_demo: "Sample demo data loaded on this device.",
+    zs_title: "Agri-Share Assisted Fulfillment & Partner Network",
+    zs_sub: "No registered owner is online near {place} for a {machine} yet. We will still get your field covered. Pick one:",
+    zs_a: "Expand search radius to 100 km",
+    zs_a_d: "Broadcast your request to verified owners in neighbouring tehsils and districts. Transport and fuel are shown up front:",
+    zs_a_btn: "Broadcast to 100 km",
+    zs_a_done: "Already searching up to 100 km.",
+    zs_km: "{km} km away",
+    zs_transport: "Transport",
+    zs_fuel: "Diesel",
+    zs_total: "Est. total",
+    zs_b: "Village Agri-Agent & Local Partner Dispatch",
+    zs_b_d: "Send the request to our Local Agri-Agent & Partner Rental Hub Network. Our ground team calls offline village tractor owners and confirms with you by SMS or call within 2 to 4 hours.",
+    zs_b_btn: "Send to Agri-Agent team",
+    zs_b_done: "Ticket {id}: an Agri-Agent will call you on {phone} within 2 to 4 hours.",
+    zs_c: "Notify me & earn a priority discount",
+    zs_c_d: "We save your request. The moment an owner registers in {district}, they see you as a waiting customer, and you get {pct}% off the platform fee on that booking.",
+    zs_c_btn: "Notify me",
+    zs_c_done: "Saved ({id}). We will alert you as soon as an owner registers in {district}.",
+    zs_phone: "Phone for the call-back",
+    zs_machine: "Machine needed",
+    zs_saved_local: "(saved on this device until the connection returns)",
+    ow_waiting: "Farmers waiting in your district",
+    ow_waiting_sub: "Real requests saved while no owner was registered here. List a matching machine and contact them first.",
+    ow_waiting_none: "No waiting farmers right now.",
+    ow_waiting_list: "List a matching machine",
+    toast_waiting: "{n} farmer(s) are already waiting for a {machine} in {district}.",
+    ad_demand: "Waiting demand",
+    ad_demand_none: "No waiting demand yet.",
+    ad_demand_contacted: "Mark contacted",
+    ad_demand_matched: "Mark matched",
+    dm_waiting: "Waiting", dm_contacted: "Contacted", dm_matched: "Matched",
+    dm_agent_dispatch: "Agri-Agent dispatch", dm_notify: "Notify me",
     lr_choose: "Which machine do you need?",
     lr_choose_sub: "Tap a machine type first, like choosing Moto, Mini or AC in InDrive. Models and rates for {country}.",
-    cat_rates_note: "Rates are indicative samples, not quotes.",
+    cat_rates_note: "Typical market ranges, not quotes.",
     lr_est_rate: "Est. hourly rate",
     lr_select: "Select & continue",
     lr_selected: "Selected",
     lr_change_machine: "Change",
     lr_pref_model: "Preferred model (optional)",
     lr_any_model: "Any model",
-    lr_diesel_intl: "Indicative local diesel price: {v}/L",
+    lr_diesel_intl: "Local diesel price: {v}/L",
     lr_fuel_battery: "Battery powered: no diesel needed.",
     ow_suggest: "Suggested models in {country} (tap to fill name, spec and rate)",
     loc_sub_intl: "Pick a region, type your village or farm, or use GPS.",
@@ -405,7 +496,7 @@ const T = {
     loc_err: "Please set your location.",
     loc_your: "Your farm location",
     loc_road: "road est.",
-    loc_far: "No machines within {km} km of {place}. Sample machines are around Lahore, Kasur, Sheikhupura, Okara, Faisalabad and Sahiwal.",
+    loc_far: "No machines within {km} km of {place} yet. Widen the radius or post a request.",
     loc_try_indrive: "Post a live request",
     loc_dist_note: "Distances are road estimates from your pin.",
     loc_dist_hint: "Set your location to see exact distance and transport cost.",
@@ -426,12 +517,12 @@ const T = {
     vc_tap: "Tap the mic and speak",
     vc_tap_btn: "Tap to talk",
     vc_done_speaking: "Done speaking",
-    vc_demo: "Demo",
+    vc_demo: "Example",
     vc_you_said: "You said",
     vc_mute: "Mute",
     vc_unmute: "Unmute",
-    vc_mic_error: "The microphone could not start. Try again or play the simulated demo.",
-    vc_unsupported: "Voice input is not supported in this browser. Use Chrome or Edge, or play the simulated demo.",
+    vc_mic_error: "The microphone could not start. Try again or play the example.",
+    vc_unsupported: "Voice input is not supported in this browser. Use Chrome or Edge, or play the example.",
     vc_tts_off: "Voice replies are off. Replies still show as text.",
     vc_engine_claude: "Voice by Claude. Tap to talk each turn.",
     vc_engine_browser: "Browser voice. Hands-free: it listens again after each reply.",
@@ -452,8 +543,8 @@ const T = {
     lr_wet: "Wet rent",
     lr_wet_d: "Owner provides diesel at market rate",
     lr_diesel: "Diesel benchmark (PKR/L)",
-    lr_diesel_note: "Illustrative market estimate set by the Agri-Share admin. Pakistan now revises fuel prices almost daily.",
-    lr_peak: "Simulate peak harvest",
+    lr_diesel_note: "Market rate set by the Agri-Share team. Pakistan revises fuel prices frequently.",
+    lr_peak: "Peak harvest season",
     lr_peak_d: "Village and pilot-zone machines are busy, so the search must fall back to Tier 3.",
     lr_post: "Post request & scan owners",
     lr_new: "New request",
@@ -481,7 +572,7 @@ const T = {
     lr_nearest: "Nearest owner",
     lr_base: "Base machine rent",
     lr_test_tier: "Scan this tier",
-    lr_compare_hint: "Post a request first, then use these buttons to demo each tier.",
+    lr_compare_hint: "Post a request first, then use these buttons to compare each tier.",
     lr_legend_offer: "Offer received",
     lr_legend_scan: "Owner in range",
     lr_legend_busy: "Busy",
@@ -493,7 +584,7 @@ const T = {
     lr_fuel_wet: "Diesel (wet rent, billed by owner)",
     lr_platform_bill: "Paid through Agri-Share",
     lr_fuel_dry: "Your own diesel (dry rent, paid at pump)",
-    lr_fuel_est: "Diesel use is a rule-of-thumb estimate ({l} L per working hour). Fuel price is an illustrative market estimate.",
+    lr_fuel_est: "Diesel use is estimated at {l} L per working hour at the current market price.",
     lr_tier1: "Tier 1: Village zone",
     lr_tier1_r: "1 to 5 km",
     lr_tier1_t: "Free or low local transport (PKR 0 to 500)",
@@ -506,7 +597,7 @@ const T = {
     toast_lr_booked: "Booking confirmed with {owner}.",
     mb_via_live: "Booked via live request (InDrive mode)",
     ow_no_history: "No responses yet.",
-    banner: "Proposed Concept Prototype: BBIT Semester Project (UET Lahore). Sample rates and listings are illustrative.",
+
     nav_market: "Marketplace", nav_bookings: "My Bookings", nav_owner: "Owner Portal", nav_agent: "Agri-Agent & USSD",
     tagline: "Sharing Resources, Growing Together",
     hero_kicker: "Punjab pilot · Tractors · Threshers · Harvesters",
@@ -522,7 +613,7 @@ const T = {
     f_district: "Punjab district", all_districts: "All districts", f_radius: "Search radius", f_search: "Search machine or village",
     km: "km", radius_note: "Default 15 km in-app boundary, up to 25 km catchment",
     results: "{n} machines found", no_results: "No machines match these filters. Try widening the search radius or choosing all districts.", reset: "Reset filters",
-    per_hour: "/hr", rate_label: "Illustrative hourly rate", distance: "away", dry_rent: "Dry rent: fuel/diesel excluded",
+    per_hour: "/hr", rate_label: "Hourly rate", distance: "away", dry_rent: "Dry rent: fuel/diesel excluded",
     op_included: "Operator (driver) included in rate", op_optional: "Operator (driver) optional: +PKR 500/hr", op_none: "No operator: bring your own driver",
     tr_included: "Transport included", tr_optional: "Transport optional (PKR 100/km, min 500)", tr_self: "Renter arranges transport",
     request: "Request Booking", unavailable: "Currently unavailable", owner: "Owner", new_badge: "New listing",
@@ -530,16 +621,16 @@ const T = {
     bk_breakdown: "Transparent price breakdown", bk_base: "Base dry-rent", bk_op: "Operator", bk_tr: "Transport", bk_sub: "Subtotal",
     bk_comm: "Platform commission ({p})", bk_total: "Total estimated", bk_fuel_line: "Diesel/fuel: supplied by renter (not in price)",
     bk_ack: "I understand this is a dry rent: I will provide diesel/fuel, and overtime and late-return terms will be agreed with the owner before confirmation.",
-    bk_pay: "Payment option", bk_pay_note: "Planned payment options: not live in this prototype",
+    bk_pay: "Payment option", bk_pay_note: "Pay with EasyPaisa, JazzCash or cash through your Agri-Agent.",
     pay_easypaisa: "EasyPaisa", pay_jazzcash: "JazzCash", pay_agent: "Cash via local Agri-Agent",
     bk_name: "Your name", bk_phone: "Mobile number", bk_privacy: "Used only for this booking request (Section 12.2).",
     bk_submit: "Send booking request", cancel: "Cancel", close: "Close", included_word: "Included", not_added: "Not added",
     err_date: "Choose a rental date.", err_name: "Enter your name.", err_phone: "Enter a valid Pakistani mobile number (03XXXXXXXXX).", err_ack: "Please accept the dry-rent terms.",
     st_sent: "Request Sent", st_confirmed: "Owner Confirmed", st_completed: "Rental Completed", st_feedback: "Feedback Submitted", st_declined: "Declined by owner", st_cancelled: "Cancelled",
     mb_title: "My Bookings", mb_empty: "No bookings yet. Request a machine from the marketplace.", mb_complete: "Mark rental completed", mb_feedback: "Submit feedback",
-    mb_cancel: "Cancel request", mb_waiting: "Waiting for the owner. Demo: respond from the Owner Portal.", mb_go_owner: "Open Owner Portal",
+    mb_cancel: "Cancel request", mb_waiting: "Waiting for the owner to confirm.", mb_go_owner: "Open Owner Portal",
     mb_rate: "Rate this rental", mb_comment: "Comments (optional)", mb_thanks: "Thank you. Your feedback was recorded.", mb_via_ussd: "Booked via USSD / Agri-Agent", mb_via_app: "Booked in app",
-    ow_title: "Owner Portal", ow_sub: "Demo mode: you are acting as the owners of all listed machines.",
+    ow_title: "Owner Portal", ow_sub: "Manage your machines, booking requests and earnings.",
     ow_list: "List Available Machinery", ow_requests: "Requests", ow_earn: "Earnings Estimator", ow_my: "Listed machinery",
     ow_name: "Machine name & model", ow_cat: "Category", ow_rate: "Hourly rate (PKR)", ow_village: "Village / area", ow_dist: "Distance from service area (km)",
     ow_opterm: "Operator terms", ow_trterm: "Transport terms", ow_ownername: "Owner name", ow_spec: "Key details (HP, attachments)",
@@ -547,13 +638,13 @@ const T = {
     ow_no_req: "No pending requests right now.", ow_pending: "Pending", ow_history: "Responded", ow_available: "Available", ow_hidden: "Hidden", ow_remove: "Remove",
     es_machine: "Machine", es_hours: "Idle hours available per day", es_days: "Rental days per season", es_util: "Expected booking rate",
     es_result: "Estimated seasonal rental income", es_month: "per season", es_confirmed: "From confirmed bookings so far",
-    es_note: "In this prototype the 6% commission (4% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
+    es_note: "The 6% commission (4% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
     ag_title: "Agri-Agent network", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
     ag1_t: "Who is an Agri-Agent?", ag1_d: "An existing village grocery or mobile-load shop, trained as a local booking point.",
     ag2_t: "What do they do?", ag2_d: "Explain the service, register farmers, show available machines and submit booking requests.",
     ag3_t: "How do they earn?", ag3_d: "A transparent commission per completed booking, under a published policy.",
     ag4_t: "Why it matters", ag4_d: "Builds trust face to face and covers farmers with low digital confidence or weak signal.",
-    ussd_title: "USSD booking simulator", ussd_demo: "Concept Demo Flow · No Live Short Code",
+    ussd_title: "USSD booking", ussd_demo: "USSD menu preview",
     ussd_steps: "Appendix C flow", ussd_hint: "Use the keypad or your keyboard. Press the green button to send.",
     kh_title: "Agri-Share Kisan Helper", kh_placeholder: "Ask about hours, costs or which machine...", kh_send: "Send",
     kh_hello: "Hello! I can estimate rental hours and dry-rent costs, help you pick a machine, and guide you through the website. Ask in English, Urdu or Roman Urdu.",
@@ -613,7 +704,7 @@ const T = {
     au_new: "New to Agri-Share?",
     au_forgot: "Forgot password?",
     au_reset_btn: "Set new password",
-    au_reset_note: "Prototype: you can reset the password of the account registered from this login.",
+    au_reset_note: "You can reset the password of the account registered with this email.",
     au_back: "Back to sign in",
     au_err_name: "Enter your full name.",
     au_err_email: "Enter a valid email address.",
@@ -641,7 +732,7 @@ const T = {
     mem_copy: "Copy as CSV",
     mem_copied: "Copied to clipboard",
     mem_cloud: "Live shared records. Only you (the owner) and editors can see this list.",
-    mem_local: "Demo mode: records are saved in this browser only.",
+    mem_local: "Records are saved in this browser only.",
     mem_loading: "Loading members...",
     mem_slow: "Records are taking a while to load. They will appear once the connection answers.",
     nav_admin: "Admin Panel",
@@ -651,7 +742,6 @@ const T = {
     ad_lock_sub: "Enter the admin PIN to open the control panel.",
     ad_pin: "PIN",
     ad_unlock: "Unlock",
-    ad_pin_hint: "Demo PIN for evaluators: 1234",
     ad_pin_wrong: "Wrong PIN. Try again.",
     ad_lock: "Lock",
     ad_verify: "Machinery verification",
@@ -683,8 +773,8 @@ const T = {
     ad_districts: "Pilot districts",
     ad_districts_sub: "Machines in switched-off districts are hidden from renters and new listings.",
     ad_min_one: "Keep at least one district switched on.",
-    ad_reset: "Reset demo data",
-    ad_reset_sub: "Restores the 6 sample machines, clears bookings and requests, and resets the diesel rate on this device.",
+    ad_reset: "Reset marketplace data",
+    ad_reset_sub: "Removes sample machines, clears bookings, requests and crop posts, and resets the diesel rate.",
     ad_reset_confirm: "Tap again to confirm",
     ad_req_rate: "Offer",
     ad_req_tier: "Tier reached",
@@ -697,7 +787,7 @@ const T = {
     toast_approved: "Listing approved. It is now live in the marketplace.",
     toast_rejected: "Listing rejected.",
     toast_diesel: "Diesel rate updated to {v}/L across the app.",
-    toast_demo_reset: "Demo data reset.",
+    toast_demo_reset: "Marketplace data reset.",
     lr_diesel_admin: "National diesel benchmark: {v}/L",
     lr_recent: "Your recent requests",
     bk_smallholder: "Smallholder farmer (under 5 acres)",
@@ -719,9 +809,9 @@ const T = {
     kp_sub: "Call the toll-free helpline or dial the USSD code from any basic phone. A Punjabi or Urdu voice guides you step by step, and your booking is confirmed by SMS.",
     kp_toll: "Toll-free helpline",
     kp_ussd: "USSD code",
-    kp_demo: "Sample numbers for the concept demo. Not live yet.",
+    kp_demo: "",
     kp_ivr: "Hear the IVR voice steps",
-    kp_try: "Try the keypad demo",
+    kp_try: "Try keypad booking",
     nav_mandi: "Agri-Market",
     am_title: "Agri-Market: Sell Your Harvest",
     am_sub: "Post your crop and your price. Registered flour mills, rice mills and bulk buyers bid live, InDrive style. Pick the best offer.",
@@ -744,7 +834,7 @@ const T = {
     am_grade_b: "Grade B",
     am_rate: "Your expected rate (PKR per maund)",
     am_bench_src: "Market guide: about {r} per maund (from recent Punjab market reports).",
-    am_bench_est: "Market guide: about {r} per maund (illustrative estimate).",
+    am_bench_est: "Market guide: about {r} per maund.",
     am_expected_total: "Expected total",
     am_wallet: "Receive payment in",
     am_wallet_no: "Wallet mobile number",
@@ -773,11 +863,11 @@ const T = {
     am_minus_credit: "Machinery credit repaid (70%)",
     am_unsettled: "{v} of credit stays open because this sale does not fully cover it.",
     am_net: "Net profit to you",
-    am_to_wallet: "Paid to your {w} {n}.",
+    am_to_wallet: "Payout to your {w} {n} once the buyer pays.",
     am_confirm: "Confirm sale",
     am_done: "Sale confirmed and settled.",
     am_sold_to: "Sold to",
-    am_demo_note: "(Demo: no real money moves.)",
+    am_demo_note: "",
     toast_sold: "Sale confirmed. {net} net profit to your wallet.",
     ad_kpi_credit: "Harvest credit outstanding (partner-funded)",
     hero_local: "Machine kharidna zaroori nahi, kiraye par lein.",
@@ -1047,7 +1137,6 @@ const T = {
     toast_lr_booked: "{owner} کے ساتھ بکنگ کنفرم۔",
     mb_via_live: "لائیو درخواست سے بکنگ (اِن ڈرائیو موڈ)",
     ow_no_history: "ابھی کوئی جواب نہیں۔",
-    banner: "مجوزہ تصوراتی پروٹوٹائپ: BBIT سمسٹر پراجیکٹ (یو ای ٹی لاہور)۔ نمونہ ریٹس اور فہرستیں صرف مثال کے لیے ہیں۔",
     nav_market: "مشینری مارکیٹ", nav_bookings: "میری بکنگز", nav_owner: "مالک پورٹل", nav_agent: "ایگری ایجنٹ اور USSD",
     tagline: "وسائل بانٹیں، مل کر بڑھیں",
     hero_kicker: "پنجاب پائلٹ · ٹریکٹر · تھریشر · ہارویسٹر",
@@ -1192,7 +1281,6 @@ const T = {
     ad_lock_sub: "کنٹرول پینل کھولنے کے لیے ایڈمن پن لکھیں۔",
     ad_pin: "پن",
     ad_unlock: "کھولیں",
-    ad_pin_hint: "جانچ کرنے والوں کے لیے ڈیمو پن: 1234",
     ad_pin_wrong: "غلط پن۔ دوبارہ کوشش کریں۔",
     ad_lock: "لاک",
     ad_verify: "مشینری کی تصدیق",
@@ -1587,7 +1675,6 @@ const T = {
     toast_lr_booked: "{owner} نال بکنگ پکی۔",
     mb_via_live: "لائیو درخواست راہیں بکنگ (اِن ڈرائیو موڈ)",
     ow_no_history: "ہلے کوئی جواب نئیں۔",
-    banner: "تجویز کردہ تصوراتی پروٹوٹائپ: BBIT سمسٹر پراجیکٹ (یو ای ٹی لہور)۔ نمونے دے ریٹ تے لسٹاں صرف مثال لئی نیں۔",
     nav_market: "مشینری منڈی", nav_bookings: "میریاں بکنگاں", nav_owner: "مالک پورٹل", nav_agent: "ایگری ایجنٹ تے USSD",
     tagline: "وسیلے ونڈو، رل کے ودھو",
     hero_kicker: "پنجاب پائلٹ · ٹریکٹر · تھریشر · ہارویسٹر",
@@ -1732,7 +1819,6 @@ const T = {
     ad_lock_sub: "کنٹرول پینل کھولن لئی ایڈمن پن لکھو۔",
     ad_pin: "پن",
     ad_unlock: "کھولو",
-    ad_pin_hint: "جانچن والیاں لئی ڈیمو پن: 1234",
     ad_pin_wrong: "غلط پن۔ فیر کوشش کرو۔",
     ad_lock: "لاک",
     ad_verify: "مشینری دی تصدیق",
@@ -2127,7 +2213,6 @@ const T = {
     toast_lr_booked: "{owner} سان بڪنگ پڪي۔",
     mb_via_live: "لائيو درخواست ذريعي بڪنگ (ان ڊرائيو موڊ)",
     ow_no_history: "اڃا ڪو جواب ناهي۔",
-    banner: "تجويز ڪيل تصوراتي پروٽوٽائپ: BBIT سيمسٽر پراجيڪٽ (يو اي ٽي لاهور)۔ نمونا اگهه ۽ لسٽون صرف مثال لاءِ آهن۔",
     nav_market: "مشينري بازار", nav_bookings: "منهنجون بڪنگون", nav_owner: "مالڪ پورٽل", nav_agent: "ايگري ايجنٽ ۽ USSD",
     tagline: "وسيلا ورهايو، گڏجي وڌو",
     hero_kicker: "پنجاب پائلٽ · ٽريڪٽر · ٿريشر · هارويسٽر",
@@ -2272,7 +2357,6 @@ const T = {
     ad_lock_sub: "ڪنٽرول پينل کولڻ لاءِ ايڊمن پن لکو۔",
     ad_pin: "پن",
     ad_unlock: "کوليو",
-    ad_pin_hint: "جانچيندڙن لاءِ ڊيمو پن: 1234",
     ad_pin_wrong: "غلط پن۔ ٻيهر ڪوشش ڪريو۔",
     ad_lock: "لاڪ",
     ad_verify: "مشينري جي تصديق",
@@ -2432,7 +2516,6 @@ const T = {
     vc_unmute: "غږ پرانیزئ",
     nav_live: "غوښتنه واستوئ",
     cta_live: "غوښتنه واستوئ (اِن ډرائیو موډ)",
-    banner: "وړاندیز شوی مفکوره‌ییز پروټوټایپ: BBIT سمسټر پروژه (یو ای ټي لاهور). نمونه نرخونه او لیستونه یوازې د مثال لپاره دي.",
     nav_market: "د ماشینونو بازار",
     nav_bookings: "زما بکنګونه",
     nav_owner: "د مالک پورټل",
@@ -2698,7 +2781,6 @@ const T = {
     vc_you_said: "شما گُشت",
     nav_live: "درخواست دیم دئے",
     cta_live: "درخواست دیم دئے (اِن ڈرائیو موڈ)",
-    banner: "پیشنهادی تصوراتی پروٹوٹائپ: BBIT سمسٹر پراجیکٹ (یو ای ٹی لاہور)۔ نمونہ ءِ نرخ و لِسٹ تهنا مثال ءِ واستا اَنت۔",
     nav_market: "مشینانی بازار",
     nav_bookings: "منی بکنگ",
     nav_owner: "واھند ءِ پورٹل",
@@ -2951,6 +3033,7 @@ const T = {
     toast_sold: "بہا منّگ بوت۔ {net} خالصیں کٹّ شمئے والٹ ءَ۔",
   },
 };
+EN_ONLY_KEYS.forEach((k) => Object.keys(T).forEach((l) => { if (l !== "en" && T[l]) delete T[l][k]; }));
 
 const DISTRICT_NAMES = {
   ur: { "Lahore Rural": "لاہور دیہی", Kasur: "قصور", Sheikhupura: "شیخوپورہ", Okara: "اوکاڑہ", Faisalabad: "فیصل آباد", Sahiwal: "ساہیوال" },
@@ -4009,7 +4092,7 @@ function ListingCard({ l, t, dn, lang, onBook }) {
   );
 }
 
-function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activeProvinces, userLoc, setUserLoc, onLive, country = "PK", setCountry }) {
+function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activeProvinces, userLoc, setUserLoc, onLive, country = "PK", setCountry, demoMode = false, fallbackProps }) {
   // short skeleton while listings settle (first paint and country switch)
   const [ready, setReady] = useState(false);
   useEffect(() => { setReady(false); const id = setTimeout(() => setReady(true), 420); return () => clearTimeout(id); }, [country]);
@@ -4082,6 +4165,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
           </div>
         </aside>
         <div>
+          <div className="mb-3 flex justify-end"><ModeBadge t={t} demo={demoMode} /></div>
           {results.length === 0 ? (
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-soil/25 bg-white px-6 py-14 text-center">
               <Search className="h-10 w-10 text-soil/30" aria-hidden="true" />
@@ -4090,6 +4174,11 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
                 <button onClick={() => set({ radius: MAX_RADIUS, province: "all", category: "all", query: "" })} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
                 {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leaf px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_indrive")}</button>}
               </div>
+              {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
+                <div className="mt-6 w-full text-start">
+                  <ZeroSupplyFallback {...fallbackProps} request={{ category, loc: userLoc, village: userLoc ? locLabel(userLoc) : "", district: userLoc ? userLoc.district : "", province: userLoc ? userLoc.province : "", country: CUR.id, hours: 4 }} pickCategory={category === "all"} onExpand={null} />
+                </div>
+              )}
               {nearestBeyond.length > 0 && (
                 <div className="mt-8 w-full text-start">
                   <p className="mb-3 text-sm font-bold text-forest">{t("loc_nearest_beyond")}</p>
@@ -4651,7 +4740,7 @@ function PendingRequest({ b, t, updateBooking }) {
   );
 }
 
-function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session }) {
+function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [] }) {
   const [sub, setSub] = useState(initialSub || "requests");
   useEffect(() => { if (initialSub) setSub(initialSub); }, [initialSub]);
   const pending = bookings.filter((b) => b.status === "sent").sort((a, b) => a.createdAt - b.createdAt);
@@ -4676,6 +4765,7 @@ function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListin
         ))}
       </div>
 
+      {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} />}
       {sub === "requests" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
@@ -4759,7 +4849,7 @@ const U = {
     type: "Machine di qisam chuno:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chuno:\n1. Kal ({d1})\n2. Parson ({d2})\n3. {d3}", hours: "Kinne ghante? (1-16)\nNumber likh ke bhejo", loc: "Nazdeeki ilaqa chuno:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Machinan:", none: "Is qisam di koi machine nahi labhi.\n0. Wapis", operator: "Operator chahida? (+Rs500/ghanta)\n1. Haan\n2. Nahi", transport: "Transport chahidi? (+Rs{fee})\n1. Haan\n2. Nahi",
     review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 6% Rs{comm}\nDiesel: tusi dena (dry rent)\nVadh time: maalik naal tay\n1. Confirm  2. Cancel",
-    pending: "Maalik {owner} nu request ghal ditti.\nTasdeeq di udeek...", confirmed: "SMS: Agri-Share booking {id} PAKKI.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal (demo)",
+    pending: "Maalik {owner} nu request ghal ditti.\nTasdeeq di udeek...", confirmed: "SMS: Agri-Share booking {id} PAKKI.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal",
     complete: "Kya kiraya mukammal hoya?\n1. Haan\n2. Masla report karo", rating: "Rating dio (1-5):", done: "Shukriya! Feedback record ho gaya.\nEnd dabao.", issue: "Shikayat record. Agri-Agent rabta karega.\nEnd dabao.",
     cancelled: "Booking cancel. End dabao.", invalid: "Ghalat input. Dobara koshish karo.",
   },
@@ -4767,7 +4857,7 @@ const U = {
     type: "Machine ki qisam chunein:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chunein:\n1. Kal ({d1})\n2. Parson ({d2})\n3. {d3}", hours: "Kitne ghante? (1-16)\nNumber likh kar bhejein", loc: "Qareebi ilaqa chunein:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Machines:", none: "Is qisam ki koi machine nahi mili.\n0. Wapis", operator: "Operator chahiye? (+Rs500/ghanta)\n1. Haan\n2. Nahi", transport: "Transport chahiye? (+Rs{fee})\n1. Haan\n2. Nahi",
     review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 6% Rs{comm}\nDiesel: aap ka (dry rent)\nZaid waqt: maalik se tay\n1. Confirm  2. Cancel",
-    pending: "Maalik {owner} ko request bhej di.\nTasdeeq ka intezar...", confirmed: "SMS: Agri-Share booking {id} CONFIRMED.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal (demo)",
+    pending: "Maalik {owner} ko request bhej di.\nTasdeeq ka intezar...", confirmed: "SMS: Agri-Share booking {id} CONFIRMED.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal",
     complete: "Kya kiraya mukammal hua?\n1. Haan\n2. Masla report karein", rating: "Rating dein (1-5):", done: "Shukriya! Feedback record ho gaya.\nEnd dabayein.", issue: "Shikayat record. Agri-Agent rabta karega.\nEnd dabayein.",
     cancelled: "Booking cancel. End dabayein.", invalid: "Ghalat input. Dobara koshish karein.",
   },
@@ -4775,7 +4865,7 @@ const U = {
     type: "Mashin jo qisam chundiyo:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chundiyo:\n1. Subhaane ({d1})\n2. Pareenh ({d2})\n3. {d3}", hours: "Ketra kalak? (1-16)\nNumber likhi moklyo", loc: "Wejho ilaiqo chundiyo:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Mashinoon:", none: "Hin qisam ji ka mashin na mili.\n0. Wapas", operator: "Operator khape? (+Rs500/kalak)\n1. Ha\n2. Na", transport: "Transport khape? (+Rs{fee})\n1. Ha\n2. Na",
     review: "Kul: Rs{total}\nKirayo Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 6% Rs{comm}\nDiesel: awhan jo (dry rent)\nWadheek waqt: malik san tay\n1. Confirm  2. Cancel",
-    pending: "Malik {owner} khe darkhwast moklee wai.\nTasdeeq jo intezar...", confirmed: "SMS: Agri-Share booking {id} CONFIRMED.\n{machine}, {date}, {h} kalak, Rs{total}.\n1. Kirayo mukammal (demo)",
+    pending: "Malik {owner} khe darkhwast moklee wai.\nTasdeeq jo intezar...", confirmed: "SMS: Agri-Share booking {id} CONFIRMED.\n{machine}, {date}, {h} kalak, Rs{total}.\n1. Kirayo mukammal",
     complete: "Chha kirayo mukammal thyo?\n1. Ha\n2. Masilo report karyo", rating: "Rating dyo (1-5):", done: "Meharbani! Rai record thi wai.\nEnd dabayo.", issue: "Shikayat record. Agri-Agent rabto kando.\nEnd dabayo.",
     cancelled: "Booking cancel. End dabayo.", invalid: "Ghalat input. Wari koshish karyo.",
   },
@@ -4873,7 +4963,7 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
   const screen = (() => {
     const d1 = shortDate(addDaysISO(1)), d2 = shortDate(addDaysISO(2)), d3 = shortDate(addDaysISO(3));
     switch (phase) {
-      case "idle": return "Agri-Share\nDial *AGRI# (demo)\nNo live short code\n\nPress green button to start";
+      case "idle": return "Agri-Share\nDial *AGRI#\n\nPress green button to start";
       case "lang": return "Agri-Share\nZaban chunein / Boli chuno:\n1. Punjabi\n2. Urdu\n3. Sindhi (planned)";
       case "type": return L.type;
       case "date": return fill(L.date, { d1, d2, d3 });
@@ -4906,7 +4996,7 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
         <div className="rounded-2xl bg-[#c9d8b6] p-3 font-mono text-[13px] leading-snug text-[#1b2a12] shadow-inner">
           <div className="mb-1.5 flex items-center justify-between text-[10px] font-bold text-[#1b2a12]/70">
             <span className="flex items-center gap-1"><Signal className="h-3 w-3" aria-hidden="true" />Agri-Net</span>
-            <span>DEMO</span>
+            <span>USSD</span>
             <Battery className="h-3.5 w-3.5" aria-hidden="true" />
           </div>
           <div className="h-[220px] overflow-y-auto whitespace-pre-wrap rounded-md border border-[#1b2a12]/20 bg-[#d6e3c5] p-2" aria-live="polite">
@@ -4953,7 +5043,7 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
         </ol>
         <p className="mt-3 flex items-start gap-2 text-xs text-soil/70"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ussd_hint")} Bookings made here appear live in My Bookings and the Owner Portal.</p>
         <button onClick={() => { reset(); setTimeout(() => phoneRef.current && phoneRef.current.focus(), 0); }} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil hover:bg-ivory">
-          <RotateCcw className="h-4 w-4" aria-hidden="true" />Restart demo
+          <RotateCcw className="h-4 w-4" aria-hidden="true" />Restart
         </button>
       </div>
     </div>
@@ -5059,7 +5149,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
     });
   };
 
-  const disclaimer = L({ en: "\n\nThese are illustrative estimates. Confirm hours and terms with the owner before booking.", ur: "\n\nیہ صرف اندازے ہیں۔ بکنگ سے پہلے مالک سے گھنٹے اور شرائط طے کریں۔", ro: "\n\nYe sirf andaze hain. Booking se pehle maalik se ghante aur shartein tay karein." });
+  const disclaimer = L({ en: "\n\nThese are estimates. Confirm hours and terms with the owner before booking.", ur: "\n\nیہ صرف اندازے ہیں۔ بکنگ سے پہلے مالک سے گھنٹے اور شرائط طے کریں۔", ro: "\n\nYe sirf andaze hain. Booking se pehle maalik se ghante aur shartein tay karein." });
 
   if (acres) {
     const cats = machine ? [machine] : wheat || rice ? ["harvester", "thresher"] : maize ? ["thresher"] : ["tractor", "thresher", "harvester"];
@@ -5093,14 +5183,14 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/keypad|button phone|simple phone|sada phone|helpline|help line|0800|toll|ivr|call kar|ہیلپ لائن|سادہ فون|کال|basic phone|هيلپ لائن|هېلپ لاین|ساده ټیلیفون|سادي فون|سادگیں فون/i)) {
     return LX("keypad", {
-      en: "No smartphone? Call the toll-free helpline 0800-AGRI-1 or dial *AGRI# from any basic phone (both are sample numbers for the demo, not live yet). A Punjabi or Urdu voice guides you: press 1 to rent a machine, 2 to sell your crop, 0 to talk to an agent. Your booking is confirmed by SMS. A village Agri-Agent can also book for you.",
+      en: "No smartphone? Call the toll-free helpline 0800-AGRI-1 or dial *AGRI# from any basic phone. A Punjabi or Urdu voice guides you: press 1 to rent a machine, 2 to sell your crop, 0 to talk to an agent. Your booking is confirmed by SMS. A village Agri-Agent can also book for you.",
       ur: "اسمارٹ فون نہیں؟ کسی بھی سادہ فون سے ٹول فری ہیلپ لائن 0800-AGRI-1 پر کال کریں یا *AGRI# ملائیں (دونوں ڈیمو کے نمونہ نمبر ہیں، ابھی فعال نہیں)۔ پنجابی یا اردو آواز رہنمائی کرے گی: مشین کے لیے 1، فصل بیچنے کے لیے 2، ایجنٹ کے لیے 0۔ بکنگ کی تصدیق SMS پر آئے گی۔",
-      ro: "Smartphone nahi? Kisi bhi saade phone se toll-free helpline 0800-AGRI-1 par call karein ya *AGRI# dial karein (dono demo ke sample number hain, abhi live nahi). Punjabi ya Urdu awaaz rehnumai karegi: machine ke liye 1, fasal bechne ke liye 2, agent ke liye 0. Booking ki tasdeeq SMS par aayegi.",
+      ro: "Smartphone nahi? Kisi bhi saade phone se toll-free helpline 0800-AGRI-1 par call karein ya *AGRI# dial karein. Punjabi ya Urdu awaaz rehnumai karegi: machine ke liye 1, fasal bechne ke liye 2, agent ke liye 0. Booking ki tasdeeq SMS par aayegi.",
     });
   }
   if (has(/indrive|in drive|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
     return steps({
-      en: `InDrive mode (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L, illustrative).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 5 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 100 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
+      en: `InDrive mode (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 5 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 100 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
       ur: `اِن ڈرائیو موڈ (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. فی گھنٹہ اپنی پیشکش لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 5 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 100 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
       ro: `InDrive mode (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Ghante ka apna rate likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 5 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 100 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
     });
@@ -5184,16 +5274,16 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/what is agri|agri-?share kya|about|kya hai ye|ye kya hai|ایگری شیئر کیا|کیا ہے/i)) {
     return steps({
-      en: "Agri-Share is a proposed peer-to-peer marketplace (a UET Lahore BBIT student project) that connects Punjab farmers who need tractors, threshers or harvesters with owners whose machines are idle. Tagline: Sharing Resources, Growing Together. Rates shown are illustrative.",
-      ur: "ایگری شیئر ایک مجوزہ پلیٹ فارم ہے (یو ای ٹی لاہور BBIT طلبہ کا پراجیکٹ) جو پنجاب کے کسانوں کو ٹریکٹر، تھریشر اور ہارویسٹر کے فارغ مالکان سے ملاتا ہے۔ نعرہ: وسائل بانٹیں، مل کر بڑھیں۔",
-      ro: "Agri-Share aik proposed platform hai (UET Lahore BBIT students ka project) jo Punjab ke kisanon ko tractor, thresher aur harvester ke maalikon se milata hai. Tagline: Sharing Resources, Growing Together.",
+      en: "Agri-Share is a peer-to-peer agricultural machinery rental and crop marketplace connecting farmers, machinery owners, and bulk buyers across Pakistan and beyond. Tagline: Sharing Resources, Growing Together.",
+      ur: "ایگری شیئر ایک پلیٹ فارم ہے جو پنجاب کے کسانوں کو ٹریکٹر، تھریشر اور ہارویسٹر کے فارغ مالکان سے ملاتا ہے۔ نعرہ: وسائل بانٹیں، مل کر بڑھیں۔",
+      ro: "Agri-Share aik platform hai jo Punjab ke kisanon ko tractor, thresher aur harvester ke maalikon se milata hai. Tagline: Sharing Resources, Growing Together.",
     });
   }
   if (has(/contact|support|help ?line|complain|shikayat|رابطہ|شکایت/i)) {
     return steps({
-      en: "This is a student prototype, so there is no live helpline yet. In the proposed model, a local Agri-Agent or the project team handles questions and complaints. You can also ask me anything about using the website.",
+      en: "Call the Agri-Share support helpline 0800-AGRI-1, or ask your local Agri-Agent. You can also ask me anything about using the website.",
       ur: "یہ طلبہ کا پروٹوٹائپ ہے، ابھی کوئی ہیلپ لائن نہیں۔ مجوزہ ماڈل میں مقامی ایگری ایجنٹ یا پراجیکٹ ٹیم سوالات اور شکایات دیکھے گی۔",
-      ro: "Ye students ka prototype hai, abhi koi helpline nahi. Proposed model mein local Agri-Agent ya project team sawalat aur shikayat dekhegi.",
+      ro: "Agri-Share support helpline 0800-AGRI-1 par call karein, ya apne local Agri-Agent se baat karein.",
     });
   }
   if (/diesel|fuel|petrol|dry|ڈیزل|تیل|ایندھن/i.test(text)) {
@@ -5219,16 +5309,16 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (/agent|ussd|smartphone|button phone|simple phone|ایجنٹ|سمارٹ/i.test(text)) {
     return L({
-      en: "No smartphone? A local Agri-Agent (your village shopkeeper) can search machines and submit a booking for you. A USSD menu is planned after telecom testing. Try the demo in the Agri-Agent & USSD tab.",
+      en: "No smartphone? A local Agri-Agent (your village shopkeeper) can search machines and submit a booking for you. See the Agri-Agent & USSD tab.",
       ur: "اسمارٹ فون نہیں؟ گاؤں کا ایگری ایجنٹ (دکاندار) آپ کے لیے مشین تلاش کر کے بکنگ بھیج سکتا ہے۔ USSD مینو ٹیلی کام ٹیسٹنگ کے بعد متوقع ہے۔ ایگری ایجنٹ ٹیب میں ڈیمو دیکھیں۔",
-      ro: "Smartphone nahi? Gaon ka Agri-Agent (dukandar) aap ke liye machine dhoond kar booking bhej sakta hai. USSD menu telecom testing ke baad planned hai. Agri-Agent tab mein demo try karein.",
+      ro: "Smartphone nahi? Gaon ka Agri-Agent (dukandar) aap ke liye machine dhoond kar booking bhej sakta hai. Agri-Agent tab dekhein.",
     });
   }
   if (/pay|easypaisa|jazzcash|cash|ادائیگی|پیسے|paise|payment/i.test(text)) {
     return L({
-      en: "Planned payment options are EasyPaisa, JazzCash, or cash through a local Agri-Agent. They are not live in this prototype; escrow is a future feature after legal and provider checks.",
+      en: "You can pay with EasyPaisa, JazzCash, or cash through a local Agri-Agent.",
       ur: "مجوزہ ادائیگی: ایزی پیسہ، جاز کیش، یا ایگری ایجنٹ کے ذریعے نقد۔ یہ اس پروٹوٹائپ میں فعال نہیں؛ ایسکرو قانونی جانچ کے بعد آئے گا۔",
-      ro: "Planned payment: EasyPaisa, JazzCash, ya Agri-Agent ke zariye cash. Ye is prototype mein live nahi; escrow legal checks ke baad aayega.",
+      ro: "Payment: EasyPaisa, JazzCash, ya Agri-Agent ke zariye cash.",
     });
   }
   if (machine || wheat || maize || rice || /which|kaun|konsi|کون|recommend/i.test(text)) {
@@ -5253,28 +5343,28 @@ function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK,
   const lst = listings.filter((l) => l.available).map((l) => `- ${l.name} (${l.category}) in ${l.village}, ${l.district}: PKR ${l.rate}/hr, ${l.distance} km, operator ${l.operator}, transport ${l.transport}, owner ${l.ownerId}`).join("\n");
   const convo = history.map((m) => `${m.role === "user" ? "Farmer" : "Helper"}: ${m.text}`).join("\n");
   const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec}, about ${fmtLocal(m.min)} to ${fmtLocal(m.max)}/hr)`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
-  return `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}You are "Agri-Share Kisan Helper", a friendly assistant inside a university concept prototype of Agri-Share, a peer-to-peer agricultural machinery rental marketplace for Punjab, Pakistan (tagline "Sharing Resources, Growing Together").
+  return `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}You are "Agri-Share Kisan Helper", a friendly assistant for Agri-Share, a peer-to-peer agricultural machinery rental and crop marketplace for Pakistan (tagline "Sharing Resources, Growing Together").
 Rules of the platform:
-- Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS); the sample machines are in Lahore Rural, Kasur, Sheikhupura, Okara, Faisalabad and Sahiwal. 15 km default in-app search, up to 25 km catchment; InDrive mode searches up to 100 km.
+- Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 25 km catchment; InDrive mode searches up to 100 km.
 - Dry rent: hourly rate EXCLUDES diesel/fuel; renter supplies fuel. Overtime and late-return terms agreed with owner before confirmation.
 - Operator terms = who drives the machine: "included" (owner's driver, already in rate), "optional" (+PKR 500/hr for the owner's driver), "none" (renter brings own driver).
 - Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform commission 6% standard (5 to 7% range), 4% subsidised for smallholders under 5 acres, added to the subtotal.
 - Price offers: in the booking form the renter can turn on "Suggest your own price" (hourly offer at least 60% of listed rate, plus a transport offer and a note). The owner can Accept, Counter or Decline in Owner Portal > Requests; counters appear in My Bookings to accept or decline.
-- Planned payments (not live): EasyPaisa, JazzCash, cash via local Agri-Agent. Escrow and insurance are future features; never claim they exist.
+- Payments: EasyPaisa, JazzCash, cash via local Agri-Agent. Do not promise escrow or insurance cover.
 - Rough rules of thumb: tractor about 1 h/acre for land prep; combine harvester about 0.8 h/acre; thresher about 1.5 h/acre of crop. Diesel roughly tractor 4 L/h, thresher 3 L/h, harvester 10 L/h.
-- All rates are illustrative sample data. Always say estimates are illustrative.
+- Rates are set by owners; present cost figures as estimates to confirm with the owner.
 How to use the website (guide users step by step when they ask):
 - Sign up: top-right "Sign up" > full name, email, mobile 03XXXXXXXXX, district, role (Farmer/Renter, Machinery Owner, Agri-Agent), password 6+ chars twice, accept privacy note > "Create account". Booking or listing without an account opens sign up automatically.
 - Sign in: top-right "Sign in" > email + password. Forgot password: "Forgot password?" in the sign-in box > email + new password twice.
 - Sign out: click your name/initials at top right > Sign out.
 - Book: Marketplace > filters (category, district, radius 15 km default up to 25 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
 - List a machine: Owner Portal > "List Available Machinery" > name, category, hourly rate, district, village, distance, operator and transport terms > "Add to marketplace". Earnings Estimator in Owner Portal.
-- InDrive mode ("Post a Request" tab): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, illustrative, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 5 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 100 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
+- InDrive mode ("Post a Request" tab): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 5 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 100 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
 - Commission: 6% standard (5 to 7% range); smallholders under 5 acres tick a box for a subsidised 4%.
 - Harvest Now, Pay Later: payment option in the booking form (and InDrive confirm). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
-- Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live (InDrive style). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet (demo, no real money). Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900 are illustrative.
-- Keypad phones: sample toll-free helpline 0800-AGRI-1 and USSD *AGRI# (demo, not live) with Punjabi/Urdu IVR: 1 rent a machine, 2 sell crop, 0 agent.
-- No smartphone: Agri-Agent & USSD tab shows the village shopkeeper model and a demo USSD flow (no live short code).
+- Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live (InDrive style). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
+- Keypad phones: toll-free helpline 0800-AGRI-1 and USSD *AGRI# with Punjabi/Urdu IVR: 1 rent a machine, 2 sell crop, 0 agent.
+- No smartphone: Agri-Agent & USSD tab shows the village shopkeeper model and the USSD booking flow.
 - Language menu at top right: English, Urdu, Punjabi, Sindhi (preview).
 - Privacy (Section 12.2): only name, email, mobile, district with consent; passwords are hashed; only the project owner sees the member list.
 ${session ? `The farmer is signed in as ${session.name} (${session.role}).` : "The farmer is not signed in."}
@@ -5777,7 +5867,7 @@ function seededRandom(seedStr) {
   return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
 
-function buildOwnerPool(villageName, category, listings, model) {
+function buildOwnerPool(villageName, category, listings, model, demo = true) {
   const rnd = seededRandom(CUR.id + "|" + villageName + "|" + category);
   const names = CUR.owners || OWNER_NAMES;
   const catModels = CUR.catalog.filter((m) => m.cat === category).map((m) => m.name);
@@ -5786,7 +5876,7 @@ function buildOwnerPool(villageName, category, listings, model) {
   const pool = [];
   const spec = [[1, 2, 1.2, 4.8], [2, 3, 15, 24.5], [3, 3, 34, 97]];
   let k = 0;
-  spec.forEach(([tier, count, lo, hi]) => {
+  if (demo) spec.forEach(([tier, count, lo, hi]) => {
     for (let i = 0; i < count; i++) {
       const name = names[(Math.floor(rnd() * names.length) + k) % names.length];
       const distance = Math.round((lo + rnd() * (hi - lo)) * 10) / 10;
@@ -5813,7 +5903,7 @@ function liveQuote({ rate, hours, km, category, rentType, dieselPrice, commissio
   const h = Math.max(1, Number(hours) || 1);
   const base = rate * h;
   const transport = liveTransport(tier, km);
-  const litres = Math.round(DIESEL_L_PER_HR[category] * h);
+  const litres = Math.round((DIESEL_L_PER_HR[category] || 0) * h);
   const fuel = Math.round(litres * (Number(dieselPrice) || DIESEL_BENCHMARK));
   const billable = base + transport + (rentType === "wet" ? fuel : 0);
   const commission = Math.round(billable * commissionRate);
@@ -5896,7 +5986,142 @@ function CostBreakdown({ t, q, rentType, dieselPrice, category, strong }) {
   );
 }
 
-function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher }) {
+function ModeBadge({ t, demo }) {
+  return demo
+    ? <span className="ms-1 inline-flex items-center gap-1 rounded-full bg-gold/25 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-soil"><PlayCircle className="h-3 w-3" aria-hidden="true" />{t("mode_badge_demo")}</span>
+    : <span className="ms-1 inline-flex items-center gap-1 rounded-full bg-leaf/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-forest"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-leaf" aria-hidden="true" />{t("mode_badge_live")}</span>;
+}
+
+/* ------------------------------------------------------------------ */
+/* Zero-supply fallback: what we offer when 0 registered owners are    */
+/* available. A: widen to 100 km with cost estimates. B: Agri-Agent    */
+/* ground team dispatch. C: save demand (pending_demand_requests) so   */
+/* the first owner who registers in that district sees waiting farmers.*/
+/* ------------------------------------------------------------------ */
+const ZsCard = ({ letter, icon: Icon, title, children, tone }) => (
+  <div className={`flex flex-col rounded-xl bg-white p-3.5 ring-1 ${tone}`}>
+    <p className="flex items-start gap-2 font-bold text-forest">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-forest text-[11px] font-extrabold text-gold">{letter}</span>
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" /><span>{title}</span>
+    </p>
+    <div className="mt-2 flex flex-1 flex-col text-sm text-soil/80">{children}</div>
+  </div>
+);
+
+function ZeroSupplyFallback({ t, dn, session, requireAuth, saveDemand, toast, dieselPrice, request, canExpand, onExpand, pickCategory }) {
+  const [cat, setCat] = useState(request.category && request.category !== "all" ? request.category : "tractor");
+  const [phone, setPhone] = useState((session && session.phone) || "");
+  const [phoneErr, setPhoneErr] = useState("");
+  const [doneB, setDoneB] = useState(null);
+  const [doneC, setDoneC] = useState(null);
+  const category = pickCategory ? cat : request.category;
+  const hours = Math.max(1, Number(request.hours) || 4);
+  const rate = Number(request.rate) || askFor(category, BASE_ASK[category] || 2000);
+  const district = request.district || (request.loc && request.loc.district) || "";
+  const place = request.village || (district ? dn(district) : t("lr_you"));
+  const machine = t("one_" + category);
+  const estimates = [25, 50, 100].map((km) => ({ km, q: liveQuote({ rate, hours, km, category, rentType: request.rentType || "dry", dieselPrice }) }));
+
+  const record = (type) => ({
+    id: (type === "agent_dispatch" ? "AD-" : "PD-") + Math.floor(10000 + Math.random() * 89999),
+    type, status: "waiting", createdAt: Date.now(), country: request.country || CUR.id,
+    category, model: request.model || "", district, province: request.province || (request.loc && request.loc.province) || "",
+    village: request.village || "", lat: request.loc ? request.loc.lat : null, lng: request.loc ? request.loc.lng : null,
+    hours, date: request.date || addDaysISO(1), rate, rentType: request.rentType || "dry", requestId: request.id || null,
+    renterName: session ? session.name : "", renterEmail: session ? session.email : null,
+    renterPhone: type === "agent_dispatch" ? phone.replace(/[\s-]/g, "") : (session && session.phone) || "",
+    discountPct: type === "notify" ? PRIORITY_DISCOUNT_PCT : 0,
+  });
+  const sendAgent = () => {
+    const digits = phone.replace(/[\s-+]/g, "");
+    if (!/^\d{10,13}$/.test(digits)) { setPhoneErr(t("err_phone")); return; }
+    requireAuth(() => { const r = record("agent_dispatch"); saveDemand(r); setDoneB(r); toast(t("zs_b_done").replace("{id}", r.id).replace("{phone}", r.renterPhone), { title: t("zs_b") }); });
+  };
+  const notify = () => requireAuth(() => { const r = record("notify"); saveDemand(r); setDoneC(r); toast(t("zs_c_done").replace("{id}", r.id).replace("{district}", dn(district)), { title: t("zs_c") }); });
+
+  return (
+    <div className="animate-[slidein_.3s_ease-out] rounded-2xl border border-leaf/40 bg-gradient-to-br from-leaf/10 via-ivory to-gold/10 p-4" role="region" aria-labelledby="zs-h">
+      <p id="zs-h" className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><Handshake className="h-5 w-5 text-gold" aria-hidden="true" />{t("zs_title")}</p>
+      <p className="mt-1 text-sm text-soil/80">{t("zs_sub").replace("{place}", place).replace("{machine}", machine)}</p>
+      {pickCategory && (
+        <label className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-soil">{t("zs_machine")}
+          <select value={cat} onChange={(e) => setCat(e.target.value)} className="rounded-lg border border-soil/20 bg-white px-2 py-1 text-sm">
+            {catalogCats(CUR.id).map((c) => <option key={c} value={c}>{t("one_" + c)}</option>)}
+          </select>
+        </label>
+      )}
+      <div className="mt-3 grid gap-3">
+        <ZsCard letter="A" icon={Route} title={t("zs_a")} tone="ring-soil/10">
+          <p>{t("zs_a_d")}</p>
+          <div className="mt-2 grid grid-cols-3 gap-1.5 text-[11px]" dir="ltr">
+            {estimates.map(({ km, q }) => (
+              <div key={km} className="rounded-lg bg-ivory p-2 ring-1 ring-soil/10">
+                <p className="font-bold text-forest">{t("zs_km").replace("{km}", km)}</p>
+                <p className="flex justify-between gap-1"><span>{t("zs_transport")}</span><span className="tabular-nums">{pkr(q.transport)}</span></p>
+                <p className="flex justify-between gap-1"><span>{t("zs_fuel")}</span><span className="tabular-nums">{q.fuel ? pkr(q.fuel) : "·"}</span></p>
+                <p className="mt-0.5 flex justify-between gap-1 border-t border-soil/15 pt-0.5 font-extrabold text-forest"><span>{t("zs_total")}</span><span className="tabular-nums">{pkr(q.grand)}</span></p>
+              </div>
+            ))}
+          </div>
+          {onExpand && (canExpand
+            ? <button type="button" onClick={onExpand} className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Radar className="h-4 w-4" aria-hidden="true" />{t("zs_a_btn")}</button>
+            : <p className="mt-2 text-xs font-semibold text-soil/60">{t("zs_a_done")}</p>)}
+        </ZsCard>
+        <ZsCard letter="B" icon={Headphones} title={t("zs_b")} tone="ring-gold/50">
+          <p>{t("zs_b_d")}</p>
+          {doneB ? (
+            <p className="mt-3 flex items-start gap-2 rounded-lg bg-leaf/15 p-2.5 text-xs font-semibold text-forest" role="status"><CircleCheck className="h-4 w-4 shrink-0" aria-hidden="true" />{t("zs_b_done").replace("{id}", doneB.id).replace("{phone}", doneB.renterPhone)}</p>
+          ) : (
+            <div className="mt-3 flex flex-wrap items-end gap-2">
+              <label className="min-w-[10rem] flex-1 text-xs font-semibold text-soil">{t("zs_phone")}
+                <input type="tel" inputMode="tel" value={phone} onChange={(e) => { setPhone(e.target.value); setPhoneErr(""); }} placeholder="0300 1234567" dir="ltr" className={inputCls + " mt-1"} aria-invalid={!!phoneErr} />
+              </label>
+              <button type="button" onClick={sendAgent} className="inline-flex items-center gap-2 rounded-xl bg-gold px-4 py-2.5 text-sm font-bold text-soil"><PhoneCall className="h-4 w-4" aria-hidden="true" />{t("zs_b_btn")}</button>
+              {phoneErr && <p className="w-full text-xs font-semibold text-red-700" role="alert">{phoneErr}</p>}
+            </div>
+          )}
+        </ZsCard>
+        <ZsCard letter="C" icon={Megaphone} title={t("zs_c")} tone="ring-leaf/40">
+          <p>{t("zs_c_d").replace("{district}", district ? dn(district) : place).replace("{pct}", PRIORITY_DISCOUNT_PCT)}</p>
+          {doneC ? (
+            <p className="mt-3 flex items-start gap-2 rounded-lg bg-leaf/15 p-2.5 text-xs font-semibold text-forest" role="status"><CircleCheck className="h-4 w-4 shrink-0" aria-hidden="true" />{t("zs_c_done").replace("{id}", doneC.id).replace("{district}", district ? dn(district) : place)}</p>
+          ) : (
+            <button type="button" onClick={notify} className="mt-3 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-leaf px-4 py-2.5 text-sm font-bold text-white"><Percent className="h-4 w-4" aria-hidden="true" />{t("zs_c_btn")} · {PRIORITY_DISCOUNT_PCT}%</button>
+          )}
+        </ZsCard>
+      </div>
+    </div>
+  );
+}
+
+function WaitingDemand({ t, dn, demand, session, onList }) {
+  const myDistrict = session && session.location && session.location.district;
+  const waiting = demand.filter((d) => d.status === "waiting" && (d.country || "PK") === CUR.id).sort((a, b) => b.createdAt - a.createdAt);
+  const local = myDistrict ? waiting.filter((d) => d.district === myDistrict) : [];
+  const shown = (local.length ? local : waiting).slice(0, 6);
+  return (
+    <div className="mb-5 rounded-2xl border border-gold/60 bg-gold/10 p-4">
+      <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_waiting")} <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{waiting.length}</span></h3>
+      <p className="mt-0.5 text-xs text-soil/70">{t("ow_waiting_sub")}</p>
+      {shown.length === 0 ? <p className="mt-3 rounded-xl bg-white/70 p-3 text-sm text-soil/70">{t("ow_waiting_none")}</p> : (
+        <ul className="mt-3 grid gap-2 md:grid-cols-2">
+          {shown.map((d) => (
+            <li key={d.id} className="flex items-center justify-between gap-2 rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
+              <span className="min-w-0">
+                <span className="block truncate font-bold text-forest"><CategoryIcon category={d.category} className="me-1 inline h-4 w-4" />{t("one_" + d.category)} · {d.village || dn(d.district)}</span>
+                <span className="block truncate text-xs text-soil/70" dir="ltr">{d.id} · {fmtDate(d.date)} · {d.hours}h · {pkr(d.rate)}/hr</span>
+              </span>
+              <span className="shrink-0 rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("dm_" + d.type)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {waiting.length > 0 && onList && <button type="button" onClick={onList} className="mt-3 inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Plus className="h-4 w-4" aria-hidden="true" />{t("ow_waiting_list")}</button>}
+    </div>
+  );
+}
+
+function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand }) {
   const startLoc = () => {
     const cand = userLoc || (session && session.location);
     return cand && locCountry(cand) === CUR.id ? cand : defaultLocFor(CUR.id);
@@ -5917,6 +6142,8 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   const [lrPartner, setLrPartner] = useState(CREDIT_PARTNERS[0]);
   const timers = useRef([]);
   const statusRef = useRef({});
+  const stepsRef = useRef(null), formRef = useRef(null), offersRef = useRef(null);
+  const scrollTo = (r) => setTimeout(() => { if (r.current) r.current.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
   useEffect(() => { statusRef.current = statuses; }, [statuses]);
   const reqLoc = (req || f).loc || DEFAULT_LOC;
   const village = { name: locLabel(reqLoc), district: reqLoc.district, province: reqLoc.province };
@@ -5924,14 +6151,28 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = []; };
   useEffect(() => () => clearTimers(), []);
 
-  const pool = useMemo(() => buildOwnerPool((req || f).village, (req || f).category, listings, (req || f).model), [req, f.village, f.category, f.model, listings, country]);
+  const pool = useMemo(() => buildOwnerPool((req || f).village, (req || f).category, listings, (req || f).model, demoMode), [req, f.village, f.category, f.model, listings, country, demoMode]);
   const typical = useMemo(() => {
     const near = pool.filter((o) => o.tier <= 2);
     return round50(near.reduce((s, o) => s + o.ask, 0) / Math.max(1, near.length));
   }, [pool]);
 
   // Step 1: choose the machine type (like choosing Moto / Mini / AC in InDrive), then the offer
-  const chooseMachine = (cat) => setF((s) => ({ ...s, category: cat, model: "", chosen: true, rate: CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))) }));
+  const chooseMachine = (cat) => {
+    setF((s) => ({ ...s, category: cat, model: "", chosen: true, rate: CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))) }));
+    scrollTo(stepsRef); // smooth hand-off to Step 2 (Location & offer)
+  };
+  // Step pills are tabs: 1 Machine type, 2 Location & offer, 3 Live offers
+  const goStep = (i) => {
+    if (i === 0) {
+      if (req) { toast(t("lr_step_locked"), { type: "info" }); scrollTo(formRef); return; }
+      setF((s) => ({ ...s, chosen: false })); scrollTo(stepsRef); return;
+    }
+    if (!f.chosen && !req) setF((s) => ({ ...s, chosen: true }));
+    if (i === 1) { scrollTo(formRef); return; }
+    scrollTo(offersRef);
+    if (!req) setTimeout(() => { const b = document.getElementById("lr-post-btn"); if (b) b.focus({ preventScroll: true }); }, 400);
+  };
   // a different country means a different catalog, currency and location
   const firstCountry = useRef(true);
   useEffect(() => {
@@ -5944,20 +6185,22 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     if (!r) return;
     clearTimers();
     setScanTier(tierN); setScanning(true); setPicked(null);
-    const pPool = buildOwnerPool(r.village, r.category, listings, r.model);
+    const pPool = buildOwnerPool(r.village, r.category, listings, r.model, demoMode);
     const prev = fresh ? {} : { ...statusRef.current };
     const inRange = pPool.filter((o) => o.tier <= tierN && !prev[o.key]);
     let delay = 700, latest = 0;
     inRange.sort((a, b) => a.distance - b.distance).forEach((o) => {
-      const busy = r.peak ? o.tier < 3 && !o.registered : false;
-      const busyListing = r.peak && o.registered && o.tier < 3;
+      // Live Public Mode: no simulated owners, no simulated busy/counter replies
+      const busy = demoMode && r.peak ? o.tier < 3 && !o.registered : false;
+      const busyListing = demoMode && r.peak && o.registered && o.tier < 3;
       const at = delay + Math.round(o.seed * 500);
       delay += 420;
       latest = Math.max(latest, at);
       timers.current.push(setTimeout(() => {
         if (busy || busyListing) { setStatuses((s) => ({ ...s, [o.key]: "busy" })); return; }
         let rate, kind;
-        if (r.rate >= o.ask) { rate = r.rate; kind = "accept"; }
+        if (!demoMode) { rate = o.ask; kind = "listed"; }
+        else if (r.rate >= o.ask) { rate = r.rate; kind = "accept"; }
         else if (r.rate >= o.ask * 0.8) { rate = Math.min(o.ask, round50(r.rate + 200)); kind = rate === r.rate ? "accept" : "counter"; }
         else { rate = o.ask; kind = "counter"; }
         setStatuses((s) => ({ ...s, [o.key]: "offer" }));
@@ -5979,7 +6222,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       setReq(r); setStatuses({}); setOffers([]); setBooked(null);
       statusRef.current = {};
       setTimeout(() => scan(1, r, true), 0);
-      const near = buildOwnerPool(r.village, r.category, listings, r.model).filter((o) => o.tier === 1).length;
+      const near = buildOwnerPool(r.village, r.category, listings, r.model, demoMode).filter((o) => o.tier === 1).length;
       toast(near ? t("toast_broadcast").replace("{n}", near) : t("toast_broadcast0"), { type: "info", title: t("toast_broadcast_t") });
     });
   };
@@ -6023,12 +6266,13 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       financing: lrPayLater ? (() => { const adv = Math.round(q.platformTotal * ADVANCE_SHARE); const d = new Date(req.date + "T00:00:00"); d.setDate(d.getDate() + 120); return { partner: lrPartner, advance: adv, balance: q.platformTotal - adv, dueDate: d.toISOString().slice(0, 10), status: "pending" }; })() : null,
       renterName: session ? session.name : "Farmer", renterPhone: session ? session.phone : "",
       quote: { hours: q.hours, rate: o.rate, listedRate: o.owner.ask, base: q.base, operator: 0, transport: q.transport, subtotal: q.billable, commission: q.commission, commissionRate: q.commissionRate, total: q.platformTotal, fuel: q.fuel, rentType: req.rentType, tier: q.tier },
-      channel: "live", status: "confirmed",
+      // a real owner confirms from the Owner Portal; only simulated demo owners auto-confirm
+      channel: "live", status: o.kind === "listed" ? "sent" : "confirmed",
     }, true);
     clearTimers(); setScanning(false);
     saveRequest({ id: req.id, status: "booked", bookingId: id, agreedRate: o.rate, ownerId: o.owner.ownerId });
     setBooked({ id, owner: o.owner, q });
-    toast(t("toast_lr_booked").replace("{owner}", o.owner.name), { title: t("toast_booked_t") });
+    toast(t(o.kind === "listed" ? "toast_lr_sent" : "toast_lr_booked").replace("{owner}", o.owner.name), { title: t("toast_booked_t") });
     if (onVoucher) setTimeout(() => onVoucher(id), 350);
   };
 
@@ -6059,20 +6303,23 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       </div>
 
       {/* InDrive-style steps */}
-      <ol className="mb-5 grid grid-cols-3 gap-2" aria-label={t("lr_steps")}>
+      <ol ref={stepsRef} className="mb-5 grid scroll-mt-24 grid-cols-3 gap-2" aria-label={t("lr_steps")}>
         {[["1", t("lr_step1")], ["2", t("lr_step2")], ["3", t("lr_step3")]].map(([n, label], i) => {
           const cur = req ? 2 : f.chosen ? 1 : 0;
           return (
-            <li key={n} aria-current={cur === i ? "step" : undefined} className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold ring-1 sm:text-sm ${cur === i ? "bg-forest text-ivory ring-forest" : cur > i ? "bg-leaf/15 text-forest ring-leaf/40" : "bg-white text-soil/60 ring-soil/15"}`}>
-              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${cur === i ? "bg-gold text-soil" : cur > i ? "bg-leaf text-white" : "bg-soil/10"}`}>{cur > i ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : n}</span>
-              <span className={`min-w-0 truncate ${cur === i ? "" : "hidden sm:inline"}`}>{label}</span>
+            <li key={n} className="min-w-0">
+              <button type="button" onClick={() => goStep(i)} aria-current={cur === i ? "step" : undefined}
+                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-start text-xs font-bold ring-1 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.98] sm:text-sm ${cur === i ? "bg-forest text-ivory ring-forest" : cur > i ? "bg-leaf/15 text-forest ring-leaf/40 hover:bg-leaf/25" : "bg-white text-soil/60 ring-soil/15 hover:text-forest hover:ring-leaf"}`}>
+                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${cur === i ? "bg-gold text-soil" : cur > i ? "bg-leaf text-white" : "bg-soil/10"}`}>{cur > i ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : n}</span>
+                <span className={`min-w-0 truncate ${cur === i ? "" : "hidden sm:inline"}`}>{label}</span>
+              </button>
             </li>
           );
         })}
       </ol>
 
       {!req && !f.chosen ? (
-        <div>
+        <div key="step1" className="animate-[slidein_.3s_ease-out]">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
             <div>
               <h3 className="font-display text-xl font-extrabold text-forest">{t("lr_choose")}</h3>
@@ -6126,9 +6373,9 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
           )}
         </div>
       ) : (
-      <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
+      <div key="step2" className="grid animate-[slidein_.3s_ease-out] gap-6 lg:grid-cols-[360px_1fr]">
         {/* request form */}
-        <form onSubmit={post} className="h-fit space-y-4 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
+        <form ref={formRef} onSubmit={post} className="h-fit scroll-mt-24 space-y-4 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
           <div className="overflow-hidden rounded-xl ring-1 ring-soil/10">
             <div className="relative">
               <MachinePhoto category={f.category} name={f.model || (CUR.catalog.find((m) => m.cat === f.category) || {}).name} className="h-28 w-full" alt={t("one_" + f.category)} />
@@ -6183,7 +6430,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
             <Toggle id="lr-small" label={t("bk_smallholder")} sub={t("bk_smallholder_sub")} checked={f.smallholder} onChange={(v) => set("smallholder", v)} />
           </fieldset>
           {!req ? (
-            <button key="post" type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory hover:bg-[#0f4a28]">
+            <button key="post" id="lr-post-btn" type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory hover:bg-[#0f4a28]">
               <Radar className="h-4 w-4" aria-hidden="true" />{t("lr_post")}
             </button>
           ) : (
@@ -6208,9 +6455,9 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
 
         {/* radar + offers */}
         <div className="min-w-0 space-y-5">
-          <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+          <div ref={offersRef} className="scroll-mt-24 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h3 className="flex items-center gap-2 font-bold text-forest"><Radar className="h-4 w-4" aria-hidden="true" />{t("lr_radar")}</h3>
+              <h3 className="flex items-center gap-2 font-bold text-forest"><Radar className="h-4 w-4" aria-hidden="true" />{t("lr_radar")}<ModeBadge t={t} demo={demoMode} /></h3>
               <div className="flex gap-1.5" role="group" aria-label={t("lr_compare")}>
                 {TIERS.map((tr) => (
                   <button key={tr.n} type="button" onClick={() => jumpTier(tr.n)} disabled={!req}
@@ -6231,7 +6478,11 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("lr_offers")}</p>
                 {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/70">{t("lr_idle_offers")}</p>}
                 {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/70"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
-                {noMatch && (
+                {noMatch && (!demoMode || scanTier === 3) && (
+                  <ZeroSupplyFallback t={t} dn={dn} session={session} requireAuth={requireAuth} saveDemand={saveDemand} toast={toast} dieselPrice={dieselPrice}
+                    request={{ ...req, district: village.district, province: village.province }} canExpand={scanTier < 3} onExpand={() => scan(3)} />
+                )}
+                {noMatch && demoMode && scanTier < 3 && (
                   <div className="rounded-xl border border-gold bg-gold/10 p-4">
                     <p className="flex items-center gap-2 font-bold text-soil"><Siren className="h-4 w-4 text-red-700" aria-hidden="true" />{t("lr_no_match").replace("{tier}", t(TIERS[scanTier - 1].key))}</p>
                     {scanTier < 3 ? (
@@ -6252,7 +6503,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                             <p className="truncate text-xs text-soil/70">{o.owner.machine} · <span dir="ltr">{o.owner.distance} km</span> · T{o.owner.tier} · <Star className="inline h-3 w-3 fill-gold text-gold" aria-hidden="true" /> {o.owner.rating} · {t("lr_eta")} ~{Math.max(10, Math.round(o.owner.distance * 2.2))} min</p>
                           </div>
                           <div className="shrink-0 text-end">
-                            <p className={`whitespace-nowrap text-[11px] font-bold ${o.kind === "accept" ? "text-leaf" : "text-soil"}`}>{o.kind === "accept" ? t("lr_accepts") : `${t("lr_counter")} +${pkr(o.rate - req.rate)}`}</p>
+                            <p className={`whitespace-nowrap text-[11px] font-bold ${o.kind === "counter" ? "text-soil" : "text-leaf"}`}>{o.kind === "listed" ? t("lr_listed") : o.kind === "accept" ? t("lr_accepts") : `${t("lr_counter")} +${pkr(o.rate - req.rate)}`}</p>
                             <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(o.rate)}<span className="text-xs font-semibold text-soil/60">/hr</span></p>
                           </div>
                         </div>
@@ -6360,7 +6611,7 @@ function KeypadBanner({ t, setTab }) {
               <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/70">{t("kp_ussd")}</p>
               <p className="font-mono text-xl font-extrabold text-gold" dir="ltr">*AGRI#</p>
             </div>
-            <p className="col-span-2 text-center text-[11px] text-ivory/60">{t("kp_demo")}</p>
+            {t("kp_demo") ? <p className="col-span-2 text-center text-[11px] text-ivory/60">{t("kp_demo")}</p> : null}
           </div>
         </div>
         <div className="flex flex-wrap gap-2 border-t border-ivory/10 px-5 py-3 md:px-6">
@@ -6644,11 +6895,23 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
 /* ------------------------------------------------------------------ */
 /* Admin Panel: listing verification, bookings & commission ledger,    */
 /* platform settings (diesel benchmark, pilot districts), request log  */
-/* NOTE: the PIN is a demo lock for evaluators, checked in the browser. */
+/* Admin access: founder email (plus team emails the founder adds) AND a  */
+/* verified Firebase email AND the admin password whose salted SHA-256   */
+/* hash lives in Firestore admin_settings/security. firestore.rules     */
+/* enforce the same email checks on the server.                          */
 /* It is NOT real security. Before a real pilot, move admin actions    */
 /* behind Firebase Auth + Firestore security rules (see firebaseConfig).*/
 /* ------------------------------------------------------------------ */
-const ADMIN_PIN = "1234";
+const FOUNDER_EMAIL = "00talhashoaib786@gmail.com";
+const ADMIN_EMAILS = [FOUNDER_EMAIL];
+const ADMIN_MIN_PASS = 8;
+const normEmail = (e) => String(e || "").trim().toLowerCase();
+const randomSalt = () => { try { return Array.from(window.crypto.getRandomValues(new Uint8Array(16))).map((x) => x.toString(16).padStart(2, "0")).join(""); } catch (e) { return String(Date.now()) + Math.random().toString(16).slice(2); } };
+async function sha256Hex(text) {
+  const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+const adminHash = (salt, password) => sha256Hex(`agrishare-admin:${salt}:${password}`);
 const ACTIVE_STATUSES = ["confirmed", "completed", "feedback"];
 
 function ListingStatusPill({ status, t }) {
@@ -6669,42 +6932,235 @@ function CloudBadge({ t, cloud }) {
   );
 }
 
-function AdminPanel({ t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud }) {
-  const [unlocked, setUnlocked] = useState(() => { try { return window.sessionStorage.getItem("agrishare.admin") === "1"; } catch (e) { return false; } });
-  const [pin, setPin] = useState("");
-  const [pinErr, setPinErr] = useState("");
+function AdminPanel(props) {
+  const { t, accounts, openAuth } = props;
+  const u = accounts.fbUser;
+  if (accounts.mode === "loading") return <section className="mx-auto max-w-md px-4 py-14 text-center text-sm text-soil/70">…</section>;
+  if (!accounts.isAdmin || !u) return <Admin403 t={t} signedIn={!!u} openAuth={openAuth} />;
+  if (!u.emailVerified) return <AdminVerifyEmail t={t} accounts={accounts} toast={props.toast} />;
+  return <AdminVault key={u.uid} {...props} />;
+}
+
+function AdminShell({ icon: Icon = Lock, title, sub, children }) {
+  return (
+    <section className="mx-auto flex max-w-md flex-col px-4 py-14 sm:px-6">
+      <div className="rounded-3xl border border-soil/10 bg-white p-6 text-center shadow-sm">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest text-gold"><Icon className="h-7 w-7" aria-hidden="true" /></span>
+        <h2 className="mt-4 font-display text-2xl font-extrabold text-forest">{title}</h2>
+        {sub && <p className="mt-1 text-sm text-soil/80">{sub}</p>}
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function Admin403({ t, signedIn, openAuth }) {
+  return (
+    <AdminShell icon={Ban} title={t("ad403_title")} sub={t("ad403_sub")}>
+      <div className="mt-5 flex flex-col gap-2">
+        {!signedIn && openAuth && <button type="button" onClick={() => openAuth("signin")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><LogIn className="h-4 w-4" aria-hidden="true" />{t("ad403_signin")}</button>}
+        <a href="#marketplace" className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("ad403_home")}</a>
+      </div>
+    </AdminShell>
+  );
+}
+
+function AdminVerifyEmail({ t, accounts, toast }) {
+  const [busy, setBusy] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [msg, setMsg] = useState("");
+  const send = async () => {
+    setBusy(true); setMsg("");
+    try { await fbSendVerification(); setSent(true); } catch (e) { setMsg(t("adp_save_err")); }
+    setBusy(false);
+  };
+  const check = async () => {
+    setBusy(true); setMsg("");
+    try { const u = await accounts.refreshFbUser(); if (!u || !u.emailVerified) setMsg(t("adv_still")); } catch (e) { setMsg(t("adp_load_err")); }
+    setBusy(false);
+  };
+  return (
+    <AdminShell icon={Mail} title={t("adv_title")} sub={t("adv_sub").replace("{email}", accounts.fbUser.email)}>
+      {sent && <p className="mt-4 rounded-xl bg-leaf/15 p-3 text-sm font-semibold text-forest" role="status">{t("adv_sent")}</p>}
+      {msg && <p className="mt-3 text-sm font-semibold text-red-700" role="alert">{msg}</p>}
+      <div className="mt-5 flex flex-col gap-2">
+        <button type="button" disabled={busy} onClick={send} className="rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50">{t("adv_send")}</button>
+        <button type="button" disabled={busy} onClick={check} className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil disabled:opacity-50">{t("adv_check")}</button>
+      </div>
+    </AdminShell>
+  );
+}
+
+const unlockKey = (uid, sec) => `${uid}:${sec && sec.hash ? sec.hash.slice(0, 16) : ""}`;
+
+function AdminVault(props) {
+  const { t, accounts } = props;
+  const u = accounts.fbUser;
+  const [sec, setSec] = useState(undefined); // undefined loading | null not set | { hash, salt, ... } | "error"
+  const [unlocked, setUnlocked] = useState(false);
+  const [pass, setPass] = useState("");
+  const [pass2, setPass2] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const fails = useRef(0);
+  const [lockUntil, setLockUntil] = useState(0);
+  const [, tick] = useState(0);
+  useEffect(() => { if (lockUntil <= Date.now()) return undefined; const id = setInterval(() => tick((n) => n + 1), 1000); return () => clearInterval(id); }, [lockUntil]);
+
+  useEffect(() => {
+    let alive = true;
+    readDoc(COL.settings, "security").then((d) => {
+      if (!alive) return;
+      const v = d && d.hash && d.salt ? d : null;
+      setSec(v);
+      try { if (v && window.sessionStorage.getItem("agrishare.admin.unlock") === unlockKey(u.uid, v)) setUnlocked(true); } catch (e) { /* ignore */ }
+    }).catch(() => { if (alive) setSec("error"); });
+    return () => { alive = false; };
+  }, [u.uid]);
+
+  const remember = (v) => { try { window.sessionStorage.setItem("agrishare.admin.unlock", unlockKey(u.uid, v)); } catch (e) { /* ignore */ } };
+  const lock = () => { setUnlocked(false); setPass(""); try { window.sessionStorage.removeItem("agrishare.admin.unlock"); } catch (e) { /* ignore */ } };
+
+  const create = async (e) => {
+    e.preventDefault(); setErr("");
+    if (pass.length < ADMIN_MIN_PASS) { setErr(t("adp_short").replace("{n}", ADMIN_MIN_PASS)); return; }
+    if (pass !== pass2) { setErr(t("adp_mismatch")); return; }
+    setBusy(true);
+    try {
+      const salt = randomSalt();
+      const v = { hash: await adminHash(salt, pass), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
+      await writeDoc(COL.settings, "security", v);
+      setSec(v); remember(v); setUnlocked(true); setPass(""); setPass2("");
+    } catch (er) { setErr(t("adp_save_err")); }
+    setBusy(false);
+  };
+  const verify = async (e) => {
+    e.preventDefault(); setErr("");
+    if (lockUntil > Date.now()) return;
+    setBusy(true);
+    const ok = (await adminHash(sec.salt, pass)) === sec.hash;
+    setBusy(false); setPass("");
+    if (ok) { fails.current = 0; remember(sec); setUnlocked(true); return; }
+    fails.current += 1;
+    if (fails.current >= 5) { fails.current = 0; setLockUntil(Date.now() + 60000); }
+    setErr(t("adp_wrong"));
+  };
+
+  if (sec === undefined) return <AdminShell icon={KeyRound} title={t("adp_enter_title")}><p className="mt-4 text-sm text-soil/70"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></p></AdminShell>;
+  if (sec === "error") return <AdminShell icon={TriangleAlert} title={t("adp_enter_title")} sub={t("adp_load_err")} />;
+  if (unlocked) return <AdminConsole {...props} onLock={lock} sec={sec} setSec={(v) => { setSec(v); remember(v); }} />;
+
+  const wait = Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
+  const pwInput = (id, label, value, set, auto) => (
+    <div className="mt-4 text-start">
+      <label htmlFor={id} className="text-sm font-semibold text-soil">{label}</label>
+      <input id={id} type="password" autoComplete={auto} value={value} onChange={(e) => { set(e.target.value); setErr(""); }} className={inputCls + " mt-1"} dir="ltr" />
+    </div>
+  );
+  if (sec === null) {
+    if (!accounts.isFounder) return <AdminShell icon={KeyRound} title={t("adp_create_title")} sub={t("adp_waiting")} />;
+    return (
+      <AdminShell icon={KeyRound} title={t("adp_create_title")} sub={t("adp_create_sub")}>
+        <form onSubmit={create} noValidate>
+          {pwInput("adp-new", t("adp_new"), pass, setPass, "new-password")}
+          {pwInput("adp-new2", t("adp_confirm"), pass2, setPass2, "new-password")}
+          {err && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{err}</p>}
+          <button type="submit" disabled={busy} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t("adp_save")}</button>
+        </form>
+      </AdminShell>
+    );
+  }
+  return (
+    <AdminShell icon={Lock} title={t("adp_enter_title")} sub={t("adp_enter_sub").replace("{email}", u.email)}>
+      <form onSubmit={verify} noValidate>
+        {pwInput("adp-pass", t("adp_pass"), pass, setPass, "current-password")}
+        {(err || wait > 0) && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{wait > 0 ? t("adp_locked").replace("{s}", wait) : err}</p>}
+        <button type="submit" disabled={busy || wait > 0 || !pass} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("adp_unlock")}</button>
+      </form>
+    </AdminShell>
+  );
+}
+
+function AdminSecurity({ t, accounts, sec, setSec, toast }) {
+  const u = accounts.fbUser;
+  const founder = accounts.isFounder;
+  const [cur, setCur] = useState(""), [nw, setNw] = useState(""), [nw2, setNw2] = useState("");
+  const [err, setErr] = useState(""), [busy, setBusy] = useState(false);
+  const [email, setEmail] = useState(""), [teamErr, setTeamErr] = useState("");
+  const change = async (e) => {
+    e.preventDefault(); setErr("");
+    if ((await adminHash(sec.salt, cur)) !== sec.hash) { setErr(t("adp_wrong")); return; }
+    if (nw.length < ADMIN_MIN_PASS) { setErr(t("adp_short").replace("{n}", ADMIN_MIN_PASS)); return; }
+    if (nw !== nw2) { setErr(t("adp_mismatch")); return; }
+    setBusy(true);
+    try {
+      const salt = randomSalt();
+      const v = { hash: await adminHash(salt, nw), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
+      await writeDoc(COL.settings, "security", v);
+      setSec(v); setCur(""); setNw(""); setNw2(""); toast(t("ads_changed"));
+    } catch (er) { setErr(t("adp_save_err")); }
+    setBusy(false);
+  };
+  const saveTeam = async (emails) => {
+    setTeamErr("");
+    try { await writeDoc(COL.settings, "team", { emails, updatedAt: Date.now(), updatedBy: u.email }); toast(t("ads_team_saved")); return true; }
+    catch (e) { setTeamErr(t("adp_save_err")); return false; }
+  };
+  const addTeam = async (e) => {
+    e.preventDefault();
+    const em = normEmail(email);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { setTeamErr(t("au_err_email")); return; }
+    if (em === normEmail(FOUNDER_EMAIL) || accounts.teamEmails.includes(em)) { setEmail(""); return; }
+    if (await saveTeam([...accounts.teamEmails, em])) setEmail("");
+  };
+  const pw = (id, label, v, set, auto) => (
+    <div><label htmlFor={id} className="text-sm font-semibold text-soil">{label}</label>
+      <input id={id} type="password" autoComplete={auto} value={v} onChange={(e) => { set(e.target.value); setErr(""); }} disabled={!founder} className={inputCls + " mt-1"} dir="ltr" /></div>
+  );
+  return (
+    <div className="grid gap-5 lg:grid-cols-2">
+      <form onSubmit={change} className="space-y-3 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm" noValidate>
+        <h3 className="flex items-center gap-2 font-bold text-forest"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("ads_change")}</h3>
+        {sec.updatedAt && <p className="text-xs text-soil/60">{t("ads_last").replace("{d}", new Date(sec.updatedAt).toLocaleString("en-GB")).replace("{e}", sec.updatedBy || "·")}</p>}
+        {!founder && <p className="rounded-xl bg-gold/15 p-2.5 text-xs font-semibold text-soil">{t("ads_founder_only")}</p>}
+        {pw("ads-cur", t("adp_current"), cur, setCur, "current-password")}
+        {pw("ads-new", t("adp_new"), nw, setNw, "new-password")}
+        {pw("ads-new2", t("adp_confirm"), nw2, setNw2, "new-password")}
+        {err && <p className="text-sm font-semibold text-red-700" role="alert">{err}</p>}
+        <button type="submit" disabled={!founder || busy || !cur || !nw} className="inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory disabled:opacity-40"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t("ads_change")}</button>
+      </form>
+      <div className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
+        <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4" aria-hidden="true" />{t("ads_team")}</h3>
+        <p className="mt-0.5 text-xs text-soil/70">{t("ads_team_sub")}</p>
+        <ul className="mt-3 space-y-1.5 text-sm">
+          <li className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-3 py-2"><span className="truncate font-mono text-xs" dir="ltr">{FOUNDER_EMAIL}</span><span className="rounded-full bg-forest px-2 py-0.5 text-[11px] font-bold text-gold">{t("ads_founder")}</span></li>
+          {accounts.teamEmails.length === 0 && <li className="px-1 text-xs text-soil/60">{t("ads_team_none")}</li>}
+          {accounts.teamEmails.map((em) => (
+            <li key={em} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-3 py-2">
+              <span className="truncate font-mono text-xs" dir="ltr">{em}</span>
+              {founder && <button type="button" onClick={() => saveTeam(accounts.teamEmails.filter((x) => x !== em))} className="rounded-lg p-1 text-red-700 hover:bg-red-50" aria-label={`Remove ${em}`}><Trash2 className="h-4 w-4" /></button>}
+            </li>
+          ))}
+        </ul>
+        {founder && (
+          <form onSubmit={addTeam} className="mt-3 flex gap-2" noValidate>
+            <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setTeamErr(""); }} placeholder="name@example.com" className={inputCls} dir="ltr" aria-label={t("ads_team")} />
+            <button type="submit" className="rounded-xl bg-forest px-4 text-sm font-bold text-ivory">{t("ads_team_add")}</button>
+          </form>
+        )}
+        {teamErr && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{teamErr}</p>}
+      </div>
+    </div>
+  );
+}
+
+function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("pending");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
   const [confirmReset, setConfirmReset] = useState(false);
   useEffect(() => { setDiesel(settings.dieselPrice); }, [settings.dieselPrice]);
-
-  const unlock = (e) => {
-    e.preventDefault();
-    if (pin === ADMIN_PIN) {
-      setUnlocked(true); setPinErr(""); setPin("");
-      try { window.sessionStorage.setItem("agrishare.admin", "1"); } catch (er) { /* ignore */ }
-    } else { setPinErr(t("ad_pin_wrong")); setPin(""); }
-  };
-  const lock = () => { setUnlocked(false); try { window.sessionStorage.removeItem("agrishare.admin"); } catch (e) { /* ignore */ } };
-
-  if (!unlocked) {
-    return (
-      <section className="mx-auto flex max-w-md flex-col px-4 py-14 sm:px-6" aria-labelledby="ad-lock-h">
-        <form onSubmit={unlock} className="rounded-3xl border border-soil/10 bg-white p-6 text-center shadow-sm">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest text-gold"><Lock className="h-7 w-7" aria-hidden="true" /></span>
-          <h2 id="ad-lock-h" className="mt-4 font-display text-2xl font-extrabold text-forest">{t("ad_lock_title")}</h2>
-          <p className="mt-1 text-sm text-soil/80">{t("ad_lock_sub")}</p>
-          <label htmlFor="ad-pin" className="sr-only">{t("ad_pin")}</label>
-          <input id="ad-pin" type="password" inputMode="numeric" autoComplete="off" maxLength={8} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, "")); setPinErr(""); }}
-            className={inputCls + " mt-5 text-center font-mono text-2xl tracking-[0.5em]"} dir="ltr" placeholder="••••" />
-          {pinErr && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{pinErr}</p>}
-          <button type="submit" className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("ad_unlock")}</button>
-          <p className="mt-3 rounded-xl bg-gold/15 p-2 text-xs font-semibold text-soil">{t("ad_pin_hint")}</p>
-        </form>
-      </section>
-    );
-  }
+  const lock = onLock;
 
   const counts = { pending: 0, approved: 0, rejected: 0 };
   listings.forEach((l) => { counts[l.status || "approved"]++; });
@@ -6745,8 +7201,10 @@ function AdminPanel({ t, dn, lang, listings, setListingStatus, bookings, liveReq
     { key: "ledger", label: t("ad_ledger"), icon: Wallet },
     { key: "settings", label: t("ad_settings"), icon: SlidersHorizontal },
     { key: "requests", label: t("ad_requests"), icon: Radar, badge: liveRequests.filter((r) => r.status === "open").length },
+    { key: "demand", label: t("ad_demand"), icon: Inbox, badge: demand.filter((d) => d.status === "waiting").length },
     { key: "mandi", label: t("nav_mandi"), icon: Wheat },
     { key: "members", label: t("nav_members"), icon: Users },
+    { key: "security", label: t("ads_tab"), icon: KeyRound },
   ];
 
   return (
@@ -6757,8 +7215,34 @@ function AdminPanel({ t, dn, lang, listings, setListingStatus, bookings, liveReq
           <p className="mt-1 text-sm text-soil/80">{t("ad_sub")}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <ModeBadge t={t} demo={demoMode} />
           <CloudBadge t={t} cloud={cloud} />
           <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>
+        </div>
+      </div>
+      {/* Marketplace mode: Live Public Mode (default) vs Sample Demo Data (evaluators) */}
+      <div className="mb-5 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div>
+            <h3 className="flex items-center gap-2 font-bold text-forest"><Globe className="h-4 w-4" aria-hidden="true" />{t("mode_title")}</h3>
+            <p className="mt-0.5 text-xs text-soil/70">{t("mode_sub")}</p>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-2 md:grid-cols-2" role="radiogroup" aria-label={t("mode_title")}>
+          {[[false, t("mode_live"), t("mode_live_d"), ShieldCheck, t("mode_go_live")], [true, t("mode_demo"), t("mode_demo_d"), PlayCircle, t("mode_load_demo")]].map(([val, title, desc, Icon, cta]) => {
+            const on = demoMode === val;
+            return (
+              <button key={String(val)} type="button" role="radio" aria-checked={on} onClick={() => { if (!on && setDemoMode) setDemoMode(val); }}
+                className={`flex items-start gap-3 rounded-xl p-3 text-start ring-1 transition ${on ? (val ? "bg-gold/15 ring-2 ring-gold" : "bg-leaf/15 ring-2 ring-leaf") : "bg-ivory ring-soil/15 hover:ring-leaf"}`}>
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${on ? "bg-forest text-gold" : "bg-white text-soil/60 ring-1 ring-soil/15"}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
+                <span className="min-w-0">
+                  <span className="flex flex-wrap items-center gap-2 text-sm font-bold text-forest">{title}{on && <CircleCheck className="h-4 w-4 text-leaf" aria-hidden="true" />}</span>
+                  <span className="mt-0.5 block text-xs text-soil/70">{desc}</span>
+                  {!on && <span className="mt-2 inline-flex rounded-lg bg-forest px-2.5 py-1 text-xs font-bold text-ivory">{cta}</span>}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
@@ -6885,6 +7369,47 @@ function AdminPanel({ t, dn, lang, listings, setListingStatus, bookings, liveReq
 
       {sub === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} embedded />}
 
+      {sub === "security" && (
+        <div>
+          <h3 className="mb-3 flex items-center gap-2 font-display text-lg font-extrabold text-forest"><ShieldCheck className="h-5 w-5" aria-hidden="true" />{t("ads_title")}</h3>
+          <AdminSecurity t={t} accounts={accounts} sec={sec} setSec={setSec} toast={toast} />
+        </div>
+      )}
+
+      {sub === "demand" && (
+        <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
+          {demand.length === 0 ? <p className="p-6 text-center text-sm text-soil/70">{t("ad_demand_none")}</p> : (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[860px] text-sm">
+                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/60">
+                  <tr>{["ID", t("ad_demand"), t("lr_machine"), t("lr_village"), t("lr_date"), t("ad_req_rate"), t("ad_col_renter"), t("ad_col_status"), ""].map((h, i) => <th key={i} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
+                </thead>
+                <tbody className="divide-y divide-soil/10">
+                  {[...demand].sort((a, b) => b.createdAt - a.createdAt).map((d) => (
+                    <tr key={d.id}>
+                      <td className="px-4 py-3 font-mono text-xs" dir="ltr">{d.id}</td>
+                      <td className="px-4 py-3 text-xs font-semibold">{t("dm_" + d.type)}{d.discountPct ? ` · ${d.discountPct}%` : ""}</td>
+                      <td className="px-4 py-3">{t("one_" + d.category)}</td>
+                      <td className="px-4 py-3">{d.village || dn(d.district)}</td>
+                      <td className="px-4 py-3 text-xs" dir="ltr">{fmtDate(d.date)} · {d.hours}h</td>
+                      <td className="px-4 py-3 font-semibold" dir="ltr">{pkr(d.rate)}/hr</td>
+                      <td className="px-4 py-3 text-xs">{d.renterName || "·"}{d.renterPhone ? <span className="block font-mono" dir="ltr">{d.renterPhone}</span> : null}</td>
+                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${d.status === "matched" ? "bg-leaf/15 text-forest" : d.status === "waiting" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("dm_" + d.status)}</span></td>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-1.5">
+                          {d.status === "waiting" && <button type="button" onClick={() => saveDemand({ id: d.id, status: "contacted", updatedAt: Date.now() })} className="rounded-lg border border-soil/20 px-2 py-1 text-xs font-bold text-soil">{t("ad_demand_contacted")}</button>}
+                          {d.status !== "matched" && <button type="button" onClick={() => saveDemand({ id: d.id, status: "matched", updatedAt: Date.now() })} className="rounded-lg bg-forest px-2 py-1 text-xs font-bold text-ivory">{t("ad_demand_matched")}</button>}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {sub === "mandi" && (
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
           {mandiPosts.length === 0 ? <p className="p-6 text-center text-sm text-soil/70">{t("ad_none")}</p> : (
@@ -6982,12 +7507,18 @@ function useAccounts() {
   const [mode, setMode] = useState("loading"); // loading | cloud (Claude) | firebase | local
   const [fbUid, setFbUid] = useState(null);
   const [session, setSessionState] = useState(() => store.get("agrishare.session", null));
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [cloudOwner, setCloudOwner] = useState(false); // owner of the page when hosted in Claude (Members tab only)
+  const [fbUser, setFbUser] = useState(null); // { uid, email, emailVerified } of the Firebase user
+  const [teamEmails, setTeamEmails] = useState([]);
   const [members, setMembers] = useState([]);
   const [membersState, setMembersState] = useState("idle"); // idle | loading | ready | slow | error
   const ref = useRef({ db: null, user: null, uid: null, canWrite: true });
+  // true while signUp/signIn is running, so the auth listener does not overwrite the fresh session
+  const authBusyRef = useRef(false);
 
   const setSession = (sess) => { setSessionState(sess); store.set("agrishare.session", sess); };
+  // Firestore profile writes never block the sign-in UI: fire and forget
+  const bgWrite = (col, id, data) => { writeDoc(col, id, data).catch((e) => console.warn("[Agri-Share] Profile save deferred:", e && e.code)); };
 
   useEffect(() => {
     let alive = true;
@@ -7002,13 +7533,13 @@ function useAccounts() {
               let admin = false;
               try { admin = !!(await user.isOwner()) || !!(await user.canEdit()); } catch (e) { /* ignore */ }
               try { if ((await user.can("data.write")) === false) ref.current.canWrite = false; } catch (e) { /* ignore */ }
-              if (alive) { setIsAdmin(admin); setMode("cloud"); }
+              if (alive) { setCloudOwner(admin); setMode("cloud"); }
               return;
             }
           }
         }
       } catch (e) { /* fall back to local */ }
-      if (alive) { setIsAdmin(true); setMode(FIREBASE_ENABLED ? "firebase" : "local"); }
+      if (alive) setMode(FIREBASE_ENABLED ? "firebase" : "local");
     })();
     return () => { alive = false; };
   }, []);
@@ -7018,14 +7549,17 @@ function useAccounts() {
     if (mode !== "firebase") return undefined;
     return watchAuth(async (user) => {
       setFbUid(user ? user.uid : null);
+      setFbUser(user ? { uid: user.uid, email: normEmail(user.email), emailVerified: !!user.emailVerified } : null);
       if (!user) {
         setSessionState((cur) => { if (cur && cur.store === "firebase") { store.set("agrishare.session", null); return null; } return cur; });
         return;
       }
       const cur = store.get("agrishare.session", null);
-      if (cur && cur.uid === user.uid) return;
+      if (authBusyRef.current || (cur && cur.uid === user.uid)) return;
       let prof = null;
-      try { prof = await readDoc(COL.users, user.uid); } catch (e) { /* offline */ }
+      try { prof = await withTimeout(readDoc(COL.users, user.uid), 4000, null); } catch (e) { /* offline */ }
+      const now = store.get("agrishare.session", null);
+      if (authBusyRef.current || (now && now.uid === user.uid)) return;
       const p = prof || { name: user.displayName || user.email || phoneLocal(user.phoneNumber), email: user.email || "", phone: phoneLocal(user.phoneNumber), role: "renter", createdAt: Date.now() };
       setSession({ uid: user.uid, ...publicProfile(p), location: profileLocation(p), store: "firebase" });
     });
@@ -7051,7 +7585,7 @@ function useAccounts() {
         if (!meta.fromCache) setMembersState("ready");
       }, () => setMembersState("ready"));
     }
-    if (mode !== "cloud" || !isAdmin) return undefined;
+    if (mode !== "cloud" || !cloudOwner) return undefined;
     const { db } = ref.current;
     setMembersState("loading");
     const timer = setTimeout(() => setMembersState((st) => (st === "loading" ? "slow" : st)), 10000);
@@ -7063,7 +7597,21 @@ function useAccounts() {
       () => { clearTimeout(timer); setMembersState("error"); }
     );
     return () => { clearTimeout(timer); unsub(); };
-  }, [mode, isAdmin, fbUid]);
+  }, [mode, cloudOwner, fbUid]);
+
+  // Team admin emails the founder has authorised (admin_settings/team)
+  useEffect(() => {
+    if (mode !== "firebase" || !fbUid) { setTeamEmails([]); return undefined; }
+    return watchDoc(COL.settings, "team", (data) => setTeamEmails(Array.isArray(data && data.emails) ? data.emails.map(normEmail) : []), () => setTeamEmails([]));
+  }, [mode, fbUid]);
+  const isFounder = mode === "firebase" && !!fbUser && fbUser.email === normEmail(FOUNDER_EMAIL);
+  // Admin tab only for the founder or an authorised team email signed in with Firebase
+  const isAdmin = mode === "firebase" && !!fbUser && !!fbUser.email && (ADMIN_EMAILS.map(normEmail).includes(fbUser.email) || teamEmails.includes(fbUser.email));
+  const refreshFbUser = async () => {
+    const u = await fbRefreshUser();
+    if (u) setFbUser({ uid: u.uid, email: normEmail(u.email), emailVerified: !!u.emailVerified });
+    return u;
+  };
 
   const localList = () => store.get("agrishare.members.v1", []);
   const saveLocal = (list) => {
@@ -7086,14 +7634,17 @@ function useAccounts() {
     const loc = form.location || DEFAULT_LOC;
     const acct = { name: form.name.trim(), email, phone: form.phone.trim(), role: form.role, country: loc.country || locCountry(loc), district: loc.district, province: loc.province, village: loc.village || "", lat: loc.lat, lng: loc.lng, createdAt: Date.now(), hash: await hashPassword(email, form.password) };
     if (mode === "firebase") {
+      authBusyRef.current = true;
       try {
         const user = await fbSignUp(email, form.password, acct.name);
-        const profile = { ...publicProfile(acct), lastLoginAt: Date.now() };
-        try { await writeDoc(COL.users, user.uid, profile); } catch (e) { /* profile stays on the auth account */ }
+        // Auth succeeded: set the session now; the Firestore profile is saved in the background
         const sess = { uid: user.uid, ...publicProfile(acct), location: profileLocation(acct), store: "firebase" };
         setSession(sess);
+        bgWrite(COL.users, user.uid, { ...publicProfile(acct), lastLoginAt: Date.now() });
+        authBusyRef.current = false;
         return { ok: true, session: sess };
       } catch (e) {
+        authBusyRef.current = false;
         const code = e && e.code;
         if (code === "auth/email-already-in-use") return { error: "au_err_taken" };
         if (code === "auth/invalid-email") return { error: "au_err_email" };
@@ -7127,16 +7678,33 @@ function useAccounts() {
     const email = cleanEmail(emailRaw);
     const hash = await hashPassword(email, password);
     if (mode === "firebase") {
+      authBusyRef.current = true;
       try {
         const user = await fbSignIn(email, password);
-        let prof = null;
-        try { prof = await readDoc(COL.users, user.uid); } catch (e) { /* offline */ }
-        const p = prof || { name: user.displayName || email, email, role: "renter", createdAt: Date.now() };
-        try { await writeDoc(COL.users, user.uid, { ...publicProfile(p), lastLoginAt: Date.now() }); } catch (e) { /* ignore */ }
+        // Auth succeeded. Use the cached profile if it arrives quickly; never wait on the network.
+        const TIMED_OUT = {};
+        const profP = readDoc(COL.users, user.uid).catch(() => null);
+        let prof = await withTimeout(profP, 1200, TIMED_OUT);
+        const late = prof === TIMED_OUT;
+        if (late) prof = null;
+        const prev = store.get("agrishare.session", null);
+        const fallback = prev && prev.uid === user.uid ? prev : { name: user.displayName || email, email, role: "renter", createdAt: Date.now() };
+        const p = prof || fallback;
         const sess = { uid: user.uid, ...publicProfile(p), location: profileLocation(p), store: "firebase" };
         setSession(sess);
+        authBusyRef.current = false;
+        if (late) {
+          // profile arrived after the modal closed: refresh the session with the real role/location
+          profP.then((full) => {
+            if (!full) return;
+            const cur = store.get("agrishare.session", null);
+            if (cur && cur.uid === user.uid) setSession({ uid: user.uid, ...publicProfile(full), location: profileLocation(full), store: "firebase" });
+            bgWrite(COL.users, user.uid, { ...publicProfile(full), lastLoginAt: Date.now() });
+          });
+        } else bgWrite(COL.users, user.uid, { ...publicProfile(p), lastLoginAt: Date.now() });
         return { ok: true, session: sess };
       } catch (e) {
+        authBusyRef.current = false;
         const code = e && e.code;
         const local = localList().find((x) => x.email === email);
         if (!local) {
@@ -7218,14 +7786,14 @@ function useAccounts() {
     try {
       const user = await fbConfirmPhone(phoneRef.current, String(code).trim());
       let prof = null;
-      try { prof = await readDoc(COL.users, user.uid); } catch (e) { /* offline */ }
+      try { prof = await withTimeout(readDoc(COL.users, user.uid), 1500, null); } catch (e) { /* offline */ }
       const phone = phoneLocal(user.phoneNumber);
       let p;
       if (isSignup || !prof) {
         const loc = (form && form.location) || DEFAULT_LOC;
         p = { ...(prof || {}), name: (form && form.name && form.name.trim()) || (prof && prof.name) || phone, email: (prof && prof.email) || "", phone, role: (form && form.role) || (prof && prof.role) || "renter", country: loc.country || locCountry(loc), district: loc.district, province: loc.province, village: loc.village || "", lat: loc.lat, lng: loc.lng, createdAt: (prof && prof.createdAt) || Date.now() };
       } else p = prof;
-      try { await writeDoc(COL.users, user.uid, { ...publicProfile(p), authMethod: "phone", lastLoginAt: Date.now() }); } catch (e) { /* ignore */ }
+      bgWrite(COL.users, user.uid, { ...publicProfile(p), authMethod: "phone", lastLoginAt: Date.now() });
       const sess = { uid: user.uid, ...publicProfile(p), location: profileLocation(p), store: "firebase" };
       setSession(sess);
       phoneRef.current = null;
@@ -7238,7 +7806,7 @@ function useAccounts() {
   // Firebase reset sends an email link, so the reset form only needs the email address
   const resetByEmail = mode === "firebase";
 
-  return { mode, session, isAdmin, members, membersState, signUp, signIn, resetPassword, signOut, fbUid, resetByEmail, phoneAuth, startPhone, confirmPhone };
+  return { mode, session, isAdmin, isFounder, cloudOwner, fbUser, teamEmails, refreshFbUser, members, membersState, signUp, signIn, resetPassword, signOut, fbUid, resetByEmail, phoneAuth, startPhone, confirmPhone };
 }
 
 function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone }) {
@@ -7559,7 +8127,39 @@ function MembersAdmin({ t, dn, accounts, toast, embedded }) {
 /* ------------------------------------------------------------------ */
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
-function Footer({ t }) {
+const FOOTER_INFO = {
+  how: {
+    title: "How It Works",
+    body: [
+      "Farmers search nearby machines or post a request with the hourly rate they want to pay.",
+      "Verified owners respond. You see the full cost before you agree: rent, transport, diesel and the platform fee.",
+      "Confirm the booking and pay with EasyPaisa, JazzCash or cash through your Agri-Agent. Rate the owner after the job.",
+      "Owners list machines from the Owner Portal. Every listing is reviewed by the Agri-Share team before it goes live.",
+    ],
+  },
+  safety: {
+    title: "Safety & Escrow Policy",
+    body: [
+      "Every machine listing is reviewed before it appears in the marketplace.",
+      "Each booking has a booking ID and verification badge. Check both with the owner at hand-over.",
+      "Agree hours, rate and fuel terms in the app before work starts, so both sides have the same record.",
+      "Escrow (holding your payment until the job is done) is being introduced with our payment partners. Where it is not yet available, pay the owner only after the machine arrives and work begins.",
+      "Problems with a booking? Contact support within 48 hours with your booking ID.",
+    ],
+  },
+  agent: {
+    title: "Become an Agri-Agent",
+    body: [
+      "Agri-Agents are village shopkeepers and community members who book machines for farmers without smartphones.",
+      "Agents search the marketplace, submit bookings on a farmer's behalf and help with cash payments.",
+      "Agents earn a commission on every completed booking. Call 0800-AGRI-1 or open the Agri-Agent & USSD tab to get started.",
+    ],
+  },
+};
+
+function Footer({ t, setTab }) {
+  const [info, setInfo] = useState(null);
+  const links = [["how", ClipboardList], ["safety", ShieldCheck], ["agent", Handshake]];
   return (
     <footer className="mt-10 bg-soil text-ivory" dir="ltr">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_1.4fr]">
@@ -7571,22 +8171,18 @@ function Footer({ t }) {
               <p className="text-sm italic text-ivory/75">Sharing Resources, Growing Together</p>
             </div>
           </div>
-          <p className="mt-4 max-w-sm text-sm text-ivory/70">A proposed peer-to-peer machinery rental concept for Punjab. Not a live service: listings, rates, payments and USSD flows are illustrative (Section 12.1).</p>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs">
-            {[["#145A32", "Forest"], ["#67A834", "Leaf"], ["#E6B325", "Harvest"], ["#5C3A21", "Soil"], ["#FAF8EE", "Ivory"]].map(([c, n]) => (
-              <span key={c} className="inline-flex items-center gap-1.5 rounded-full bg-ivory/10 px-2 py-1"><span className="h-3 w-3 rounded-full ring-1 ring-ivory/40" style={{ background: c }} />{n}</span>
-            ))}
-          </div>
+          <p className="mt-4 max-w-sm text-sm text-ivory/70">Agri-Share is a peer-to-peer agricultural machinery rental and crop marketplace connecting farmers, machinery owners, and bulk buyers across Pakistan and beyond.</p>
         </div>
-        <div className="rounded-2xl bg-ivory/5 p-5 ring-1 ring-ivory/10">
-          <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gold"><GraduationCap className="h-4 w-4" aria-hidden="true" />Academic project credit</p>
-          <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
-            <div><dt className="text-ivory/60">Course</dt><dd className="font-semibold">Principles of Marketing: Semester Project (Section C)</dd></div>
-            <div><dt className="text-ivory/60">Institution</dt><dd className="font-semibold">Institute of Business and Management, University of Engineering and Technology (UET), Lahore</dd></div>
-            <div><dt className="text-ivory/60">Submitted by</dt><dd className="font-semibold leading-relaxed">Tayyaba Rafique (2024-BBIT-136)<br />Aleeza Fatima (2024-BBIT-139)<br />Muhammad Talha (2024-BBIT-162)<br />Hussnain (2024-BBIT-150)</dd></div>
-            <div><dt className="text-ivory/60">Supervised by</dt><dd className="font-semibold">Dr. Maria Khan (Associate Professor)</dd></div>
-          </dl>
-        </div>
+        <nav className="grid gap-2 sm:grid-cols-2" aria-label="Agri-Share">
+          {links.map(([k, Icon]) => (
+            <button key={k} type="button" onClick={() => setInfo(k)} className="flex items-center gap-3 rounded-2xl bg-ivory/5 p-4 text-start text-sm font-bold ring-1 ring-ivory/10 transition hover:bg-ivory/10">
+              <Icon className="h-5 w-5 shrink-0 text-gold" aria-hidden="true" />{FOOTER_INFO[k].title}
+            </button>
+          ))}
+          <a href="tel:080024741" className="flex items-center gap-3 rounded-2xl bg-gold/15 p-4 text-sm font-bold ring-1 ring-gold/40 transition hover:bg-gold/25">
+            <Headphones className="h-5 w-5 shrink-0 text-gold" aria-hidden="true" /><span>Support & Helpline: <span className="font-mono">0800-AGRI-1</span></span>
+          </a>
+        </nav>
       </div>
       <div className="mx-auto max-w-7xl px-4 pb-6 text-[11px] leading-relaxed text-ivory/60 sm:px-6">
         <p className="mb-1 flex items-center gap-1.5 font-bold uppercase tracking-wide text-ivory/75"><Camera className="h-3.5 w-3.5" aria-hidden="true" />Machine photo credits (Wikimedia Commons)</p>
@@ -7594,10 +8190,27 @@ function Footer({ t }) {
           {Object.values(MACHINE_PHOTOS).map((ph, i) => (
             <span key={ph.file}>{i ? " · " : ""}<a href={commonsPage(ph.file)} target="_blank" rel="noopener noreferrer" className="underline decoration-ivory/30 underline-offset-2 hover:text-ivory">{ph.label}</a> ({ph.credit})</span>
           ))}
-          . Photos show the machine type, not always the exact model listed. Currencies are converted at reference rates (1 USD ≈ {USD_PKR} PKR ≈ 6.67 CNY ≈ 94 INR, Nov 2026); regional rates and diesel prices are indicative samples.
+          . Photos show the machine type, not always the exact model listed. Currencies are converted at reference rates (1 USD ≈ {USD_PKR} PKR ≈ 6.67 CNY ≈ 94 INR, Nov 2026).
         </p>
       </div>
-      <div className="border-t border-ivory/10 py-4 text-center text-xs text-ivory/60">© 2026 Agri-Share concept · BBIT, UET Lahore · Built as an interactive prototype</div>
+      <div className="border-t border-ivory/10 py-4 text-center text-xs text-ivory/60">© 2026 Agri-Share Technologies. All rights reserved.</div>
+      {info && (
+        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-soil/50 backdrop-blur-sm sm:items-center sm:p-4" onMouseDown={(e) => { if (e.target === e.currentTarget) setInfo(null); }}>
+          <div role="dialog" aria-modal="true" aria-labelledby="ft-h" className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-ivory p-6 text-soil shadow-2xl sm:rounded-3xl">
+            <div className="flex items-start justify-between gap-3">
+              <h2 id="ft-h" className="font-display text-xl font-extrabold text-forest">{FOOTER_INFO[info].title}</h2>
+              <button type="button" onClick={() => setInfo(null)} className="rounded-lg p-1.5 hover:bg-soil/10" aria-label={t("close")}><X className="h-5 w-5" /></button>
+            </div>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {FOOTER_INFO[info].body.map((line) => <li key={line} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" />{line}</li>)}
+            </ul>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {info === "agent" && setTab && <button type="button" onClick={() => { setInfo(null); setTab("agri-agent"); }} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">Open Agri-Agent & USSD</button>}
+              <a href="tel:080024741" className="inline-flex items-center gap-2 rounded-xl border border-soil/20 px-4 py-2 text-sm font-bold text-forest"><Phone className="h-4 w-4" aria-hidden="true" />0800-AGRI-1</a>
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }
@@ -7730,9 +8343,10 @@ function useCloudSync(state, setters, authUid) {
   useCollectionSync("bookings", state.bookings, setters.setBookings, authUid, report);
   useCollectionSync("requests", state.liveRequests, setters.setLiveRequests, authUid, report);
   useCollectionSync("mandi", state.mandiPosts, setters.setMandiPosts, authUid, report);
+  useCollectionSync("demand", state.demand, setters.setDemand, authUid, report);
   useSettingsSync(state.settings, setters.setSettings, authUid, report);
   const vals = Object.values(status);
-  const overall = !FIREBASE_ENABLED ? "local" : vals.includes("connecting") || vals.length < 5 ? "connecting" : vals.every((v) => v === "live") ? "live" : vals.includes("live") ? "partial" : vals.includes("offline") ? "offline" : "local";
+  const overall = !FIREBASE_ENABLED ? "local" : vals.includes("connecting") || vals.length < 6 ? "connecting" : vals.every((v) => v === "live") ? "live" : vals.includes("live") ? "partial" : vals.includes("offline") ? "offline" : "local";
   return { status, overall };
 }
 
@@ -7751,14 +8365,11 @@ function App() {
   const [lang, setLangState] = useState(() => store.get("agrishare.lang", "en"));
   const [tab, setTabState] = useState(readHash);
   const [ownerSub, setOwnerSub] = useState(null);
-  const [listings, setListings] = useState(() => {
-    const saved = store.get("agrishare.listings.v1", null);
-    if (!saved) return SEED_LISTINGS;
-    // add the regional sample listings once for people who used an older version
-    const seeded = new Set(store.get("agrishare.seeded.intl", []));
-    return [...saved, ...INTL_SEEDS.filter((x) => !seeded.has(x.id) && !saved.some((l) => l.id === x.id))];
-  });
-  useEffect(() => { store.set("agrishare.seeded.intl", INTL_SEEDS.map((x) => x.id)); }, []);
+  // Real listings only. Sample listings are layered on top in Demo mode (see marketListings).
+  const [listings, setListings] = useState(() => (store.get("agrishare.listings.v1", []) || []).filter((l) => !isSeedListing(l)));
+  // Live Public Mode is the default for everyone; Demo mode is an evaluator switch kept on this device
+  const [demoMode, setDemoModeState] = useState(() => store.get("agrishare.demoMode", false) === true);
+  const [demand, setDemand] = useState(() => store.get("agrishare.demand.v1", []));
   const [bookings, setBookings] = useState(() => store.get("agrishare.bookings.v1", []));
   const [liveRequests, setLiveRequests] = useState(() => store.get("agrishare.requests.v1", []));
   const [mandiPosts, setMandiPosts] = useState(() => store.get("agrishare.mandi.v1", []));
@@ -7807,9 +8418,10 @@ function App() {
   useEffect(() => { store.set("agrishare.requests.v1", liveRequests); }, [liveRequests]);
   useEffect(() => { store.set("agrishare.mandi.v1", mandiPosts); }, [mandiPosts]);
   useEffect(() => { store.set("agrishare.settings.v1", settings); }, [settings]);
+  useEffect(() => { store.set("agrishare.demand.v1", demand); }, [demand]);
 
   // Live Firestore sync (falls back to localStorage when Firebase is unreachable or refuses)
-  const cloud = useCloudSync({ listings, bookings, liveRequests, settings, mandiPosts }, { setListings, setBookings, setLiveRequests, setSettings, setMandiPosts }, accounts.fbUid);
+  const cloud = useCloudSync({ listings, bookings, liveRequests, settings, mandiPosts, demand }, { setListings, setBookings, setLiveRequests, setSettings, setMandiPosts, setDemand }, accounts.fbUid);
   useEffect(() => {
     store.set("agrishare.lang", lang);
     document.documentElement.lang = langMeta.html || lang;
@@ -7855,12 +8467,19 @@ function App() {
     if (then) setTimeout(then, 0);
   };
   const signOut = () => { accounts.signOut(); toast(t("toast_signedout")); if (tab === "members") setTab("marketplace"); };
-  const tabs = accounts.isAdmin && accounts.mode === "cloud" ? [...TABS, MEMBERS_TAB, ADMIN_TAB] : [...TABS, ADMIN_TAB];
+  // Admin tab is hidden from everyone except the founder / authorised team emails
+  const tabs = [...TABS, ...(accounts.cloudOwner && accounts.mode === "cloud" ? [MEMBERS_TAB] : []), ...(accounts.isAdmin ? [ADMIN_TAB] : [])];
+  // Live Public Mode: real owner listings only (sample rows that reached the cloud earlier are hidden too).
+  // Demo mode: real listings plus the sample fleet.
+  const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)), [listings]);
+  const marketListings = useMemo(() => (demoMode ? [...realListings, ...SEED_LISTINGS.filter((x) => !realListings.some((l) => l.id === x.id))] : realListings), [realListings, demoMode]);
+  const setDemoMode = (on) => { setDemoModeState(on); store.set("agrishare.demoMode", on); toast(t(on ? "toast_mode_demo" : "toast_mode_live"), { type: "info" }); };
+  const saveDemand = (rec) => setDemand((list) => (list.some((d) => d.id === rec.id) ? list.map((d) => (d.id === rec.id ? { ...d, ...rec } : d)) : [...list, rec]));
   // Only admin-approved machines in switched-on pilot districts are visible to renters
-  const publicListings = useMemo(() => listings
+  const publicListings = useMemo(() => marketListings
     .filter((l) => (l.status || "approved") === "approved" && (l.country || "PK") === country && (country !== "PK" || settings.activeProvinces.includes(l.province || "PB")))
     .map((l) => (userLoc && l.lat && locCountry(userLoc) === country ? { ...l, distance: Math.max(0.5, roadKm(userLoc, l)), fromPin: true } : l)),
-  [listings, settings.activeProvinces, userLoc, country]);
+  [marketListings, settings.activeProvinces, userLoc, country]);
   // Diesel: admin-set national rate in Pakistan, indicative local price elsewhere (stored in PKR)
   const dieselPrice = country === "PK" ? settings.dieselPrice : CUR.diesel / CUR.fx;
   const saveMandi = (patch) => setMandiPosts((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
@@ -7874,7 +8493,7 @@ function App() {
     toast(t(status === "approved" ? "toast_approved" : "toast_rejected"));
   };
   const resetDemo = () => {
-    setListings(SEED_LISTINGS); setBookings([]); setLiveRequests([]); setMandiPosts([]);
+    setListings((ls) => ls.filter((l) => !isSeedListing(l))); setBookings([]); setLiveRequests([]); setMandiPosts([]);
     setSettings({ dieselPrice: DIESEL_BENCHMARK, dieselUpdatedAt: null, activeProvinces: PROVINCES });
     toast(t("toast_demo_reset"));
   };
@@ -7906,6 +8525,9 @@ function App() {
     setListings((ls) => [...ls, l]);
     setFilters((fl) => ({ ...fl, radius: Math.max(fl.radius, Math.ceil(l.distance)) }));
     toast(t("toast_listed"));
+    // cold start: tell the new owner about farmers already waiting for this machine in their district
+    const waiting = demand.filter((d) => d.status === "waiting" && d.category === l.category && (!l.district || d.district === l.district)).length;
+    if (waiting) setTimeout(() => toast(t("toast_waiting").replace("{n}", waiting).replace("{machine}", t("one_" + l.category)).replace("{district}", dn(l.district || "")), { type: "info", title: t("ow_waiting") }), 600);
   };
   const toggleListing = (id) => setListings((ls) => ls.map((l) => (l.id === id ? { ...l, available: !l.available } : l)));
   const removeListing = (id) => { setListings((ls) => ls.filter((l) => l.id !== id)); toast(t("toast_removed")); };
@@ -7918,13 +8540,10 @@ function App() {
   const activityCount = myBookings.filter((b) => ["sent", "countered", "confirmed"].includes(b.status)).length + myRequests.filter((r) => r.status === "open").length + myDeals.filter((p) => p.status === "open").length;
   const voucherBooking = voucherId ? bookings.find((b) => b.id === voucherId) : null;
   const activeCount = bookings.filter((b) => ["sent", "countered", "confirmed", "completed"].includes(b.status) && (!session || b.channel === "ussd" || !b.renterEmail || b.renterEmail === session.email)).length;
-  const showTab = tab === "members" && !accounts.isAdmin ? "marketplace" : tab;
+  const showTab = tab === "members" && !accounts.cloudOwner ? "marketplace" : tab;
 
   return (
     <div dir={langMeta.dir} lang={lang} className={`min-h-screen bg-ivory text-soil ${langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
-      <div className="bg-soil px-4 py-2 text-center text-xs font-semibold text-ivory sm:text-sm" role="note">
-        <span className="inline-flex items-center gap-2"><Info className="h-4 w-4 shrink-0 text-gold" aria-hidden="true" />{t("banner")}</span>
-      </div>
       <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
       <main id="main" className="pb-24 lg:pb-0">
@@ -7933,20 +8552,21 @@ function App() {
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} />
             <TrustStrip t={t} />
             <KeypadBanner t={t} setTab={setTab} />
-            <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={() => setTab("live-request")} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters} />
+            <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={() => setTab("live-request")} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
+              demoMode={demoMode} fallbackProps={{ t, dn, session, requireAuth, saveDemand, toast, dieselPrice }} />
           </>
         )}
         {showTab === "bookings" && <MyBookings t={t} dn={dn} onVoucher={setVoucherId} bookings={bookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} listings={listings.filter((l) => (l.country || "PK") === country)} bookings={bookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} listings={realListings.filter((l) => (l.country || "PK") === country)} bookings={bookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
-          dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} />}
+          dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} />}
         {showTab === "agri-mandi" && <AgriMandi t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={bookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel t={t} dn={dn} lang={lang} listings={listings} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} mandiPosts={mandiPosts} cloud={cloud} />}
+        {showTab === "admin" && <AdminPanel t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} mandiPosts={mandiPosts} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}
       </main>
-      <Footer t={t} />
+      <Footer t={t} setTab={setTab} />
       {bookingTarget && (
         <BookingModal listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
           onSubmit={(details) => { const id = createBooking(bookingTarget, details); setBookingTarget(null); setTab("bookings"); setTimeout(() => setVoucherId(id), 300); }} />

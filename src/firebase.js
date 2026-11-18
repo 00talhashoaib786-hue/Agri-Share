@@ -18,8 +18,11 @@
     indrive_requests     one document per live (InDrive mode) request
     bookings             one document per booking
     mandi_crops          one document per Agri-Market crop post
-    admin_settings       document "pilot": diesel rate and active provinces
+    admin_settings       "pilot": diesel rate and active provinces (admins write)
+                         "security": admin password hash (founder writes, admins read)
+                         "team": authorised team admin emails (founder writes)
     users                one profile per signed-up member (document id = auth uid)
+    pending_demand_requests  farmer requests saved when no owner was available (zero-supply fallback)
 
   The web config below is not a secret: it only identifies the project.
   Security comes from the Firestore rules in firestore.rules.
@@ -34,7 +37,7 @@ import {
 } from "firebase/firestore";
 import {
   getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  sendPasswordResetEmail, signOut, updateProfile, RecaptchaVerifier, signInWithPhoneNumber,
+  sendPasswordResetEmail, signOut, updateProfile, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification,
 } from "firebase/auth";
 
 export const firebaseConfig = {
@@ -57,6 +60,7 @@ export const COL = {
   mandi: "mandi_crops",
   settings: "admin_settings",
   users: "users",
+  demand: "pending_demand_requests",
 };
 
 let app = null, db = null, auth = null;
@@ -140,7 +144,8 @@ export function watchAuth(cb) {
 export async function fbSignUp(email, password, displayName) {
   if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
   const cred = await createUserWithEmailAndPassword(auth, email, password);
-  try { await updateProfile(cred.user, { displayName }); } catch (e) { /* name is also kept in the users profile */ }
+  // not awaited: the name is also kept in the users profile, so sign-up never waits on it
+  updateProfile(cred.user, { displayName }).catch(() => {});
   return cred.user;
 }
 
@@ -153,6 +158,19 @@ export async function fbSignIn(email, password) {
 export async function fbResetPassword(email) {
   if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
   await sendPasswordResetEmail(auth, email);
+}
+
+/* Email verification: admin access requires a verified email (rules check email_verified) */
+export async function fbSendVerification() {
+  if (!cloudAvailable() || !auth.currentUser) throw Object.assign(new Error("Not signed in"), { code: "unauthenticated" });
+  await sendEmailVerification(auth.currentUser);
+}
+// Reload the signed-in user and refresh the ID token so new claims (email_verified) reach the rules
+export async function fbRefreshUser() {
+  if (!cloudAvailable() || !auth.currentUser) return null;
+  await auth.currentUser.reload();
+  await auth.currentUser.getIdToken(true);
+  return auth.currentUser;
 }
 
 export async function fbSignOut() {
