@@ -89,6 +89,7 @@ export const COL = {
   reqContacts: "request_contacts",
   bookingContacts: "booking_contacts",
   demandContacts: "demand_contacts",
+  cropContacts: "crop_contacts",
 };
 
 let app = null, auth = null;

@@ -8196,8 +8196,13 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
     const er = validateCrop(); setErrs(er);
     if (Object.keys(er).length) return;
     requireAuth(() => {
-      const p = { ...f, id: "AM-" + Math.floor(10000 + Math.random() * 89999), qty: Math.max(1, Number(f.qty) || 1), rate: Math.max(100, Number(f.rate) || 0), status: "open", createdAt: Date.now(), sellerEmail: session ? session.email : null, sellerName: session ? session.name : "" };
-      saveMandi(p); setPost(p); setReceipt(null); setBids([]); setPicked(null);
+      const p = { ...f, id: "AM-" + Math.floor(10000 + Math.random() * 89999), qty: Math.max(1, Number(f.qty) || 1), rate: Math.max(100, Number(f.rate) || 0), status: "open", createdAt: Date.now(), sellerUid: session ? session.uid : null, sellerName: session ? session.name : "" };
+      // seller email and wallet phone are private: crop_contacts/{cropId} (seller + founder); the shared
+      // mandi_crops document never carries them. The full post (with wallet) stays only in this browser for the sale screen.
+      const { walletNo, sellerEmail: _noEmail, sellerPhone: _noPhone, ...pub } = p;
+      if (session) writeDoc(COL.cropContacts, p.id, { cropId: p.id, sellerUid: session.uid, sellerName: session.name || "", sellerEmail: session.email || "", sellerPhone: String(walletNo || "").replace(/[\s-]/g, ""), wallet: p.wallet, createdAt: Date.now() })
+        .catch((e) => console.warn("[Agri-Share] Crop contact not saved:", e && e.code));
+      saveMandi(pub); setPost(p); setReceipt(null); setBids([]); setPicked(null);
       // simulated buyer bids only in the founder's Sample Demo Data mode; live posts wait for real verified buyers
       if (demoMode) setTimeout(() => startBidding(p), 0);
     });
@@ -8222,7 +8227,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
     toast(t("toast_sold").replace("{net}", pkr(pl.net)));
   };
   const maskWallet = (n) => (n && n.length >= 4 ? "•••• " + n.slice(-4) : "••••");
-  const myPosts = [...mandiPosts].filter((p) => !session || !p.sellerEmail || p.sellerEmail === session.email).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
+  const myPosts = [...mandiPosts].filter((p) => p.own).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
   const typeLabel = (ty) => t("am_type_" + ty);
 
   return (
@@ -10233,6 +10238,7 @@ function App() {
   // bookings and demand tickets as the app shows them: renter email/phone removed, "own" decided by uid (legacy: email)
   const isOwnRec = (r, legacyEmail) => Boolean(session && (r.renterUid ? r.renterUid === session.uid : legacyEmail && legacyEmail === session.email));
   const shownBookings = useMemo(() => bookings.map(({ renterEmail, renterPhone, ...b }) => ({ ...b, own: isOwnRec(b, renterEmail) })), [bookings, uid, session && session.email]); // eslint-disable-line
+  const shownMandi = useMemo(() => mandiPosts.map(({ sellerEmail, sellerPhone, walletNo, ...m }) => ({ ...m, own: Boolean(session && (m.sellerUid ? m.sellerUid === session.uid : sellerEmail && sellerEmail === session.email)) })), [mandiPosts, uid, session && session.email]); // eslint-disable-line
   const shownDemand = useMemo(() => demand.map(({ renterEmail, renterPhone, ...d }) => ({ ...d, own: isOwnRec(d, renterEmail) })), [demand, uid, session && session.email]); // eslint-disable-line
   // requests as the app shows them: renter email/phone removed for everyone; "own" decided by uid (legacy: email)
   const shownRequests = useMemo(() => liveRequests.map(({ renterEmail, renterPhone, ...r }) => ({
@@ -10323,6 +10329,17 @@ function App() {
           .catch((e) => console.warn("[Agri-Share] Demand contact migration failed for", d.id, e && e.code)));
       }
     }
+    // crop posts: move legacy sellerEmail / sellerPhone / walletNo into crop_contacts
+    {
+      const legacy = mandiPosts.filter((m) => (m.sellerEmail || m.sellerPhone || m.walletNo) && !cleanTried.current.has("am:" + m.id));
+      if (legacy.length) {
+        legacy.forEach((m) => cleanTried.current.add("am:" + m.id));
+        console.info(`[Agri-Share] Founder clean-up: moving seller contacts off ${legacy.length} crop post(s): ${legacy.map((m) => m.id).join(", ")}`);
+        legacy.forEach((m) => writeDoc(COL.cropContacts, m.id, { cropId: m.id, sellerUid: m.sellerUid || "", sellerName: m.sellerName || "", sellerEmail: m.sellerEmail || "", sellerPhone: String(m.sellerPhone || m.walletNo || "").replace(/[\s-]/g, ""), wallet: m.wallet || "", createdAt: m.createdAt || Date.now(), migrated: true })
+          .then(() => setMandiPosts((ms) => ms.map((x) => (x.id === m.id ? (({ sellerEmail, sellerPhone, walletNo, ...rest }) => rest)(x) : x))))
+          .catch((e) => console.warn("[Agri-Share] Crop contact migration failed for", m.id, e && e.code)));
+      }
+    }
     // listings: drop the legacy "mine" field and give status-less real listings an explicit status,
     // so the "approved only" read rule and queries can see them
     {
@@ -10337,7 +10354,7 @@ function App() {
         }));
       }
     }
-  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, liveRequests, listings, bookings, demand]); // eslint-disable-line
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, liveRequests, listings, bookings, demand, mandiPosts]); // eslint-disable-line
   const migratedRef = useRef(false);
   useEffect(() => {
     // one-time clean-up by the founder: copy legacy ownerEmail/ownerPhone into listing_contacts and remove them from the public document
@@ -10448,7 +10465,7 @@ function App() {
   const mine = (email) => !session || !email || email === session.email;
   const myBookings = shownBookings.filter((b) => b.channel === "ussd" || b.own).sort((a, b) => b.createdAt - a.createdAt);
   const myRequests = shownRequests.filter((r) => r.own).sort((a, b) => b.createdAt - a.createdAt);
-  const myDeals = [...mandiPosts].filter((p) => mine(p.sellerEmail)).sort((a, b) => b.createdAt - a.createdAt);
+  const myDeals = shownMandi.filter((p) => p.own).sort((a, b) => b.createdAt - a.createdAt);
   const activityCount = myBookings.filter((b) => ["sent", "countered", "confirmed"].includes(b.status)).length + myRequests.filter((r) => r.status === "open").length + myDeals.filter((p) => p.status === "open").length;
   const voucherBooking = voucherId ? bookings.find((b) => b.id === voucherId) : null;
   const activeCount = shownBookings.filter((b) => ["sent", "countered", "confirmed", "completed"].includes(b.status) && session && (b.channel === "ussd" || b.own)).length;
@@ -10472,8 +10489,8 @@ function App() {
         {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
-        {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={mandiPosts} cloud={cloud} />}
+        {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
+        {showTab === "admin" && <AdminPanel bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}

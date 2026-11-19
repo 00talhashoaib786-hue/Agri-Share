@@ -91,11 +91,20 @@ service cloud.firestore {
         || (resource.data.renterUid == request.auth.uid && request.resource.data.renterUid == request.auth.uid));
       allow delete: if isFounder();
     }
-    // Crop posts hold the seller's phone and JazzCash/EasyPaisa wallet number, so they stay members-only.
-    // (Signed-out visitors no longer subscribe to private collections, so there is no permission-denied noise.)
+    // Crop posts: members-only, and seller email / phone / wallet number live in crop_contacts (below).
     match /mandi_crops/{id} {
       allow read, delete: if signedIn();
-      allow create, update: if signedIn() && smallDoc();
+      allow create: if signedIn() && smallDoc() && !request.resource.data.keys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']);
+      allow update: if signedIn() && smallDoc()
+        && (isFounder() || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']));
+    }
+    // Seller contact for a crop post (email, wallet / phone number): only the seller and the founder
+    match /crop_contacts/{cropId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.sellerUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && resource.data.sellerUid == request.auth.uid);
+      allow update: if signedIn() && smallDoc() && (isFounder()
+        || (resource.data.sellerUid == request.auth.uid && request.resource.data.sellerUid == request.auth.uid));
+      allow delete: if isFounder();
     }
     // Zero-supply fallback: farmer requests saved while no owner was available (contain phone numbers)
     // renter email / phone never go on this shared document (see demand_contacts)
