@@ -248,13 +248,13 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
-    vc_mic_blocked: "Mic access is blocked. Tap 'Hear an example' below, or allow the microphone in your browser.",
+    vc_mic_blocked: "Microphone permission denied. Allow the microphone in your browser settings, then tap to speak again.",
     vc_demo_btn: "Hear an example",
     vc_retry: "Try the microphone again",
-    vc_no_mic: "No microphone found. Plug one in, or tap 'Hear an example'.",
-    vc_net: "The speech service needs internet. Check the connection, or tap 'Hear an example'.",
+    vc_no_mic: "No microphone found. Plug one in, then tap to speak again.",
+    vc_net: "Voice recognition needs internet. Check the connection, then tap to speak again.",
     vc_lang_unsupported: "This browser cannot listen in this language. Try Chrome, or tap 'Hear an example'.",
-    vc_no_voice: "This device has no Urdu voice installed, so replies may not be spoken. Android: Settings > Text-to-speech > Google > install Urdu. Windows: Settings > Time & language > Speech > add Urdu.",
+    vc_no_voice: "No Urdu voice is installed on this device, so replies are read in Roman Urdu. To hear Urdu, install an Urdu voice (Android: Settings > Text-to-speech).",
     nav_activity: "Activity",
     nav_s_market: "Market",
     nav_s_live: "Request",
@@ -550,7 +550,7 @@ const T = {
     vc_end: "End voice call",
     vc_ready: "Ready",
     vc_listening: "Listening… speak now",
-    vc_thinking: "Thinking…",
+    vc_thinking: "Processing…",
     vc_speaking: "Speaking…",
     vc_tap: "Tap the mic and speak",
     vc_tap_btn: "Tap to talk",
@@ -560,7 +560,7 @@ const T = {
     vc_mute: "Mute",
     vc_unmute: "Unmute",
     vc_mic_error: "The microphone could not start. Try again or play the example.",
-    vc_unsupported: "Voice input is not supported in this browser. Use Chrome or Edge, or play the example.",
+    vc_unsupported: "Voice input isn't supported in this browser. Use Chrome or Edge on Android or a computer, or type your question.",
     vc_tts_off: "Voice replies are off. Replies still show as text.",
     vc_engine_claude: "Voice by Claude. Tap to talk each turn.",
     vc_engine_browser: "Browser voice. Hands-free: it listens again after each reply.",
@@ -920,16 +920,19 @@ const T = {
     kp_ivr_pa: "Punjabi IVR",
     kp_ivr_ur: "Urdu IVR",
     ab_name: "Apni Boli (Name Your Price)",
-    ab_tag: "Enter your rate, nearby owners send offers"
+    ab_tag: "Enter your rate, nearby owners send offers",
+    vc_no_speech: "No speech detected — tap the mic to try again.",
+    vc_again: "Tap to Speak Again",
+    vc_replay: "Listen"
   },
   ur: {
-    vc_mic_blocked: "مائیک کی اجازت بند ہے۔ نیچے 'مثال سنیں' دبائیں یا براؤزر میں مائیک کی اجازت دیں۔",
+    vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
     vc_demo_btn: "مثال سنیں",
     vc_retry: "مائیک دوبارہ آزمائیں",
-    vc_no_mic: "مائیک نہیں ملا۔ مائیک لگائیں یا 'مثال سنیں' دبائیں۔",
-    vc_net: "آواز کی سروس کو انٹرنیٹ چاہیے۔ کنکشن چیک کریں یا 'مثال سنیں' دبائیں۔",
+    vc_no_mic: "مائیک نہیں ملا۔ مائیک لگائیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
+    vc_net: "آواز پہچاننے کے لیے انٹرنیٹ چاہیے۔ کنکشن چیک کریں، پھر دوبارہ بولنے کے لیے دبائیں۔",
     vc_lang_unsupported: "یہ براؤزر اس زبان میں نہیں سن سکتا۔ کروم استعمال کریں یا 'مثال سنیں' دبائیں۔",
-    vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب شاید بولے نہ جائیں۔ اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ > گوگل > اردو انسٹال کریں۔",
+    vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب رومن اردو میں پڑھے جا رہے ہیں۔ اردو سننے کے لیے اردو آواز انسٹال کریں (اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ)۔",
     nav_activity: "سرگرمی",
     nav_s_market: "مارکیٹ",
     nav_s_live: "درخواست",
@@ -1099,7 +1102,7 @@ const T = {
     vc_end: "وائس کال ختم کریں",
     vc_ready: "تیار",
     vc_listening: "سن رہا ہوں… بولیں",
-    vc_thinking: "سوچ رہا ہوں…",
+    vc_thinking: "سمجھ رہا ہوں…",
     vc_speaking: "بول رہا ہوں…",
     vc_tap: "مائیک دبائیں اور بولیں",
     vc_tap_btn: "بولنے کے لیے دبائیں",
@@ -1109,7 +1112,7 @@ const T = {
     vc_mute: "آواز بند",
     vc_unmute: "آواز کھولیں",
     vc_mic_error: "مائیک شروع نہیں ہو سکا۔ دوبارہ کوشش کریں یا مثال چلائیں۔",
-    vc_unsupported: "اس براؤزر میں آواز سے بات ممکن نہیں۔ کروم یا ایج استعمال کریں، یا مثال چلائیں۔",
+    vc_unsupported: "اس براؤزر میں آواز سے بات ممکن نہیں۔ اینڈرائیڈ یا کمپیوٹر پر کروم یا ایج استعمال کریں، یا سوال لکھ دیں۔",
     vc_tts_off: "آواز میں جواب بند ہیں۔ جواب متن میں نظر آئیں گے۔",
     vc_engine_claude: "Claude کی آواز۔ ہر بار بولنے کے لیے دبائیں۔",
     vc_engine_browser: "براؤزر کی آواز۔ ہر جواب کے بعد خود دوبارہ سنتا ہے۔",
@@ -1595,16 +1598,19 @@ const T = {
     ads_team_none: "ابھی کوئی ٹیم ایڈمن نہیں۔",
     ads_team_saved: "ٹیم ایڈمن لسٹ محفوظ ہو گئی۔",
     ads_founder: "بانی",
-    ads_last: "پن آخری بار {d} کو {e} نے بدلا"
+    ads_last: "پن آخری بار {d} کو {e} نے بدلا",
+    vc_no_speech: "کوئی آواز نہیں سنی — دوبارہ کوشش کے لیے مائیک دبائیں۔",
+    vc_again: "دوبارہ بولنے کے لیے دبائیں",
+    vc_replay: "سنیں"
   },
   pa: {
-    vc_mic_blocked: "مائیک دی اجازت بند اے۔ تھلے 'مثال سنو' دباؤ یا براؤزر وچ مائیک دی اجازت دیو۔",
+    vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
     vc_demo_btn: "مثال سنو",
     vc_retry: "مائیک دوبارہ آزمائیں",
-    vc_no_mic: "مائیک نئیں لبھیا۔ مائیک لاؤ یا 'مثال سنو' دباؤ۔",
-    vc_net: "آواز دی سروس نوں انٹرنیٹ چاہیدا اے۔ کنکشن ویکھو یا 'مثال سنو' دباؤ۔",
+    vc_no_mic: "مائیک نئیں لبھیا۔ مائیک لاؤ، فیر دوبارہ بولن لئی دباؤ۔",
+    vc_net: "آواز پچھانن لئی انٹرنیٹ چاہیدا اے۔ کنکشن ویکھو، فیر دوبارہ بولن لئی دباؤ۔",
     vc_lang_unsupported: "ایہ براؤزر ایس زبان وچ نئیں سن سکدا۔ کروم ورتو یا 'مثال سنو' دباؤ۔",
-    vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب شاید بولے نہ جائیں۔ اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ > گوگل > اردو انسٹال کریں۔",
+    vc_no_voice: "ایس ڈیوائس تے اردو آواز نئیں، ایس لئی جواب رومن اردو وچ پڑھے جا رہے نیں۔ اردو سنن لئی اردو آواز انسٹال کرو (اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ)۔",
     nav_activity: "سرگرمی",
     nav_s_market: "مارکیٹ",
     nav_s_live: "درخواست",
@@ -1774,9 +1780,9 @@ const T = {
     vc_end: "آواز کال مکاؤ",
     vc_ready: "تیار",
     vc_listening: "سن رہیا واں… بولو",
-    vc_thinking: "سوچ رہا ہوں…",
+    vc_thinking: "سمجھ رہیا واں…",
     vc_speaking: "بول رہیا واں…",
-    vc_tap: "مائیک دبائیں اور بولیں",
+    vc_tap: "مائیک دباؤ تے بولو",
     vc_tap_btn: "بولن لئی دباؤ",
     vc_done_speaking: "بات مکمل",
     vc_demo: "مثال",
@@ -1784,7 +1790,7 @@ const T = {
     vc_mute: "آواز بند",
     vc_unmute: "آواز کھولو",
     vc_mic_error: "مائیک شروع نئیں ہویا۔ فیر کوشش کرو یا مثال چلاؤ۔",
-    vc_unsupported: "ایس براؤزر وچ آواز نال گل نئیں ہو سکدی۔ کروم یا ایج ورتو، یا مثال چلاؤ۔",
+    vc_unsupported: "ایس براؤزر وچ آواز نال گل نئیں ہو سکدی۔ اینڈرائیڈ یا کمپیوٹر تے کروم یا ایج ورتو، یا سوال لکھ دیو۔",
     vc_tts_off: "آواز میں جواب بند ہیں۔ جواب متن میں نظر آئیں گے۔",
     vc_engine_claude: "Claude کی آواز۔ ہر بار بولنے کے لیے دبائیں۔",
     vc_engine_browser: "براؤزر کی آواز۔ ہر جواب کے بعد خود دوبارہ سنتا ہے۔",
@@ -2179,16 +2185,19 @@ const T = {
     ad403_other: "تسیں {email} نال سائن اِن او، جو مجاز ایڈمن ای میل نئیں۔",
     ad403_fix: "سائن آؤٹ کر کے فائر بیس نال سائن اِن کرو",
     dm_agent_dispatch: "ایگری ایجنٹ روانگی",
-    dm_notify: "مینوں دسو"
+    dm_notify: "مینوں دسو",
+    vc_no_speech: "کوئی آواز نئیں سنی — فیر کوشش لئی مائیک دباؤ۔",
+    vc_again: "دوبارہ بولن لئی دباؤ",
+    vc_replay: "سنو"
   },
   sd: {
-    vc_mic_blocked: "مائيڪ جي اجازت بند آهي۔ هيٺ 'مثال ٻڌو' دٻايو يا برائوزر ۾ مائيڪ جي اجازت ڏيو۔",
+    vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
     vc_demo_btn: "مثال ٻڌو",
     vc_retry: "مائیک دوبارہ آزمائیں",
-    vc_no_mic: "مائيڪ نه مليو۔ مائيڪ لڳايو يا 'مثال ٻڌو' دٻايو۔",
-    vc_net: "آواز جي سروس کي انٽرنيٽ گهرجي۔ ڪنيڪشن ڏسو يا 'مثال ٻڌو' دٻايو۔",
+    vc_no_mic: "مائيڪ نه مليو۔ مائيڪ لڳايو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
+    vc_net: "آواز سڃاڻڻ لاءِ انٽرنيٽ گهرجي۔ ڪنيڪشن ڏسو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
     vc_lang_unsupported: "هي برائوزر هن ٻولي ۾ ٻڌي نٿو سگهي۔ ڪروم استعمال ڪريو يا 'مثال ٻڌو' دٻايو۔",
-    vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب شاید بولے نہ جائیں۔ اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ > گوگل > اردو انسٹال کریں۔",
+    vc_no_voice: "هن ڊوائيس تي اردو آواز ناهي، تنهنڪري جواب رومن اردو ۾ پڙهيا پيا وڃن۔ اردو ٻڌڻ لاءِ اردو آواز انسٽال ڪريو (اينڊرائيڊ: سيٽنگز > ٽيڪسٽ ٽو اسپيچ)۔",
     nav_activity: "سرگرمی",
     nav_s_market: "مارکیٹ",
     nav_s_live: "درخواست",
@@ -2356,11 +2365,11 @@ const T = {
     vc_title: "لائيو آواز ڪال",
     vc_start: "آواز ڪال شروع ڪريو",
     vc_end: "آواز ڪال ختم ڪريو",
-    vc_ready: "تیار",
+    vc_ready: "تيار",
     vc_listening: "ٻڌي رهيو آهيان… ڳالهايو",
-    vc_thinking: "سوچ رہا ہوں…",
+    vc_thinking: "سمجهي رهيو آهيان…",
     vc_speaking: "ڳالهائي رهيو آهيان…",
-    vc_tap: "مائیک دبائیں اور بولیں",
+    vc_tap: "مائيڪ دٻايو ۽ ڳالهايو",
     vc_tap_btn: "ڳالهائڻ لاءِ دٻايو",
     vc_done_speaking: "بات مکمل",
     vc_demo: "مثال",
@@ -2368,7 +2377,7 @@ const T = {
     vc_mute: "آواز بند",
     vc_unmute: "آواز کوليو",
     vc_mic_error: "مائيڪ شروع نه ٿيو۔ ٻيهر ڪوشش ڪريو يا مثال هلايو۔",
-    vc_unsupported: "هن برائوزر ۾ آواز سان ڳالهه ممڪن ناهي۔ ڪروم يا ايج استعمال ڪريو، يا مثال هلايو۔",
+    vc_unsupported: "هن برائوزر ۾ آواز سان ڳالهه ممڪن ناهي۔ اينڊرائيڊ يا ڪمپيوٽر تي ڪروم يا ايج استعمال ڪريو، يا سوال لکو۔",
     vc_tts_off: "آواز میں جواب بند ہیں۔ جواب متن میں نظر آئیں گے۔",
     vc_engine_claude: "Claude کی آواز۔ ہر بار بولنے کے لیے دبائیں۔",
     vc_engine_browser: "براؤزر کی آواز۔ ہر جواب کے بعد خود دوبارہ سنتا ہے۔",
@@ -2764,7 +2773,10 @@ const T = {
     ad403_other: "توهان {email} سان سائن اِن آهيو، جيڪو بااختيار ايڊمن اي ميل ناهي۔",
     ad403_fix: "سائن آئوٽ ڪري فائر بيس سان سائن اِن ڪريو",
     dm_agent_dispatch: "ايگري ايجنٽ روانگي",
-    dm_notify: "مون کي ٻڌايو"
+    dm_notify: "مون کي ٻڌايو",
+    vc_no_speech: "ڪو آواز نه ٻڌو — ٻيهر ڪوشش لاءِ مائيڪ دٻايو۔",
+    vc_again: "ٻيهر ڳالهائڻ لاءِ دٻايو",
+    vc_replay: "ٻڌو"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3043,7 +3055,18 @@ const T = {
     toast_countered: "بل وړاندیز بزګر ته واستول شو.",
     toast_sold: "پلور تایید شو. {net} خالصه ګټه ستاسو والټ ته.",
     ab_name: "خپله بولي (خپله بیه ووایاست)",
-    ab_tag: "خپل کرایه ووایاست، نږدې مالکان به وړاندیزونه درولېږي"
+    ab_tag: "خپل کرایه ووایاست، نږدې مالکان به وړاندیزونه درولېږي",
+    vc_thinking: "پوهېږم…",
+    vc_ready: "چمتو",
+    vc_tap: "مایک کېکاږئ او خبرې وکړئ",
+    vc_mic_blocked: "د مایک اجازه ونه شوه. په براوزر کې مایک ته اجازه ورکړئ، بیا د خبرو لپاره بیا کېکاږئ.",
+    vc_no_speech: "هېڅ غږ وانه ورېدل شو — بیا هڅې لپاره مایک کېکاږئ.",
+    vc_unsupported: "په دې براوزر کې غږیزې خبرې نه کېږي. په اندروید یا کمپیوټر کې کروم یا اېج وکاروئ، یا خپله پوښتنه ولیکئ.",
+    vc_no_mic: "مایک ونه موندل شو. مایک ولګوئ، بیا د خبرو لپاره کېکاږئ.",
+    vc_net: "د غږ پېژندلو لپاره انټرنېټ پکار دی. اړیکه وګورئ، بیا کېکاږئ.",
+    vc_again: "بیا د خبرو لپاره کېکاږئ",
+    vc_replay: "واورئ",
+    vc_done_speaking: "خبرې مې پای ته ورسېدې"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3310,7 +3333,20 @@ const T = {
     toast_countered: "دومی پیشکش بزگر ءَ دیم دئیگ بوت۔",
     toast_sold: "بہا منّگ بوت۔ {net} خالصیں کٹّ شمئے والٹ ءَ۔",
     ab_name: "وتی بولی (وتی نرخ ءَ بگوش)",
-    ab_tag: "وتی کرایہ ءَ بگوش، نزّیکیں واہند آفر رَوان دئینت"
+    ab_tag: "وتی کرایہ ءَ بگوش، نزّیکیں واہند آفر رَوان دئینت",
+    vc_listening: "گوش دارگ اِیں… گپ جن",
+    vc_thinking: "سرپد بوگ اِیں…",
+    vc_speaking: "گپ جنگ اِیں…",
+    vc_ready: "تیار",
+    vc_tap: "مائیک ءَ بِجن و گپ جن",
+    vc_mic_blocked: "مائیک ءِ اجازت نہ رستگ۔ براؤزر ءِ سیٹنگ ءَ مائیک ءَ اجازت بدئے، پدا گپ جنگ ءِ واستا بِجن۔",
+    vc_no_speech: "ہچ توار گوش نہ بوت — پدا کوشست ءِ واستا مائیک ءَ بِجن۔",
+    vc_unsupported: "اے براؤزر ءَ توار ءِ سرا گپ نہ بیت۔ اینڈرائیڈ یا کمپیوٹر ءَ کروم یا ایج کار بند، یا وتی جُست ءَ بنویس۔",
+    vc_no_mic: "مائیک در نہ کپت۔ مائیک ءَ لگئے، پدا بِجن۔",
+    vc_net: "توار ءِ پجّار ءِ واستا انٹرنیٹ پکار انت۔ کنکشن ءَ بچار، پدا بِجن۔",
+    vc_again: "پدا گپ جنگ ءِ واستا بِجن",
+    vc_replay: "گوش کن",
+    vc_done_speaking: "منی گپ ہلاس بوت"
   },
 };
 
@@ -5404,9 +5440,9 @@ function pickReplyLang(raw, uiLang) {
   return uiLang;
 }
 
-function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en") {
+function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", forceLang) {
   const text = normDigits(raw);
-  const lang = pickReplyLang(raw, uiLang);
+  const lang = forceLang || pickReplyLang(raw, uiLang);
   const L = (o) => o[lang] || (["pa", "sd", "ps", "bal"].includes(lang) ? o.ur : null) || o.en;
   const LX = (intent, o) => (HELPER_EXTRA[intent] && HELPER_EXTRA[intent][lang]) || L(o);
   const avail = listings.filter((l) => l.available);
@@ -5419,9 +5455,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   const money = (n) => "Rs " + Math.round(n).toLocaleString("en-PK");
 
   let machine = null;
-  if (/harvest|combine|ہارویسٹر|کمبائن|کٹائی|katai|kataai|wadhi/i.test(text)) machine = "harvester";
-  else if (/thresh|تھریشر|گہائی|gahai|sheller/i.test(text)) machine = "thresher";
-  else if (/tractor|ٹریکٹر|plough|plow|rotavator|cultivat|hal chala|ہل|زمین تیار|bijai|بیجائی|sowing/i.test(text)) machine = "tractor";
+  if (/harvest|harvestor|combine|ہارویسٹر|ہاروسٹر|ہارویسٹرز|کمبائن|کٹائی|katai|kataai|wadhi|वाढी|हार्वेस्टर/i.test(text)) machine = "harvester";
+  else if (/thresh|thrash|tharesh|تھریشر|تھریسر|تھریشر|گہائی|gahai|sheller|थ्रेशर/i.test(text)) machine = "thresher";
+  else if (/tractor|tractar|traktar|tracter|ٹریکٹر|ٹریکٹرز|ٹیکٹر|plough|plow|rotavator|cultivat|hal chala|ہل|زمین تیار|bijai|بیجائی|sowing|ट्रैक्टर/i.test(text)) machine = "tractor";
 
   const acreM = text.match(/(\d+(?:\.\d+)?)\s*(acres?|ekar|ekr|eker|ایکڑ|ایکر|killa|killay|kille|qila|کلے|کلہ)/i);
   const kanalM = text.match(/(\d+(?:\.\d+)?)\s*(kanal|کنال)/i);
@@ -5479,7 +5515,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
       ro: "Smartphone nahi? Kisi bhi saade phone se toll-free helpline 0800-AGRI-1 par call karein ya *AGRI# dial karein. Punjabi ya Urdu awaaz rehnumai karegi: machine ke liye 1, fasal bechne ke liye 2, agent ke liye 0. Booking ki tasdeeq SMS par aayegi.",
     });
   }
-  if (has(/apni boli|name your price|اپنی بولی|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
+  if (has(/apni boli|\bboli\b|name your price|اپنی بولی|بولی|پنهنجي ٻولي|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
     return steps({
       en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 5 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 100 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
       ur: `اپنی بولی (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. فی گھنٹہ اپنی پیشکش لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 5 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 100 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
@@ -5573,7 +5609,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   if (has(/contact|support|help ?line|complain|shikayat|رابطہ|شکایت/i)) {
     return steps({
       en: "Call the Agri-Share support helpline 0800-AGRI-1, or ask your local Agri-Agent. You can also ask me anything about using the website.",
-      ur: "یہ طلبہ کا پروٹوٹائپ ہے، ابھی کوئی ہیلپ لائن نہیں۔ مجوزہ ماڈل میں مقامی ایگری ایجنٹ یا پراجیکٹ ٹیم سوالات اور شکایات دیکھے گی۔",
+      ur: "ایگری شیئر سپورٹ ہیلپ لائن 0800-AGRI-1 پر کال کریں، یا اپنے مقامی ایگری ایجنٹ سے بات کریں۔ آپ ویب سائٹ کے بارے میں مجھ سے کچھ بھی پوچھ سکتے ہیں۔",
       ro: "Agri-Share support helpline 0800-AGRI-1 par call karein, ya apne local Agri-Agent se baat karein.",
     });
   }
@@ -5601,16 +5637,25 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   if (/agent|ussd|smartphone|button phone|simple phone|ایجنٹ|سمارٹ/i.test(text)) {
     return L({
       en: "No smartphone? A local Agri-Agent (your village shopkeeper) can search machines and submit a booking for you. See the Agri-Agent & USSD tab.",
-      ur: "اسمارٹ فون نہیں؟ گاؤں کا ایگری ایجنٹ (دکاندار) آپ کے لیے مشین تلاش کر کے بکنگ بھیج سکتا ہے۔ USSD مینو ٹیلی کام ٹیسٹنگ کے بعد متوقع ہے۔ ایگری ایجنٹ ٹیب میں ڈیمو دیکھیں۔",
+      ur: "اسمارٹ فون نہیں؟ گاؤں کا ایگری ایجنٹ (دکاندار) آپ کے لیے مشین تلاش کر کے بکنگ بھیج سکتا ہے۔ ایگری ایجنٹ اور USSD ٹیب دیکھیں۔",
       ro: "Smartphone nahi? Gaon ka Agri-Agent (dukandar) aap ke liye machine dhoond kar booking bhej sakta hai. Agri-Agent tab dekhein.",
     });
   }
   if (/pay|easypaisa|jazzcash|cash|ادائیگی|پیسے|paise|payment/i.test(text)) {
     return L({
       en: "You can pay with EasyPaisa, JazzCash, or cash through a local Agri-Agent.",
-      ur: "مجوزہ ادائیگی: ایزی پیسہ، جاز کیش، یا ایگری ایجنٹ کے ذریعے نقد۔ یہ اس پروٹوٹائپ میں فعال نہیں؛ ایسکرو قانونی جانچ کے بعد آئے گا۔",
+      ur: "آپ ایزی پیسہ، جاز کیش، یا مقامی ایگری ایجنٹ کے ذریعے نقد ادائیگی کر سکتے ہیں۔",
       ro: "Payment: EasyPaisa, JazzCash, ya Agri-Agent ke zariye cash.",
     });
+  }
+  // "rate / kiraya / کرایہ / price / kitne ka" without acres or hours: today's typical hourly rates
+  if (/\brate|rates|price|kiraya|kiraye|kiraaya|kitne ka|kitna|kharcha|kharch|qeemat|keemat|کرایہ|کرائے|کرایا|ریٹ|قیمت|خرچ|کتنے کا|کتنا|مسواڙ|اگهه|بیه|کرایه/i.test(text)) {
+    const cats = machine ? [machine] : ["tractor", "thresher", "harvester"];
+    const rows = cats.map((c) => `• ${name(c)}: ${money(avgRate(c))} ${L({ en: "per hour", ur: "فی گھنٹہ", ro: "fi ghanta" })}`).join("\n");
+    return L({ en: "Typical hourly rates right now:", ur: "اس وقت عام فی گھنٹہ کرایہ:", ro: "Is waqt aam ghante ka kiraya:" }) + "\n" + rows + "\n\n" +
+      L({ en: "Want a lower price? Use Apni Boli (Name Your Price): enter your own rate and nearby owners send offers. Tell me your acres for a full cost estimate.",
+          ur: "کم قیمت چاہیے؟ اپنی بولی استعمال کریں: اپنا ریٹ بتائیں، قریبی مالکان آفرز بھیجیں گے۔ پورے خرچ کے لیے اپنے ایکڑ بتائیں۔",
+          ro: "Kam qeemat chahiye? Apni Boli istemal karein: apna rate batayein, qareebi maalik offers bhejenge. Poore kharche ke liye apne acre batayein." });
   }
   if (machine || wheat || maize || rice || /which|kaun|konsi|کون|recommend/i.test(text)) {
     const rec = wheat || rice ? "harvester" : maize ? "thresher" : machine || "tractor";
@@ -5697,8 +5742,12 @@ async function askGemini(prompt) {
   finally { clearTimeout(timer); }
 }
 
-// Speech recognition languages. Urdu, Punjabi, Sindhi, Pashto and Balochi all listen with ur-PK (never hi-IN).
-const STT_LANG = { en: "en-US", ur: "ur-PK", pa: "ur-PK", sd: "ur-PK", ps: "ur-PK", bal: "ur-PK" };
+// Speech recognition languages (BCP-47). Urdu, Punjabi, Sindhi, Pashto and Balochi listen as Urdu (ur-PK):
+// browsers transcribe local speech reliably there, while pa-PK etc. fail silently. If a browser rejects a
+// code ("language-not-supported") the next one in the chain is tried; hi-IN output is converted to Urdu script.
+const STT_LANG = { en: "en-PK", ur: "ur-PK", pa: "ur-PK", sd: "ur-PK", ps: "ur-PK", bal: "ur-PK" };
+const STT_CHAIN = { en: ["en-PK", "en-US"], local: ["ur-PK", "ur-IN", "hi-IN"] };
+const sttChain = (lang) => (lang === "en" ? STT_CHAIN.en : STT_CHAIN.local);
 
 /* Script lock: Urdu / Punjabi output must be Perso-Arabic (Urdu / Shahmukhi), never Hindi (Devanagari).
    If a model or a speech engine ever returns Devanagari, it is transliterated to Urdu script before it
@@ -5734,6 +5783,19 @@ function devaToUrdu(text) {
 }
 const fixScript = (text, lang) => (lang !== "en" && DEVANAGARI_RE.test(String(text || "")) ? devaToUrdu(text).replace(/\?/g, "؟") : String(text || ""));
 const TTS_PREF = { en: ["en"], ur: ["ur"], pa: ["pa", "ur"], sd: ["sd", "ur"], ps: ["ps", "ur"], bal: ["ur"] };
+// Browser voice picking: exact language first, then Urdu (ur-PK, ur-IN). When no Urdu voice is installed
+// (common on macOS / iOS / desktop Chrome) the reply is read in Roman Urdu by a Hindi or English voice,
+// so the helper is never silent.
+const VOICE_ORDER = { en: ["en-pk", "en-in", "en-gb", "en-us", "en"], ur: ["ur-pk", "ur-in", "ur"], pa: ["pa", "ur-pk", "ur-in", "ur"], sd: ["sd", "ur-pk", "ur-in", "ur"], ps: ["ps", "ur-pk", "ur-in", "ur"], bal: ["ur-pk", "ur-in", "ur"] };
+const ROMAN_VOICE_ORDER = ["hi-in", "hi", "en-in", "en-pk", "en-gb", "en-us", "en"];
+function pickVoice(voices, codes) {
+  const norm = (v) => String(v.lang || "").toLowerCase().replace("_", "-");
+  for (const c of codes) {
+    const exact = voices.filter((v) => norm(v) === c || (c.length === 2 && norm(v).startsWith(c + "-")) || norm(v) === c);
+    if (exact.length) return exact.find((v) => /google|natural|enhanced|premium/i.test(v.name)) || exact.find((v) => v.localService) || exact[0];
+  }
+  return null;
+}
 const speakable = (txt) => String(txt || "").replace(/[•●]/g, "").replace(/→/g, ", ").replace(/[|*#_`]/g, " ").replace(/\n+/g, ". ").replace(/\s{2,}/g, " ").trim().slice(0, 1800);
 
 function VoiceWaves({ active, tone }) {
@@ -5766,6 +5828,10 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   const [engines, setEngines] = useState({ dict: false, tts: false });
   const dictRef = useRef(null), ttsRef = useRef(null), recRef = useRef(null);
   const callRef = useRef(false), mutedRef = useRef(false), bufRef = useRef(""), silenceRef = useRef(null), demoRef = useRef(false), ttsLangsRef = useRef(null);
+  const sttIdxRef = useRef(0);          // position in the recognition language chain (advances on language-not-supported)
+  const silentRef = useRef(0);          // consecutive turns with no speech heard
+  const voicesRef = useRef([]);         // browser voices (they load asynchronously in Chrome)
+  const live = useRef({});              // latest send/listen/handleUtterance, so recognition callbacks never use stale state
   const SR = typeof window !== "undefined" ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
   const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
 
@@ -5836,6 +5902,24 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   };
 
   // ---------------- voice call engine ----------------
+  useEffect(() => {
+    if (!synth) return undefined;
+    const load = () => { try { voicesRef.current = synth.getVoices() || []; } catch (e) { /* ignore */ } };
+    load();
+    try { synth.addEventListener("voiceschanged", load); } catch (e) { synth.onvoiceschanged = load; }
+    return () => { try { synth.removeEventListener("voiceschanged", load); } catch (e) { /* ignore */ } };
+  }, []); // eslint-disable-line
+  // iOS / Safari only allow speech that starts inside a tap: speak a silent utterance on the call button tap
+  const unlockTTS = () => {
+    if (!synth) return;
+    try { synth.cancel(); const u = new SpeechSynthesisUtterance(" "); u.volume = 0; synth.speak(u); synth.resume(); voicesRef.current = synth.getVoices() || voicesRef.current; } catch (e) { /* ignore */ }
+  };
+  // Is there a browser voice that can read this language's script?
+  const hasNativeVoice = () => {
+    if (ttsRef.current || !synth) return true;
+    const voices = voicesRef.current.length ? voicesRef.current : (synth.getVoices() || []);
+    return !!pickVoice(voices, VOICE_ORDER[lang] || VOICE_ORDER.en);
+  };
   useEffect(() => { mutedRef.current = muted; if (muted) { try { ttsRef.current && ttsRef.current.stop().catch(() => {}); } catch (e) { /* ignore */ } try { synth && synth.cancel(); } catch (e) { /* ignore */ } } }, [muted]); // eslint-disable-line
   const ttsLangFor = () => {
     const list = ttsLangsRef.current;
@@ -5843,7 +5927,9 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     if (!list) return pref[pref.length - 1];
     return pref.find((c) => list.includes(c)) || undefined;
   };
-  const speakText = (txt) => new Promise((resolve) => {
+  // opts.roman: Roman Urdu version, read by a Hindi/English voice when no Urdu voice is installed
+  // opts.force: speak even outside a call (chat "replay" button)
+  const speakText = (txt, opts = {}) => new Promise((resolve) => {
     const clean = speakable(txt);
     if (!clean || mutedRef.current) { resolve(); return; }
     if (ttsRef.current) {
@@ -5857,18 +5943,31 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     if (synth) {
       try {
         synth.cancel();
-        const voices = synth.getVoices();
-        const pref = TTS_PREF[lang] || ["en"];
-        const voice = pref.map((c) => voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(c))).find(Boolean);
-        if (!voice && lang !== "en") setVoiceNote(t("vc_no_voice"));
-        const parts = clean.match(/[^.!?۔؟]+[.!?۔؟]?/g) || [clean];
+        const voices = voicesRef.current.length ? voicesRef.current : (synth.getVoices() || []);
+        let voice = pickVoice(voices, VOICE_ORDER[lang] || VOICE_ORDER.en);
+        let say = clean;
+        if (!voice && lang !== "en") {
+          // no Urdu voice on this device: read Roman Urdu with a Hindi / English voice instead of staying silent
+          voice = pickVoice(voices, ROMAN_VOICE_ORDER);
+          say = speakable(opts.roman || clean);
+          setVoiceNote(t("vc_no_voice"));
+        }
+        const parts = say.match(/[^.!?۔؟\n]+[.!?۔؟]?/g) || [say];
         let i = 0;
         const next = () => {
-          if (i >= parts.length || mutedRef.current || !callRef.current) { resolve(); return; }
-          const u = new SpeechSynthesisUtterance(parts[i++].trim());
-          if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = STT_LANG[lang] || "en-US";
-          u.rate = 0.98; u.onend = next; u.onerror = next;
+          if (i >= parts.length || mutedRef.current || (!callRef.current && !opts.force)) { resolve(); return; }
+          const chunk = parts[i++].trim();
+          if (!chunk) { next(); return; }
+          const u = new SpeechSynthesisUtterance(chunk);
+          if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = lang === "en" ? "en-US" : "ur-PK";
+          u.rate = 0.97;
+          // Safari sometimes never fires onend: move on after the expected duration so the call never freezes
+          let done = false;
+          const finish = () => { if (done) return; done = true; clearTimeout(guard); next(); };
+          const guard = setTimeout(finish, 2500 + chunk.length * 110);
+          u.onend = finish; u.onerror = finish;
           synth.speak(u);
+          try { synth.resume(); } catch (e) { /* ignore */ }
         };
         next();
       } catch (e) { resolve(); }
@@ -5880,13 +5979,16 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
 
   const handleUtterance = async (text) => {
     const said = fixScript(String(text || "").trim(), lang);
-    if (!said || !callRef.current) { if (callRef.current) listen(false); return; }
+    if (!said || !callRef.current) { if (callRef.current) live.current.listen(false); return; }
+    silentRef.current = 0;
     setHeard(said); setPhase("thinking");
-    const ans = await send(said, true);
+    const ans = await live.current.send(said, true);
     if (!callRef.current) return;
     setReply(ans); setPhase("speaking");
-    await speakText(ans);
-    if (callRef.current && !demoRef.current) listen(false);
+    const roman = lang !== "en" && !hasNativeVoice() ? ruleAnswer(said, listings, dieselPrice, lang, "ro") : "";
+    await speakText(ans, { roman });
+    // short pause so the microphone does not catch the end of our own voice, then listen again
+    if (callRef.current && !demoRef.current) setTimeout(() => { if (callRef.current && !demoRef.current) live.current.listen(false); }, 350);
   };
 
   // fromGesture: true when called straight from a click (Claude dictation requires it)
@@ -5912,8 +6014,9 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       try {
         const rec = new SR();
         recRef.current = rec;
-        rec.lang = STT_LANG[lang] || "en-US"; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
-        let finalText = "";
+        const chain = sttChain(lang);
+        rec.lang = chain[Math.min(sttIdxRef.current, chain.length - 1)]; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+        let finalText = "", interimText = "", noSpeech = false;
         let started = false;
         rec.onstart = () => { started = true; };
         // some embedded pages neither start nor report an error: treat silence from the engine as blocked
@@ -5926,7 +6029,8 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
             const r = ev.results[i];
             if (r.isFinal) finalText += r[0].transcript; else interim += r[0].transcript;
           }
-          setHeard((finalText + " " + interim).trim());
+          interimText = interim;
+          setHeard(fixScript((finalText + " " + interim).trim(), lang));
         };
         rec.onerror = (ev) => {
           clearTimeout(watchdog);
@@ -5934,15 +6038,27 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
           if (err === "not-allowed" || err === "service-not-allowed") { if (callRef.current) setVoiceErr(t("vc_mic_blocked")); setPhase("tap"); finalText = "__blocked__"; }
           else if (err === "audio-capture") { if (callRef.current) setVoiceErr(t("vc_no_mic")); setPhase("tap"); finalText = "__blocked__"; }
           else if (err === "network") { if (callRef.current) setVoiceErr(t("vc_net")); setPhase("tap"); finalText = "__blocked__"; }
-          else if (err === "language-not-supported") { if (callRef.current) setVoiceErr(t("vc_lang_unsupported")); setPhase("tap"); finalText = "__blocked__"; }
-          // "no-speech" and "aborted": onend restarts listening
+          else if (err === "language-not-supported") {
+            // try the next language in the chain (e.g. ur-PK -> ur-IN -> hi-IN) before giving up
+            if (sttIdxRef.current < sttChain(lang).length - 1) { sttIdxRef.current += 1; finalText = "__retry__"; }
+            else { if (callRef.current) setVoiceErr(t("vc_lang_unsupported")); setPhase("tap"); finalText = "__blocked__"; }
+          }
+          else if (err === "no-speech") noSpeech = true;
+          // "aborted": onend decides what to do
         };
         rec.onend = () => {
           clearTimeout(watchdog);
-          recRef.current = null;
+          if (recRef.current === rec) recRef.current = null;
           if (!callRef.current || finalText === "__blocked__") return;
-          if (finalText.trim()) handleUtterance(finalText);
-          else setTimeout(() => callRef.current && listen(false), 250); // silence: keep listening hands-free
+          if (finalText === "__retry__") { setTimeout(() => callRef.current && live.current.listen(false), 150); return; }
+          // Safari / "Done speaking" may end before a result is marked final: use the last interim words
+          const said = (finalText || interimText).trim();
+          if (said) { live.current.handleUtterance(said); return; }
+          // nothing heard: retry once quietly, then stop and ask the farmer to tap (no endless silent loop)
+          silentRef.current += 1;
+          if (silentRef.current <= 1 && !noSpeech) { setTimeout(() => callRef.current && live.current.listen(false), 250); return; }
+          silentRef.current = 0;
+          setVoiceNote(t("vc_no_speech")); setPhase("tap");
         };
         setPhase("listening");
         rec.start();
@@ -5954,6 +6070,9 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     }
     setVoiceErr(t("vc_unsupported")); setPhase("tap");
   };
+
+  live.current = { send, listen, handleUtterance };
+  useEffect(() => { sttIdxRef.current = 0; }, [lang]);
 
   // Claude dictation: words arrive as partial/final events; send after a short pause
   useEffect(() => {
@@ -5968,7 +6087,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       silenceRef.current = setTimeout(async () => {
         const said = bufRef.current; bufRef.current = "";
         try { await d.stop(); } catch (e) { /* ignore */ }
-        handleUtterance(said);
+        live.current.handleUtterance(said);
       }, 1300);
     });
     const offS = d.onState(({ state, reason }) => {
@@ -5989,7 +6108,8 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   };
   const startCall = () => {
     setVoiceOpen(true); setReply(""); setHeard(""); setVoiceErr(""); setVoiceNote(""); demoRef.current = false;
-    callRef.current = true;
+    callRef.current = true; silentRef.current = 0;
+    unlockTTS();
     try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_blocked")); setPhase("tap"); } // must run inside the click for Claude dictation
     // tell the farmer early when the browser has already blocked the microphone
     try {
@@ -5999,7 +6119,14 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     } catch (e) { /* not supported */ }
   };
   const endCall = () => { callRef.current = false; demoRef.current = false; stopAudio(); setPhase("idle"); setVoiceOpen(false); };
-  const tapToTalk = () => { if (!callRef.current) callRef.current = true; demoRef.current = false; try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_error")); setPhase("tap"); } };
+  const tapToTalk = () => {
+    if (!callRef.current) callRef.current = true;
+    demoRef.current = false; silentRef.current = 0; setVoiceErr(""); setVoiceNote("");
+    unlockTTS();
+    try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_error")); setPhase("tap"); }
+  };
+  // chat history: replay any answer aloud
+  const replay = (text) => { unlockTTS(); speakText(text, { force: true }); };
   const stopListening = () => {
     if (dictRef.current && dictRef.current.active()) { dictRef.current.stop().catch(() => {}); return; }
     try { recRef.current && recRef.current.stop(); } catch (e) { /* ignore */ }
@@ -6020,6 +6147,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   useEffect(() => { if (!open && callRef.current) endCall(); }, [open]); // eslint-disable-line
   useEffect(() => () => { callRef.current = false; stopAudio(); }, []); // eslint-disable-line
   const voiceEngine = engines.dict ? "claude" : SR ? "browser" : "none";
+  useEffect(() => { if (voiceOpen && voiceEngine === "none" && !demoRef.current) { setVoiceErr(t("vc_unsupported")); setPhase("tap"); } }, [voiceOpen, voiceEngine]); // eslint-disable-line
   const phaseLabel = { idle: t("vc_ready"), listening: t("vc_listening"), thinking: t("vc_thinking"), speaking: t("vc_speaking"), tap: t("vc_tap"), demo: t("vc_demo") }[phase] || "";
 
   const chips = HELPER_CHIPS[lang] || HELPER_CHIPS.en;
@@ -6057,7 +6185,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
                   <button type="button" onClick={runDemo} className="inline-flex w-full max-w-[290px] items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-4 text-base font-extrabold text-soil shadow-lg transition active:scale-95" data-demo>
                     <PlayCircle className="h-6 w-6" aria-hidden="true" />{t("vc_demo_btn")}
                   </button>
-                  {voiceEngine !== "none" && <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-1.5 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_retry")}</button>}
+                  {voiceEngine !== "none" && <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-1.5 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_again")}</button>}
                 </div>
               ) : (
                 <>
@@ -6070,7 +6198,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
                   <p className="font-display text-2xl font-extrabold" aria-live="assertive" data-phase={phase}>{phaseLabel}</p>
                   {phase === "listening" && <button type="button" onClick={stopListening} className="rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25">{t("vc_done_speaking")}</button>}
                   {(phase === "tap" || phase === "idle") && voiceEngine !== "none" && (
-                    <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-base font-extrabold text-soil shadow-lg transition active:scale-95"><Mic className="h-5 w-5" aria-hidden="true" />{t("vc_tap_btn")}</button>
+                    <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-base font-extrabold text-soil shadow-lg transition active:scale-95"><Mic className="h-5 w-5" aria-hidden="true" />{voiceNote === t("vc_no_speech") || phase === "tap" ? t("vc_again") : t("vc_tap_btn")}</button>
                   )}
                   {voiceNote && <p className="max-w-[300px] rounded-xl bg-ivory/10 px-3 py-2 text-[11px] leading-snug text-ivory/80">{voiceNote}</p>}
                 </>
@@ -6094,6 +6222,11 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
                   dir={/[؀-ۿ]/.test(m.text) ? "rtl" : "ltr"}>
                   {m.pending && !m.text ? <span className="inline-flex items-center gap-1 text-soil/80"><span className="animate-pulse">●</span>{t("kh_thinking")}</span> : m.text}
                   {m.source === "rules" && <span className="mt-1 block text-[10px] text-soil/80" dir="ltr">{t("kh_offline")}</span>}
+                  {m.role === "assistant" && m.text && !m.pending && (synth || ttsRef.current) && (
+                    <button type="button" onClick={() => replay(m.text)} className="mt-1 inline-flex items-center gap-1 rounded-full bg-forest/5 px-2 py-0.5 text-[11px] font-bold text-forest hover:bg-forest/10" aria-label={t("vc_replay")}>
+                      <Volume2 className="h-3.5 w-3.5" aria-hidden="true" />{t("vc_replay")}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
