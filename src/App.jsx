@@ -925,7 +925,9 @@ const T = {
     vc_again: "Tap to Speak Again",
     vc_replay: "Listen",
     vc_interrupt: "Tap to interrupt",
-    vc_live: "Live call active"
+    vc_live: "Live call active",
+    ai_live: "AI Advisor Live",
+    ai_offline: "Offline Mode"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1605,7 +1607,9 @@ const T = {
     vc_again: "دوبارہ بولنے کے لیے دبائیں",
     vc_replay: "سنیں",
     vc_interrupt: "روکنے کے لیے دبائیں",
-    vc_live: "لائیو کال جاری"
+    vc_live: "لائیو کال جاری",
+    ai_live: "اے آئی مشیر لائیو",
+    ai_offline: "آف لائن موڈ"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2194,7 +2198,9 @@ const T = {
     vc_again: "دوبارہ بولن لئی دباؤ",
     vc_replay: "سنو",
     vc_interrupt: "روکن لئی دباؤ",
-    vc_live: "لائیو کال چل رہی اے"
+    vc_live: "لائیو کال چل رہی اے",
+    ai_live: "اے آئی صلاح کار لائیو",
+    ai_offline: "آف لائن موڈ"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2784,7 +2790,9 @@ const T = {
     vc_again: "ٻيهر ڳالهائڻ لاءِ دٻايو",
     vc_replay: "ٻڌو",
     vc_interrupt: "روڪڻ لاءِ دٻايو",
-    vc_live: "لائيو ڪال جاري"
+    vc_live: "لائيو ڪال جاري",
+    ai_live: "اي آءِ صلاحڪار لائيو",
+    ai_offline: "آف لائن موڊ"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3076,7 +3084,9 @@ const T = {
     vc_replay: "واورئ",
     vc_done_speaking: "خبرې مې پای ته ورسېدې",
     vc_interrupt: "د درولو لپاره کېکاږئ",
-    vc_live: "ژوندۍ اړیکه روانه ده"
+    vc_live: "ژوندۍ اړیکه روانه ده",
+    ai_live: "AI سلاکار ژوندی دی",
+    ai_offline: "آفلاین حالت"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3358,7 +3368,9 @@ const T = {
     vc_replay: "گوش کن",
     vc_done_speaking: "منی گپ ہلاس بوت",
     vc_interrupt: "داشتگ ءِ واستا بِجن",
-    vc_live: "زندگیں کال روان اِنت"
+    vc_live: "زندگیں کال روان اِنت",
+    ai_live: "AI سلاہ کار زندگ اِنت",
+    ai_offline: "آف لائن موڈ"
   },
 };
 
@@ -5758,12 +5770,32 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   });
 }
 
-function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", voice = false) {
+// Live rate card for the selected country, the same ranges as the machine-type cards
+function rateCardText() {
+  const card = (CUR && CUR.catalog) || [];
+  return [...new Set(card.map((m) => m.cat))].map((c) => {
+    const ms = card.filter((m) => m.cat === c);
+    const hp = ms.map((m) => (String(m.spec).match(/(\d+)\s*HP/) || [])[1]).filter(Boolean).map(Number);
+    return `- ${(RATE_NAMES.en[c] || c)}${hp.length > 1 ? ` (${Math.min(...hp)}-${Math.max(...hp)} HP)` : ""}: ${fmtLocal(Math.min(...ms.map((m) => m.min)))} to ${fmtLocal(Math.max(...ms.map((m) => m.max)))} per hour, dry rent. Models: ${ms.map((m) => `${m.name} (${m.spec}, ${fmtLocal(m.min)}-${fmtLocal(m.max)})`).join("; ")}`;
+  }).join("\n");
+}
+
+// System instruction for Gemini (also the top of the single prompt used by Claude)
+function buildSystem(listings, session, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", voice = false) {
+  return buildPrompt([], listings, session, dieselPrice, uiLang, voice, true);
+}
+
+function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", voice = false, systemOnly = false) {
   const langName = (LANGS.find((l) => l.code === uiLang) || LANGS[0]).name;
   const lst = listings.filter((l) => l.available).map((l) => `- ${l.name} (${l.category}) in ${l.village}, ${l.district}: PKR ${l.rate}/hr, ${l.distance} km, operator ${l.operator}, transport ${l.transport}, owner ${l.ownerId}`).join("\n");
   const convo = history.map((m) => `${m.role === "user" ? "Farmer" : "Helper"}: ${m.text}`).join("\n");
   const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec}, about ${fmtLocal(m.min)} to ${fmtLocal(m.max)}/hr)`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
-  return `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}You are "Agri-Share Kisan Helper", a friendly assistant for Agri-Share, a peer-to-peer agricultural machinery rental and crop marketplace for Pakistan (tagline "Sharing Resources, Growing Together").
+  const persona = `You are "Agri-Share Kisan Advisor": a warm, respectful, intelligent Pakistani agricultural advisor for Agri-Share, a peer-to-peer agricultural machinery rental and crop marketplace (tagline "Sharing Resources, Growing Together"). Speak like a trusted elder brother or sister from the village who also knows the business: practical, kind, never condescending. Understand natural accents, slang, typos and mixed Urdu / Punjabi / English (for example "mujhay kiraya zyada lag raha ha kam kaisay krun" means "the rent feels too high, how can I reduce it"), and answer the real need behind the question.
+LANGUAGE RULE: always reply in the exact language and script the farmer used. Urdu script in, Urdu script out; Roman Urdu in, Roman Urdu out; English in, English out; Punjabi in Shahmukhi, Sindhi, Pashto and Balochi in their Perso-Arabic scripts. If unclear, use the app language (${langName}). Never write Hindi / Devanagari.
+CURRENT RATE CARD (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; quote these when asked about rent, rates or prices, give the hourly range first):
+${rateCardText()}
+Platform fee: 6% standard, 4% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
+  const base = `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}${persona}
 Rules of the platform:
 - Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 25 km catchment; Apni Boli requests search up to 100 km.
 - Dry rent: hourly rate EXCLUDES diesel/fuel; renter supplies fuel. Overtime and late-return terms agreed with owner before confirmation.
@@ -5785,12 +5817,14 @@ How to use the website (guide users step by step when they ask):
 - Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live on the farmer's price. Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
 - Keypad phones: toll-free helpline 0800-AGRI-1 and USSD *AGRI# with Punjabi/Urdu IVR: 1 rent a machine, 2 sell crop, 0 agent.
 - No smartphone: Agri-Agent & USSD tab shows the village shopkeeper model and the USSD booking flow.
-- Language menu at top right: English, Urdu, Punjabi, Sindhi (preview).
-- Privacy (Section 12.2): only name, email, mobile, district with consent; passwords are hashed; only the project owner sees the member list.
+- Language menu at top right: English, Urdu, Punjabi, Sindhi, Pashto, Balochi.
+- Privacy: only name, email, mobile and district are collected, with consent; passwords are handled by Firebase Authentication; only Agri-Share administrators see member details.
 ${session ? `The farmer is signed in as ${session.name} (${session.role}).` : "The farmer is not signed in."}
 Current listings:
 ${lst}
-Answer ANY question: about using this website, renting, farming machinery, crops, or general topics. ${uiLang === "en" ? "The app is in English: reply in the language and script the farmer used (English, Urdu script, or Roman Urdu)." : `The farmer selected ${langName} in the app: reply in ${langName}, written in its usual Perso-Arabic script, unless the farmer clearly writes in another language. If unsure of a ${langName} word, keep it simple rather than switching to English.`} SCRIPT RULE: never write Hindi or any Devanagari characters. Urdu must be in Urdu (Perso-Arabic) script and Punjabi in Shahmukhi (Perso-Arabic) script; use Roman Urdu or Roman Punjabi only if the farmer wrote in Roman letters.${voice ? (uiLang === "en" ? " This is a live voice call in English: reply only in English." : ` This is a live voice call in ${langName}: reply only in ${langName}.`) + " VOICE-CALL MODE: you are a warm, friendly agricultural advisor talking on the phone. Reply in exactly 2 short, natural spoken sentences in the farmer's exact language. No lists, bullets, numbering, markdown, symbols or tables. For machine rates, say the hourly range first, then one short tip about Apni Boli (Name Your Price)." : ""} In English replies call the crop-selling tab "Agri-Market". Keep answers short (under 150 words), use numbered steps for how-to questions, show the arithmetic for cost estimates, and never use em dashes.
+Answer ANY question: about using this website, renting, farming machinery, crops, or general topics. ${uiLang === "en" ? "The app is in English: reply in the language and script the farmer used (English, Urdu script, or Roman Urdu)." : `The farmer selected ${langName} in the app: reply in ${langName}, written in its usual Perso-Arabic script, unless the farmer clearly writes in another language. If unsure of a ${langName} word, keep it simple rather than switching to English.`} SCRIPT RULE: never write Hindi or any Devanagari characters. Urdu must be in Urdu (Perso-Arabic) script and Punjabi in Shahmukhi (Perso-Arabic) script; use Roman Urdu or Roman Punjabi only if the farmer wrote in Roman letters.${voice ? (uiLang === "en" ? " This is a live voice call in English: reply only in English." : ` This is a live voice call in ${langName}: reply only in ${langName}.`) + " VOICE-CALL MODE: you are talking to the farmer on a live phone call and your words are read aloud by text-to-speech. Reply in 2 to 3 short, warm, natural spoken sentences in the farmer's exact language. No markdown, bullets, numbering, symbols, tables or URLs. Write money and numbers the way people say them (for example 1,800 se 3,500 rupay, or 1,800 سے 3,500 روپے, never PKR or Rs). For machine rates, say the hourly range first, then one short tip about Apni Boli." : ""} In English replies call the crop-selling tab "Agri-Market". Keep answers short (under 150 words), use numbered steps for how-to questions, show the arithmetic for cost estimates, and never use em dashes.`;
+  if (systemOnly) return base;
+  return `${base}
 
 Conversation so far:
 ${convo}
@@ -5805,29 +5839,53 @@ Helper:`;
    Environment Variables (and optionally VITE_GEMINI_MODEL). Without a key, or if Gemini fails,
    the built-in multilingual farming engine (ruleAnswer) answers instead. */
 const VITE_ENV = (typeof import.meta !== "undefined" && import.meta.env) || {};
+// Gemini is the Kisan Advisor's primary brain. Two ways to connect:
+//  1. Production (recommended): /api/gemini serverless proxy with GEMINI_API_KEY set in Vercel (key stays secret).
+//  2. Local development: VITE_GEMINI_API_KEY in .env.local (ends up in the browser bundle, so don't use it in production).
+// The built-in rule engine answers only when neither is configured or the request actually fails.
 const GEMINI_KEY = VITE_ENV.VITE_GEMINI_API_KEY || "";
-const GEMINI_MODEL = VITE_ENV.VITE_GEMINI_MODEL || "gemini-flash-latest";
-async function askGemini(prompt, system) {
-  if (!GEMINI_KEY) return "";
-  const ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-  const timer = setTimeout(() => ctrl && ctrl.abort(), 20000);
+const GEMINI_MODEL = VITE_ENV.VITE_GEMINI_MODEL || "gemini-2.5-flash";
+let geminiProxy = "unknown"; // unknown | on | off
+async function probeGemini() {
+  if (geminiProxy !== "unknown") return geminiProxy === "on" || !!GEMINI_KEY;
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`, {
+    const r = await withTimeout(fetch("/api/gemini", { method: "GET", headers: { Accept: "application/json" } }), 4000, null);
+    const ct = r && r.headers && r.headers.get("content-type");
+    const j = r && r.ok && ct && ct.includes("json") ? await r.json() : null;
+    geminiProxy = j && j.configured ? "on" : "off";
+  } catch (e) { geminiProxy = "off"; }
+  return geminiProxy === "on" || !!GEMINI_KEY;
+}
+// contents: [{ role: "user" | "model", parts: [{ text }] }]. Returns { text } or { error } (never throws).
+async function askGemini({ system, contents, voice }) {
+  const timed = (p) => withTimeout(p, 25000, "__timeout__");
+  if (await probeGemini() && geminiProxy === "on") {
+    try {
+      const r = await timed(fetch("/api/gemini", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ system, contents, voice: !!voice }) }));
+      if (r === "__timeout__") return { error: "Gemini proxy timed out after 25 s" };
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.text) return { text: j.text, via: "proxy" };
+      if (!GEMINI_KEY) return { error: j.error || `Gemini proxy HTTP ${r.status}` };
+    } catch (e) { if (!GEMINI_KEY) return { error: `Gemini proxy unreachable: ${e && e.message}` }; }
+  }
+  if (!GEMINI_KEY) return { error: "No Gemini API key configured (set GEMINI_API_KEY in Vercel or VITE_GEMINI_API_KEY in .env.local)" };
+  try {
+    const r = await timed(fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_KEY },
       body: JSON.stringify({
         ...(system ? { systemInstruction: { parts: [{ text: system }] } } : {}),
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { temperature: system ? 0.6 : 0.4, maxOutputTokens: system ? 220 : 700 },
+        contents,
+        generationConfig: { temperature: voice ? 0.6 : 0.45, maxOutputTokens: voice ? 300 : 900, ...(/2\.5/.test(GEMINI_MODEL) ? { thinkingConfig: { thinkingBudget: 0 } } : {}) },
       }),
-      signal: ctrl ? ctrl.signal : undefined,
-    });
-    if (!res.ok) { console.warn("[Agri-Share] Gemini error", res.status); return ""; }
-    const data = await res.json();
-    const parts = (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
-    return parts.map((x) => x.text || "").join("").trim();
-  } catch (e) { console.warn("[Agri-Share] Gemini unreachable, using the built-in helper", e); return ""; }
-  finally { clearTimeout(timer); }
+    }));
+    if (r === "__timeout__") return { error: "Gemini timed out after 25 s" };
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) return { error: (data.error && data.error.message) || `Gemini HTTP ${r.status}` };
+    const cand = data.candidates && data.candidates[0];
+    const text = ((cand && cand.content && cand.content.parts) || []).map((x) => x.text || "").join("").trim();
+    return text ? { text, via: "direct" } : { error: `Gemini returned no text (${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
+  } catch (e) { return { error: `Gemini unreachable: ${e && e.message ? e.message : e}` }; }
 }
 
 // Speech recognition languages (BCP-47). Urdu, Punjabi, Sindhi, Pashto and Balochi listen as Urdu (ur-PK):
@@ -5902,6 +5960,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState("offline");
+  const [ai, setAi] = useState({ status: GEMINI_KEY ? "live" : "checking", reason: "" }); // live | offline | checking
   const sampleRef = useRef(null);
   const listRef = useRef(null);
   const inputRef = useRef(null);
@@ -5934,7 +5993,10 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
         }
       } catch (e) { /* not available */ }
       try { if (alive && window.claude && typeof window.claude.complete === "function") { setMode("claude"); return; } } catch (e) { /* ignore */ }
-      if (alive && GEMINI_KEY) setMode("gemini");
+      const ok = await probeGemini();
+      if (!alive) return;
+      if (ok) { setMode((m) => (m === "claude" ? m : "gemini")); setAi({ status: "live", reason: "" }); }
+      else setAi({ status: "offline", reason: "No Gemini API key configured" });
     })();
     (async () => {
       try {
@@ -5970,23 +6032,35 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     const setBot = (txt, extra = {}) => setMessages((m) => m.map((x) => (x.id === botId ? { ...x, text: fixScript(txt, lang), ...extra } : x)));
     const prompt = buildPrompt(history, listings, session, dieselPrice, lang, !!viaVoice);
     let answered = "";
+    let fallbackWhy = "";
+    // 1. Gemini answers every message when configured (full conversation + system instruction)
+    if (geminiProxy === "on" || GEMINI_KEY || geminiProxy === "unknown") {
+      const turns = history.filter((m) => m.text && !m.pending).slice(-16);
+      while (turns.length && turns[0].role !== "user") turns.shift();
+      const contents = turns.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] }));
+      const r = await askGemini({ system: buildSystem(listings, session, dieselPrice, lang, !!viaVoice), contents, voice: !!viaVoice });
+      if (r.text) { answered = fixScript(r.text, lang); setBot(answered, { pending: false, source: "gemini" }); setAi({ status: "live", reason: "" }); }
+      else { fallbackWhy = r.error || "unknown error"; console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy); setAi({ status: "offline", reason: fallbackWhy }); }
+    }
     try {
-      if (sampleRef.current) {
+      if (answered) { /* Gemini answered */ }
+      else if (sampleRef.current) {
         const res = await sampleRef.current(prompt, { cache: false, modelTier: "quick", onText: ({ text: whole }) => setBot(whole) });
         if (res && res.text && res.text.trim()) { answered = fixScript(res.text.trim(), lang); setBot(answered, { pending: false, source: "claude" }); }
       } else if (window.claude && typeof window.claude.complete === "function") {
         const out = await window.claude.complete(prompt);
         const txt = typeof out === "string" ? out : out && out.text;
         if (txt && txt.trim()) { answered = fixScript(txt.trim(), lang); setBot(answered, { pending: false, source: "claude" }); }
-      } else if (GEMINI_KEY) {
-        const langName = (LANGS.find((x) => x.code === lang) || LANGS[0]).name;
-        const txt = await askGemini(prompt, viaVoice ? `Voice-call mode: you are a warm agricultural advisor on a phone call with a farmer. Reply in 2 short spoken sentences in the user's exact language (${langName}${lang === "en" ? "" : ", Perso-Arabic script, never Devanagari"}). No lists, bullets, markdown or symbols.` : undefined);
-        if (txt) { answered = fixScript(txt, lang); setBot(answered, { pending: false, source: "gemini" }); }
       }
     } catch (e) {
       if (e && e.code === "not_granted") { sampleRef.current = null; setMode("offline"); }
     }
-    if (!answered) { answered = ruleAnswer(text, listings, dieselPrice, lang, undefined, { voice: !!viaVoice }); setBot(viaVoice ? toSpoken(answered) : answered, { pending: false, source: "rules" }); }
+    // 2. built-in engine only when no AI is configured or the AI request failed
+    if (!answered) {
+      if (fallbackWhy) console.info("[Agri-Share] Answering with the built-in helper because:", fallbackWhy);
+      answered = ruleAnswer(text, listings, dieselPrice, lang, undefined, { voice: !!viaVoice });
+      setBot(viaVoice ? toSpoken(answered) : answered, { pending: false, source: "rules" });
+    }
     // live call: keep spoken replies short and natural, whichever engine answered
     if (viaVoice) { answered = toSpoken(answered); setBot(answered); }
     setBusy(false);
@@ -6274,9 +6348,14 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ivory"><Logo className="h-8 w-8" /></span>
             <div className="min-w-0 flex-1">
               <p className="truncate font-bold">{t("kh_title")}</p>
-              <p className="flex items-center gap-1 text-[11px] text-ivory/75">
-                {mode !== "offline" ? <Sparkles className="h-3 w-3 text-gold" aria-hidden="true" /> : <Bot className="h-3 w-3" aria-hidden="true" />}
-                {mode === "claude" ? t("kh_ai") + " · fallback ready" : mode === "gemini" ? "Gemini AI · fallback ready" : t("kh_offline")}
+              <p className="flex items-center gap-1.5 text-[11px] text-ivory/80" role="status" title={ai.reason || undefined}>
+                {mode === "claude" ? <Sparkles className="h-3 w-3 text-gold" aria-hidden="true" /> : (
+                  <span className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 font-bold ${ai.status === "live" ? "bg-leaf/25 text-ivory" : ai.status === "checking" ? "bg-ivory/10" : "bg-ivory/15"}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${ai.status === "live" ? "animate-pulse bg-leaf" : ai.status === "checking" ? "bg-ivory/60" : "bg-gold"}`} aria-hidden="true" />
+                    {ai.status === "live" ? t("ai_live") : ai.status === "checking" ? "…" : t("ai_offline")}
+                  </span>
+                )}
+                {mode === "claude" ? t("kh_ai") : null}
               </p>
             </div>
             <button onClick={() => setOpen(false)} className="rounded-lg p-1.5 hover:bg-ivory/10" aria-label={t("close")}><X className="h-5 w-5" /></button>
