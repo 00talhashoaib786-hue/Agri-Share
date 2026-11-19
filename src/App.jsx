@@ -697,7 +697,7 @@ const T = {
     kh_title: "Agri-Share Kisan Helper", kh_placeholder: "Ask about hours, costs or which machine...", kh_send: "Send",
     kh_hello: "Hello! I can estimate rental hours and dry-rent costs, help you pick a machine, and guide you through the website. Ask in English, Urdu or Roman Urdu.",
     kh_ai: "Claude AI", kh_offline: "Built-in helper", kh_thinking: "Thinking...",
-    toast_booked: "Booking request sent to the owner.", toast_listed: "Submitted. It will appear in the marketplace once the Agri-Share team approves it.", toast_confirmed: "Booking confirmed.", toast_declined: "Booking declined.",
+    toast_booked: "Booking request sent to the owner.", toast_listed: "Your machine is live in the marketplace now. The Agri-Share team will verify it shortly.", toast_confirmed: "Booking confirmed.", toast_declined: "Booking declined.",
     toast_completed: "Rental marked as completed.", toast_feedback: "Feedback submitted.", toast_cancelled: "Booking request cancelled.", toast_removed: "Listing removed.",
     sindhi_note: "Sindhi is a planned expansion preview. The pilot runs in Punjabi and Urdu.",
     tr_fee: "Transport optional: +{fee} for {km} km",
@@ -963,7 +963,27 @@ const T = {
     mb_open_requests: "Open Requests",
     mb_open_view: "View offers",
     am_waiting_buyers: "Waiting for verified mill & mandi buyer offers",
-    am_waiting_buyers_sub: "Your crop post is live. Verified flour mills, rice mills and mandi buyers will send offers here; we'll notify you."
+    am_waiting_buyers_sub: "Your crop post is live. Verified flour mills, rice mills and mandi buyers will send offers here; we'll notify you.",
+    zc_title: "Agri-Share Direct Consultant Support",
+    zc_msg: "No online machine is available within your 25–100 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually arrange a machine for you from our offline network!",
+    zc_primary: "Primary consultant",
+    zc_secondary: "Second number",
+    zc_call: "Call",
+    zc_wa: "WhatsApp",
+    zc_send: "Send My Details to Consultant Now",
+    zc_sending: "Sending…",
+    zc_sent: "Your details have reached our consultant. We will call you soon to arrange a machine.",
+    zc_auto_sent: "No machine within 100 km, so we have already sent your request to our consultant. Expect a call soon.",
+    ad_leads_title: "Urgent Unmatched Farmer Leads (No Machine Within 25–100 km)",
+    ad_leads_none: "No unmatched farmers right now.",
+    ad_lead_new: "New",
+    ad_lead_arranged: "Arranged",
+    ad_lead_mark: "Mark Arranged",
+    ls_unverified: "Live · unverified",
+    ls_verified: "Verified",
+    ad_verify_btn: "Mark verified",
+    ad_remove: "Remove",
+    toast_verified: "Listing marked as verified."
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1278,7 +1298,7 @@ const T = {
     kh_title: "ایگری شیئر کسان ہیلپر", kh_placeholder: "گھنٹے، خرچ یا مشین کے بارے میں پوچھیں...", kh_send: "بھیجیں",
     kh_hello: "السلام علیکم! میں کرائے کے گھنٹے، ڈرائی رینٹ خرچ کا اندازہ لگا سکتا ہوں اور مشین چننے میں مدد کر سکتا ہوں۔ اردو، انگریزی یا رومن اردو میں پوچھیں۔",
     kh_ai: "Claude AI", kh_offline: "اندرونی ہیلپر", kh_thinking: "سوچ رہا ہوں...",
-    toast_booked: "بکنگ کی درخواست مالک کو بھیج دی گئی۔", toast_listed: "جمع ہو گئی۔ ایگری شیئر ٹیم کی منظوری کے بعد مارکیٹ میں نظر آئے گی۔", toast_confirmed: "بکنگ کی تصدیق ہو گئی۔", toast_declined: "بکنگ مسترد کر دی گئی۔",
+    toast_booked: "بکنگ کی درخواست مالک کو بھیج دی گئی۔", toast_listed: "آپ کی مشین ابھی مارکیٹ میں لائیو ہے۔ ایگری شیئر ٹیم جلد اس کی تصدیق کرے گی۔", toast_confirmed: "بکنگ کی تصدیق ہو گئی۔", toast_declined: "بکنگ مسترد کر دی گئی۔",
     toast_completed: "کرایہ مکمل ہو گیا۔", toast_feedback: "رائے جمع ہو گئی۔", toast_cancelled: "بکنگ کی درخواست منسوخ ہو گئی۔", toast_removed: "فہرست ہٹا دی گئی۔",
     sindhi_note: "سندھی مستقبل کی توسیع کا پیش منظر ہے۔ پائلٹ پنجابی اور اردو میں ہے۔",
     tr_fee: "ٹرانسپورٹ اختیاری: {km} کلومیٹر کے لیے +{fee}",
@@ -1671,7 +1691,27 @@ const T = {
     mb_open_requests: "کھلی درخواستیں",
     mb_open_view: "آفرز دیکھیں",
     am_waiting_buyers: "تصدیق شدہ ملز اور منڈی خریداروں کی آفرز کا انتظار ہے",
-    am_waiting_buyers_sub: "آپ کی فصل کی پوسٹ لائیو ہے۔ تصدیق شدہ آٹا ملز، رائس ملز اور منڈی خریدار یہاں آفرز بھیجیں گے؛ ہم آپ کو اطلاع دیں گے۔"
+    am_waiting_buyers_sub: "آپ کی فصل کی پوسٹ لائیو ہے۔ تصدیق شدہ آٹا ملز، رائس ملز اور منڈی خریدار یہاں آفرز بھیجیں گے؛ ہم آپ کو اطلاع دیں گے۔",
+    zc_title: "ایگری شیئر براہ راست کنسلٹنٹ سپورٹ",
+    zc_msg: "اس وقت آپ کے 25 سے 100 کلومیٹر کے دائرے میں کوئی آن لائن مشین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن نیٹ ورک سے آپ کے لیے خود مشین کا انتظام کریں گے!",
+    zc_primary: "مرکزی کنسلٹنٹ",
+    zc_secondary: "دوسرا نمبر",
+    zc_call: "کال",
+    zc_wa: "واٹس ایپ",
+    zc_send: "میری تفصیل ابھی کنسلٹنٹ کو بھیجیں",
+    zc_sending: "بھیجا جا رہا ہے…",
+    zc_sent: "آپ کی تفصیل ہمارے کنسلٹنٹ تک پہنچ گئی۔ مشین کے انتظام کے لیے ہم جلد آپ کو کال کریں گے۔",
+    zc_auto_sent: "100 کلومیٹر میں کوئی مشین نہیں، اس لیے ہم نے آپ کی درخواست کنسلٹنٹ کو بھیج دی ہے۔ جلد کال آئے گی۔",
+    ad_leads_title: "فوری: بغیر مشین کے کسان (25 سے 100 کلومیٹر میں کوئی مشین نہیں)",
+    ad_leads_none: "ابھی کوئی ایسا کسان نہیں۔",
+    ad_lead_new: "نیا",
+    ad_lead_arranged: "انتظام ہو گیا",
+    ad_lead_mark: "انتظام ہو گیا",
+    ls_unverified: "لائیو · غیر تصدیق شدہ",
+    ls_verified: "تصدیق شدہ",
+    ad_verify_btn: "تصدیق کریں",
+    ad_remove: "ہٹائیں",
+    toast_verified: "فہرست تصدیق شدہ ہو گئی۔"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2288,7 +2328,17 @@ const T = {
     mb_open_requests: "کھلیاں درخواستاں",
     mb_open_view: "آفراں ویکھو",
     am_waiting_buyers: "تصدیق شدہ ملاں تے منڈی خریداراں دیاں آفراں دی اڈیک اے",
-    am_waiting_buyers_sub: "تہاڈی فصل دی پوسٹ لائیو اے۔ تصدیق شدہ آٹا ملاں، رائس ملاں تے منڈی خریدار ایتھے آفراں گھلن گے؛ اسیں تہانوں دساں گے۔"
+    am_waiting_buyers_sub: "تہاڈی فصل دی پوسٹ لائیو اے۔ تصدیق شدہ آٹا ملاں، رائس ملاں تے منڈی خریدار ایتھے آفراں گھلن گے؛ اسیں تہانوں دساں گے۔",
+    zc_title: "ایگری شیئر سدھی کنسلٹنٹ مدد",
+    zc_msg: "ایس ویلے تہاڈے 25 توں 100 کلومیٹر دے گھیرے وچ کوئی آن لائن مشین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن نیٹ ورک توں تہاڈے لئی آپ مشین دا بندوبست کراں گے!",
+    zc_primary: "وڈا کنسلٹنٹ",
+    zc_secondary: "دوجا نمبر",
+    zc_call: "کال",
+    zc_wa: "واٹس ایپ",
+    zc_send: "میری تفصیل ہُݨے کنسلٹنٹ نوں گھلو",
+    zc_sending: "گھلی جا رہی اے…",
+    zc_sent: "تہاڈی تفصیل ساڈے کنسلٹنٹ تک اپڑ گئی۔ مشین دے بندوبست لئی اسیں چھیتی کال کراں گے۔",
+    zc_auto_sent: "100 کلومیٹر وچ کوئی مشین نئیں، ایس لئی اسیں تہاڈی درخواست کنسلٹنٹ نوں گھل دتی اے۔ چھیتی کال آوے گی۔"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2906,7 +2956,17 @@ const T = {
     mb_open_requests: "کليل درخواستون",
     mb_open_view: "آڇون ڏسو",
     am_waiting_buyers: "تصديق ٿيل ملن ۽ منڊي خريدارن جي آڇن جو انتظار آهي",
-    am_waiting_buyers_sub: "توهان جي فصل جي پوسٽ لائيو آهي۔ تصديق ٿيل اٽي جون ملون، چانورن جون ملون ۽ منڊي خريدار هتي آڇون موڪليندا؛ اسان توهان کي ٻڌائينداسين۔"
+    am_waiting_buyers_sub: "توهان جي فصل جي پوسٽ لائيو آهي۔ تصديق ٿيل اٽي جون ملون، چانورن جون ملون ۽ منڊي خريدار هتي آڇون موڪليندا؛ اسان توهان کي ٻڌائينداسين۔",
+    zc_title: "ايگري شيئر سڌي ڪنسلٽنٽ مدد",
+    zc_msg: "هن وقت توهان جي 25 کان 100 ڪلوميٽرن جي دائري ۾ ڪا آن لائن مشين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن نيٽ ورڪ مان توهان لاءِ پاڻ مشين جو بندوبست ڪنداسين!",
+    zc_primary: "مکيه ڪنسلٽنٽ",
+    zc_secondary: "ٻيو نمبر",
+    zc_call: "ڪال",
+    zc_wa: "واٽس ايپ",
+    zc_send: "منهنجي تفصيل هاڻي ڪنسلٽنٽ کي موڪليو",
+    zc_sending: "موڪلي پئي وڃي…",
+    zc_sent: "توهان جي تفصيل اسان جي ڪنسلٽنٽ تائين پهچي وئي۔ مشين جي بندوبست لاءِ جلد ڪال ڪنداسين۔",
+    zc_auto_sent: "100 ڪلوميٽرن ۾ ڪا مشين ناهي، تنهنڪري اسان توهان جي درخواست ڪنسلٽنٽ کي موڪلي ڇڏي آهي۔ جلد ڪال ايندي۔"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3226,7 +3286,17 @@ const T = {
     mb_open_requests: "پرانیستې غوښتنې",
     mb_open_view: "وړاندیزونه وګورئ",
     am_waiting_buyers: "د تایید شویو ملونو او منډۍ پېرودونکو وړاندیزونو ته انتظار",
-    am_waiting_buyers_sub: "ستاسو د فصل پوسټ ژوندی دی. تایید شوي د اوړو ملونه، د وريجو ملونه او د منډۍ پېرودونکي به دلته وړاندیزونه ولېږي؛ موږ به تاسو خبر کړو."
+    am_waiting_buyers_sub: "ستاسو د فصل پوسټ ژوندی دی. تایید شوي د اوړو ملونه، د وريجو ملونه او د منډۍ پېرودونکي به دلته وړاندیزونه ولېږي؛ موږ به تاسو خبر کړو.",
+    zc_title: "د اګري شېئر مستقیم مشاور ملاتړ",
+    zc_msg: "اوس ستاسو د 25 نه تر 100 کیلومترو په ساحه کې هېڅ آنلاین ماشین نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به له خپلې آفلاین شبکې ستاسو لپاره ماشین برابر کړو!",
+    zc_primary: "اصلي مشاور",
+    zc_secondary: "دوهمه شمېره",
+    zc_call: "زنګ",
+    zc_wa: "واټس اپ",
+    zc_send: "زما معلومات همدا اوس مشاور ته ولېږئ",
+    zc_sending: "لېږل کېږي…",
+    zc_sent: "ستاسو معلومات زموږ مشاور ته ورسېدل. د ماشین د برابرولو لپاره به ژر زنګ ووهو.",
+    zc_auto_sent: "په 100 کیلومترو کې ماشین نشته، نو موږ ستاسو غوښتنه مشاور ته لېږلې ده. ژر به زنګ درشي."
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3536,7 +3606,17 @@ const T = {
     mb_open_requests: "پچ اِتگیں درخواست",
     mb_open_view: "آفر بچار",
     am_waiting_buyers: "تصدیق کتگیں مِل و منڈی ءِ گِروکانی آفرانی وداریگ اِنت",
-    am_waiting_buyers_sub: "شمئے کِشت ءِ پوسٹ زندگ اِنت۔ تصدیق کتگیں آرت ءِ مِل، برنج ءِ مِل و منڈی ءِ گِروک ادا آفر رَوان دئینت؛ ما شمارا سہی کنیں۔"
+    am_waiting_buyers_sub: "شمئے کِشت ءِ پوسٹ زندگ اِنت۔ تصدیق کتگیں آرت ءِ مِل، برنج ءِ مِل و منڈی ءِ گِروک ادا آفر رَوان دئینت؛ ما شمارا سہی کنیں۔",
+    zc_title: "ایگری شیئر ءِ راستیں کنسلٹنٹ کُمک",
+    zc_msg: "اَنّوں شمئے 25 تا 100 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن مشین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت مشین ءِ بندوبست کنیں!",
+    zc_primary: "مزنیں کنسلٹنٹ",
+    zc_secondary: "دومی نمبر",
+    zc_call: "کال",
+    zc_wa: "واٹس ایپ",
+    zc_send: "منی سرجمی ءَ اَنّوں کنسلٹنٹ ءَ رَوان دئے",
+    zc_sending: "رَوان بوگ اِنت…",
+    zc_sent: "شمئے سرجمی مئے کنسلٹنٹ ءَ رست۔ مشین ءِ بندوبست ءِ واستا ما زوت کال کنیں۔",
+    zc_auto_sent: "100 کلومیٹر ءَ مشین نیست، پمیشکا ما شمئے درخواست کنسلٹنٹ ءَ رَوان دات۔ زوت کال کئیت۔"
   },
 };
 
@@ -4577,6 +4657,7 @@ function ListingCard({ l, t, dn, lang, onBook }) {
           <h3 className="break-words font-display text-base font-extrabold leading-tight" title={l.name}>{l.name}</h3>
         </div>
         {l.mine && <span className="absolute end-3 top-3 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil">{t("new_badge")}</span>}
+        {!l.mine && l.isVerified && <span className="absolute end-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-bold text-forest shadow"><BadgeCheck className="h-3 w-3" aria-hidden="true" />{t("ls_verified")}</span>}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
@@ -7093,7 +7174,59 @@ const ZsCard = ({ letter, icon: Icon, title, children, tone }) => (
   </div>
 );
 
-function ZeroSupplyFallback({ t, dn, session, requireAuth, saveDemand, toast, dieselPrice, request, canExpand, onExpand, pickCategory }) {
+// Agri-Share consultants (founder) for farmers with no machine within 25-100 km
+const CONSULTANT = {
+  primary: { label: "0322-4729249", tel: "+923224729249", wa: "923224729249" },
+  secondary: { label: "0370-0318574", tel: "+923700318574", wa: "923700318574" },
+  email: "00talhashoaib786@gmail.com",
+};
+const consultantWaText = (lang, machine, district) => (lang === "en"
+  ? `Assalam-o-Alaikum Agri-Share, I need a ${machine || "machine"} in ${district || "my district"}. No owner is online within 100 km. Please arrange one for me.`
+  : `السلام علیکم ایگری شیئر، مجھے ${district || "اپنے ضلع"} میں ${machine || "مشین"} چاہیے۔ 100 کلومیٹر میں کوئی مالک آن لائن نہیں۔ براہ کرم میرے لیے انتظام کریں۔`);
+
+function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent }) {
+  const [state, setState] = useState(autoSent ? "sent" : "idle"); // idle | sending | sent
+  useEffect(() => { if (autoSent) setState("sent"); }, [autoSent]);
+  const cat = request.category && request.category !== "all" ? request.category : "tractor";
+  const district = request.district || (request.loc && request.loc.district) || "";
+  const machineName = (RATE_NAMES[lang === "en" ? "en" : "ur"] || RATE_NAMES.en)[cat] || cat;
+  const wa = (num) => `https://wa.me/${num}?text=${encodeURIComponent(consultantWaText(lang, machineName, district))}`;
+  const mail = `mailto:${CONSULTANT.email}?subject=${encodeURIComponent(`Agri-Share: ${RATE_NAMES.en[cat] || cat} needed in ${district || "my district"}`)}&body=${encodeURIComponent(consultantWaText(lang, machineName, district))}`;
+  const send = () => requireAuth(async () => {
+    setState("sending");
+    try { await onSendLead({ category: cat, district, village: request.village || "", hours: request.hours, rate: request.rate, requestId: request.id }); setState("sent"); }
+    catch (e) { setState("idle"); }
+  });
+  const Line = ({ num, primary }) => (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="min-w-[7.5rem] font-mono text-sm font-bold text-forest" dir="ltr">{num.label}</span>
+      <a href={`tel:${num.tel}`} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-4 w-4" aria-hidden="true" />{t("zc_call")}</a>
+      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-4 w-4" aria-hidden="true" />{t("zc_wa")}</a>
+    </div>
+  );
+  return (
+    <div className="rounded-2xl border-2 border-forest bg-white p-4 shadow-md" role="region" aria-labelledby="zc-h">
+      <p id="zc-h" className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><Headphones className="h-5 w-5 text-gold" aria-hidden="true" />{t("zc_title")}</p>
+      <p className="mt-1.5 text-sm leading-relaxed text-soil">{t("zc_msg")}</p>
+      <div className="mt-3 space-y-2">
+        <p className="text-[11px] font-bold uppercase tracking-wide text-soil/80">{t("zc_primary")}</p>
+        <Line num={CONSULTANT.primary} primary />
+        <p className="pt-1 text-[11px] font-bold uppercase tracking-wide text-soil/80">{t("zc_secondary")}</p>
+        <Line num={CONSULTANT.secondary} />
+        <a href={mail} className="mt-1 inline-flex items-center gap-1.5 break-all rounded-lg bg-ivory px-3 py-2 text-xs font-bold text-forest ring-1 ring-soil/15"><Mail className="h-4 w-4 shrink-0" aria-hidden="true" /><span dir="ltr">{CONSULTANT.email}</span></a>
+      </div>
+      {state === "sent" ? (
+        <p className="mt-3 flex items-start gap-2 rounded-xl bg-leaf/15 p-3 text-sm font-semibold text-forest" role="status"><CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t(autoSent ? "zc_auto_sent" : "zc_sent")}</p>
+      ) : (
+        <button type="button" onClick={send} disabled={state === "sending"} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-4 py-3 text-sm font-extrabold text-soil shadow disabled:opacity-60">
+          <Send className="h-4 w-4" aria-hidden="true" />{state === "sending" ? t("zc_sending") : t("zc_send")}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDemand, toast, dieselPrice, request, canExpand, onExpand, pickCategory, onSendLead, autoSent }) {
   const [cat, setCat] = useState(request.category && request.category !== "all" ? request.category : "tractor");
   const [phone, setPhone] = useState((session && session.phone) || "");
   const [phoneErr, setPhoneErr] = useState("");
@@ -7125,6 +7258,8 @@ function ZeroSupplyFallback({ t, dn, session, requireAuth, saveDemand, toast, di
   const notify = () => requireAuth(() => { const r = record("notify"); saveDemand(r); setDoneC(r); toast(t("zs_c_done").replace("{id}", r.id).replace("{district}", dn(district)), { title: t("zs_c") }); });
 
   return (
+    <div className="space-y-3">
+    {onSendLead && <ConsultantCard t={t} lang={lang} request={{ ...request, category: pickCategory ? cat : request.category }} onSendLead={onSendLead} requireAuth={requireAuth} autoSent={autoSent} />}
     <div className="animate-[slidein_.3s_ease-out] rounded-2xl border border-leaf/40 bg-gradient-to-br from-leaf/10 via-ivory to-gold/10 p-4" role="region" aria-labelledby="zs-h">
       <p id="zs-h" className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><Handshake className="h-5 w-5 text-gold" aria-hidden="true" />{t("zs_title")}</p>
       <p className="mt-1 text-sm text-soil/80">{t("zs_sub").replace("{place}", place).replace("{machine}", machine)}</p>
@@ -7176,6 +7311,7 @@ function ZeroSupplyFallback({ t, dn, session, requireAuth, saveDemand, toast, di
         </ZsCard>
       </div>
     </div>
+    </div>
   );
 }
 
@@ -7206,7 +7342,8 @@ function WaitingDemand({ t, dn, demand, session, onList }) {
   );
 }
 
-function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand }) {
+function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
+  const [autoLeadFor, setAutoLeadFor] = useState(null); // request id whose lead was sent automatically
   const startLoc = () => {
     const cand = userLoc || (session && session.location);
     return cand && locCountry(cand) === CUR.id ? cand : null; // never pre-fill a sample village
@@ -7238,6 +7375,8 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   useEffect(() => () => clearTimers(), []);
 
   const pool = useMemo(() => buildOwnerPool((req || f).village, (req || f).category, listings, (req || f).model, demoMode), [req, f.village, f.category, f.model, listings, country, demoMode]);
+  // real registered owners of this machine within 100 km (the consultant card shows only when there are none)
+  const realIn100 = useMemo(() => pool.filter((o) => o.registered && o.distance <= 100).length, [pool]);
   const typical = useMemo(() => {
     const near = pool.filter((o) => o.tier <= 2);
     return round50(near.reduce((s, o) => s + o.ask, 0) / Math.max(1, near.length));
@@ -7310,6 +7449,12 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       statusRef.current = {};
       setTimeout(() => scan(1, r, true), 0);
       const near = buildOwnerPool(r.village, r.category, listings, r.model, demoMode).filter((o) => o.tier === 1).length;
+      // no REAL owner of this machine within 100 km: alert the Agri-Share consultant straight away
+      const realWithin100 = buildOwnerPool(r.village, r.category, listings, r.model, false).filter((o) => o.distance <= 100).length;
+      if (!demoMode && realWithin100 === 0 && sendLead) {
+        sendLead({ category: r.category, district: r.loc && r.loc.district, village: r.village, hours: r.hours, rate: r.rate, requestId: r.id }, true)
+          .then(() => setAutoLeadFor(r.id)).catch(() => {});
+      }
       toast(near ? t(near === 1 ? "toast_broadcast_one" : "toast_broadcast").replace("{n}", near) : t("toast_broadcast0"), { type: "info", title: t("toast_broadcast_t") });
     });
   };
@@ -7569,7 +7714,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                 {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("lr_idle_offers")}</p>}
                 {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/80"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
                 {noMatch && (!demoMode || scanTier === 3) && (
-                  <ZeroSupplyFallback t={t} dn={dn} session={session} requireAuth={requireAuth} saveDemand={saveDemand} toast={toast} dieselPrice={dieselPrice}
+                  <ZeroSupplyFallback t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} saveDemand={saveDemand} toast={toast} dieselPrice={dieselPrice} onSendLead={realIn100 === 0 ? sendLead : undefined} autoSent={!!req && autoLeadFor === req.id}
                     request={{ ...req, district: village.district, province: village.province }} canExpand={scanTier < 3} onExpand={() => scan(3)} />
                 )}
                 {noMatch && demoMode && scanTier < 3 && (
@@ -8345,17 +8490,18 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
-  const [lsFilter, setLsFilter] = useState("pending");
+  const [lsFilter, setLsFilter] = useState("unverified");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
   const [confirmReset, setConfirmReset] = useState(false);
   useEffect(() => { setDiesel(settings.dieselPrice); }, [settings.dieselPrice]);
   const lock = onLock;
 
-  const counts = { pending: 0, approved: 0, rejected: 0 };
-  listings.forEach((l) => { counts[l.status || "approved"]++; });
-  const shownListings = listings.filter((l) => (l.status || "approved") === lsFilter).sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
+  const bucket = (l) => ((l.status || "approved") === "rejected" ? "rejected" : !l.isVerified && (l.status === "pending" || l.ownerUid) ? "unverified" : "approved");
+  const counts = { unverified: 0, approved: 0, rejected: 0 };
+  listings.forEach((l) => { counts[bucket(l)]++; });
+  const shownListings = listings.filter((l) => bucket(l) === lsFilter).sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
 
   const live = bookings.filter((b) => !["cancelled", "declined"].includes(b.status));
   const gtv = live.reduce((s, b) => s + (b.quote.total || 0), 0);
@@ -8368,7 +8514,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
   const byEmail = useMemo(() => { const m = new Map(); (accounts.members || []).forEach((x) => { if (x.email) m.set(normEmail(x.email), x); }); return m; }, [accounts.members]);
   const prof = (email) => (email ? byEmail.get(normEmail(email)) : null) || {};
   const alerts = [
-    ...listings.filter((l) => l.status === "pending").map((l) => ({ id: "l" + l.id, at: l.submittedAt || 0, kind: "listing", sub: "verify", title: l.name, who: l.ownerName, where: `${l.village || ""}${l.district ? ", " + dn(l.district) : ""}` })),
+    ...listings.filter((l) => !l.isVerified && l.ownerUid && (l.status || "approved") !== "rejected").map((l) => ({ id: "l" + l.id, at: l.submittedAt || 0, kind: "listing", sub: "verify", title: l.name, who: l.ownerName, where: `${l.village || ""}${l.district ? ", " + dn(l.district) : ""}` })),
     ...liveRequests.filter((r) => r.status === "open").map((r) => ({ id: "r" + r.id, at: r.createdAt || 0, kind: "request", sub: "live", title: `${t("one_" + r.category)} · ${pkr(r.rate)}/hr`, who: r.renterName || prof(r.renterEmail).name || "", where: r.village || "" })),
     ...demand.filter((d) => d.status === "waiting").map((d) => ({ id: "d" + d.id, at: d.createdAt || 0, kind: "demand", sub: "demand", title: `${t("one_" + d.category)} · ${t("dm_" + d.type)}`, who: d.renterName || "", where: d.village || dn(d.district || "") })),
     ...bookings.filter((b) => b.status === "sent").map((b) => ({ id: "b" + b.id, at: b.createdAt || 0, kind: "booking", sub: "live", title: b.listingName, who: b.renterName || "", where: dn(b.district || "") })),
@@ -8397,7 +8543,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
   const previewLitres = DIESEL_L_PER_HR.harvester * 4;
 
   const subs = [
-    { key: "verify", label: t("ad_verify"), icon: BadgeCheck, badge: counts.pending },
+    { key: "verify", label: t("ad_verify"), icon: BadgeCheck, badge: counts.unverified },
     { key: "ledger", label: t("ad_ledger"), icon: Wallet },
     { key: "settings", label: t("ad_settings"), icon: SlidersHorizontal },
     { key: "live", label: t("ad_live"), icon: Radar, badge: liveRequests.filter((r) => r.status === "open").length + bookings.filter((b) => b.status === "sent").length },
@@ -8420,6 +8566,37 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
           {lock && <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
         </div>
       </div>
+      {/* Urgent unmatched farmer leads (no machine within 25-100 km) — founder only */}
+      {accounts.isFounder && (
+        <div className={`mb-5 rounded-2xl p-4 ring-1 ${leads.some((x) => x.status === "new") ? "bg-red-50 ring-red-300" : "bg-white ring-soil/10"}`} aria-labelledby="ld-h">
+          <h3 id="ld-h" className="flex flex-wrap items-center gap-2 font-bold text-red-800">
+            <Siren className="h-5 w-5" aria-hidden="true" />{t("ad_leads_title")}
+            {leads.filter((x) => x.status === "new").length > 0 && <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">{leads.filter((x) => x.status === "new").length}</span>}
+          </h3>
+          {leads.length === 0 ? <p className="mt-2 text-sm text-soil/80">{t("ad_leads_none")}</p> : (
+            <ul className="mt-3 grid gap-2 lg:grid-cols-2">
+              {[...leads].sort((a, b) => (a.status === "new" ? 0 : 1) - (b.status === "new" ? 0 : 1) || (b.createdAt || 0) - (a.createdAt || 0)).map((x) => (
+                <li key={x.id} className={`rounded-xl bg-white p-3 text-sm ring-1 ${x.status === "new" ? "ring-red-200" : "ring-soil/10 opacity-80"}`}>
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="break-words font-bold text-forest">{x.farmerName || "·"} <span className="font-normal text-soil/80" dir="ltr">· {fmtStamp(x.createdAt)}</span></p>
+                      <p className="text-xs text-soil"><b>{t("ct_needed")}:</b> {x.category ? t("one_" + x.category) : x.machineType} · <b>{t("ct_location")}:</b> {[x.village, x.district].filter(Boolean).join(", ") || "·"}</p>
+                      <p className="text-xs text-soil" dir="ltr">{x.hours ? `${x.hours}h` : ""}{x.offeredRate ? ` · ${pkr(x.offeredRate)}/hr` : ""}{x.auto ? " · auto" : ""}</p>
+                      {x.farmerEmail && <a href={`mailto:${x.farmerEmail}`} className="break-all text-xs font-semibold text-forest underline" dir="ltr">{x.farmerEmail}</a>}
+                    </div>
+                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${x.status === "new" ? "bg-red-600 text-white" : "bg-leaf/15 text-forest"}`}>{t(x.status === "new" ? "ad_lead_new" : "ad_lead_arranged")}</span>
+                  </div>
+                  <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                    <ContactButtons t={t} phone={x.farmerPhone} name={x.farmerName} />
+                    {x.status === "new" && <button type="button" onClick={() => markLeadArranged(x)} className="rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("ad_lead_mark")}</button>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       {/* New Activity Alerts: everything that needs the founder's attention, newest first */}
       <div className={`mb-5 rounded-2xl p-4 ring-1 ${alerts.length ? "bg-red-50 ring-red-200" : "bg-white ring-soil/10"}`} role="region" aria-labelledby="al-h" aria-live="polite">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -8438,7 +8615,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                   <span className="block break-words font-bold text-forest">{a.title}</span>
                   <span className="block break-words text-xs text-soil/80">{[a.who, a.where, fmtStamp(a.at)].filter(Boolean).join(" · ")}</span>
                 </span>
-                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") setLsFilter("pending"); }} className="ms-auto shrink-0 rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
+                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") setLsFilter("unverified"); }} className="ms-auto shrink-0 rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
               </li>
             ))}
           </ul>
@@ -8489,9 +8666,9 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
       {sub === "verify" && (
         <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
           <div className="mb-4 flex flex-wrap gap-2">
-            {["pending", "approved", "rejected"].map((s) => (
+            {["unverified", "approved", "rejected"].map((s) => (
               <button key={s} onClick={() => setLsFilter(s)} aria-pressed={lsFilter === s}
-                className={`rounded-full px-3 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t("ls_" + s)} ({counts[s]})</button>
+                className={`rounded-full px-3 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t(s === "unverified" ? "ls_unverified" : "ls_" + s)} ({counts[s]})</button>
             ))}
           </div>
           {shownListings.length === 0 ? <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
@@ -8524,8 +8701,9 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                     </div>
                   </div>
                   <div className="mt-3 flex gap-2">
-                    {(l.status || "approved") !== "approved" && <button onClick={() => setListingStatus(l.id, "approved")} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory"><Check className="h-4 w-4" aria-hidden="true" />{t("ad_approve")}</button>}
-                    {(l.status || "approved") !== "rejected" && <button onClick={() => setListingStatus(l.id, "rejected")} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-300 px-3 py-2 text-sm font-bold text-red-800"><Ban className="h-4 w-4" aria-hidden="true" />{t("ad_reject")}</button>}
+                    {!l.isVerified && (l.status || "approved") !== "rejected" && verifyListing && <button onClick={() => verifyListing(l.id)} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory"><BadgeCheck className="h-4 w-4" aria-hidden="true" />{t("ad_verify_btn")}</button>}
+                    {(l.status || "approved") === "rejected" && <button onClick={() => setListingStatus(l.id, "approved")} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory"><Check className="h-4 w-4" aria-hidden="true" />{t("ad_approve")}</button>}
+                    {(l.status || "approved") !== "rejected" && <button onClick={() => setListingStatus(l.id, "rejected")} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-300 px-3 py-2 text-sm font-bold text-red-800"><Ban className="h-4 w-4" aria-hidden="true" />{t("ad_remove")}</button>}
                   </div>
                 </li>
               ))}
@@ -9789,6 +9967,36 @@ function App() {
   const ownerBookings = useMemo(() => bookings.filter(isMyOwnerBooking), [bookings, myListingIds, uid]); // eslint-disable-line
   const marketListings = useMemo(() => (demoMode ? [...realListings, ...SEED_LISTINGS.filter((x) => !realListings.some((l) => l.id === x.id))] : realListings), [realListings, demoMode]);
   const setDemoMode = (on) => { setDemoModeState(on); store.set("agrishare.demoMode", on); toast(t(on ? "toast_mode_demo" : "toast_mode_live"), { type: "info" }); };
+  // Unmatched farmer lead: saved to Firestore (founder-only reads) and emailed to the consultant
+  const sendLead = async (info, auto = false) => {
+    if (!session) throw new Error("not signed in");
+    const lead = {
+      id: "LD-" + Date.now().toString(36).toUpperCase() + Math.floor(Math.random() * 900 + 100),
+      uid: session.uid || null, status: "new", createdAt: Date.now(), auto: !!auto, lang,
+      farmerName: session.name || "", farmerPhone: session.phone || "", farmerEmail: session.email || "",
+      district: info.district || (session.location && session.location.district) || "", village: info.village || "",
+      machineType: RATE_NAMES.en[info.category] || info.category || "", category: info.category || "",
+      hours: Number(info.hours) || null, offeredRate: Number(info.rate) || null, radiusChecked: 100, requestId: info.requestId || null, country: CUR.id,
+    };
+    try { const mine = store.get("agrishare.leads.mine", []); store.set("agrishare.leads.mine", [...mine, lead].slice(-20)); } catch (e) { /* ignore */ }
+    const saved = writeDoc(COL.leads, lead.id, lead).then(() => true).catch((e) => { console.warn("[Agri-Share] Lead not saved to Firestore:", e && e.code); return false; });
+    const emailed = fetch("/api/notify-lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(lead) })
+      .then((r) => r.json()).then((j) => !!(j && j.sent)).catch(() => false);
+    const [ok1, ok2] = await Promise.all([saved, emailed]);
+    if (!ok1 && !ok2) console.warn("[Agri-Share] Lead kept on this device only (Firestore and email unavailable)");
+    if (!auto) toast(t("zc_sent"), { title: t("zc_title") });
+    return { saved: ok1, emailed: ok2 };
+  };
+  const [leads, setLeads] = useState([]);
+  useEffect(() => {
+    if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setLeads([]); return undefined; }
+    return watchCollection(COL.leads, (list) => setLeads(list), (e) => console.warn("[Agri-Share] Leads listener:", e && e.code));
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
+  const markLeadArranged = (lead) => {
+    const next = { ...lead, status: "arranged", arrangedAt: Date.now(), arrangedBy: session ? session.email : "" };
+    setLeads((ls) => ls.map((x) => (x.id === lead.id ? next : x)));
+    writeDoc(COL.leads, lead.id, next).catch((e) => console.warn("[Agri-Share] Could not update lead:", e && e.code));
+  };
   const saveDemand = (rec) => setDemand((list) => (list.some((d) => d.id === rec.id) ? list.map((d) => (d.id === rec.id ? { ...d, ...rec } : d)) : [...list, rec]));
   // Only admin-approved machines in switched-on pilot districts are visible to renters
   const publicListings = useMemo(() => marketListings
@@ -9807,6 +10015,11 @@ function App() {
   const setListingStatus = (id, status) => {
     setListings((ls) => ls.map((l) => (l.id === id ? { ...l, status, reviewedAt: Date.now() } : l)));
     toast(t(status === "approved" ? "toast_approved" : "toast_rejected"));
+  };
+  // post-moderation: listings are live instantly; the admin marks them verified (or removes them)
+  const verifyListing = (id) => {
+    setListings((ls) => ls.map((l) => (l.id === id ? { ...l, status: "approved", isVerified: true, verifiedAt: Date.now(), reviewedAt: Date.now() } : l)));
+    toast(t("toast_verified"));
   };
   const resetDemo = () => {
     setListings((ls) => ls.filter((l) => !isSeedListing(l))); setBookings([]); setLiveRequests([]); setMandiPosts([]);
@@ -9837,7 +10050,7 @@ function App() {
   };
 
   const addListing = (f) => {
-    const l = { ...f, id: "U" + Date.now(), ownerId: "AS-" + Math.floor(2000 + Math.random() * 7000), ownerUid: session ? session.uid : null, rating: 5.0, available: true, status: "pending", submittedAt: Date.now(), ownerEmail: session ? session.email : null };
+    const l = { ...f, id: "U" + Date.now(), ownerId: "AS-" + Math.floor(2000 + Math.random() * 7000), ownerUid: session ? session.uid : null, rating: 5.0, available: true, status: "approved", isVerified: false, submittedAt: Date.now(), ownerEmail: session ? session.email : null };
     setListings((ls) => [...ls, l]);
     setFilters((fl) => ({ ...fl, radius: Math.max(fl.radius, Math.ceil(l.distance)) }));
     toast(t("toast_listed"));
@@ -9851,7 +10064,7 @@ function App() {
   const pendingCount = ownerBookings.filter((b) => b.status === "sent").length;
   // red Admin badge: machines awaiting approval + open Apni Boli requests + waiting demand tickets
   const adminCount = accounts.isAdmin
-    ? realListings.filter((l) => l.status === "pending").length + liveRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length
+    ? realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + liveRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
     : 0;
   const mine = (email) => !session || !email || email === session.email;
   const myBookings = [...bookings].filter((b) => b.channel === "ussd" || mine(b.renterEmail)).sort((a, b) => b.createdAt - a.createdAt);
@@ -9873,15 +10086,15 @@ function App() {
             <TrustStrip t={t} />
             <KeypadBanner t={t} setTab={setTab} />
             <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={() => setTab("live-request")} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
-              demoMode={demoMode} fallbackProps={{ t, dn, session, requireAuth, saveDemand, toast, dieselPrice }} />
+              demoMode={demoMode} fallbackProps={{ t, dn, lang, session, requireAuth, saveDemand, toast, dieselPrice, onSendLead: sendLead }} />
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={bookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
         {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
-          dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} />}
+          dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={bookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} mandiPosts={mandiPosts} cloud={cloud} />}
+        {showTab === "admin" && <AdminPanel leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} mandiPosts={mandiPosts} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}

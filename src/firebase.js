@@ -84,6 +84,7 @@ export const COL = {
   settings: "admin_settings",
   users: "users",
   demand: "pending_demand_requests",
+  leads: "unmatched_farmer_leads",
 };
 
 let app = null, auth = null;
