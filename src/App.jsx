@@ -927,7 +927,11 @@ const T = {
     vc_interrupt: "Tap to interrupt",
     vc_live: "Live call active",
     ai_live: "AI Advisor Live",
-    ai_offline: "Offline Mode"
+    ai_offline: "Offline Mode",
+    vc_mic_ready: "Mic ready — speak now",
+    vc_sending: "Sending voice…",
+    vc_advisor: "Advisor",
+    vc_audio_fail: "Your voice couldn't reach the AI advisor. Switching to the browser's speech recognition — tap to speak again."
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1609,7 +1613,11 @@ const T = {
     vc_interrupt: "روکنے کے لیے دبائیں",
     vc_live: "لائیو کال جاری",
     ai_live: "اے آئی مشیر لائیو",
-    ai_offline: "آف لائن موڈ"
+    ai_offline: "آف لائن موڈ",
+    vc_mic_ready: "مائیک تیار ہے — اب بولیں",
+    vc_sending: "آواز بھیج رہا ہوں…",
+    vc_advisor: "مشیر",
+    vc_audio_fail: "آپ کی آواز اے آئی مشیر تک نہیں پہنچ سکی۔ براؤزر کی آواز پہچان پر جا رہے ہیں — دوبارہ بولنے کے لیے دبائیں۔"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2200,7 +2208,11 @@ const T = {
     vc_interrupt: "روکن لئی دباؤ",
     vc_live: "لائیو کال چل رہی اے",
     ai_live: "اے آئی صلاح کار لائیو",
-    ai_offline: "آف لائن موڈ"
+    ai_offline: "آف لائن موڈ",
+    vc_mic_ready: "مائیک تیار اے — ہُݨ بولو",
+    vc_sending: "آواز گھل رہیا واں…",
+    vc_advisor: "صلاح کار",
+    vc_audio_fail: "تہاڈی آواز اے آئی صلاح کار تک نئیں اپڑی۔ براؤزر دی آواز پچھان تے جا رہے آں — دوبارہ بولن لئی دباؤ۔"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2792,7 +2804,11 @@ const T = {
     vc_interrupt: "روڪڻ لاءِ دٻايو",
     vc_live: "لائيو ڪال جاري",
     ai_live: "اي آءِ صلاحڪار لائيو",
-    ai_offline: "آف لائن موڊ"
+    ai_offline: "آف لائن موڊ",
+    vc_mic_ready: "مائيڪ تيار آهي — هاڻي ڳالهايو",
+    vc_sending: "آواز موڪلي رهيو آهيان…",
+    vc_advisor: "صلاحڪار",
+    vc_audio_fail: "توهان جو آواز اي آءِ صلاحڪار تائين نه پهتو۔ برائوزر جي آواز سڃاڻپ تي وڃي رهيا آهيون — ٻيهر ڳالهائڻ لاءِ دٻايو۔"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3086,7 +3102,11 @@ const T = {
     vc_interrupt: "د درولو لپاره کېکاږئ",
     vc_live: "ژوندۍ اړیکه روانه ده",
     ai_live: "AI سلاکار ژوندی دی",
-    ai_offline: "آفلاین حالت"
+    ai_offline: "آفلاین حالت",
+    vc_mic_ready: "مایک چمتو دی — اوس خبرې وکړئ",
+    vc_sending: "غږ لېږم…",
+    vc_advisor: "سلاکار",
+    vc_audio_fail: "ستاسو غږ AI سلاکار ته ونه رسېد. د براوزر غږ پېژندنې ته ځو — بیا د خبرو لپاره کېکاږئ."
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3370,7 +3390,11 @@ const T = {
     vc_interrupt: "داشتگ ءِ واستا بِجن",
     vc_live: "زندگیں کال روان اِنت",
     ai_live: "AI سلاہ کار زندگ اِنت",
-    ai_offline: "آف لائن موڈ"
+    ai_offline: "آف لائن موڈ",
+    vc_mic_ready: "مائیک تیار اِنت — اَنّوں گپ جن",
+    vc_sending: "توار ءَ رَوان دئیگ اِیں…",
+    vc_advisor: "سلاہ کار",
+    vc_audio_fail: "شمئے توار AI سلاہ کار ءَ نہ رست۔ براؤزر ءِ توار پجّار ءَ رئوگ اِیں — پدا گپ جنگ ءِ واستا بِجن۔"
   },
 };
 
@@ -5857,11 +5881,11 @@ async function probeGemini() {
   return geminiProxy === "on" || !!GEMINI_KEY;
 }
 // contents: [{ role: "user" | "model", parts: [{ text }] }]. Returns { text } or { error } (never throws).
-async function askGemini({ system, contents, voice }) {
+async function askGemini({ system, contents, voice, json }) {
   const timed = (p) => withTimeout(p, 25000, "__timeout__");
   if (await probeGemini() && geminiProxy === "on") {
     try {
-      const r = await timed(fetch("/api/gemini", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ system, contents, voice: !!voice }) }));
+      const r = await timed(fetch("/api/gemini", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ system, contents, voice: !!voice, json: !!json }) }));
       if (r === "__timeout__") return { error: "Gemini proxy timed out after 25 s" };
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.text) return { text: j.text, via: "proxy" };
@@ -5876,7 +5900,11 @@ async function askGemini({ system, contents, voice }) {
       body: JSON.stringify({
         ...(system ? { systemInstruction: { parts: [{ text: system }] } } : {}),
         contents,
-        generationConfig: { temperature: voice ? 0.6 : 0.45, maxOutputTokens: voice ? 300 : 900, ...(/2\.5/.test(GEMINI_MODEL) ? { thinkingConfig: { thinkingBudget: 0 } } : {}) },
+        generationConfig: {
+          temperature: voice ? 0.6 : 0.45, maxOutputTokens: voice ? 400 : 900,
+          ...(json ? { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { heard: { type: "STRING" }, reply: { type: "STRING" } }, required: ["heard", "reply"] } } : {}),
+          ...(/2\.5/.test(GEMINI_MODEL) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+        },
       }),
     }));
     if (r === "__timeout__") return { error: "Gemini timed out after 25 s" };
@@ -5886,6 +5914,44 @@ async function askGemini({ system, contents, voice }) {
     const text = ((cand && cand.content && cand.content.parts) || []).map((x) => x.text || "").join("").trim();
     return text ? { text, via: "direct" } : { error: `Gemini returned no text (${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
   } catch (e) { return { error: `Gemini unreachable: ${e && e.message ? e.message : e}` }; }
+}
+
+/* Voice capture for Gemini: MediaRecorder records the turn (WebM/Opus in Chrome, MP4/AAC in Safari),
+   then it is decoded and re-encoded as 16 kHz mono WAV, a format Gemini documents for audio input. */
+const REC_TYPES = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/aac"];
+const pickRecType = () => (typeof window !== "undefined" && window.MediaRecorder && MediaRecorder.isTypeSupported ? REC_TYPES.find((m) => { try { return MediaRecorder.isTypeSupported(m); } catch (e) { return false; } }) || "" : "");
+const canRecordVoice = () => typeof window !== "undefined" && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && (window.AudioContext || window.webkitAudioContext));
+function abToBase64(buf) {
+  const bytes = new Uint8Array(buf);
+  let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function encodeWav16(samples, rate) {
+  const buf = new ArrayBuffer(44 + samples.length * 2);
+  const v = new DataView(buf);
+  const str = (o, x) => { for (let i = 0; i < x.length; i++) v.setUint8(o + i, x.charCodeAt(i)); };
+  str(0, "RIFF"); v.setUint32(4, 36 + samples.length * 2, true); str(8, "WAVE"); str(12, "fmt ");
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, rate, true);
+  v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, "data"); v.setUint32(40, samples.length * 2, true);
+  for (let i = 0; i < samples.length; i++) { const x = Math.max(-1, Math.min(1, samples[i])); v.setInt16(44 + i * 2, x < 0 ? x * 0x8000 : x * 0x7fff, true); }
+  return buf;
+}
+// Returns { mimeType, data } ready for Gemini inlineData. Falls back to the original recording if decoding fails.
+async function voiceClipForGemini(blob, ctx) {
+  const raw = await blob.arrayBuffer();
+  try {
+    const audio = await new Promise((res, rej) => { const p = ctx.decodeAudioData(raw.slice(0), res, rej); if (p && p.then) p.then(res, rej); });
+    const rate = 16000;
+    const Off = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    const off = new Off(1, Math.max(1, Math.ceil(audio.duration * rate)), rate);
+    const src = off.createBufferSource(); src.buffer = audio; src.connect(off.destination); src.start(0);
+    const rendered = await new Promise((res, rej) => { off.oncomplete = (e) => res(e.renderedBuffer); const p = off.startRendering(); if (p && p.then) p.then(res, rej); });
+    return { mimeType: "audio/wav", data: abToBase64(encodeWav16(rendered.getChannelData(0), rate)) };
+  } catch (e) {
+    console.warn("[Agri-Share] Could not convert the recording to WAV, sending it as recorded:", e && e.message);
+    return { mimeType: (blob.type || "audio/webm").split(";")[0], data: abToBase64(raw) };
+  }
 }
 
 // Speech recognition languages (BCP-47). Urdu, Punjabi, Sindhi, Pashto and Balochi listen as Urdu (ur-PK):
@@ -5944,6 +6010,16 @@ function pickVoice(voices, codes) {
 }
 const speakable = (txt) => String(txt || "").replace(/[•●]/g, "").replace(/→/g, ", ").replace(/[|*#_`]/g, " ").replace(/\n+/g, ". ").replace(/\s{2,}/g, " ").trim().slice(0, 1800);
 
+// Bars driven by the real microphone level (0..1), so the farmer sees the mic is hearing them
+function LevelBars({ level }) {
+  const shape = [0.35, 0.55, 0.8, 1, 0.8, 0.6, 0.9, 1, 0.75, 0.5, 0.7, 0.45, 0.3];
+  return (
+    <div className="flex h-16 items-center justify-center gap-1" aria-hidden="true">
+      {shape.map((k, i) => <span key={i} className="w-1.5 rounded-full bg-leaf transition-[height] duration-75" style={{ height: `${Math.max(6, Math.min(64, 6 + level * 140 * k))}px`, boxShadow: level > 0.08 ? "0 0 10px rgba(103,168,52,0.7)" : "none" }} />)}
+    </div>
+  );
+}
+
 function VoiceWaves({ active, tone }) {
   return (
     <div className="flex h-16 items-center justify-center gap-1" aria-hidden="true">
@@ -5980,6 +6056,10 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   const voicesRef = useRef([]);         // browser voices (they load asynchronously in Chrome)
   const live = useRef({});              // latest send/listen/handleUtterance, so recognition callbacks never use stale state
   const turnRef = useRef(0);            // bumps on every new turn or interruption; stale replies are dropped
+  // Gemini audio mode: record the farmer's voice and let Gemini hear it directly (no browser speech recognition)
+  const audioModeRef = useRef(false);
+  const streamRef = useRef(null), actxRef = useRef(null), mrRef = useRef(null), rafRef = useRef(0);
+  const [level, setLevel] = useState(0);
   const SR = typeof window !== "undefined" ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
   const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
 
@@ -6065,6 +6145,34 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     if (viaVoice) { answered = toSpoken(answered); setBot(answered); }
     setBusy(false);
     return answered;
+  };
+
+  // Voice turn through Gemini: the clip goes in as audio; Gemini returns what it heard and a short spoken reply
+  const sendVoice = async (clip) => {
+    const userId = Date.now(), botId = userId + 1;
+    const history = messages.filter((m) => m.id !== 0 && m.text && !m.pending);
+    setMessages((m) => [...m, { role: "user", text: "🎤 …", id: userId, pending: true }, { role: "assistant", text: "", id: botId, pending: true }]);
+    const turns = history.slice(-12);
+    while (turns.length && turns[0].role !== "user") turns.shift();
+    const contents = [...turns.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] })),
+      { role: "user", parts: [{ text: "The farmer's voice message:" }, { inlineData: clip }] }];
+    const system = buildSystem(listings, session, dieselPrice, lang, true) + `
+AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, whatever the accent or language (Urdu, Punjabi, Saraiki, Sindhi, Pashto, Balochi, Hindko, Roman Urdu or English, often mixed). Return JSON with two fields:
+"heard": exactly what the farmer said, written in the script of the language they spoke (Urdu / Shahmukhi / Sindhi / Pashto / Balochi in Perso-Arabic script; English in English). Never Devanagari. If the audio is silent or unclear, set "heard" to "".
+"reply": your answer in 2 to 3 short, warm spoken sentences in the same language, following VOICE-CALL MODE. If "heard" is empty, politely ask them to say it again.`;
+    const r = await askGemini({ system, contents, voice: true, json: true });
+    if (!r.text) {
+      setMessages((m) => m.filter((x) => x.id !== userId && x.id !== botId));
+      setAi({ status: "offline", reason: r.error || "voice request failed" });
+      console.warn("[Agri-Share] Voice message could not be answered by Gemini:", r.error);
+      return { error: r.error || "failed" };
+    }
+    let heard = "", reply = "";
+    try { const j = JSON.parse(r.text); heard = String(j.heard || ""); reply = String(j.reply || ""); } catch (e) { reply = r.text; }
+    heard = fixScript(heard.trim(), lang); reply = toSpoken(fixScript(reply.trim(), lang)) || t("vc_no_speech");
+    setMessages((m) => m.map((x) => (x.id === userId ? { ...x, text: heard || "🎤", pending: false } : x.id === botId ? { ...x, text: reply, pending: false, source: "gemini" } : x)));
+    setAi({ status: "live", reason: "" });
+    return { heard, reply };
   };
 
   // ---------------- voice call engine ----------------
@@ -6159,9 +6267,106 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     if (callRef.current && !demoRef.current) setTimeout(() => { if (callRef.current && !demoRef.current && turn === turnRef.current) live.current.listen(false); }, 350);
   };
 
+  const stopMeter = () => { cancelAnimationFrame(rafRef.current); rafRef.current = 0; setLevel(0); };
+  const releaseMic = () => {
+    stopMeter();
+    try { mrRef.current && mrRef.current.state !== "inactive" && mrRef.current.stop(); } catch (e) { /* ignore */ }
+    mrRef.current = null;
+    try { streamRef.current && streamRef.current.getTracks().forEach((tr) => tr.stop()); } catch (e) { /* ignore */ }
+    streamRef.current = null;
+    try { actxRef.current && actxRef.current.close(); } catch (e) { /* ignore */ }
+    actxRef.current = null;
+  };
+
+  // One recorded turn: live level meter, auto-stop after 1.3 s of silence once the farmer has spoken
+  const recordTurn = async () => {
+    if (!callRef.current) return;
+    setVoiceErr(""); setHeard(""); setReply("");
+    try {
+      if (!actxRef.current) { const AC = window.AudioContext || window.webkitAudioContext; actxRef.current = new AC(); }
+      const ctx = actxRef.current;
+      try { await ctx.resume(); } catch (e) { /* ignore */ }
+      if (!streamRef.current) streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      if (!callRef.current) return;
+      const stream = streamRef.current;
+      const type = pickRecType();
+      const mr = new MediaRecorder(stream, type ? { mimeType: type } : undefined);
+      mrRef.current = mr;
+      const chunks = [];
+      mr.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+      const analyser = ctx.createAnalyser(); analyser.fftSize = 1024;
+      const source = ctx.createMediaStreamSource(stream); source.connect(analyser);
+      const buf = new Float32Array(analyser.fftSize);
+      const t0 = performance.now();
+      let base = 0, baseN = 0, spokeMs = 0, lastLoud = 0, lastTick = t0, lastUi = 0, stopped = false;
+      const finish = (why) => {
+        if (stopped) return; stopped = true;
+        stopMeter(); try { source.disconnect(); } catch (e) { /* ignore */ }
+        mr.onstop = async () => {
+          if (mrRef.current === mr) mrRef.current = null;
+          if (!callRef.current || why === "abort") return;
+          if (spokeMs < 250 || !chunks.length) { setVoiceNote(t("vc_no_speech")); setPhase("tap"); return; }
+          live.current.handleRecording(new Blob(chunks, { type: mr.mimeType || type || "audio/webm" }));
+        };
+        try { mr.state !== "inactive" ? mr.stop() : mr.onstop(); } catch (e) { mr.onstop(); }
+      };
+      mr._finish = finish;
+      const tick = () => {
+        if (stopped) return;
+        const now = performance.now();
+        analyser.getFloatTimeDomainData(buf);
+        let sum = 0; for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
+        const rms = Math.sqrt(sum / buf.length);
+        if (now - t0 < 300) { base += rms; baseN += 1; }
+        const floor = baseN ? base / baseN : 0.01;
+        const thr = Math.min(0.08, Math.max(0.015, floor * 3));
+        const dt = now - lastTick; lastTick = now;
+        if (rms > thr) { spokeMs += dt; lastLoud = now; }
+        if (now - lastUi > 70) { lastUi = now; setLevel(Math.min(1, rms * 6)); }
+        if (spokeMs >= 250 && now - lastLoud > 1300) return finish("silence");      // 1.3 s pause after speaking
+        if (spokeMs < 250 && now - t0 > 9000) return finish("nospeech");           // nobody spoke
+        if (now - t0 > 45000) return finish("max");                                 // safety cap
+        rafRef.current = requestAnimationFrame(tick);
+      };
+      mr.start(250);
+      setPhase("listening");
+      rafRef.current = requestAnimationFrame(tick);
+    } catch (e) {
+      console.warn("[Agri-Share] Microphone could not start:", e && (e.name || e.message));
+      releaseMic();
+      const name = e && e.name;
+      setVoiceErr(name === "NotAllowedError" || name === "SecurityError" ? t("vc_mic_blocked") : name === "NotFoundError" ? t("vc_no_mic") : t("vc_mic_error"));
+      setPhase("tap");
+    }
+  };
+
+  const handleRecording = async (blob) => {
+    const turn = ++turnRef.current;
+    setPhase("sending");
+    let clip;
+    try { clip = await voiceClipForGemini(blob, actxRef.current); } catch (e) { clip = null; }
+    if (!callRef.current || turn !== turnRef.current) return;
+    setPhase("thinking");
+    const r = clip ? await sendVoice(clip) : { error: "could not read the recording" };
+    if (!callRef.current || turn !== turnRef.current) return;
+    if (r.error) {
+      // Gemini audio failed: switch this call to the browser's speech recognition and let the farmer retry
+      audioModeRef.current = false; releaseMic();
+      setVoiceNote(t("vc_audio_fail")); setPhase("tap");
+      return;
+    }
+    silentRef.current = 0;
+    setHeard(r.heard); setReply(r.reply); setPhase("speaking");
+    const roman = lang !== "en" && !hasNativeVoice() && r.heard ? toSpoken(ruleAnswer(r.heard, listings, dieselPrice, lang, "ro", { voice: true })) : "";
+    await speakText(r.reply, { roman, turn });
+    if (turn !== turnRef.current) return;
+    if (callRef.current && !demoRef.current) setTimeout(() => { if (callRef.current && turn === turnRef.current) live.current.listen(false); }, 350);
+  };
+
   // fromGesture: true when called straight from a click (Claude dictation requires it)
   const listen = (fromGesture) => {
     if (!callRef.current) return;
+    if (audioModeRef.current) { recordTurn(); return; }
     setVoiceErr(""); setHeard(""); bufRef.current = "";
     const d = dictRef.current;
     if (d) {
@@ -6239,7 +6444,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     setVoiceErr(t("vc_unsupported")); setPhase("tap");
   };
 
-  live.current = { send, listen, handleUtterance };
+  live.current = { send, listen, handleUtterance, handleRecording };
   useEffect(() => { sttIdxRef.current = 0; }, [lang]);
 
   // Claude dictation: words arrive as partial/final events; send after a short pause
@@ -6278,6 +6483,9 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     setVoiceOpen(true); setReply(""); setHeard(""); setVoiceErr(""); setVoiceNote(""); demoRef.current = false;
     callRef.current = true; silentRef.current = 0;
     unlockTTS();
+    // Gemini hears the real audio when it is connected; otherwise the browser's speech recognition is used
+    audioModeRef.current = canRecordVoice() && ai.status === "live" && (geminiProxy === "on" || !!GEMINI_KEY);
+    if (audioModeRef.current && !actxRef.current) { try { const AC = window.AudioContext || window.webkitAudioContext; actxRef.current = new AC(); } catch (e) { audioModeRef.current = false; } }
     try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_blocked")); setPhase("tap"); } // must run inside the click for Claude dictation
     // tell the farmer early when the browser has already blocked the microphone
     try {
@@ -6286,7 +6494,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       }
     } catch (e) { /* not supported */ }
   };
-  const endCall = () => { callRef.current = false; demoRef.current = false; turnRef.current += 1; stopAudio(); setPhase("idle"); setVoiceOpen(false); };
+  const endCall = () => { callRef.current = false; demoRef.current = false; turnRef.current += 1; stopAudio(); releaseMic(); setPhase("idle"); setVoiceOpen(false); };
   const stopSpeaking = () => {
     try { ttsRef.current && ttsRef.current.stop().catch(() => {}); } catch (e) { /* ignore */ }
     try { synth && synth.cancel(); } catch (e) { /* ignore */ }
@@ -6297,12 +6505,13 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     stopSpeaking();
     try { recRef.current && recRef.current.abort(); } catch (e) { /* ignore */ }
     recRef.current = null;
+    if (mrRef.current && mrRef.current._finish) mrRef.current._finish("abort");
     demoRef.current = false; silentRef.current = 0; setVoiceErr(""); setVoiceNote("");
     try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_error")); setPhase("tap"); }
   };
   const tapToTalk = () => {
     if (!callRef.current) callRef.current = true;
-    if (phase === "speaking" || phase === "thinking") { interrupt(); return; }
+    if (phase === "speaking" || phase === "thinking" || phase === "sending") { interrupt(); return; }
     demoRef.current = false; silentRef.current = 0; setVoiceErr(""); setVoiceNote("");
     unlockTTS();
     try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_error")); setPhase("tap"); }
@@ -6310,6 +6519,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   // chat history: replay any answer aloud
   const replay = (text) => { unlockTTS(); speakText(text, { force: true }); };
   const stopListening = () => {
+    if (mrRef.current && mrRef.current._finish) { mrRef.current._finish("done"); return; }
     if (dictRef.current && dictRef.current.active()) { dictRef.current.stop().catch(() => {}); return; }
     try { recRef.current && recRef.current.stop(); } catch (e) { /* ignore */ }
   };
@@ -6327,10 +6537,10 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     if (callRef.current) { setPhase("idle"); demoRef.current = false; setHeard(""); }
   };
   useEffect(() => { if (!open && callRef.current) endCall(); }, [open]); // eslint-disable-line
-  useEffect(() => () => { callRef.current = false; stopAudio(); }, []); // eslint-disable-line
+  useEffect(() => () => { callRef.current = false; stopAudio(); releaseMic(); }, []); // eslint-disable-line
   const voiceEngine = engines.dict ? "claude" : SR ? "browser" : "none";
   useEffect(() => { if (voiceOpen && voiceEngine === "none" && !demoRef.current) { setVoiceErr(t("vc_unsupported")); setPhase("tap"); } }, [voiceOpen, voiceEngine]); // eslint-disable-line
-  const phaseLabel = { idle: t("vc_ready"), listening: t("vc_listening"), thinking: t("vc_thinking"), speaking: t("vc_speaking"), tap: t("vc_tap"), demo: t("vc_demo") }[phase] || "";
+  const phaseLabel = { idle: t("vc_ready"), listening: audioModeRef.current ? t("vc_mic_ready") : t("vc_listening"), sending: t("vc_sending"), thinking: t("vc_thinking"), speaking: t("vc_speaking"), tap: t("vc_tap"), demo: t("vc_demo") }[phase] || "";
 
   const chips = HELPER_CHIPS[lang] || HELPER_CHIPS.en;
 
@@ -6381,19 +6591,25 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
                 </div>
               ) : (
                 <>
-                  <button type="button" onClick={phase === "speaking" || phase === "thinking" ? interrupt : phase === "listening" ? stopListening : tapToTalk}
-                    aria-label={phase === "speaking" || phase === "thinking" ? t("vc_interrupt") : phase === "listening" ? t("vc_done_speaking") : t("vc_tap_btn")}
+                  <button type="button" onClick={phase === "speaking" || phase === "thinking" || phase === "sending" ? interrupt : phase === "listening" ? stopListening : tapToTalk}
+                    aria-label={phase === "speaking" || phase === "thinking" || phase === "sending" ? t("vc_interrupt") : phase === "listening" ? t("vc_done_speaking") : t("vc_tap_btn")}
                     className={`relative mt-2 flex h-36 w-36 items-center justify-center rounded-full transition-all duration-500 ${phase === "listening" ? "bg-leaf/30 shadow-[0_0_60px_rgba(103,168,52,0.55)]" : phase === "speaking" ? "bg-gold/25 shadow-[0_0_60px_rgba(237,192,74,0.55)]" : phase === "thinking" ? "animate-pulse bg-ivory/15 shadow-[0_0_40px_rgba(250,248,238,0.25)]" : "bg-ivory/10"}`}>
                     {(phase === "listening" || phase === "speaking") && <span className="absolute inset-0 animate-ping rounded-full bg-ivory/10" aria-hidden="true" />}
                     <span className={`absolute inset-3 rounded-full ring-4 ${phase === "listening" ? "ring-leaf/60" : phase === "speaking" ? "ring-gold/60" : "ring-ivory/15"}`} aria-hidden="true" />
                     {phase === "speaking" ? <Volume2 className="h-16 w-16 text-gold" aria-hidden="true" /> : phase === "thinking" ? <Sparkles className="h-16 w-16 animate-pulse text-gold" aria-hidden="true" /> : <Mic className={`h-16 w-16 ${phase === "listening" ? "text-ivory" : "text-ivory/80"}`} aria-hidden="true" />}
                   </button>
-                  <div className="scale-125 drop-shadow-[0_0_12px_rgba(237,192,74,0.45)]"><VoiceWaves active={phase === "listening" || phase === "speaking" || phase === "thinking"} tone={phase === "speaking" ? "speak" : phase === "thinking" ? "think" : "listen"} /></div>
+                  <div className="scale-125 drop-shadow-[0_0_12px_rgba(237,192,74,0.45)]">{phase === "listening" && audioModeRef.current ? <LevelBars level={level} /> : <VoiceWaves active={phase === "listening" || phase === "speaking" || phase === "thinking" || phase === "sending"} tone={phase === "speaking" ? "speak" : phase === "thinking" || phase === "sending" ? "think" : "listen"} />}</div>
                   <p className="font-display text-2xl font-extrabold" aria-live="assertive" data-phase={phase}>{phaseLabel}</p>
                   {phase === "listening" && <button type="button" onClick={stopListening} className="rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25">{t("vc_done_speaking")}</button>}
-                  {(phase === "speaking" || phase === "thinking") && <button type="button" onClick={interrupt} className="inline-flex items-center gap-2 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_interrupt")}</button>}
+                  {(phase === "speaking" || phase === "thinking" || phase === "sending") && <button type="button" onClick={interrupt} className="inline-flex items-center gap-2 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_interrupt")}</button>}
                   {(phase === "tap" || phase === "idle") && voiceEngine !== "none" && (
                     <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-base font-extrabold text-soil shadow-lg transition active:scale-95"><Mic className="h-5 w-5" aria-hidden="true" />{voiceNote === t("vc_no_speech") || phase === "tap" ? t("vc_again") : t("vc_tap_btn")}</button>
+                  )}
+                  {(heard || reply) && (
+                    <div className="w-full max-w-[320px] space-y-2 rounded-2xl bg-black/20 p-3 text-start ring-1 ring-ivory/15" aria-live="polite">
+                      {heard && <p className="text-xs leading-relaxed" dir="auto"><span className="block text-[10px] font-bold uppercase tracking-wide text-leaf">{t("vc_you_said")}</span>{heard}</p>}
+                      {reply && <p className="max-h-28 overflow-y-auto text-sm font-semibold leading-relaxed" dir="auto"><span className="block text-[10px] font-bold uppercase tracking-wide text-gold">{t("vc_advisor")}</span>{reply}</p>}
+                    </div>
                   )}
                   {voiceNote && <p className="max-w-[300px] rounded-xl bg-ivory/10 px-3 py-2 text-[11px] leading-snug text-ivory/80">{voiceNote}</p>}
                 </>

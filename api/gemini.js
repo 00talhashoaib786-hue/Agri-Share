@@ -7,10 +7,14 @@
     GEMINI_MODEL     optional, default "gemini-2.5-flash"
 
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
-  POST /api/gemini  { system, contents, voice } -> { text } or { error }
+  POST /api/gemini  { system, contents, voice, json } -> { text } or { error }
+    contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
+    json: true returns structured JSON text: { "heard": "...", "reply": "..." }
 */
 const MAX_TURNS = 24;
-const MAX_CHARS = 60000;
+const MAX_CHARS = 60000;            // text in the conversation
+const MAX_AUDIO_B64 = 3_500_000;    // about 80 s of 16 kHz mono WAV, under Vercel's 4.5 MB body limit
+const AUDIO_TYPES = /^audio\/(wav|x-wav|mp3|mpeg|aiff|aac|ogg|flac|webm|mp4)$/;
 
 export default async function handler(req, res) {
   const key = process.env.GEMINI_API_KEY || "";
@@ -23,10 +27,19 @@ export default async function handler(req, res) {
 
   let body = req.body;
   if (typeof body === "string") { try { body = JSON.parse(body); } catch (e) { body = null; } }
-  const { system, contents, voice } = body || {};
+  const { system, contents, voice, json } = body || {};
   if (!Array.isArray(contents) || !contents.length || contents.length > MAX_TURNS) return res.status(400).json({ error: "Invalid conversation" });
-  const size = JSON.stringify(contents).length + String(system || "").length;
-  if (size > MAX_CHARS) return res.status(413).json({ error: "Conversation too long" });
+  let textSize = String(system || "").length, audioSize = 0, clips = 0;
+  for (const turn of contents) {
+    if (!turn || !Array.isArray(turn.parts) || !["user", "model"].includes(turn.role)) return res.status(400).json({ error: "Invalid conversation turn" });
+    for (const part of turn.parts) {
+      if (part && typeof part.text === "string") textSize += part.text.length;
+      else if (part && part.inlineData && AUDIO_TYPES.test(String(part.inlineData.mimeType)) && typeof part.inlineData.data === "string") { audioSize += part.inlineData.data.length; clips += 1; }
+      else return res.status(400).json({ error: "Only text and audio parts are allowed" });
+    }
+  }
+  if (textSize > MAX_CHARS) return res.status(413).json({ error: "Conversation too long" });
+  if (clips > 1 || audioSize > MAX_AUDIO_B64) return res.status(413).json({ error: "Voice message too long" });
 
   try {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
@@ -37,7 +50,8 @@ export default async function handler(req, res) {
         contents,
         generationConfig: {
           temperature: voice ? 0.6 : 0.45,
-          maxOutputTokens: voice ? 300 : 900,
+          maxOutputTokens: voice ? 400 : 900,
+          ...(json ? { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { heard: { type: "STRING" }, reply: { type: "STRING" } }, required: ["heard", "reply"] } } : {}),
           // 2.5 Flash "thinking" would otherwise use up the output budget and return an empty answer
           ...(/2\.5/.test(model) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
         },
