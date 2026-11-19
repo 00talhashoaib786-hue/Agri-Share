@@ -33,15 +33,30 @@
   If Firebase is unreachable, the rules refuse a request, or Email/Password
   sign-in is not enabled yet, the app keeps working on localStorage.
 */
-import { initializeApp, getApps } from "firebase/app";
-import {
-  initializeFirestore, getFirestore, persistentLocalCache, persistentMultipleTabManager, memoryLocalCache,
-  collection, doc, onSnapshot, setDoc, deleteDoc, getDoc,
-} from "firebase/firestore";
-import {
-  getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  sendPasswordResetEmail, signOut, updateProfile, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification,
-} from "firebase/auth";
+/* PERFORMANCE: the Firebase SDK (~260 KiB) is NOT imported up front. It is downloaded on first use,
+   after the page has painted and the browser is idle, so the hero renders without waiting for it.
+   Every function below keeps the same signature as before; listeners return an unsubscribe right
+   away and attach once the SDK has loaded. */
+let sdk = null;          // { app, fs, au } once loaded
+let sdkPromise = null;
+const idle = () => new Promise((resolve) => {
+  if (typeof window === "undefined") return resolve();
+  const go = () => resolve();
+  const start = () => (window.requestIdleCallback ? window.requestIdleCallback(go, { timeout: 2000 }) : setTimeout(go, 600));
+  if (document.readyState === "complete") start(); else window.addEventListener("load", start, { once: true });
+});
+function loadSdk() {
+  if (!FIREBASE_ENABLED) return Promise.resolve(null);
+  if (!sdkPromise) {
+    sdkPromise = idle()
+      .then(() => Promise.all([import("firebase/app"), import("firebase/firestore"), import("firebase/auth")]))
+      .then(([app, fs, au]) => { sdk = { app, fs, au }; return sdk; })
+      .catch((e) => { console.warn("[Agri-Share] Firebase SDK could not load. Using localStorage only.", e); sdkPromise = null; return null; });
+  }
+  return sdkPromise;
+}
+// Start fetching early for actions the user triggers (sign in, etc.) without waiting for idle time
+export function preloadFirebase() { return loadSdk(); }
 
 export const firebaseConfig = {
   apiKey: "AIzaSyC32Nbbi1UDyFF8bul3OXfHIa9Oq5-WeuE",
@@ -73,12 +88,17 @@ export const COL = {
 
 let app = null, auth = null;
 // The Firestore instance for database "default" (FIRESTORE_DATABASE_ID). Exported as a live binding:
-// it is set on first use (see init) and is equivalent to getFirestore(app, "default") plus the offline cache.
+// it is set once the SDK has loaded (see init) and is equivalent to getFirestore(app, "default") plus the offline cache.
 export let db = null;
 
-function init() {
+async function init() {
+  if (app) return true;
+  const m = await loadSdk();
+  if (!m) return false;
   if (app) return true;
   try {
+    const { initializeApp, getApps } = m.app;
+    const { initializeFirestore, getFirestore, persistentLocalCache, persistentMultipleTabManager, memoryLocalCache } = m.fs;
     app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
     try {
       // Offline cache shared by all open tabs, so the app still loads data without network
@@ -86,7 +106,7 @@ function init() {
     } catch (e) {
       try { db = initializeFirestore(app, { ignoreUndefinedProperties: true, experimentalAutoDetectLongPolling: true, localCache: memoryLocalCache() }, FIRESTORE_DATABASE_ID); } catch (e2) { db = getFirestore(app, FIRESTORE_DATABASE_ID); }
     }
-    auth = getAuth(app);
+    auth = m.au.getAuth(app);
     return true;
   } catch (e) {
     console.warn("[Agri-Share] Firebase could not start. Using localStorage only.", e);
@@ -95,38 +115,50 @@ function init() {
   }
 }
 
-export function cloudAvailable() {
+export async function cloudAvailable() {
   return FIREBASE_ENABLED && init();
 }
+const unavailable = (msg = "Firebase unavailable", code = "unavailable") => Object.assign(new Error(msg), { code });
 
 // Firestore rejects undefined, functions and NaN; a JSON round trip removes them.
 const clean = (data) => JSON.parse(JSON.stringify(data));
 const safeId = (id) => String(id).replace(/\//g, "_");
 
+// Subscribe once the SDK is ready; the returned function works before and after that.
+function lazySubscribe(subscribe, onError) {
+  let unsub = null, cancelled = false;
+  cloudAvailable().then((ok) => {
+    if (cancelled) return;
+    if (!ok) { if (onError) onError({ code: "unavailable" }); return; }
+    try { unsub = subscribe(); } catch (e) { if (onError) onError(e); }
+  });
+  return () => { cancelled = true; if (unsub) { try { unsub(); } catch (e) { /* ignore */ } } };
+}
+
 /* Live listener on a whole collection.
    onData(list, { fromCache }) gets every document as { id, ...fields }. */
 export function watchCollection(name, onData, onError) {
-  if (!cloudAvailable()) { if (onError) onError({ code: "unavailable" }); return () => {}; }
-  try {
+  return lazySubscribe(() => {
+    const { onSnapshot, collection } = sdk.fs;
     return onSnapshot(
       collection(db, name),
       { includeMetadataChanges: true },
       (snap) => onData(snap.docs.map((d) => ({ ...d.data(), id: d.id })), { fromCache: snap.metadata.fromCache }),
       (err) => { logFs("listen", name, err); if (onError) onError(err); }
     );
-  } catch (e) { if (onError) onError(e); return () => {}; }
+  }, onError);
 }
 
 export function watchDoc(name, id, onData, onError) {
-  if (!cloudAvailable()) { if (onError) onError({ code: "unavailable" }); return () => {}; }
-  try {
+  return lazySubscribe(() => {
+    const { onSnapshot, doc } = sdk.fs;
     return onSnapshot(
       doc(db, name, safeId(id)),
       { includeMetadataChanges: true },
       (snap) => onData(snap.exists() ? snap.data() : null, { fromCache: snap.metadata.fromCache }),
       (err) => { logFs("listen", `${name}/${id}`, err); if (onError) onError(err); }
     );
-  } catch (e) { if (onError) onError(e); return () => {}; }
+  }, onError);
 }
 
 // One clean console line per Firestore failure: operation, path, database and error code
@@ -135,20 +167,23 @@ function logFs(op, path, e) {
 }
 
 export async function writeDoc(name, id, data) {
-  if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
+  if (!(await cloudAvailable())) throw unavailable();
   const { id: _drop, ...rest } = data || {};
+  const { setDoc, doc } = sdk.fs;
   try { await setDoc(doc(db, name, safeId(id)), clean(rest)); }
   catch (e) { logFs("write", `${name}/${id}`, e); throw e; }
 }
 
 export async function removeDoc(name, id) {
-  if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
+  if (!(await cloudAvailable())) throw unavailable();
+  const { deleteDoc, doc } = sdk.fs;
   try { await deleteDoc(doc(db, name, safeId(id))); }
   catch (e) { logFs("delete", `${name}/${id}`, e); throw e; }
 }
 
 export async function readDoc(name, id) {
-  if (!cloudAvailable()) return null;
+  if (!(await cloudAvailable())) return null;
+  const { getDoc, doc } = sdk.fs;
   try {
     const snap = await getDoc(doc(db, name, safeId(id)));
     return snap.exists() ? snap.data() : null;
@@ -157,45 +192,50 @@ export async function readDoc(name, id) {
 
 /* ---------------- Authentication (Email/Password) ---------------- */
 export function watchAuth(cb) {
-  if (!cloudAvailable()) { cb(null); return () => {}; }
-  try { return onAuthStateChanged(auth, cb, () => cb(null)); } catch (e) { cb(null); return () => {}; }
+  let unsub = null, cancelled = false;
+  cloudAvailable().then((ok) => {
+    if (cancelled) return;
+    if (!ok) { cb(null); return; }
+    try { unsub = sdk.au.onAuthStateChanged(auth, cb, () => cb(null)); } catch (e) { cb(null); }
+  });
+  return () => { cancelled = true; if (unsub) { try { unsub(); } catch (e) { /* ignore */ } } };
 }
 
 export async function fbSignUp(email, password, displayName) {
-  if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  if (!(await cloudAvailable())) throw unavailable();
+  const cred = await sdk.au.createUserWithEmailAndPassword(auth, email, password);
   // not awaited: the name is also kept in the users profile, so sign-up never waits on it
-  updateProfile(cred.user, { displayName }).catch(() => {});
+  sdk.au.updateProfile(cred.user, { displayName }).catch(() => {});
   return cred.user;
 }
 
 export async function fbSignIn(email, password) {
-  if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
-  const cred = await signInWithEmailAndPassword(auth, email, password);
+  if (!(await cloudAvailable())) throw unavailable();
+  const cred = await sdk.au.signInWithEmailAndPassword(auth, email, password);
   return cred.user;
 }
 
 export async function fbResetPassword(email) {
-  if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
-  await sendPasswordResetEmail(auth, email);
+  if (!(await cloudAvailable())) throw unavailable();
+  await sdk.au.sendPasswordResetEmail(auth, email);
 }
 
 /* Email verification: admin access requires a verified email (rules check email_verified) */
 export async function fbSendVerification() {
-  if (!cloudAvailable() || !auth.currentUser) throw Object.assign(new Error("Not signed in"), { code: "unauthenticated" });
-  await sendEmailVerification(auth.currentUser);
+  if (!(await cloudAvailable()) || !auth.currentUser) throw unavailable("Not signed in", "unauthenticated");
+  await sdk.au.sendEmailVerification(auth.currentUser);
 }
 // Reload the signed-in user and refresh the ID token so new claims (email_verified) reach the rules
 export async function fbRefreshUser() {
-  if (!cloudAvailable() || !auth.currentUser) return null;
+  if (!(await cloudAvailable()) || !auth.currentUser) return null;
   await auth.currentUser.reload();
   await auth.currentUser.getIdToken(true);
   return auth.currentUser;
 }
 
 export async function fbSignOut() {
-  if (!cloudAvailable()) return;
-  try { await signOut(auth); } catch (e) { /* already signed out */ }
+  if (!(await cloudAvailable())) return;
+  try { await sdk.au.signOut(auth); } catch (e) { /* already signed out */ }
 }
 
 /* ---------------- Phone OTP ----------------
@@ -204,11 +244,11 @@ export async function fbSignOut() {
    An invisible reCAPTCHA runs in the element with the given id. */
 let verifier = null;
 export async function fbStartPhone(phoneE164, containerId) {
-  if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
+  if (!(await cloudAvailable())) throw unavailable();
   try {
     if (verifier) { try { verifier.clear(); } catch (e) { /* ignore */ } verifier = null; }
-    verifier = new RecaptchaVerifier(auth, containerId, { size: "invisible" });
-    return await signInWithPhoneNumber(auth, phoneE164, verifier);
+    verifier = new sdk.au.RecaptchaVerifier(auth, containerId, { size: "invisible" });
+    return await sdk.au.signInWithPhoneNumber(auth, phoneE164, verifier);
   } catch (e) {
     if (verifier) { try { verifier.clear(); } catch (e2) { /* ignore */ } verifier = null; }
     throw e;

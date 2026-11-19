@@ -15,8 +15,18 @@ import imgDrone from "./assets/machines/drone.jpg";
 import imgImplement from "./assets/machines/implement.jpg";
 import {
   FIREBASE_ENABLED, FIRESTORE_DATABASE_ID, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc,
-  watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser,
+  watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser, preloadFirebase,
 } from "./firebase.js";
+
+// Right-to-left fonts (Noto Nastaliq Urdu + Noto Naskh Arabic) are only downloaded when an RTL language is used
+const RTL_FONTS_URL = "https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap";
+function ensureRtlFonts() {
+  if (typeof document === "undefined" || document.getElementById("rtl-fonts")) return;
+  const l = document.createElement("link");
+  l.rel = "stylesheet"; l.id = "rtl-fonts"; l.href = RTL_FONTS_URL; l.media = "print";
+  l.onload = () => { l.media = "all"; };
+  document.head.appendChild(l);
+}
 import {
   Tractor, Wheat, Search, MapPin, Fuel, User, Truck, CalendarDays, Clock, X, Check,
   ChevronRight, Languages, Store, ClipboardList, Phone, MessageCircle, Send, Bot, Sparkles,
@@ -5922,11 +5932,21 @@ async function askGemini({ system, contents, voice, json }) {
       if (r === "__timeout__") { if (!GEMINI_KEY) return { error: "AI advisor timed out (30 s)", transient: true }; }
       else {
         const ct = (r.headers && r.headers.get("content-type")) || "";
-        const j = ct.includes("json") ? await r.json().catch(() => ({})) : {};
+        let j = {}, raw = "";
+        if (ct.includes("json")) j = await r.json().catch(() => ({}));
+        else raw = await r.text().catch(() => "");
         if (r.ok && j.text) { geminiProxy = "on"; return { text: j.text, via: "proxy" }; }
-        if (r.status === 404 || !ct.includes("json")) { geminiProxy = "missing"; geminiCheckedAt = Date.now(); }
-        else if (r.status === 503 && /not set/i.test(j.error || "")) { geminiProxy = "none"; geminiCheckedAt = Date.now(); }
-        if (!GEMINI_KEY) return { error: geminiProxy === "missing" ? "No /api/gemini route here (run on Vercel, or set VITE_GEMINI_API_KEY in .env.local)" : j.error || `AI advisor HTTP ${r.status}`, transient: r.status >= 500 || r.status === 429 };
+        if (r.status === 503 && /not set/i.test(j.error || "")) { geminiProxy = "none"; geminiCheckedAt = Date.now(); }
+        // A non-JSON answer is Vercel's own error page (crash, timeout, payload too large, wrong route):
+        // report the real status and Vercel's error code instead of guessing "no route"
+        let err = j.error;
+        if (!err) {
+          const code = (raw.match(/\b(FUNCTION_[A-Z_]+|NOT_FOUND|DEPLOYMENT_[A-Z_]+|INTERNAL_[A-Z_]+|[A-Z]+_PAYLOAD_TOO_LARGE)\b/) || [])[1];
+          const hint = r.status === 413 ? "voice message too large" : r.status === 504 ? "server timed out" : r.status === 404 ? "route not found on this deployment" : r.status >= 500 ? "server function crashed" : "unexpected response";
+          err = `AI advisor HTTP ${r.status}${code ? ` ${code}` : ""} (${hint}${ct.includes("json") ? "" : ", non-JSON reply"})`;
+        }
+        console.warn("[Agri-Share] /api/gemini POST failed:", r.status, err, raw ? raw.slice(0, 200) : "");
+        if (!GEMINI_KEY) return { error: err, transient: r.status >= 500 || r.status === 429 || r.status === 408 };
       }
     } catch (e) { if (!GEMINI_KEY) return { error: `AI advisor unreachable: ${e && e.message ? e.message : e}`, transient: true }; }
   }
@@ -9504,6 +9524,7 @@ function App() {
     store.set("agrishare.lang", lang);
     document.documentElement.lang = langMeta.html || lang;
     document.documentElement.dir = langMeta.dir;
+    if (langMeta.dir === "rtl") ensureRtlFonts();
   }, [lang, langMeta.dir]);
   useEffect(() => {
     const onHash = () => setTabState(readHash());
@@ -9535,7 +9556,7 @@ function App() {
     if (meta && meta.expansion && T[code] && T[code].exp_note) toast(T[code].exp_note);
   };
 
-  const openAuth = (tabName, reason, then) => setAuth({ tab: tabName || "signin", reason, then });
+  const openAuth = (tabName, reason, then) => { preloadFirebase(); setAuth({ tab: tabName || "signin", reason, then }); };
   const requireAuth = (fn) => { if (session) fn(); else openAuth("signup", t("au_need"), fn); };
   const onAuthDone = (r) => {
     if (r.type === "reset") { toast(t(r.emailSent ? "toast_reset_link" : "toast_reset")); return; }

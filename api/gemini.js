@@ -17,9 +17,11 @@ const MAX_AUDIO_B64 = 1_400_000;    // the app sends at most ~15 s of 16 kHz mon
 const AUDIO_TYPES = /^audio\/(wav|x-wav|wave|mp3|mpeg|aiff|aac|ogg|flac|webm|mp4|m4a|x-m4a)$/;
 const GEMINI_TIMEOUT_MS = 25000;
 
-// Vercel may hand the body over as an object, a string or a Buffer depending on headers
+// Vercel may hand the body over as an object, a string, a Buffer, or not parse it at all.
+// Its req.body getter can also THROW on malformed input, so every access is guarded.
 async function readBody(req) {
-  let b = req.body;
+  let b;
+  try { b = req.body; } catch (e) { return null; }
   if (b && typeof b === "object" && !Buffer.isBuffer(b)) return b;
   if (Buffer.isBuffer(b)) b = b.toString("utf8");
   if (typeof b === "string" && b.trim()) { try { return JSON.parse(b); } catch (e) { return null; } }
@@ -33,14 +35,27 @@ async function readBody(req) {
 }
 const fail = (res, status, error) => res.status(status).json({ ok: false, error });
 
-
 export default async function handler(req, res) {
+  // Whatever happens, answer with JSON: an uncaught error would make Vercel serve its HTML error page
+  try {
+    return await handle(req, res);
+  } catch (err) {
+    console.error("[api/gemini] unexpected error:", err);
+    try { if (!res.headersSent) return res.status(500).json({ ok: false, error: `Server error: ${err && err.message ? err.message : String(err)}` }); } catch (e) { /* response already gone */ }
+  }
+}
+
+async function handle(req, res) {
   const key = process.env.GEMINI_API_KEY || "";
   const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
   res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
 
+  // Preflight: the app calls this route from the same origin, so no cross-site access is granted
+  // (a wildcard CORS header would let any website spend this project's Gemini quota)
+  if (req.method === "OPTIONS") { res.setHeader("Allow", "GET, POST, OPTIONS"); return res.status(204).end(); }
   if (req.method === "GET") return res.status(200).json({ ok: true, configured: !!key, model });
-  if (req.method !== "POST") return fail(res, 405, "Method not allowed");
+  if (req.method !== "POST") { res.setHeader("Allow", "GET, POST, OPTIONS"); return fail(res, 405, "Method not allowed"); }
   if (!key) return fail(res, 503, "GEMINI_API_KEY is not set on the server");
 
   const body = await readBody(req);
