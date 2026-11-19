@@ -9,7 +9,10 @@
      (pay as you go) plan; on Spark the app shows a clear message and the
      farmer can use email instead.
   2. Firestore Database > Create database (asia-south1 is closest to Pakistan).
-  3. Firestore Database > Rules: paste the contents of firestore.rules and Publish.
+     This project uses the database ID "default" (see FIRESTORE_DATABASE_ID below).
+  3. Firestore Database > pick the "default" database in the database dropdown >
+     Rules: paste the contents of firestore.rules and Publish
+     (or run: firebase deploy --only firestore:rules, which uses firebase.json).
   4. Authentication > Settings > Authorized domains: add your Vercel domain,
      for example agri-share.vercel.app (localhost is already allowed).
 
@@ -53,6 +56,11 @@ export const firebaseConfig = {
 // Set to false to run the app on localStorage only (no cloud at all).
 export const FIREBASE_ENABLED = true;
 
+// Firestore database ID. This project's database was created with the ID "default"
+// (a named database), NOT the built-in "(default)" one. Using the wrong ID means every
+// listener waits forever and the app shows "Offline". Change this if you recreate the database.
+export const FIRESTORE_DATABASE_ID = "default";
+
 export const COL = {
   listings: "machinery_listings",
   requests: "indrive_requests",
@@ -63,7 +71,10 @@ export const COL = {
   demand: "pending_demand_requests",
 };
 
-let app = null, db = null, auth = null;
+let app = null, auth = null;
+// The Firestore instance for database "default" (FIRESTORE_DATABASE_ID). Exported as a live binding:
+// it is set on first use (see init) and is equivalent to getFirestore(app, "default") plus the offline cache.
+export let db = null;
 
 function init() {
   if (app) return true;
@@ -71,9 +82,9 @@ function init() {
     app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
     try {
       // Offline cache shared by all open tabs, so the app still loads data without network
-      db = initializeFirestore(app, { ignoreUndefinedProperties: true, localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+      db = initializeFirestore(app, { ignoreUndefinedProperties: true, experimentalAutoDetectLongPolling: true, localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) }, FIRESTORE_DATABASE_ID);
     } catch (e) {
-      try { db = initializeFirestore(app, { ignoreUndefinedProperties: true, localCache: memoryLocalCache() }); } catch (e2) { db = getFirestore(app); }
+      try { db = initializeFirestore(app, { ignoreUndefinedProperties: true, experimentalAutoDetectLongPolling: true, localCache: memoryLocalCache() }, FIRESTORE_DATABASE_ID); } catch (e2) { db = getFirestore(app, FIRESTORE_DATABASE_ID); }
     }
     auth = getAuth(app);
     return true;
@@ -101,7 +112,7 @@ export function watchCollection(name, onData, onError) {
       collection(db, name),
       { includeMetadataChanges: true },
       (snap) => onData(snap.docs.map((d) => ({ ...d.data(), id: d.id })), { fromCache: snap.metadata.fromCache }),
-      (err) => { console.warn(`[Agri-Share] Firestore "${name}" listener stopped:`, err && err.code); if (onError) onError(err); }
+      (err) => { logFs("listen", name, err); if (onError) onError(err); }
     );
   } catch (e) { if (onError) onError(e); return () => {}; }
 }
@@ -113,26 +124,35 @@ export function watchDoc(name, id, onData, onError) {
       doc(db, name, safeId(id)),
       { includeMetadataChanges: true },
       (snap) => onData(snap.exists() ? snap.data() : null, { fromCache: snap.metadata.fromCache }),
-      (err) => { console.warn(`[Agri-Share] Firestore "${name}/${id}" listener stopped:`, err && err.code); if (onError) onError(err); }
+      (err) => { logFs("listen", `${name}/${id}`, err); if (onError) onError(err); }
     );
   } catch (e) { if (onError) onError(e); return () => {}; }
+}
+
+// One clean console line per Firestore failure: operation, path, database and error code
+function logFs(op, path, e) {
+  console.warn(`[Agri-Share] Firestore ${op} ${FIRESTORE_DATABASE_ID}/${path} failed: ${(e && e.code) || "error"}${e && e.message ? " · " + e.message : ""}`);
 }
 
 export async function writeDoc(name, id, data) {
   if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
   const { id: _drop, ...rest } = data || {};
-  await setDoc(doc(db, name, safeId(id)), clean(rest));
+  try { await setDoc(doc(db, name, safeId(id)), clean(rest)); }
+  catch (e) { logFs("write", `${name}/${id}`, e); throw e; }
 }
 
 export async function removeDoc(name, id) {
   if (!cloudAvailable()) throw Object.assign(new Error("Firebase unavailable"), { code: "unavailable" });
-  await deleteDoc(doc(db, name, safeId(id)));
+  try { await deleteDoc(doc(db, name, safeId(id))); }
+  catch (e) { logFs("delete", `${name}/${id}`, e); throw e; }
 }
 
 export async function readDoc(name, id) {
   if (!cloudAvailable()) return null;
-  const snap = await getDoc(doc(db, name, safeId(id)));
-  return snap.exists() ? snap.data() : null;
+  try {
+    const snap = await getDoc(doc(db, name, safeId(id)));
+    return snap.exists() ? snap.data() : null;
+  } catch (e) { logFs("read", `${name}/${id}`, e); throw e; }
 }
 
 /* ---------------- Authentication (Email/Password) ---------------- */

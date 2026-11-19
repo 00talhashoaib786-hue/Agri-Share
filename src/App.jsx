@@ -14,7 +14,7 @@ import imgTransplanter from "./assets/machines/transplanter.jpg";
 import imgDrone from "./assets/machines/drone.jpg";
 import imgImplement from "./assets/machines/implement.jpg";
 import {
-  FIREBASE_ENABLED, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc,
+  FIREBASE_ENABLED, FIRESTORE_DATABASE_ID, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc,
   watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser,
 } from "./firebase.js";
 import {
@@ -506,6 +506,9 @@ const T = {
     cloud_partial: "Partly synced: sign in to sync bookings",
     cloud_offline: "Offline: saved on this device",
     cloud_local: "Saved on this device only",
+    cloud_nodb: "Firestore database not found",
+    cloud_denied: "Firestore refused access: publish the rules",
+    cloud_detail: "Firestore database \"{db}\":",
     au_reset_email_note: "We will email you a link to set a new password.",
     toast_reset_link: "Password reset link sent. Check your email (and spam folder).",
     loc_nearest_beyond: "Closest machines outside your radius (transport costs more):",
@@ -6995,15 +6998,25 @@ function ListingStatusPill({ status, t }) {
   return <span className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-bold ${cls}`}>{t("ls_" + s)}</span>;
 }
 
-function CloudBadge({ t, cloud }) {
+function CloudBadge({ t, cloud, detail }) {
   if (!cloud) return null;
   const o = cloud.overall;
-  const tone = o === "live" ? "bg-leaf/15 text-forest ring-leaf/40" : o === "connecting" ? "bg-ivory text-soil ring-soil/20" : o === "partial" ? "bg-gold/20 text-soil ring-gold/50" : "bg-soil/10 text-soil ring-soil/20";
+  const tone = o === "live" ? "bg-leaf/15 text-forest ring-leaf/40" : o === "connecting" ? "bg-ivory text-soil ring-soil/20" : o === "partial" ? "bg-gold/20 text-soil ring-gold/50" : o === "nodb" || o === "denied" ? "bg-red-50 text-red-800 ring-red-200" : "bg-soil/10 text-soil ring-soil/20";
+  const codes = cloud.codes || {};
+  const lines = Object.entries(cloud.status).map(([k, v]) => `${k}: ${v}${codes[k] ? ` (${codes[k]})` : ""}`);
+  const problems = Object.entries(cloud.status).filter(([, v]) => v !== "live" && v !== "connecting");
   return (
-    <p className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ring-1 ${tone}`} role="status" title={Object.entries(cloud.status).map(([k, v]) => `${k}: ${v}`).join(" · ")}>
-      <span className={`h-2 w-2 rounded-full ${o === "live" ? "bg-leaf animate-pulse" : o === "partial" ? "bg-gold" : "bg-soil/40"}`} aria-hidden="true" />
-      {t("cloud_" + o)}
-    </p>
+    <span className="inline-flex flex-col items-end gap-1">
+      <p className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ring-1 ${tone}`} role="status" title={`${t("cloud_detail").replace("{db}", cloud.databaseId || "")}\n${lines.join("\n")}`}>
+        <span className={`h-2 w-2 rounded-full ${o === "live" ? "bg-leaf animate-pulse" : o === "partial" ? "bg-gold" : o === "nodb" || o === "denied" ? "bg-red-600" : "bg-soil/40"}`} aria-hidden="true" />
+        {t("cloud_" + o)}
+      </p>
+      {detail && problems.length > 0 && (
+        <span className="max-w-xs text-end text-[11px] leading-snug text-soil/80" dir="ltr">
+          {t("cloud_detail").replace("{db}", cloud.databaseId || "")} {problems.map(([k, v]) => `${k}: ${v}${codes[k] ? ` (${codes[k]})` : ""}`).join(" · ")}
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -7341,7 +7354,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ModeBadge t={t} demo={demoMode} />
-          <CloudBadge t={t} cloud={cloud} />
+          <CloudBadge t={t} cloud={cloud} detail />
           {lock && <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
         </div>
       </div>
@@ -7557,7 +7570,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                       <td className="px-4 py-3">{d.village || dn(d.district)}</td>
                       <td className="px-4 py-3 text-xs" dir="ltr">{fmtDate(d.date)} · {d.hours}h</td>
                       <td className="px-4 py-3 font-semibold" dir="ltr">{pkr(d.rate)}/hr</td>
-                      <td className="px-4 py-3 text-xs">{d.renterName || "·"}{d.renterPhone ? <span className="block font-mono" dir="ltr">{d.renterPhone}</span> : null}</td>
+                      <td className="px-4 py-3 text-xs"><span className="block font-semibold">{d.renterName || "·"}</span>{d.renterEmail ? <span className="block break-all" dir="ltr">{d.renterEmail}</span> : null}<ContactButtons t={t} phone={d.renterPhone || prof(d.renterEmail).phone} name={d.renterName} /></td>
                       <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${d.status === "matched" ? "bg-leaf/15 text-forest" : d.status === "waiting" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("dm_" + d.status)}</span></td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1.5">
@@ -8447,7 +8460,9 @@ function useCollectionSync(key, items, setItems, authUid, report) {
     if (synced.current) synced.current.set(id, json);
     writeDoc(name, id, it).catch((e) => {
       if (synced.current) synced.current.delete(id);
-      if (e && e.code === "permission-denied") { failed.current.add(id); report(key, "denied"); }
+      console.warn(`[Agri-Share] Firestore write ${name}/${id} failed:`, e && e.code, e && e.message);
+      if (e && e.code === "permission-denied") { failed.current.add(id); report(key, "denied", "permission-denied (write)"); }
+      else report(key, syncState(e), (e && e.code) || "write-failed");
     });
   };
 
@@ -8455,7 +8470,7 @@ function useCollectionSync(key, items, setItems, authUid, report) {
     if (!FIREBASE_ENABLED) { report(key, "local"); return undefined; }
     synced.current = null; failed.current = new Set();
     report(key, "connecting");
-    const slow = setTimeout(() => { if (synced.current === null) report(key, "offline"); }, 9000);
+    const slow = setTimeout(() => { if (synced.current === null) report(key, "offline", `no server response after 9s (database "${FIRESTORE_DATABASE_ID}")`); }, 9000);
     const knownKey = "agrishare.cloudIds." + key;
     const unsub = watchCollection(name, (list, meta) => {
       if (meta.fromCache && synced.current === null) return; // wait for the server's answer first
@@ -8487,8 +8502,8 @@ function useCollectionSync(key, items, setItems, authUid, report) {
       if (!meta.fromCache) store.set(knownKey, [...remote.keys()]);
       if (stableJson(next) !== stableJson(itemsRef.current)) setItems(next);
       toPush.forEach(push);
-      report(key, failed.current.size ? "denied" : meta.fromCache ? "offline" : "live");
-    }, (err) => { synced.current = null; report(key, err && err.code === "permission-denied" ? "denied" : "local"); });
+      report(key, failed.current.size ? "denied" : meta.fromCache ? "offline" : "live", failed.current.size ? "permission-denied (write)" : "");
+    }, (err) => { synced.current = null; report(key, syncState(err), (err && (err.code || err.message)) || "error"); });
     return () => { clearTimeout(slow); unsub(); };
   }, [authUid]); // eslint-disable-line
 
@@ -8515,13 +8530,13 @@ function useSettingsSync(settings, setSettings, authUid, report) {
   ref.current = settings;
   const save = (v) => {
     synced.current = stableJson(v);
-    writeDoc(COL.settings, "pilot", { ...v, updatedAt: Date.now() }).catch((e) => { if (e && e.code === "permission-denied") report("settings", "denied"); });
+    writeDoc(COL.settings, "pilot", { ...v, updatedAt: Date.now() }).catch((e) => { if (e && e.code === "permission-denied") report("settings", "denied", "permission-denied (write: admins only)"); });
   };
   useEffect(() => {
     if (!FIREBASE_ENABLED) { report("settings", "local"); return undefined; }
     synced.current = null;
     report("settings", "connecting");
-    const slow = setTimeout(() => { if (synced.current === null) report("settings", "offline"); }, 9000);
+    const slow = setTimeout(() => { if (synced.current === null) report("settings", "offline", `no server response after 9s (database "${FIRESTORE_DATABASE_ID}")`); }, 9000);
     const unsub = watchDoc(COL.settings, "pilot", (data, meta) => {
       if (meta.fromCache && synced.current === null) return;
       if (!data) { if (!meta.fromCache) save(ref.current); report("settings", "live"); return; }
@@ -8530,7 +8545,7 @@ function useSettingsSync(settings, setSettings, authUid, report) {
       synced.current = stableJson(merged);
       if (stableJson(merged) !== stableJson(ref.current)) setSettings(merged);
       report("settings", meta.fromCache ? "offline" : "live");
-    }, (err) => { synced.current = null; report("settings", err && err.code === "permission-denied" ? "denied" : "local"); });
+    }, (err) => { synced.current = null; report("settings", syncState(err), (err && (err.code || err.message)) || "error"); });
     return () => { clearTimeout(slow); unsub(); };
   }, [authUid]); // eslint-disable-line
   useEffect(() => {
@@ -8539,9 +8554,23 @@ function useSettingsSync(settings, setSettings, authUid, report) {
   }, [settings]); // eslint-disable-line
 }
 
+// Firestore error -> sync state shown in the badge
+const syncState = (err) => {
+  const c = err && err.code;
+  if (c === "permission-denied") return "denied";
+  if (c === "not-found" || (err && /database .* does not exist|NOT_FOUND/i.test(err.message || ""))) return "nodb";
+  if (c === "unavailable" || c === "deadline-exceeded") return "offline";
+  return "local";
+};
+
 function useCloudSync(state, setters, authUid) {
   const [status, setStatus] = useState({});
-  const report = useCallback((k, v) => setStatus((s) => (s[k] === v ? s : { ...s, [k]: v })), []);
+  const [codes, setCodes] = useState({});
+  const report = useCallback((k, v, code) => {
+    setStatus((s) => (s[k] === v ? s : { ...s, [k]: v }));
+    setCodes((c) => ((c[k] || "") === (code || "") ? c : { ...c, [k]: code || "" }));
+    if (code) console.warn(`[Agri-Share] Firestore ${k}: ${v} (${code})`);
+  }, []);
   useCollectionSync("listings", state.listings, setters.setListings, authUid, report);
   useCollectionSync("bookings", state.bookings, setters.setBookings, authUid, report);
   useCollectionSync("requests", state.liveRequests, setters.setLiveRequests, authUid, report);
@@ -8549,8 +8578,8 @@ function useCloudSync(state, setters, authUid) {
   useCollectionSync("demand", state.demand, setters.setDemand, authUid, report);
   useSettingsSync(state.settings, setters.setSettings, authUid, report);
   const vals = Object.values(status);
-  const overall = !FIREBASE_ENABLED ? "local" : vals.includes("connecting") || vals.length < 6 ? "connecting" : vals.every((v) => v === "live") ? "live" : vals.includes("live") ? "partial" : vals.includes("offline") ? "offline" : "local";
-  return { status, overall };
+  const overall = !FIREBASE_ENABLED ? "local" : vals.includes("nodb") ? "nodb" : vals.includes("connecting") || vals.length < 6 ? "connecting" : vals.every((v) => v === "live") ? "live" : vals.includes("live") ? "partial" : vals.every((v) => v === "denied") ? "denied" : vals.includes("offline") ? "offline" : "local";
+  return { status, codes, overall, databaseId: FIRESTORE_DATABASE_ID };
 }
 
 /* ------------------------------------------------------------------ */
