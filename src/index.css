@@ -9,6 +9,13 @@ html, body { overflow-x: hidden; width: 100%; max-width: 100%; }
 #root { width: 100%; max-width: 100%; }
 img, svg, video, canvas { max-width: 100%; }
 [dir="rtl"] .font-display { font-family: 'Noto Naskh Arabic', 'Bricolage Grotesque', system-ui, sans-serif; }
+/* Urdu / Punjabi Nastaliq: tall letterforms need extra line height or they clip */
+.font-nastaliq { line-height: 1.9; }
+.font-nastaliq .font-display { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', system-ui, sans-serif; }
+.font-nastaliq .leading-none, .font-nastaliq .leading-tight, .font-nastaliq .leading-snug, .font-nastaliq [class*="leading-["] { line-height: 1.7 !important; }
+.font-nastaliq .truncate { padding-block: 0.15em; }
+/* mirror directional arrows in right-to-left languages */
+[dir="rtl"] .lucide-chevron-right, [dir="rtl"] .lucide-chevron-left, [dir="rtl"] .lucide-arrow-right, [dir="rtl"] .lucide-arrow-left { transform: scaleX(-1); }
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 @keyframes slidein { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }

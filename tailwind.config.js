@@ -9,6 +9,7 @@ export default {
         sans: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
         display: ["'Bricolage Grotesque'", "'Plus Jakarta Sans'", "system-ui", "sans-serif"],
         urdu: ["'Noto Naskh Arabic'", "'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+        nastaliq: ["'Noto Nastaliq Urdu'", "'Noto Naskh Arabic'", "'Plus Jakarta Sans'", "system-ui", "sans-serif"],
       },
     },
   },

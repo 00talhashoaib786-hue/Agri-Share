@@ -245,8 +245,6 @@ const LANGS = [
 // Pashto and Balochi cover navigation, hero, marketplace, booking, payments, Agri-Market and the helper.
 // Any other screen falls back to Urdu (same script, widely read), then English.
 const RTL_FALLBACK = "ur";
-// Live-platform copy: these keys were rewritten in English; other languages use it until re-translated
-const EN_ONLY_KEYS = ["vc_mic_blocked", "vc_demo_btn", "vc_no_mic", "vc_net", "vc_lang_unsupported", "vc_demo", "vc_mic_error", "vc_unsupported", "tr4_s", "vo_mark_route", "vo_pattern_note", "lr_diesel_note_intl", "fx_note", "cat_rates_note", "lr_diesel_intl", "loc_far", "lr_diesel_note", "lr_peak", "lr_compare_hint", "lr_fuel_est", "rate_label", "bk_pay_note", "mb_waiting", "ow_sub", "es_note", "ussd_title", "ussd_demo", "au_reset_note", "mem_local", "ad_reset", "ad_reset_sub", "toast_demo_reset", "kp_demo", "kp_try", "am_demo_note", "am_to_wallet", "mode_demo_d", "mode_sub"];
 
 const T = {
   en: {
@@ -358,7 +356,7 @@ const T = {
     al_booking: "Booking awaiting owner",
     al_view: "Review",
     ad_live: "Live Requests & Bookings",
-    ad_live_req: "InDrive machinery requests",
+    ad_live_req: "Apni Boli machinery requests",
     ad_live_bk: "Bookings",
     ct_call: "Call",
     ct_wa: "WhatsApp",
@@ -470,7 +468,7 @@ const T = {
     dm_waiting: "Waiting", dm_contacted: "Contacted", dm_matched: "Matched",
     dm_agent_dispatch: "Agri-Agent dispatch", dm_notify: "Notify me",
     lr_choose: "Which machine do you need?",
-    lr_choose_sub: "Tap a machine type first, like choosing Moto, Mini or AC in InDrive. Models and rates for {country}.",
+    lr_choose_sub: "Tap a machine type first, then name your price. Models and rates for {country}.",
     cat_rates_note: "Typical market ranges, not quotes.",
     lr_est_rate: "Est. hourly rate",
     lr_select: "Select & continue",
@@ -537,7 +535,7 @@ const T = {
     loc_your: "Your farm location",
     loc_road: "road est.",
     loc_far: "No machines within {km} km of {place} yet. Widen the radius or post a request.",
-    loc_try_indrive: "Post a live request",
+    loc_try_live: "Post a live request",
     loc_dist_note: "Distances are road estimates from your pin.",
     loc_dist_hint: "Set your location to see exact distance and transport cost.",
     loc_machine: "Where is the machine kept?",
@@ -568,8 +566,8 @@ const T = {
     vc_engine_browser: "Browser voice. Hands-free: it listens again after each reply.",
     vc_lang_note: "Speech is heard and read in Urdu for this language.",
     nav_live: "Post a Request",
-    cta_live: "Post a Request (InDrive Mode)",
-    lr_title: "Post a Machinery Request (InDrive Mode)",
+    cta_live: "Post a Request (Apni Boli)",
+    lr_title: "Apni Boli: Name Your Price for Machinery",
     lr_sub: "Name your own price. Nearby owners see your request live on the radar and accept it or send a counter-offer. If no one nearby is free, expand the search tier by tier.",
     lr_machine: "Required machine",
     lr_village: "Your village / location",
@@ -635,7 +633,7 @@ const T = {
     lr_tier3_r: "up to 100 km",
     lr_tier3_t: "Emergency peak-harvest cover, long-distance transport",
     toast_lr_booked: "Booking confirmed with {owner}.",
-    mb_via_live: "Booked via live request (InDrive mode)",
+    mb_via_live: "Booked via Apni Boli (Name Your Price)",
     ow_no_history: "No responses yet.",
 
     nav_market: "Marketplace", nav_bookings: "My Bookings", nav_owner: "Owner Portal", nav_agent: "Agri-Agent & USSD",
@@ -794,7 +792,7 @@ const T = {
     ad_verify: "Machinery verification",
     ad_ledger: "Bookings & commission",
     ad_settings: "Platform settings",
-    ad_requests: "InDrive requests",
+    ad_requests: "Apni Boli requests",
     ad_pending: "Pending verification",
     ad_approve: "Approve",
     ad_reject: "Reject",
@@ -856,12 +854,12 @@ const T = {
     kp_sub: "Call the toll-free helpline or dial the USSD code from any basic phone. A Punjabi or Urdu voice guides you step by step, and your booking is confirmed by SMS.",
     kp_toll: "Toll-free helpline",
     kp_ussd: "USSD code",
-    kp_demo: "",
+    kp_demo: "Toll-free from any mobile network.",
     kp_ivr: "Hear the IVR voice steps",
     kp_try: "Try keypad booking",
     nav_mandi: "Agri-Market",
     am_title: "Agri-Market: Sell Your Harvest",
-    am_sub: "Post your crop and your price. Registered flour mills, rice mills and bulk buyers bid live, InDrive style. Pick the best offer.",
+    am_sub: "Post your crop and your price. Registered flour mills, rice mills and bulk buyers bid live on it. Pick the best offer.",
     am_credit: "Your pending machinery credit (70%)",
     am_credit_n: "bookings on Harvest Now, Pay Later",
     am_closed_loop: "Closed-Loop Settlement",
@@ -914,21 +912,23 @@ const T = {
     am_confirm: "Confirm sale",
     am_done: "Sale confirmed and settled.",
     am_sold_to: "Sold to",
-    am_demo_note: "",
+    am_demo_note: "Agri-Share keeps a record of every settlement.",
     toast_sold: "Sale confirmed. {net} net profit to your wallet.",
     ad_kpi_credit: "Harvest credit outstanding (partner-funded)",
     hero_local: "Machine kharidna zaroori nahi, kiraye par lein.",
     kh_short: "Kisan Helper",
     kp_ivr_pa: "Punjabi IVR",
     kp_ivr_ur: "Urdu IVR",
+    ab_name: "Apni Boli (Name Your Price)",
+    ab_tag: "Enter your rate, nearby owners send offers"
   },
   ur: {
-    vc_mic_blocked: "پریویو میں مائیک بند ہے۔ نیچے 'وائس ڈیمو چلائیں' دبائیں یا براؤزر میں مائیک کی اجازت دیں۔",
-    vc_demo_btn: "وائس ڈیمو چلائیں",
+    vc_mic_blocked: "مائیک کی اجازت بند ہے۔ نیچے 'مثال سنیں' دبائیں یا براؤزر میں مائیک کی اجازت دیں۔",
+    vc_demo_btn: "مثال سنیں",
     vc_retry: "مائیک دوبارہ آزمائیں",
-    vc_no_mic: "کوئی مائیک نہیں ملا۔ مائیک لگائیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
-    vc_net: "آواز کی سروس کو انٹرنیٹ چاہیے۔ کنکشن دیکھیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
-    vc_lang_unsupported: "یہ براؤزر اس زبان میں نہیں سن سکتا۔ Chrome آزمائیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
+    vc_no_mic: "مائیک نہیں ملا۔ مائیک لگائیں یا 'مثال سنیں' دبائیں۔",
+    vc_net: "آواز کی سروس کو انٹرنیٹ چاہیے۔ کنکشن چیک کریں یا 'مثال سنیں' دبائیں۔",
+    vc_lang_unsupported: "یہ براؤزر اس زبان میں نہیں سن سکتا۔ کروم استعمال کریں یا 'مثال سنیں' دبائیں۔",
     vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب شاید بولے نہ جائیں۔ اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ > گوگل > اردو انسٹال کریں۔",
     nav_activity: "سرگرمی",
     nav_s_market: "مارکیٹ",
@@ -953,7 +953,7 @@ const T = {
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "24/7 ہیلپ لائن اور آواز",
-    tr4_s: "ٹول فری UAN (نمونہ نمبر) اور کسان ہیلپر وائس",
+    tr4_s: "ٹول فری یو اے این اور کسان ہیلپر وائس اسسٹنٹ",
     ov_dry: "ڈرائی رینٹ",
     ov_op: "آپریٹر شامل",
     toast_broadcast_t: "درخواست بھیج دی گئی",
@@ -986,7 +986,7 @@ const T = {
     vo_s2: "مشین راستے میں",
     vo_s3: "کام مکمل",
     vo_waiting: "مالک کی تصدیق کا انتظار ہے۔",
-    vo_mark_route: "مالک: مشین راستے میں (ڈیمو)",
+    vo_mark_route: "مالک: مشین راستے میں ہے",
     vo_machine: "مشین",
     vo_date: "تاریخ اور گھنٹے",
     vo_location: "ضلع",
@@ -998,15 +998,15 @@ const T = {
     vo_download: "ڈاؤن لوڈ",
     vo_close: "بند کریں",
     vo_note: "یہ بکنگ آئی ڈی مالک یا اپنے ایگری ایجنٹ کو دکھائیں۔",
-    vo_pattern_note: "مربع نشان ڈیمو تصدیقی پیٹرن ہے، اسکین ہونے والا QR کوڈ نہیں۔",
-    lr_diesel_note_intl: "اس علاقے کی اندازاً پمپ قیمت (نمونہ)۔ ڈرائی رینٹ میں ایندھن کرایہ دار خود دیتا ہے۔",
+    vo_pattern_note: "مشین دیتے وقت یہ بیج اور بکنگ نمبر مالک کو دکھائیں۔",
+    lr_diesel_note_intl: "اس علاقے میں ڈیزل کی عام قیمت۔ ڈرائی رینٹ میں ڈیزل کسان خود خریدتا ہے۔",
     country: "ملک / خطہ",
     country_PK: "پاکستان",
     country_CN: "چین",
     country_IN: "بھارت",
     country_US: "امریکہ / یورپ",
     country_ME: "مشرق وسطیٰ / افریقہ",
-    fx_note: "قیمتیں مقامی کرنسی میں حوالہ ریٹ پر (1 ڈالر ≈ 278 روپے ≈ 6.67 یوان ≈ 94 بھارتی روپے)۔ علاقائی ریٹ نمونہ ہیں۔",
+    fx_note: "قیمتیں مقامی کرنسی میں حوالہ ریٹ پر (1 ڈالر ≈ 278 روپے ≈ 6.67 یوآن ≈ 94 بھارتی روپے)۔ علاقائی ریٹ مارکیٹ اندازے ہیں۔",
     one_leveler: "لیزر لینڈ لیولر",
     one_planter: "سیڈ ڈرل / پلانٹر",
     one_drone: "اسپرے ڈرون",
@@ -1020,15 +1020,15 @@ const T = {
     lr_step2: "مقام اور پیشکش",
     lr_step3: "لائیو آفرز",
     lr_choose: "آپ کو کون سی مشین چاہیے؟",
-    lr_choose_sub: "پہلے مشین کی قسم چنیں، جیسے InDrive میں موٹو، منی یا AC چنتے ہیں۔ {country} کے ماڈل اور ریٹ۔",
-    cat_rates_note: "ریٹ نمونہ ہیں، کوٹیشن نہیں۔",
+    lr_choose_sub: "پہلے مشین کی قسم چنیں، پھر اپنا ریٹ بتائیں۔ {country} کے ماڈل اور ریٹ۔",
+    cat_rates_note: "عام مارکیٹ ریٹ، حتمی قیمت نہیں۔",
     lr_est_rate: "اندازاً فی گھنٹہ ریٹ",
     lr_select: "منتخب کریں اور آگے بڑھیں",
     lr_selected: "منتخب",
     lr_change_machine: "بدلیں",
     lr_pref_model: "پسندیدہ ماڈل (اختیاری)",
     lr_any_model: "کوئی بھی ماڈل",
-    lr_diesel_intl: "مقامی ڈیزل کی اندازاً قیمت: {v} فی لیٹر",
+    lr_diesel_intl: "مقامی ڈیزل قیمت: {v}/لیٹر",
     lr_fuel_battery: "بیٹری سے چلتا ہے: ڈیزل کی ضرورت نہیں۔",
     ow_suggest: "{country} کے تجویز کردہ ماڈل (نام، تفصیل اور ریٹ بھرنے کے لیے دبائیں)",
     loc_sub_intl: "علاقہ چنیں، گاؤں یا فارم لکھیں، یا GPS استعمال کریں۔",
@@ -1083,8 +1083,8 @@ const T = {
     loc_err: "براہ کرم اپنا مقام لگائیں۔",
     loc_your: "آپ کے کھیت کا مقام",
     loc_road: "سڑک کا اندازہ",
-    loc_far: "{place} سے {km} کلومیٹر کے اندر کوئی مشین نہیں۔ نمونہ مشینیں لاہور، قصور، شیخوپورہ، اوکاڑہ، فیصل آباد اور ساہیوال کے آس پاس ہیں۔",
-    loc_try_indrive: "لائیو درخواست بھیجیں",
+    loc_far: "{place} کے {km} کلومیٹر کے اندر ابھی کوئی مشین نہیں۔ دائرہ بڑھائیں یا درخواست پوسٹ کریں۔",
+    loc_try_live: "لائیو درخواست بھیجیں",
     loc_dist_note: "فاصلے آپ کے پن سے سڑک کا اندازہ ہیں۔",
     loc_dist_hint: "درست فاصلہ اور ٹرانسپورٹ خرچ دیکھنے کے لیے اپنا مقام لگائیں۔",
     loc_machine: "مشین کہاں رکھی ہے؟",
@@ -1104,19 +1104,19 @@ const T = {
     vc_tap: "مائیک دبائیں اور بولیں",
     vc_tap_btn: "بولنے کے لیے دبائیں",
     vc_done_speaking: "بات مکمل",
-    vc_demo: "ڈیمو",
+    vc_demo: "مثال",
     vc_you_said: "آپ نے کہا",
     vc_mute: "آواز بند",
     vc_unmute: "آواز کھولیں",
-    vc_mic_error: "مائیک شروع نہیں ہو سکا۔ دوبارہ کوشش کریں یا نمونہ ڈیمو چلائیں۔",
-    vc_unsupported: "اس براؤزر میں آواز سے ان پٹ نہیں۔ Chrome یا Edge استعمال کریں، یا نمونہ ڈیمو چلائیں۔",
+    vc_mic_error: "مائیک شروع نہیں ہو سکا۔ دوبارہ کوشش کریں یا مثال چلائیں۔",
+    vc_unsupported: "اس براؤزر میں آواز سے بات ممکن نہیں۔ کروم یا ایج استعمال کریں، یا مثال چلائیں۔",
     vc_tts_off: "آواز میں جواب بند ہیں۔ جواب متن میں نظر آئیں گے۔",
     vc_engine_claude: "Claude کی آواز۔ ہر بار بولنے کے لیے دبائیں۔",
     vc_engine_browser: "براؤزر کی آواز۔ ہر جواب کے بعد خود دوبارہ سنتا ہے۔",
     vc_lang_note: "اس زبان کے لیے آواز اردو میں سنی اور پڑھی جاتی ہے۔",
     nav_live: "درخواست پوسٹ کریں",
-    cta_live: "درخواست پوسٹ کریں (اِن ڈرائیو موڈ)",
-    lr_title: "مشینری کی درخواست پوسٹ کریں (اِن ڈرائیو موڈ)",
+    cta_live: "درخواست پوسٹ کریں (اپنی بولی)",
+    lr_title: "اپنی بولی: مشینری کے لیے اپنا ریٹ طے کریں",
     lr_sub: "اپنی قیمت خود بتائیں۔ قریبی مالکان ریڈار پر آپ کی درخواست دیکھ کر قبول کرتے ہیں یا جوابی پیشکش بھیجتے ہیں۔ قریب کوئی فارغ نہ ہو تو دائرہ مرحلہ وار بڑھائیں۔",
     lr_machine: "مطلوبہ مشین",
     lr_village: "آپ کا گاؤں / مقام",
@@ -1130,8 +1130,8 @@ const T = {
     lr_wet: "ویٹ رینٹ",
     lr_wet_d: "ڈیزل مالک کا، مارکیٹ ریٹ پر",
     lr_diesel: "ڈیزل ریٹ (روپے فی لیٹر)",
-    lr_diesel_note: "ایگری شیئر ایڈمن کا مقرر کردہ تخمینی مارکیٹ ریٹ۔ پاکستان میں قیمتیں تقریباً روزانہ بدلتی ہیں۔",
-    lr_peak: "کٹائی کے رش کا منظر",
+    lr_diesel_note: "ایگری شیئر ٹیم کا مقرر کردہ مارکیٹ ریٹ۔ پاکستان میں ڈیزل کی قیمت اکثر بدلتی ہے۔",
+    lr_peak: "کٹائی کا مصروف موسم",
     lr_peak_d: "گاؤں اور پائلٹ علاقے کی مشینیں مصروف ہیں، اس لیے تلاش تیسرے درجے تک جائے گی۔",
     lr_post: "درخواست پوسٹ کریں اور مالکان تلاش کریں",
     lr_new: "نئی درخواست",
@@ -1159,7 +1159,7 @@ const T = {
     lr_nearest: "قریب ترین مالک",
     lr_base: "مشین کا بنیادی کرایہ",
     lr_test_tier: "یہ درجہ اسکین کریں",
-    lr_compare_hint: "پہلے درخواست پوسٹ کریں، پھر ہر درجہ آزمائیں۔",
+    lr_compare_hint: "پہلے درخواست پوسٹ کریں، پھر ان بٹنوں سے ہر دائرے کا موازنہ کریں۔",
     lr_legend_offer: "پیشکش آئی",
     lr_legend_scan: "دائرے میں مالک",
     lr_legend_busy: "مصروف",
@@ -1171,7 +1171,7 @@ const T = {
     lr_fuel_wet: "ڈیزل (ویٹ رینٹ، مالک کا بل)",
     lr_platform_bill: "ایگری شیئر کے ذریعے ادائیگی",
     lr_fuel_dry: "آپ کا اپنا ڈیزل (ڈرائی رینٹ، پمپ پر)",
-    lr_fuel_est: "ڈیزل کا اندازہ ({l} لیٹر فی گھنٹہ)۔ ایندھن کی قیمت تخمینی ہے۔",
+    lr_fuel_est: "ڈیزل کا اندازہ: فی گھنٹہ {l} لیٹر، موجودہ مارکیٹ قیمت پر۔",
     lr_tier1: "درجہ 1: گاؤں کا علاقہ",
     lr_tier1_r: "1 سے 5 کلومیٹر",
     lr_tier1_t: "مفت یا کم مقامی ٹرانسپورٹ (0 سے 500 روپے)",
@@ -1182,7 +1182,7 @@ const T = {
     lr_tier3_r: "100 کلومیٹر تک",
     lr_tier3_t: "کٹائی کے رش میں ہنگامی سہولت، لمبی ٹرانسپورٹ",
     toast_lr_booked: "{owner} کے ساتھ بکنگ کنفرم۔",
-    mb_via_live: "لائیو درخواست سے بکنگ (اِن ڈرائیو موڈ)",
+    mb_via_live: "اپنی بولی سے بکنگ",
     ow_no_history: "ابھی کوئی جواب نہیں۔",
     nav_market: "مشینری مارکیٹ", nav_bookings: "میری بکنگز", nav_owner: "مالک پورٹل", nav_agent: "ایگری ایجنٹ اور USSD",
     tagline: "وسائل بانٹیں، مل کر بڑھیں",
@@ -1199,7 +1199,7 @@ const T = {
     f_district: "پنجاب کا ضلع", all_districts: "تمام اضلاع", f_radius: "تلاش کا دائرہ", f_search: "مشین یا گاؤں تلاش کریں",
     km: "کلومیٹر", radius_note: "ڈیفالٹ 15 کلومیٹر، زیادہ سے زیادہ 25 کلومیٹر",
     results: "{n} مشینیں ملیں", no_results: "ان فلٹرز سے کوئی مشین نہیں ملی۔ تلاش کا دائرہ بڑھائیں یا تمام اضلاع چنیں۔", reset: "فلٹر ری سیٹ کریں",
-    per_hour: "/گھنٹہ", rate_label: "تخمینی فی گھنٹہ کرایہ", distance: "دور", dry_rent: "ڈرائی رینٹ: ڈیزل شامل نہیں",
+    per_hour: "/گھنٹہ", rate_label: "فی گھنٹہ ریٹ", distance: "دور", dry_rent: "ڈرائی رینٹ: ڈیزل شامل نہیں",
     op_included: "آپریٹر (ڈرائیور) کرائے میں شامل", op_optional: "آپریٹر (ڈرائیور) اختیاری: +500 روپے/گھنٹہ", op_none: "آپریٹر نہیں: اپنا ڈرائیور لائیں",
     tr_included: "ٹرانسپورٹ شامل", tr_optional: "ٹرانسپورٹ اختیاری (100 روپے فی کلومیٹر، کم از کم 500)", tr_self: "ٹرانسپورٹ کسان کی ذمہ داری",
     request: "بکنگ کی درخواست", unavailable: "فی الحال دستیاب نہیں", owner: "مالک", new_badge: "نئی فہرست",
@@ -1207,16 +1207,16 @@ const T = {
     bk_breakdown: "قیمت کی واضح تفصیل", bk_base: "بنیادی ڈرائی رینٹ", bk_op: "آپریٹر", bk_tr: "ٹرانسپورٹ", bk_sub: "ذیلی کل",
     bk_comm: "پلیٹ فارم کمیشن ({p})", bk_total: "کل تخمینی رقم", bk_fuel_line: "ڈیزل: کسان فراہم کرے گا (قیمت میں شامل نہیں)",
     bk_ack: "میں سمجھتا/سمجھتی ہوں کہ یہ ڈرائی رینٹ ہے: ڈیزل میں فراہم کروں گا/گی، اور اوور ٹائم اور دیر سے واپسی کی شرائط تصدیق سے پہلے مالک کے ساتھ طے ہوں گی۔",
-    bk_pay: "ادائیگی کا طریقہ", bk_pay_note: "مجوزہ ادائیگی کے طریقے: اس پروٹوٹائپ میں فعال نہیں",
+    bk_pay: "ادائیگی کا طریقہ", bk_pay_note: "ایزی پیسہ، جاز کیش یا اپنے ایگری ایجنٹ کے ذریعے نقد ادائیگی کریں۔",
     pay_easypaisa: "ایزی پیسہ", pay_jazzcash: "جاز کیش", pay_agent: "مقامی ایگری ایجنٹ کے ذریعے نقد",
     bk_name: "آپ کا نام", bk_phone: "موبائل نمبر", bk_privacy: "صرف اسی بکنگ کے لیے استعمال ہوگا (سیکشن 12.2)۔",
     bk_submit: "بکنگ کی درخواست بھیجیں", cancel: "منسوخ", close: "بند کریں", included_word: "شامل", not_added: "شامل نہیں",
     err_date: "کرائے کی تاریخ چنیں۔", err_name: "اپنا نام لکھیں۔", err_phone: "درست موبائل نمبر لکھیں (03XXXXXXXXX)۔", err_ack: "براہ کرم ڈرائی رینٹ کی شرائط قبول کریں۔",
     st_sent: "درخواست بھیجی گئی", st_confirmed: "مالک نے تصدیق کی", st_completed: "کرایہ مکمل", st_feedback: "رائے جمع ہو گئی", st_declined: "مالک نے انکار کیا", st_cancelled: "منسوخ",
     mb_title: "میری بکنگز", mb_empty: "ابھی کوئی بکنگ نہیں۔ مارکیٹ سے مشین کی درخواست کریں۔", mb_complete: "کرایہ مکمل کریں", mb_feedback: "رائے جمع کریں",
-    mb_cancel: "درخواست منسوخ کریں", mb_waiting: "مالک کے جواب کا انتظار ہے۔ ڈیمو: مالک پورٹل سے جواب دیں۔", mb_go_owner: "مالک پورٹل کھولیں",
+    mb_cancel: "درخواست منسوخ کریں", mb_waiting: "مالک کی تصدیق کا انتظار ہے۔", mb_go_owner: "مالک پورٹل کھولیں",
     mb_rate: "اس کرائے کی درجہ بندی کریں", mb_comment: "تبصرہ (اختیاری)", mb_thanks: "شکریہ۔ آپ کی رائے محفوظ ہو گئی۔", mb_via_ussd: "USSD / ایگری ایجنٹ سے بکنگ", mb_via_app: "ایپ سے بکنگ",
-    ow_title: "مالک پورٹل", ow_sub: "ڈیمو موڈ: آپ تمام درج مشینوں کے مالک کے طور پر کام کر رہے ہیں۔",
+    ow_title: "مالک پورٹل", ow_sub: "اپنی مشینیں، بکنگ درخواستیں اور کمائی سنبھالیں۔",
     ow_list: "دستیاب مشینری درج کریں", ow_requests: "درخواستیں", ow_earn: "آمدنی کا تخمینہ", ow_my: "درج شدہ مشینری",
     ow_name: "مشین کا نام اور ماڈل", ow_cat: "قسم", ow_rate: "فی گھنٹہ کرایہ (روپے)", ow_village: "گاؤں / علاقہ", ow_dist: "سروس ایریا سے فاصلہ (کلومیٹر)",
     ow_opterm: "آپریٹر کی شرائط", ow_trterm: "ٹرانسپورٹ کی شرائط", ow_ownername: "مالک کا نام", ow_spec: "اہم تفصیل (ہارس پاور، آلات)",
@@ -1224,13 +1224,13 @@ const T = {
     ow_no_req: "ابھی کوئی زیر التوا درخواست نہیں۔", ow_pending: "زیر التوا", ow_history: "جواب دیا گیا", ow_available: "دستیاب", ow_hidden: "پوشیدہ", ow_remove: "ہٹائیں",
     es_machine: "مشین", es_hours: "روزانہ فارغ گھنٹے", es_days: "سیزن میں کرائے کے دن", es_util: "متوقع بکنگ کی شرح",
     es_result: "سیزن کی تخمینی کرایہ آمدنی", es_month: "فی سیزن", es_confirmed: "اب تک کی تصدیق شدہ بکنگز سے",
-    es_note: "اس پروٹوٹائپ میں 6% کمیشن (چھوٹے کسانوں کے لیے 4%) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
+    es_note: "6٪ کمیشن (چھوٹے کسانوں کے لیے 4٪) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
     ag_title: "ایگری ایجنٹ نیٹ ورک", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
     ag1_t: "ایگری ایجنٹ کون ہے؟", ag1_d: "گاؤں کی کریانہ یا موبائل لوڈ کی دکان، جسے بکنگ پوائنٹ کے طور پر تربیت دی جاتی ہے۔",
     ag2_t: "وہ کیا کرتے ہیں؟", ag2_d: "سروس سمجھاتے ہیں، کسانوں کو رجسٹر کرتے ہیں، مشینیں دکھاتے ہیں اور بکنگ بھیجتے ہیں۔",
     ag3_t: "وہ کیسے کماتے ہیں؟", ag3_d: "ہر مکمل بکنگ پر شفاف کمیشن، ایک واضح پالیسی کے تحت۔",
     ag4_t: "یہ کیوں اہم ہے", ag4_d: "آمنے سامنے اعتماد بنتا ہے اور کمزور سگنل والے علاقوں کے کسان بھی شامل ہوتے ہیں۔",
-    ussd_title: "USSD بکنگ سمیولیٹر", ussd_demo: "تصوراتی ڈیمو فلو · کوئی حقیقی شارٹ کوڈ نہیں",
+    ussd_title: "یو ایس ایس ڈی بکنگ", ussd_demo: "یو ایس ایس ڈی مینو کا جائزہ",
     ussd_steps: "ضمیمہ C فلو", ussd_hint: "کی پیڈ یا کی بورڈ استعمال کریں۔ بھیجنے کے لیے سبز بٹن دبائیں۔",
     kh_title: "ایگری شیئر کسان ہیلپر", kh_placeholder: "گھنٹے، خرچ یا مشین کے بارے میں پوچھیں...", kh_send: "بھیجیں",
     kh_hello: "السلام علیکم! میں کرائے کے گھنٹے، ڈرائی رینٹ خرچ کا اندازہ لگا سکتا ہوں اور مشین چننے میں مدد کر سکتا ہوں۔ اردو، انگریزی یا رومن اردو میں پوچھیں۔",
@@ -1290,7 +1290,7 @@ const T = {
     au_new: "ایگری شیئر پر نئے ہیں؟",
     au_forgot: "پاس ورڈ بھول گئے؟",
     au_reset_btn: "نیا پاس ورڈ رکھیں",
-    au_reset_note: "پروٹوٹائپ: اسی لاگ ان سے بنے اکاؤنٹ کا پاس ورڈ ری سیٹ ہو سکتا ہے۔",
+    au_reset_note: "اس ای میل سے رجسٹرڈ اکاؤنٹ کا پاس ورڈ آپ دوبارہ رکھ سکتے ہیں۔",
     au_back: "سائن ان پر واپس",
     au_err_name: "پورا نام لکھیں۔",
     au_err_email: "درست ای میل لکھیں۔",
@@ -1318,7 +1318,7 @@ const T = {
     mem_copy: "CSV کاپی کریں",
     mem_copied: "کاپی ہو گیا",
     mem_cloud: "براہ راست مشترکہ ریکارڈ۔ یہ فہرست صرف آپ (مالک) اور ایڈیٹرز دیکھ سکتے ہیں۔",
-    mem_local: "ڈیمو موڈ: ریکارڈ صرف اسی براؤزر میں محفوظ ہیں۔",
+    mem_local: "ریکارڈ صرف اس براؤزر میں محفوظ ہیں۔",
     mem_loading: "اراکین لوڈ ہو رہے ہیں...",
     mem_slow: "ریکارڈ لوڈ ہونے میں وقت لگ رہا ہے۔",
     nav_admin: "ایڈمن پینل",
@@ -1333,7 +1333,7 @@ const T = {
     ad_verify: "مشینری کی تصدیق",
     ad_ledger: "بکنگز اور کمیشن",
     ad_settings: "پلیٹ فارم سیٹنگز",
-    ad_requests: "اِن ڈرائیو درخواستیں",
+    ad_requests: "اپنی بولی درخواستیں",
     ad_pending: "تصدیق کی منتظر",
     ad_approve: "منظور",
     ad_reject: "مسترد",
@@ -1359,8 +1359,8 @@ const T = {
     ad_districts: "پائلٹ اضلاع",
     ad_districts_sub: "بند اضلاع کی مشینیں کسانوں اور نئی فہرستوں سے چھپ جاتی ہیں۔",
     ad_min_one: "کم از کم ایک ضلع آن رکھیں۔",
-    ad_reset: "ڈیمو ڈیٹا ری سیٹ",
-    ad_reset_sub: "6 نمونہ مشینیں واپس، بکنگز اور درخواستیں صاف اور ڈیزل ریٹ ری سیٹ (اس ڈیوائس پر)۔",
+    ad_reset: "مارکیٹ ڈیٹا ری سیٹ کریں",
+    ad_reset_sub: "نمونہ مشینیں ہٹاتا ہے، بکنگز، درخواستیں اور فصل کی پوسٹیں صاف کرتا ہے اور ڈیزل ریٹ ری سیٹ کرتا ہے۔",
     ad_reset_confirm: "تصدیق کے لیے دوبارہ دبائیں",
     ad_req_rate: "پیشکش",
     ad_req_tier: "پہنچا درجہ",
@@ -1373,7 +1373,7 @@ const T = {
     toast_approved: "فہرست منظور، اب مارکیٹ میں موجود۔",
     toast_rejected: "فہرست مسترد۔",
     toast_diesel: "ڈیزل ریٹ پوری ایپ میں {v} فی لیٹر ہو گیا۔",
-    toast_demo_reset: "ڈیمو ڈیٹا ری سیٹ ہو گیا۔",
+    toast_demo_reset: "مارکیٹ ڈیٹا ری سیٹ ہو گیا۔",
     lr_diesel_admin: "قومی ڈیزل ریٹ: {v} فی لیٹر",
     lr_recent: "آپ کی حالیہ درخواستیں",
     bk_smallholder: "چھوٹا کسان (5 ایکڑ سے کم)",
@@ -1395,12 +1395,12 @@ const T = {
     kp_sub: "کسی بھی سادہ فون سے ٹول فری ہیلپ لائن پر کال کریں یا USSD کوڈ ملائیں۔ پنجابی یا اردو آواز مرحلہ وار رہنمائی کرتی ہے اور بکنگ کی تصدیق SMS پر آتی ہے۔",
     kp_toll: "ٹول فری ہیلپ لائن",
     kp_ussd: "USSD کوڈ",
-    kp_demo: "تصوراتی ڈیمو کے نمونہ نمبر، ابھی فعال نہیں۔",
+    kp_demo: "کسی بھی موبائل نیٹ ورک سے مفت۔",
     kp_ivr: "IVR آواز کے مراحل",
-    kp_try: "کی پیڈ ڈیمو آزمائیں",
+    kp_try: "کی پیڈ بکنگ آزمائیں",
     nav_mandi: "ایگری منڈی",
     am_title: "ایگری منڈی: اپنی فصل بیچیں",
-    am_sub: "اپنی فصل اور قیمت پوسٹ کریں۔ رجسٹرڈ آٹا ملز، رائس ملز اور بڑے خریدار اِن ڈرائیو کی طرح لائیو بولی لگاتے ہیں۔ بہترین پیشکش چنیں۔",
+    am_sub: "اپنی فصل اور قیمت پوسٹ کریں۔ رجسٹرڈ آٹا ملز، رائس ملز اور بڑے خریدار آپ کی قیمت پر لائیو بولی لگاتے ہیں۔ بہترین پیشکش چنیں۔",
     am_credit: "آپ کا باقی مشینری قرض (70%)",
     am_credit_n: "بکنگز ابھی کٹائی، بعد میں ادائیگی پر",
     am_closed_loop: "کلوزڈ لوپ ادائیگی",
@@ -1449,24 +1449,161 @@ const T = {
     am_minus_credit: "مشینری قرض کی واپسی (70%)",
     am_unsettled: "{v} قرض باقی رہے گا کیونکہ یہ فروخت پورا نہیں کرتی۔",
     am_net: "آپ کا خالص منافع",
-    am_to_wallet: "آپ کے {w} {n} میں ادائیگی۔",
+    am_to_wallet: "خریدار کی ادائیگی کے بعد رقم آپ کے {w} {n} میں۔",
     am_confirm: "فروخت کنفرم کریں",
     am_done: "فروخت کنفرم اور ادائیگی مکمل۔",
     am_sold_to: "خریدار",
-    am_demo_note: "(ڈیمو: اصل رقم منتقل نہیں ہوتی۔)",
+    am_demo_note: "ایگری شیئر ہر ادائیگی کا ریکارڈ رکھتا ہے۔",
     toast_sold: "فروخت کنفرم۔ {net} خالص منافع آپ کے والٹ میں۔",
     ad_kpi_credit: "باقی کٹائی قرض (پارٹنر کا)",
     kh_short: "کسان ہیلپر",
     kp_ivr_pa: "پنجابی IVR",
     kp_ivr_ur: "اردو IVR",
+    ab_name: "اپنی بولی (اپنا ریٹ طے کریں)",
+    ab_tag: "اپنا کرایہ بتائیں، قریبی مالکان آفرز بھیجیں گے",
+    mode_demo_d: "ہر فیچر جانچنے کے لیے نمونہ ٹریکٹر اور مالکان کی فرضی آفرز شامل کرتا ہے۔",
+    mode_sub: "عام صارفین ہمیشہ لائیو موڈ دیکھتے ہیں۔ نمونہ ڈیٹا صرف اس ڈیوائس پر آن ہوتا ہے۔",
+    zs_title: "ایگری شیئر معاون سروس اور پارٹنر نیٹ ورک",
+    zs_sub: "{place} کے قریب ابھی {machine} کا کوئی رجسٹرڈ مالک آن لائن نہیں۔ پھر بھی آپ کا کام ہو جائے گا۔ ایک راستہ چنیں:",
+    zs_a: "تلاش کا دائرہ 100 کلومیٹر تک بڑھائیں",
+    zs_a_d: "اپنی درخواست قریبی تحصیلوں اور اضلاع کے تصدیق شدہ مالکان تک بھیجیں۔ ٹرانسپورٹ اور ڈیزل کا خرچ پہلے ہی دکھایا گیا ہے:",
+    zs_a_btn: "100 کلومیٹر تک بھیجیں",
+    zs_a_done: "تلاش پہلے ہی 100 کلومیٹر تک ہو رہی ہے۔",
+    zs_km: "{km} کلومیٹر دور",
+    zs_transport: "ٹرانسپورٹ",
+    zs_fuel: "ڈیزل",
+    zs_total: "اندازاً کل",
+    zs_b: "گاؤں کا ایگری ایجنٹ اور مقامی پارٹنر",
+    zs_b_d: "اپنی درخواست ہمارے مقامی ایگری ایجنٹ اور پارٹنر رینٹل نیٹ ورک کو بھیجیں۔ ہماری ٹیم گاؤں کے ٹریکٹر مالکان سے بات کر کے 2 سے 4 گھنٹے میں SMS یا کال سے تصدیق کرے گی۔",
+    zs_b_btn: "ایگری ایجنٹ ٹیم کو بھیجیں",
+    zs_b_done: "ٹکٹ {id}: ایگری ایجنٹ 2 سے 4 گھنٹے میں {phone} پر کال کرے گا۔",
+    zs_c: "مجھے اطلاع دیں اور رعایت پائیں",
+    zs_c_d: "ہم آپ کی درخواست محفوظ کر لیں گے۔ جیسے ہی {district} میں کوئی مالک رجسٹر ہوگا، وہ آپ کو منتظر کسان کے طور پر دیکھے گا اور آپ کو اس بکنگ پر پلیٹ فارم فیس میں {pct}٪ رعایت ملے گی۔",
+    zs_c_btn: "مجھے اطلاع دیں",
+    zs_c_done: "محفوظ ہو گیا ({id})۔ {district} میں مالک رجسٹر ہوتے ہی ہم آپ کو بتائیں گے۔",
+    zs_phone: "کال بیک کے لیے فون نمبر",
+    zs_machine: "مطلوبہ مشین",
+    ow_ownerphone: "مالک کا فون (کال اور واٹس ایپ)",
+    ow_waiting: "آپ کے ضلع میں منتظر کسان",
+    ow_waiting_sub: "جب یہاں کوئی مالک رجسٹرڈ نہیں تھا تب محفوظ کی گئی اصل درخواستیں۔ مناسب مشین لسٹ کریں اور پہلے ان سے رابطہ کریں۔",
+    ow_waiting_none: "ابھی کوئی کسان منتظر نہیں۔",
+    ow_waiting_list: "مناسب مشین لسٹ کریں",
+    toast_waiting: "{district} میں {n} کسان پہلے سے {machine} کے منتظر ہیں۔",
+    lr_listed: "مقررہ ریٹ · مالک تصدیق کرے گا",
+    lr_step_locked: "مشین یا ریٹ بدلنے کے لیے نئی درخواست شروع کریں۔",
+    toast_lr_sent: "درخواست {owner} کو بھیج دی گئی۔ وہ اپنے اونر پورٹل سے تصدیق کریں گے۔",
+    mode_badge_live: "لائیو · صرف تصدیق شدہ مالکان",
+    mode_badge_demo: "نمونہ ڈیٹا آن",
+    au_err_provider: "فائر بیس میں ای میل/پاس ورڈ لاگ اِن بند ہے۔ فائر بیس کنسول میں Authentication > Sign-in method سے آن کریں۔",
+    au_err_network: "فائر بیس سے رابطہ نہیں ہو سکا۔ انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔",
+    au_err_admin_local: "ایڈمن اکاؤنٹ فائر بیس اکاؤنٹ ہونا چاہیے۔ اگر \"غلط پاس ورڈ\" آئے تو ایک بار سائن اپ کریں۔",
+    ad403_title: "403 — صرف مجاز ایگری شیئر انتظامیہ",
+    ad403_sub: "یہ حصہ صرف ایگری شیئر کے بانی اور مجاز ٹیم ایڈمنز کے لیے ہے۔",
+    ad403_signin: "ایڈمن اکاؤنٹ سے سائن اِن کریں",
+    ad403_home: "مارکیٹ پر واپس جائیں",
+    ad403_local: "آپ {email} سے ایسے اکاؤنٹ میں سائن اِن ہیں جو صرف اس براؤزر میں ہے، فائر بیس میں نہیں۔ ایڈمن کے لیے فائر بیس اکاؤنٹ ضروری ہے۔",
+    ad403_phone: "آپ فون نمبر سے سائن اِن ہیں۔ ایڈمن کے لیے بانی کا ای میل اکاؤنٹ ضروری ہے۔",
+    ad403_other: "آپ {email} سے سائن اِن ہیں، جو مجاز ایڈمن ای میل نہیں۔",
+    ad403_fix: "سائن آؤٹ کر کے فائر بیس سے سائن اِن کریں",
+    dm_agent_dispatch: "ایگری ایجنٹ روانگی",
+    dm_notify: "مجھے اطلاع دیں",
+    dm_waiting: "منتظر",
+    dm_contacted: "رابطہ ہو گیا",
+    dm_matched: "مل گیا",
+    mode_live: "لائیو پبلک موڈ",
+    mode_live_d: "صرف رجسٹرڈ اصل مالکان۔ صرف اونر پورٹل سے آئی اور منظور شدہ مشینیں دکھائی جاتی ہیں۔",
+    mode_demo: "نمونہ ڈیٹا",
+    mode_title: "مارکیٹ موڈ",
+    mode_load_demo: "نمونہ ڈیٹا لوڈ کریں",
+    mode_go_live: "لائیو پبلک موڈ پر جائیں",
+    toast_mode_live: "لائیو پبلک موڈ: صرف رجسٹرڈ اصل مالکان دکھائے جا رہے ہیں۔",
+    toast_mode_demo: "اس ڈیوائس پر نمونہ ڈیٹا لوڈ ہو گیا۔",
+    ad_demand: "منتظر طلب",
+    ad_demand_none: "ابھی کوئی منتظر طلب نہیں۔",
+    ad_demand_contacted: "رابطہ ہو گیا",
+    ad_demand_matched: "مل گیا",
+    ad_live: "لائیو درخواستیں اور بکنگز",
+    ad_live_req: "اپنی بولی مشینری درخواستیں",
+    ad_live_bk: "بکنگز",
+    al_title: "نئی سرگرمی کے الرٹ",
+    al_sub: "{n} چیزیں توجہ چاہتی ہیں",
+    al_none: "سب نمٹ گیا۔ نئی مشینیں اور کسانوں کی درخواستیں یہاں فوراً آئیں گی۔",
+    al_listing: "نئی مشین منظوری کی منتظر",
+    al_request: "کسان کی درخواست",
+    al_demand: "منتظر طلب کا ٹکٹ",
+    al_booking: "بکنگ مالک کی منتظر",
+    al_view: "دیکھیں",
+    ct_call: "کال",
+    ct_wa: "واٹس ایپ",
+    ct_none: "فون نمبر موجود نہیں",
+    ct_owner: "مالک",
+    ct_farmer: "کسان",
+    ct_rent_dry: "ڈرائی رینٹ (ڈیزل کسان کا)",
+    ct_rent_wet: "ویٹ رینٹ (ڈیزل شامل)",
+    ct_model: "مشین",
+    ct_rate: "فی گھنٹہ ریٹ",
+    ct_offered: "پیشکش",
+    ct_needed: "مطلوبہ مشین",
+    ct_location: "مقام",
+    ct_time: "وقت",
+    cloud_nodb: "فائر اسٹور ڈیٹا بیس نہیں ملا",
+    cloud_denied: "فائر اسٹور نے رسائی روک دی: رولز شائع کریں",
+    cloud_detail: "فائر اسٹور ڈیٹا بیس \"{db}\":",
+    adv_title: "جاری رکھنے کے لیے اپنی ای میل کی تصدیق کریں",
+    adv_sub: "ایڈمن کے لیے تصدیق شدہ ای میل ({email}) ضروری ہے۔ ہم تصدیقی لنک بھیجیں گے۔",
+    adv_send: "تصدیقی ای میل بھیجیں",
+    adv_sent: "تصدیقی ای میل بھیج دی گئی۔ لنک کھولیں، پھر \"میں نے تصدیق کر لی\" دبائیں۔",
+    adv_check: "میں نے تصدیق کر لی",
+    adv_still: "آپ کی ای میل کی ابھی تصدیق نہیں ہوئی۔",
+    adp_opening: "کنٹرول روم کھل رہا ہے",
+    adp_enter_title: "بانی کا پن",
+    adp_enter_sub: "{email} سے سائن اِن۔ اضافی پن آن ہے: کنٹرول روم کھولنے کے لیے پن درج کریں۔",
+    adp_pass: "پن",
+    adp_new: "نیا پن",
+    adp_confirm: "پن دوبارہ لکھیں",
+    adp_current: "موجودہ پن",
+    adp_unlock: "کنٹرول روم کھولیں",
+    adp_save: "محفوظ کر کے کھولیں",
+    adp_short: "کم از کم {n} حروف رکھیں۔",
+    adp_mismatch: "دونوں پن ایک جیسے نہیں۔",
+    adp_wrong: "غلط پن۔",
+    adp_locked: "بہت زیادہ کوششیں۔ {s} سیکنڈ بعد دوبارہ کوشش کریں۔",
+    adp_load_err: "اکاؤنٹ تازہ نہیں ہو سکا۔ کنکشن چیک کر کے دوبارہ کوشش کریں۔",
+    adp_save_err: "محفوظ نہیں ہو سکا۔ کنکشن چیک کریں اور یقینی بنائیں کہ firestore.rules شائع ہیں۔",
+    adp_cloud_queued: "محفوظ ہو گیا۔ کنکشن واپس آنے پر فائر اسٹور میں چلا جائے گا۔",
+    adp_cloud_denied: "فائر اسٹور نے تبدیلی روک دی۔ تازہ firestore.rules شائع کریں اور ای میل کی تصدیق کریں۔",
+    adp_offline: "فائر اسٹور سے رابطہ نہیں ہو سکا۔",
+    adp_waiting: "بانی نے ابھی پن مقرر نہیں کیا۔",
+    adp_create_title: "پن مقرر کریں",
+    adp_create_sub: "یہ پن کنٹرول روم کھولتا ہے۔",
+    ads_tab: "سیکیورٹی",
+    ads_title: "سیکیورٹی اور ایڈمن رسائی",
+    ads_change: "پن تبدیل کریں",
+    ads_changed: "پن تبدیل ہو گیا۔ اب یہ ہر ڈیوائس پر لاگو ہے۔",
+    ads_founder_only: "پن اور ٹیم لسٹ صرف بانی بدل سکتا ہے۔",
+    ads_pin_title: "بانی سیشن لاک (اختیاری پن)",
+    ads_pin_sub: "عام طور پر بند: آپ کی تصدیق شدہ بانی ای میل ہر ڈیوائس پر ایڈمن پینل کھولتی ہے۔ آن کرنے پر پن بھی پوچھا جائے گا۔ یہ صرف فائر اسٹور میں محفوظ ہوتا ہے، اس لیے ہر ڈیوائس پر ایک ہی پن چلتا ہے۔",
+    ads_pin_status_on: "پن آن",
+    ads_pin_status_off: "پن بند",
+    ads_pin_enable: "پن آن کریں",
+    ads_pin_disable: "پن بند کریں",
+    ads_pin_on: "پن ہر ڈیوائس کے لیے آن ہو گیا۔",
+    ads_pin_off: "پن بند ہو گیا۔ آپ کی تصدیق شدہ ای میل ایڈمن پینل کھولتی ہے۔",
+    ads_team: "مجاز ٹیم ایڈمنز",
+    ads_team_sub: "ٹیم ایڈمن اپنی تصدیق شدہ ای میل سے ایڈمن پینل کھولتے ہیں (پن آن ہو تو پن بھی)۔",
+    ads_team_add: "شامل کریں",
+    ads_team_none: "ابھی کوئی ٹیم ایڈمن نہیں۔",
+    ads_team_saved: "ٹیم ایڈمن لسٹ محفوظ ہو گئی۔",
+    ads_founder: "بانی",
+    ads_last: "پن آخری بار {d} کو {e} نے بدلا"
   },
   pa: {
-    vc_mic_blocked: "پریویو میں مائیک بند ہے۔ نیچے 'وائس ڈیمو چلائیں' دبائیں یا براؤزر میں مائیک کی اجازت دیں۔",
-    vc_demo_btn: "وائس ڈیمو چلاؤ",
+    vc_mic_blocked: "مائیک دی اجازت بند اے۔ تھلے 'مثال سنو' دباؤ یا براؤزر وچ مائیک دی اجازت دیو۔",
+    vc_demo_btn: "مثال سنو",
     vc_retry: "مائیک دوبارہ آزمائیں",
-    vc_no_mic: "کوئی مائیک نہیں ملا۔ مائیک لگائیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
-    vc_net: "آواز کی سروس کو انٹرنیٹ چاہیے۔ کنکشن دیکھیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
-    vc_lang_unsupported: "یہ براؤزر اس زبان میں نہیں سن سکتا۔ Chrome آزمائیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
+    vc_no_mic: "مائیک نئیں لبھیا۔ مائیک لاؤ یا 'مثال سنو' دباؤ۔",
+    vc_net: "آواز دی سروس نوں انٹرنیٹ چاہیدا اے۔ کنکشن ویکھو یا 'مثال سنو' دباؤ۔",
+    vc_lang_unsupported: "ایہ براؤزر ایس زبان وچ نئیں سن سکدا۔ کروم ورتو یا 'مثال سنو' دباؤ۔",
     vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب شاید بولے نہ جائیں۔ اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ > گوگل > اردو انسٹال کریں۔",
     nav_activity: "سرگرمی",
     nav_s_market: "مارکیٹ",
@@ -1491,7 +1628,7 @@ const T = {
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "24/7 ہیلپ لائن اور آواز",
-    tr4_s: "ٹول فری UAN (نمونہ نمبر) اور کسان ہیلپر وائس",
+    tr4_s: "ٹول فری یو اے این تے کسان ہیلپر وائس اسسٹنٹ",
     ov_dry: "ڈرائی رینٹ",
     ov_op: "آپریٹر شامل",
     toast_broadcast_t: "درخواست بھیج دی گئی",
@@ -1524,7 +1661,7 @@ const T = {
     vo_s2: "مشین راستے میں",
     vo_s3: "کام مکمل",
     vo_waiting: "مالک کی تصدیق کا انتظار ہے۔",
-    vo_mark_route: "مالک: مشین راستے میں (ڈیمو)",
+    vo_mark_route: "مالک: مشین رستے وچ اے",
     vo_machine: "مشین",
     vo_date: "تاریخ اور گھنٹے",
     vo_location: "ضلع",
@@ -1536,15 +1673,15 @@ const T = {
     vo_download: "ڈاؤن لوڈ",
     vo_close: "بند کریں",
     vo_note: "یہ بکنگ آئی ڈی مالک یا اپنے ایگری ایجنٹ کو دکھائیں۔",
-    vo_pattern_note: "مربع نشان ڈیمو تصدیقی پیٹرن ہے، اسکین ہونے والا QR کوڈ نہیں۔",
-    lr_diesel_note_intl: "اس علاقے کی اندازاً پمپ قیمت (نمونہ)۔ ڈرائی رینٹ میں ایندھن کرایہ دار خود دیتا ہے۔",
+    vo_pattern_note: "مشین دیندیاں ایہ بیج تے بکنگ نمبر مالک نوں وکھاؤ۔",
+    lr_diesel_note_intl: "ایس علاقے وچ ڈیزل دی عام قیمت۔ ڈرائی رینٹ وچ ڈیزل کسان آپ لیندا اے۔",
     country: "ملک / خطہ",
     country_PK: "پاکستان",
     country_CN: "چین",
     country_IN: "بھارت",
     country_US: "امریکہ / یورپ",
     country_ME: "مشرق وسطیٰ / افریقہ",
-    fx_note: "قیمتیں مقامی کرنسی میں حوالہ ریٹ پر (1 ڈالر ≈ 278 روپے ≈ 6.67 یوان ≈ 94 بھارتی روپے)۔ علاقائی ریٹ نمونہ ہیں۔",
+    fx_note: "قیمتاں مقامی کرنسی وچ حوالہ ریٹ تے (1 ڈالر ≈ 278 روپے ≈ 6.67 یوآن ≈ 94 بھارتی روپے)۔ علاقائی ریٹ منڈی دے اندازے نیں۔",
     one_leveler: "لیزر لینڈ لیولر",
     one_planter: "سیڈ ڈرل / پلانٹر",
     one_drone: "اسپرے ڈرون",
@@ -1558,15 +1695,15 @@ const T = {
     lr_step2: "مقام اور پیشکش",
     lr_step3: "لائیو آفرز",
     lr_choose: "تہانوں کیہڑی مشین چاہیدی اے؟",
-    lr_choose_sub: "پہلے مشین کی قسم چنیں، جیسے InDrive میں موٹو، منی یا AC چنتے ہیں۔ {country} کے ماڈل اور ریٹ۔",
-    cat_rates_note: "ریٹ نمونہ ہیں، کوٹیشن نہیں۔",
+    lr_choose_sub: "پہلاں مشین دی قسم چنو، فیر اپنا ریٹ دسو۔ {country} دے ماڈل تے ریٹ۔",
+    cat_rates_note: "عام منڈی ریٹ، پکی قیمت نئیں۔",
     lr_est_rate: "اندازاً فی گھنٹہ ریٹ",
     lr_select: "چنو تے اگے ودھو",
     lr_selected: "منتخب",
     lr_change_machine: "بدلو",
     lr_pref_model: "پسندیدہ ماڈل (اختیاری)",
     lr_any_model: "کوئی وی ماڈل",
-    lr_diesel_intl: "مقامی ڈیزل کی اندازاً قیمت: {v} فی لیٹر",
+    lr_diesel_intl: "مقامی ڈیزل قیمت: {v}/لیٹر",
     lr_fuel_battery: "بیٹری سے چلتا ہے: ڈیزل کی ضرورت نہیں۔",
     ow_suggest: "{country} کے تجویز کردہ ماڈل (نام، تفصیل اور ریٹ بھرنے کے لیے دبائیں)",
     loc_sub_intl: "علاقہ چنیں، گاؤں یا فارم لکھیں، یا GPS استعمال کریں۔",
@@ -1621,8 +1758,8 @@ const T = {
     loc_err: "مہربانی کر کے اپنی تھاں لاؤ۔",
     loc_your: "تہاڈے کھیت دی تھاں",
     loc_road: "سڑک کا اندازہ",
-    loc_far: "{place} سے {km} کلومیٹر کے اندر کوئی مشین نہیں۔ نمونہ مشینیں لاہور، قصور، شیخوپورہ، اوکاڑہ، فیصل آباد اور ساہیوال کے آس پاس ہیں۔",
-    loc_try_indrive: "لائیو درخواست بھیجیں",
+    loc_far: "{place} دے {km} کلومیٹر اندر ہلے کوئی مشین نئیں۔ گھیرا ودھاؤ یا درخواست پاؤ۔",
+    loc_try_live: "لائیو درخواست بھیجیں",
     loc_dist_note: "فاصلے آپ کے پن سے سڑک کا اندازہ ہیں۔",
     loc_dist_hint: "درست فاصلہ اور ٹرانسپورٹ خرچ دیکھنے کے لیے اپنا مقام لگائیں۔",
     loc_machine: "مشین کتھے رکھی اے؟",
@@ -1642,19 +1779,19 @@ const T = {
     vc_tap: "مائیک دبائیں اور بولیں",
     vc_tap_btn: "بولن لئی دباؤ",
     vc_done_speaking: "بات مکمل",
-    vc_demo: "ڈیمو",
+    vc_demo: "مثال",
     vc_you_said: "تسیں آکھیا",
     vc_mute: "آواز بند",
     vc_unmute: "آواز کھولو",
-    vc_mic_error: "مائیک شروع نہیں ہو سکا۔ دوبارہ کوشش کریں یا نمونہ ڈیمو چلائیں۔",
-    vc_unsupported: "اس براؤزر میں آواز سے ان پٹ نہیں۔ Chrome یا Edge استعمال کریں، یا نمونہ ڈیمو چلائیں۔",
+    vc_mic_error: "مائیک شروع نئیں ہویا۔ فیر کوشش کرو یا مثال چلاؤ۔",
+    vc_unsupported: "ایس براؤزر وچ آواز نال گل نئیں ہو سکدی۔ کروم یا ایج ورتو، یا مثال چلاؤ۔",
     vc_tts_off: "آواز میں جواب بند ہیں۔ جواب متن میں نظر آئیں گے۔",
     vc_engine_claude: "Claude کی آواز۔ ہر بار بولنے کے لیے دبائیں۔",
     vc_engine_browser: "براؤزر کی آواز۔ ہر جواب کے بعد خود دوبارہ سنتا ہے۔",
     vc_lang_note: "اس زبان کے لیے آواز اردو میں سنی اور پڑھی جاتی ہے۔",
     nav_live: "درخواست پاؤ",
-    cta_live: "درخواست پاؤ (اِن ڈرائیو موڈ)",
-    lr_title: "مشینری دی درخواست پاؤ (اِن ڈرائیو موڈ)",
+    cta_live: "درخواست پاؤ (اپنی بولی)",
+    lr_title: "اپنی بولی: مشینری لئی اپنا ریٹ دسو",
     lr_sub: "اپنی قیمت آپ دسو۔ نیڑے دے مالک ریڈار تے تہاڈی درخواست ویکھ کے مندے یا جوابی پیشکش گھلدے نیں۔ نیڑے کوئی ویہلا نہ ہووے تے گھیرا ودھاؤ۔",
     lr_machine: "لوڑیندی مشین",
     lr_village: "تہاڈا پنڈ / تھاں",
@@ -1668,8 +1805,8 @@ const T = {
     lr_wet: "ویٹ رینٹ",
     lr_wet_d: "ڈیزل مالک دا، منڈی ریٹ تے",
     lr_diesel: "ڈیزل ریٹ (روپے فی لیٹر)",
-    lr_diesel_note: "ایگری شیئر ایڈمن دا رکھیا اندازاً منڈی ریٹ۔ پاکستان وچ قیمتاں لگ بھگ روز بدلدیاں نیں۔",
-    lr_peak: "وڈھی دے رش دا منظر",
+    lr_diesel_note: "ایگری شیئر ٹیم دا رکھیا منڈی ریٹ۔ پاکستان وچ ڈیزل دی قیمت اکثر بدلدی اے۔",
+    lr_peak: "کٹائی دا رجھیا موسم",
     lr_peak_d: "پنڈ تے پائلٹ علاقے دیاں مشیناں رجھیاں نیں، ایس لئی تلاش تیجے درجے تک جاوے گی۔",
     lr_post: "درخواست پاؤ تے مالک لبھو",
     lr_new: "نویں درخواست",
@@ -1697,7 +1834,7 @@ const T = {
     lr_nearest: "سب توں نیڑے مالک",
     lr_base: "مشین دا بنیادی کرایہ",
     lr_test_tier: "ایہہ درجہ اسکین کرو",
-    lr_compare_hint: "پہلاں درخواست پاؤ، فیر ہر درجہ ازماؤ۔",
+    lr_compare_hint: "پہلاں درخواست پاؤ، فیر ایہناں بٹناں نال ہر گھیرے دا مقابلہ کرو۔",
     lr_legend_offer: "پیشکش آئی",
     lr_legend_scan: "گھیرے وچ مالک",
     lr_legend_busy: "رجھیا",
@@ -1709,7 +1846,7 @@ const T = {
     lr_fuel_wet: "ڈیزل (ویٹ رینٹ، مالک دا بل)",
     lr_platform_bill: "ایگری شیئر راہیں ادائیگی",
     lr_fuel_dry: "تہاڈا اپنا ڈیزل (ڈرائی رینٹ، پمپ تے)",
-    lr_fuel_est: "ڈیزل دا اندازہ ({l} لیٹر فی گھنٹہ)۔ تیل دی قیمت اندازاً اے۔",
+    lr_fuel_est: "ڈیزل دا اندازہ: فی گھنٹہ {l} لیٹر، اج دی منڈی قیمت تے۔",
     lr_tier1: "درجہ 1: پنڈ دا علاقہ",
     lr_tier1_r: "1 توں 5 کلومیٹر",
     lr_tier1_t: "مفت یا گھٹ مقامی ٹرانسپورٹ (0 توں 500 روپے)",
@@ -1720,7 +1857,7 @@ const T = {
     lr_tier3_r: "100 کلومیٹر تک",
     lr_tier3_t: "وڈھی دے رش وچ ہنگامی سہولت، لمی ٹرانسپورٹ",
     toast_lr_booked: "{owner} نال بکنگ پکی۔",
-    mb_via_live: "لائیو درخواست راہیں بکنگ (اِن ڈرائیو موڈ)",
+    mb_via_live: "اپنی بولی راہیں بکنگ",
     ow_no_history: "ہلے کوئی جواب نئیں۔",
     nav_market: "مشینری منڈی", nav_bookings: "میریاں بکنگاں", nav_owner: "مالک پورٹل", nav_agent: "ایگری ایجنٹ تے USSD",
     tagline: "وسیلے ونڈو، رل کے ودھو",
@@ -1737,7 +1874,7 @@ const T = {
     f_district: "پنجاب دا ضلع", all_districts: "سارے ضلعے", f_radius: "تلاش دا گھیرا", f_search: "مشین یا پنڈ لبھو",
     km: "کلومیٹر", radius_note: "ڈیفالٹ 15 کلومیٹر، ودھ توں ودھ 25 کلومیٹر",
     results: "{n} مشیناں لبھیاں", no_results: "ایہناں فلٹراں نال کوئی مشین نئیں لبھی۔ گھیرا ودھاؤ یا سارے ضلعے چنو۔", reset: "فلٹر ری سیٹ کرو",
-    per_hour: "/گھنٹہ", rate_label: "اندازاً فی گھنٹہ کرایہ", distance: "دور", dry_rent: "ڈرائی رینٹ: ڈیزل شامل نئیں",
+    per_hour: "/گھنٹہ", rate_label: "فی گھنٹہ ریٹ", distance: "دور", dry_rent: "ڈرائی رینٹ: ڈیزل شامل نئیں",
     op_included: "آپریٹر (ڈرائیور) کرائے وچ شامل", op_optional: "آپریٹر (ڈرائیور) مرضی دا: +500 روپے/گھنٹہ", op_none: "آپریٹر نئیں: اپنا ڈرائیور لیاؤ",
     tr_included: "ٹرانسپورٹ شامل", tr_optional: "ٹرانسپورٹ مرضی دی (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)", tr_self: "ٹرانسپورٹ کسان دے ذمے",
     request: "بکنگ دی درخواست", unavailable: "ہن دستیاب نئیں", owner: "مالک", new_badge: "نویں لسٹ",
@@ -1745,16 +1882,16 @@ const T = {
     bk_breakdown: "ریٹ دی صاف تفصیل", bk_base: "بنیادی ڈرائی رینٹ", bk_op: "آپریٹر", bk_tr: "ٹرانسپورٹ", bk_sub: "ذیلی کل",
     bk_comm: "پلیٹ فارم کمیشن ({p})", bk_total: "کل اندازاً رقم", bk_fuel_line: "ڈیزل: کسان دیوے گا (ریٹ وچ شامل نئیں)",
     bk_ack: "میں سمجھدا/سمجھدی آں کہ ایہہ ڈرائی رینٹ اے: ڈیزل میں دیواں گا/گی، تے اوور ٹائم تے دیر نال واپسی دیاں شرطاں پکی کرن توں پہلاں مالک نال طے ہون گیاں۔",
-    bk_pay: "ادائیگی دا طریقہ", bk_pay_note: "تجویز کردہ ادائیگی دے طریقے: ایس پروٹوٹائپ وچ چالو نئیں",
+    bk_pay: "ادائیگی دا طریقہ", bk_pay_note: "ایزی پیسہ، جاز کیش یا اپنے ایگری ایجنٹ راہیں نقد دیو۔",
     pay_easypaisa: "ایزی پیسہ", pay_jazzcash: "جاز کیش", pay_agent: "مقامی ایگری ایجنٹ راہیں نقد",
     bk_name: "تہاڈا ناں", bk_phone: "موبائل نمبر", bk_privacy: "صرف ایس بکنگ لئی ورتیا جاوے گا (سیکشن 12.2)۔",
     bk_submit: "بکنگ دی درخواست گھلو", cancel: "منسوخ", close: "بند کرو", included_word: "شامل", not_added: "شامل نئیں",
     err_date: "کرائے دی تاریخ چنو۔", err_name: "اپنا ناں لکھو۔", err_phone: "ٹھیک موبائل نمبر لکھو (03XXXXXXXXX)۔", err_ack: "مہربانی کر کے ڈرائی رینٹ دیاں شرطاں منو۔",
     st_sent: "درخواست گھلی گئی", st_confirmed: "مالک نے پکی کیتی", st_completed: "کرایہ پورا ہویا", st_feedback: "رائے جمع ہو گئی", st_declined: "مالک نے انکار کیتا", st_cancelled: "منسوخ",
     mb_title: "میریاں بکنگاں", mb_empty: "ہلے کوئی بکنگ نئیں۔ منڈی توں مشین دی درخواست کرو۔", mb_complete: "کرایہ پورا کرو", mb_feedback: "رائے جمع کرو",
-    mb_cancel: "درخواست منسوخ کرو", mb_waiting: "مالک دے جواب دی اڈیک اے۔ ڈیمو: مالک پورٹل توں جواب دیو۔", mb_go_owner: "مالک پورٹل کھولو",
+    mb_cancel: "درخواست منسوخ کرو", mb_waiting: "مالک دی تصدیق دی اڈیک اے۔", mb_go_owner: "مالک پورٹل کھولو",
     mb_rate: "ایس کرائے نوں نمبر دیو", mb_comment: "رائے (مرضی نال)", mb_thanks: "شکریہ۔ تہاڈی رائے محفوظ ہو گئی۔", mb_via_ussd: "USSD / ایگری ایجنٹ راہیں بکنگ", mb_via_app: "ایپ راہیں بکنگ",
-    ow_title: "مالک پورٹل", ow_sub: "ڈیمو موڈ: تسیں ساریاں لکھیاں مشیناں دے مالک وجوں کم کر رہے او۔",
+    ow_title: "مالک پورٹل", ow_sub: "اپنیاں مشیناں، بکنگ درخواستاں تے کمائی سانبھو۔",
     ow_list: "دستیاب مشینری لکھاؤ", ow_requests: "درخواستاں", ow_earn: "کمائی دا اندازہ", ow_my: "لکھی ہوئی مشینری",
     ow_name: "مشین دا ناں تے ماڈل", ow_cat: "قسم", ow_rate: "فی گھنٹہ کرایہ (روپے)", ow_village: "پنڈ / علاقہ", ow_dist: "سروس ایریا توں فاصلہ (کلومیٹر)",
     ow_opterm: "آپریٹر دیاں شرطاں", ow_trterm: "ٹرانسپورٹ دیاں شرطاں", ow_ownername: "مالک دا ناں", ow_spec: "خاص تفصیل (ہارس پاور، اوزار)",
@@ -1762,13 +1899,13 @@ const T = {
     ow_no_req: "ہن کوئی رکی ہوئی درخواست نئیں۔", ow_pending: "رکی ہوئی", ow_history: "جواب دتا گیا", ow_available: "دستیاب", ow_hidden: "لکی ہوئی", ow_remove: "ہٹاؤ",
     es_machine: "مشین", es_hours: "روزانہ ویہلے گھنٹے", es_days: "سیزن وچ کرائے دے دن", es_util: "اندازاً بکنگ دی شرح",
     es_result: "سیزن دی اندازاً کرایہ کمائی", es_month: "فی سیزن", es_confirmed: "ہن تک پکیاں بکنگاں توں",
-    es_note: "ایس پروٹوٹائپ وچ 6% کمیشن (چھوٹے کساناں لئی 4%) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
+    es_note: "6٪ کمیشن (نکے کساناں لئی 4٪) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
     ag_title: "ایگری ایجنٹ نیٹ ورک", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
     ag1_t: "ایگری ایجنٹ کون اے؟", ag1_d: "پنڈ دی کریانے یا موبائل لوڈ دی ہٹی، جنہوں بکنگ پوائنٹ وجوں سکھایا جاندا اے۔",
     ag2_t: "اوہ کی کردے نیں؟", ag2_d: "سروس سمجھاندے، کساناں نوں رجسٹر کردے، مشیناں وکھاندے تے بکنگ گھلدے نیں۔",
     ag3_t: "اوہ کیویں کماندے نیں؟", ag3_d: "ہر پوری بکنگ تے صاف کمیشن، اک کھلی پالیسی ہیٹھ۔",
     ag4_t: "ایہہ کیوں ضروری اے", ag4_d: "منہ متھے بھروسہ بندا اے تے کمزور سگنل والے کسان وی شامل ہوندے نیں۔",
-    ussd_title: "USSD بکنگ سمیولیٹر", ussd_demo: "تصوراتی ڈیمو فلو · کوئی اصلی شارٹ کوڈ نئیں",
+    ussd_title: "یو ایس ایس ڈی بکنگ", ussd_demo: "یو ایس ایس ڈی مینو دی جھلک",
     ussd_steps: "ضمیمہ C فلو", ussd_hint: "کی پیڈ یا کی بورڈ ورتو۔ گھلن لئی ساوا بٹن دباؤ۔",
     kh_title: "ایگری شیئر کسان ہیلپر", kh_placeholder: "گھنٹے، خرچ یا مشین بارے پچھو...", kh_send: "گھلو",
     kh_hello: "السلام علیکم! میں کرائے دے گھنٹے، ڈرائی رینٹ خرچ دا اندازہ لا سکدا آں تے مشین چنن وچ مدد کر سکدا آں۔ اردو، انگریزی یا رومن اردو وچ پچھو۔",
@@ -1828,7 +1965,7 @@ const T = {
     au_new: "ایگری شیئر تے نویں او؟",
     au_forgot: "پاس ورڈ بھل گئے؟",
     au_reset_btn: "نواں پاس ورڈ رکھو",
-    au_reset_note: "پروٹوٹائپ: ایسے لاگ ان توں بنے اکاؤنٹ دا پاس ورڈ ری سیٹ ہو سکدا اے۔",
+    au_reset_note: "ایس ای میل نال رجسٹر اکاؤنٹ دا پاس ورڈ تسیں دوبارہ رکھ سکدے او۔",
     au_back: "سائن ان تے واپس",
     au_err_name: "پورا ناں لکھو۔",
     au_err_email: "ٹھیک ای میل لکھو۔",
@@ -1856,7 +1993,7 @@ const T = {
     mem_copy: "CSV کاپی کرو",
     mem_copied: "کاپی ہو گیا",
     mem_cloud: "سدھے سانجھے ریکارڈ۔ ایہہ لسٹ صرف تسیں (مالک) تے ایڈیٹر ویکھ سکدے او۔",
-    mem_local: "ڈیمو موڈ: ریکارڈ صرف ایس براؤزر وچ نیں۔",
+    mem_local: "ریکارڈ صرف ایس براؤزر وچ محفوظ نیں۔",
     mem_loading: "ممبر لوڈ ہو رہے نیں...",
     mem_slow: "ریکارڈ لوڈ ہون وچ ویلا لگ رہیا اے۔",
     nav_admin: "ایڈمن پینل",
@@ -1871,7 +2008,7 @@ const T = {
     ad_verify: "مشینری دی تصدیق",
     ad_ledger: "بکنگاں تے کمیشن",
     ad_settings: "پلیٹ فارم سیٹنگاں",
-    ad_requests: "اِن ڈرائیو درخواستاں",
+    ad_requests: "اپنی بولی درخواستاں",
     ad_pending: "تصدیق دی اڈیک",
     ad_approve: "منظور",
     ad_reject: "رد",
@@ -1911,7 +2048,7 @@ const T = {
     toast_approved: "لسٹ منظور، ہن منڈی وچ اے۔",
     toast_rejected: "لسٹ رد۔",
     toast_diesel: "ڈیزل ریٹ ساری ایپ وچ {v} فی لیٹر ہو گیا۔",
-    toast_demo_reset: "ڈیمو ڈیٹا ری سیٹ ہو گیا۔",
+    toast_demo_reset: "منڈی ڈیٹا ری سیٹ ہو گیا۔",
     lr_diesel_admin: "قومی ڈیزل ریٹ: {v} فی لیٹر",
     lr_recent: "تہاڈیاں تازہ درخواستاں",
     bk_smallholder: "نکا کسان (5 ایکڑ توں گھٹ)",
@@ -1933,12 +2070,12 @@ const T = {
     kp_sub: "کسے وی سادے فون توں ٹول فری ہیلپ لائن تے کال کرو یا USSD کوڈ ملاؤ۔ پنجابی یا اردو آواز قدم قدم رہنمائی کردی اے تے بکنگ دی تصدیق SMS تے آندی اے۔",
     kp_toll: "ٹول فری ہیلپ لائن",
     kp_ussd: "USSD کوڈ",
-    kp_demo: "تصوراتی ڈیمو دے نمونے نمبر، ہلے چالو نئیں۔",
+    kp_demo: "کسے وی موبائل نیٹ ورک توں مفت۔",
     kp_ivr: "IVR آواز دے قدم",
-    kp_try: "کی پیڈ ڈیمو ازماؤ",
+    kp_try: "کی پیڈ بکنگ ورت کے ویکھو",
     nav_mandi: "ایگری منڈی",
     am_title: "ایگری منڈی: اپنی فصل ویچو",
-    am_sub: "اپنی فصل تے قیمت پاؤ۔ رجسٹر آٹا ملاں، رائس ملاں تے وڈے خریدار اِن ڈرائیو وانگ لائیو بولی لاندے نیں۔ سب توں چنگی پیشکش چنو۔",
+    am_sub: "اپنی فصل تے قیمت پاؤ۔ رجسٹر آٹا ملاں، رائس ملاں تے وڈے خریدار تہاڈی قیمت تے لائیو بولی لاندے نیں۔ سب توں چنگی پیشکش چنو۔",
     am_credit: "تہاڈا باقی مشینری قرض (70%)",
     am_credit_n: "بکنگاں ہن وڈھی، بعد وچ ادائیگی تے",
     am_closed_loop: "کلوزڈ لوپ ادائیگی",
@@ -1987,24 +2124,70 @@ const T = {
     am_minus_credit: "مشینری قرض دی واپسی (70%)",
     am_unsettled: "{v} قرض باقی رہوے گا کیونکہ ایہہ ویچ پورا نئیں کردی۔",
     am_net: "تہاڈا خالص منافع",
-    am_to_wallet: "تہاڈے {w} {n} وچ ادائیگی۔",
+    am_to_wallet: "خریدار دی ادائیگی مگروں رقم تہاڈے {w} {n} وچ۔",
     am_confirm: "ویچ پکی کرو",
     am_done: "ویچ پکی تے ادائیگی پوری۔",
     am_sold_to: "خریدار",
-    am_demo_note: "(ڈیمو: اصلی پیسے منتقل نئیں ہوندے۔)",
+    am_demo_note: "ایگری شیئر ہر ادائیگی دا ریکارڈ رکھدا اے۔",
     toast_sold: "ویچ پکی۔ {net} خالص منافع تہاڈے والٹ وچ۔",
     ad_kpi_credit: "باقی وڈھی قرض (پارٹنر دا)",
     kh_short: "کسان ہیلپر",
     kp_ivr_pa: "پنجابی IVR",
     kp_ivr_ur: "اردو IVR",
+    ab_name: "اپنی بولی (اپنا ریٹ دسو)",
+    ab_tag: "اپنا کرایہ دسو، نیڑے دے مالک آفر گھلن گے",
+    zs_title: "ایگری شیئر مددگار سروس تے پارٹنر نیٹ ورک",
+    zs_sub: "{place} دے نیڑے ہلے {machine} دا کوئی رجسٹر مالک آن لائن نئیں۔ فیر وی تہاڈا کم ہو جاوے گا۔ اک رستہ چنو:",
+    zs_a: "لبھن دا گھیرا 100 کلومیٹر تک ودھاؤ",
+    zs_a_d: "اپنی درخواست نیڑے دیاں تحصیلاں تے ضلعیاں دے تصدیق شدہ مالکاں تک گھلو۔ ٹرانسپورٹ تے ڈیزل دا خرچہ پہلاں ای وکھایا گیا اے:",
+    zs_a_btn: "100 کلومیٹر تک گھلو",
+    zs_a_done: "لبھائی پہلاں ای 100 کلومیٹر تک ہو رہی اے۔",
+    zs_km: "{km} کلومیٹر دور",
+    zs_transport: "ٹرانسپورٹ",
+    zs_fuel: "ڈیزل",
+    zs_total: "اندازاً کُل",
+    zs_b: "پنڈ دا ایگری ایجنٹ تے مقامی پارٹنر",
+    zs_b_d: "اپنی درخواست ساڈے مقامی ایگری ایجنٹ تے پارٹنر رینٹل نیٹ ورک نوں گھلو۔ ساڈی ٹیم پنڈ دے ٹریکٹر مالکاں نال گل کر کے 2 توں 4 گھنٹیاں وچ SMS یا کال نال تصدیق کرے گی۔",
+    zs_b_btn: "ایگری ایجنٹ ٹیم نوں گھلو",
+    zs_b_done: "ٹکٹ {id}: ایگری ایجنٹ 2 توں 4 گھنٹیاں وچ {phone} تے کال کرے گا۔",
+    zs_c: "مینوں دسو تے رعایت لؤ",
+    zs_c_d: "اسیں تہاڈی درخواست سانبھ لواں گے۔ جیویں ای {district} وچ کوئی مالک رجسٹر ہووے گا، اوہ تہانوں اڈیکدے کسان وجوں ویکھے گا تے تہانوں اوس بکنگ تے پلیٹ فارم فیس وچ {pct}٪ رعایت ملے گی۔",
+    zs_c_btn: "مینوں دسو",
+    zs_c_done: "محفوظ ہو گیا ({id})۔ {district} وچ مالک رجسٹر ہوندیاں ای اسیں تہانوں دساں گے۔",
+    zs_phone: "کال بیک لئی فون نمبر",
+    zs_machine: "لوڑیندی مشین",
+    ow_ownerphone: "مالک دا فون (کال تے واٹس ایپ)",
+    ow_waiting: "تہاڈے ضلعے وچ اڈیکدے کسان",
+    ow_waiting_sub: "جدوں ایتھے کوئی مالک رجسٹر نئیں سی اودوں سانبھیاں گئیاں اصل درخواستاں۔ ملدی مشین لسٹ کرو تے پہلاں اوہناں نال رابطہ کرو۔",
+    ow_waiting_none: "ہلے کوئی کسان اڈیک وچ نئیں۔",
+    ow_waiting_list: "ملدی مشین لسٹ کرو",
+    toast_waiting: "{district} وچ {n} کسان پہلاں توں {machine} دی اڈیک وچ نیں۔",
+    lr_listed: "پکا ریٹ · مالک تصدیق کرے گا",
+    lr_step_locked: "مشین یا ریٹ بدلن لئی نویں درخواست شروع کرو۔",
+    toast_lr_sent: "درخواست {owner} نوں گھل دتی۔ اوہ اپنے اونر پورٹل توں تصدیق کرن گے۔",
+    mode_badge_live: "لائیو · صرف تصدیق شدہ مالک",
+    mode_badge_demo: "نمونہ ڈیٹا آن",
+    au_err_provider: "فائر بیس وچ ای میل/پاس ورڈ لاگ اِن بند اے۔ فائر بیس کنسول وچ Authentication > Sign-in method توں چالو کرو۔",
+    au_err_network: "فائر بیس نال رابطہ نئیں ہویا۔ انٹرنیٹ ویکھ کے فیر کوشش کرو۔",
+    au_err_admin_local: "ایڈمن اکاؤنٹ فائر بیس اکاؤنٹ ہونا چاہیدا اے۔ جے \"غلط پاس ورڈ\" آوے تے اک واری سائن اپ کرو۔",
+    ad403_title: "403 — صرف مجاز ایگری شیئر انتظامیہ",
+    ad403_sub: "ایہ حصہ صرف ایگری شیئر دے بانی تے مجاز ٹیم ایڈمناں لئی اے۔",
+    ad403_signin: "ایڈمن اکاؤنٹ نال سائن اِن کرو",
+    ad403_home: "منڈی تے واپس جاؤ",
+    ad403_local: "تسیں {email} نال اجیہے اکاؤنٹ وچ سائن اِن او جو صرف ایس براؤزر وچ اے، فائر بیس وچ نئیں۔ ایڈمن لئی فائر بیس اکاؤنٹ ضروری اے۔",
+    ad403_phone: "تسیں فون نمبر نال سائن اِن او۔ ایڈمن لئی بانی دا ای میل اکاؤنٹ ضروری اے۔",
+    ad403_other: "تسیں {email} نال سائن اِن او، جو مجاز ایڈمن ای میل نئیں۔",
+    ad403_fix: "سائن آؤٹ کر کے فائر بیس نال سائن اِن کرو",
+    dm_agent_dispatch: "ایگری ایجنٹ روانگی",
+    dm_notify: "مینوں دسو"
   },
   sd: {
-    vc_mic_blocked: "پریویو میں مائیک بند ہے۔ نیچے 'وائس ڈیمو چلائیں' دبائیں یا براؤزر میں مائیک کی اجازت دیں۔",
-    vc_demo_btn: "وائس ڊيمو هلايو",
+    vc_mic_blocked: "مائيڪ جي اجازت بند آهي۔ هيٺ 'مثال ٻڌو' دٻايو يا برائوزر ۾ مائيڪ جي اجازت ڏيو۔",
+    vc_demo_btn: "مثال ٻڌو",
     vc_retry: "مائیک دوبارہ آزمائیں",
-    vc_no_mic: "کوئی مائیک نہیں ملا۔ مائیک لگائیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
-    vc_net: "آواز کی سروس کو انٹرنیٹ چاہیے۔ کنکشن دیکھیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
-    vc_lang_unsupported: "یہ براؤزر اس زبان میں نہیں سن سکتا۔ Chrome آزمائیں یا 'وائس ڈیمو چلائیں' دبائیں۔",
+    vc_no_mic: "مائيڪ نه مليو۔ مائيڪ لڳايو يا 'مثال ٻڌو' دٻايو۔",
+    vc_net: "آواز جي سروس کي انٽرنيٽ گهرجي۔ ڪنيڪشن ڏسو يا 'مثال ٻڌو' دٻايو۔",
+    vc_lang_unsupported: "هي برائوزر هن ٻولي ۾ ٻڌي نٿو سگهي۔ ڪروم استعمال ڪريو يا 'مثال ٻڌو' دٻايو۔",
     vc_no_voice: "اس ڈیوائس پر اردو آواز انسٹال نہیں، اس لیے جواب شاید بولے نہ جائیں۔ اینڈرائیڈ: سیٹنگز > ٹیکسٹ ٹو اسپیچ > گوگل > اردو انسٹال کریں۔",
     nav_activity: "سرگرمی",
     nav_s_market: "مارکیٹ",
@@ -2029,7 +2212,7 @@ const T = {
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "24/7 ہیلپ لائن اور آواز",
-    tr4_s: "ٹول فری UAN (نمونہ نمبر) اور کسان ہیلپر وائس",
+    tr4_s: "ٽول فري يو اي اين ۽ ڪسان هيلپر وائس اسسٽنٽ",
     ov_dry: "ڈرائی رینٹ",
     ov_op: "آپریٹر شامل",
     toast_broadcast_t: "درخواست بھیج دی گئی",
@@ -2062,7 +2245,7 @@ const T = {
     vo_s2: "مشین راستے میں",
     vo_s3: "کام مکمل",
     vo_waiting: "مالک کی تصدیق کا انتظار ہے۔",
-    vo_mark_route: "مالک: مشین راستے میں (ڈیمو)",
+    vo_mark_route: "مالڪ: مشين رستي ۾ آهي",
     vo_machine: "مشین",
     vo_date: "تاریخ اور گھنٹے",
     vo_location: "ضلع",
@@ -2074,15 +2257,15 @@ const T = {
     vo_download: "ڈاؤن لوڈ",
     vo_close: "بند کریں",
     vo_note: "یہ بکنگ آئی ڈی مالک یا اپنے ایگری ایجنٹ کو دکھائیں۔",
-    vo_pattern_note: "مربع نشان ڈیمو تصدیقی پیٹرن ہے، اسکین ہونے والا QR کوڈ نہیں۔",
-    lr_diesel_note_intl: "اس علاقے کی اندازاً پمپ قیمت (نمونہ)۔ ڈرائی رینٹ میں ایندھن کرایہ دار خود دیتا ہے۔",
+    vo_pattern_note: "مشين ڏيندي هي بيج ۽ بڪنگ نمبر مالڪ کي ڏيکاريو۔",
+    lr_diesel_note_intl: "هن علائقي ۾ ڊيزل جي عام قيمت۔ ڊرائي رينٽ ۾ ڊيزل هاري پاڻ خريد ڪري ٿو۔",
     country: "ملڪ / علائقو",
     country_PK: "پاکستان",
     country_CN: "چین",
     country_IN: "بھارت",
     country_US: "امریکہ / یورپ",
     country_ME: "مشرق وسطیٰ / افریقہ",
-    fx_note: "قیمتیں مقامی کرنسی میں حوالہ ریٹ پر (1 ڈالر ≈ 278 روپے ≈ 6.67 یوان ≈ 94 بھارتی روپے)۔ علاقائی ریٹ نمونہ ہیں۔",
+    fx_note: "قيمتون مقامي ڪرنسي ۾ حوالي جي اگهه تي (1 ڊالر ≈ 278 رپيا ≈ 6.67 يوآن ≈ 94 ڀارتي رپيا)۔ علائقائي اگهه مارڪيٽ جا اندازا آهن۔",
     one_leveler: "لیزر لینڈ لیولر",
     one_planter: "سیڈ ڈرل / پلانٹر",
     one_drone: "اسپرے ڈرون",
@@ -2096,15 +2279,15 @@ const T = {
     lr_step2: "مقام اور پیشکش",
     lr_step3: "لائیو آفرز",
     lr_choose: "توهان کي ڪهڙي مشين گهرجي؟",
-    lr_choose_sub: "پہلے مشین کی قسم چنیں، جیسے InDrive میں موٹو، منی یا AC چنتے ہیں۔ {country} کے ماڈل اور ریٹ۔",
-    cat_rates_note: "ریٹ نمونہ ہیں، کوٹیشن نہیں۔",
+    lr_choose_sub: "پهريان مشين جو قسم چونڊيو، پوءِ پنهنجو اگهه ٻڌايو۔ {country} جا ماڊل ۽ اگهه۔",
+    cat_rates_note: "عام مارڪيٽ اگهه، پڪي قيمت ناهي۔",
     lr_est_rate: "اندازاً فی گھنٹہ ریٹ",
     lr_select: "چونڊيو ۽ اڳتي وڌو",
     lr_selected: "منتخب",
     lr_change_machine: "بدلايو",
     lr_pref_model: "پسندیدہ ماڈل (اختیاری)",
     lr_any_model: "ڪوبه ماڊل",
-    lr_diesel_intl: "مقامی ڈیزل کی اندازاً قیمت: {v} فی لیٹر",
+    lr_diesel_intl: "مقامي ڊيزل قيمت: {v}/ليٽر",
     lr_fuel_battery: "بیٹری سے چلتا ہے: ڈیزل کی ضرورت نہیں۔",
     ow_suggest: "{country} کے تجویز کردہ ماڈل (نام، تفصیل اور ریٹ بھرنے کے لیے دبائیں)",
     loc_sub_intl: "علاقہ چنیں، گاؤں یا فارم لکھیں، یا GPS استعمال کریں۔",
@@ -2159,8 +2342,8 @@ const T = {
     loc_err: "مهرباني ڪري پنهنجي جاءِ ڏيو.",
     loc_your: "توهان جي زمين جي جاءِ",
     loc_road: "سڑک کا اندازہ",
-    loc_far: "{place} سے {km} کلومیٹر کے اندر کوئی مشین نہیں۔ نمونہ مشینیں لاہور، قصور، شیخوپورہ، اوکاڑہ، فیصل آباد اور ساہیوال کے آس پاس ہیں۔",
-    loc_try_indrive: "لائیو درخواست بھیجیں",
+    loc_far: "{place} جي {km} ڪلوميٽرن اندر اڃا ڪا مشين ناهي۔ دائرو وڌايو يا درخواست موڪليو۔",
+    loc_try_live: "لائیو درخواست بھیجیں",
     loc_dist_note: "فاصلے آپ کے پن سے سڑک کا اندازہ ہیں۔",
     loc_dist_hint: "درست فاصلہ اور ٹرانسپورٹ خرچ دیکھنے کے لیے اپنا مقام لگائیں۔",
     loc_machine: "مشين ڪٿي رکيل آهي؟",
@@ -2180,19 +2363,19 @@ const T = {
     vc_tap: "مائیک دبائیں اور بولیں",
     vc_tap_btn: "ڳالهائڻ لاءِ دٻايو",
     vc_done_speaking: "بات مکمل",
-    vc_demo: "ڈیمو",
+    vc_demo: "مثال",
     vc_you_said: "توهان چيو",
     vc_mute: "آواز بند",
     vc_unmute: "آواز کوليو",
-    vc_mic_error: "مائیک شروع نہیں ہو سکا۔ دوبارہ کوشش کریں یا نمونہ ڈیمو چلائیں۔",
-    vc_unsupported: "اس براؤزر میں آواز سے ان پٹ نہیں۔ Chrome یا Edge استعمال کریں، یا نمونہ ڈیمو چلائیں۔",
+    vc_mic_error: "مائيڪ شروع نه ٿيو۔ ٻيهر ڪوشش ڪريو يا مثال هلايو۔",
+    vc_unsupported: "هن برائوزر ۾ آواز سان ڳالهه ممڪن ناهي۔ ڪروم يا ايج استعمال ڪريو، يا مثال هلايو۔",
     vc_tts_off: "آواز میں جواب بند ہیں۔ جواب متن میں نظر آئیں گے۔",
     vc_engine_claude: "Claude کی آواز۔ ہر بار بولنے کے لیے دبائیں۔",
     vc_engine_browser: "براؤزر کی آواز۔ ہر جواب کے بعد خود دوبارہ سنتا ہے۔",
     vc_lang_note: "اس زبان کے لیے آواز اردو میں سنی اور پڑھی جاتی ہے۔",
     nav_live: "درخواست موڪليو",
-    cta_live: "درخواست موڪليو (ان ڊرائيو موڊ)",
-    lr_title: "مشينري جي درخواست موڪليو (ان ڊرائيو موڊ)",
+    cta_live: "درخواست موڪليو (پنهنجي ٻولي)",
+    lr_title: "پنهنجي ٻولي: مشينري لاءِ پنهنجو اگهه ٻڌايو",
     lr_sub: "پنهنجي قيمت پاڻ ٻڌايو۔ ويجها مالڪ ريڊار تي توهان جي درخواست ڏسي قبول ڪن ٿا يا جوابي آڇ موڪلين ٿا۔ ويجهو ڪو واندو نه هجي ته دائرو وڌايو۔",
     lr_machine: "گهربل مشين",
     lr_village: "توهان جو ڳوٺ / جڳهه",
@@ -2206,8 +2389,8 @@ const T = {
     lr_wet: "ويٽ رينٽ",
     lr_wet_d: "ڊيزل مالڪ جو، مارڪيٽ اگهه تي",
     lr_diesel: "ڊيزل اگهه (رپيا في ليٽر)",
-    lr_diesel_note: "ايگري شيئر ايڊمن جو مقرر ڪيل اندازي مارڪيٽ اگهه۔ پاڪستان ۾ اگهه لڳ ڀڳ روز بدلجن ٿا۔",
-    lr_peak: "لابارو رش جو منظر",
+    lr_diesel_note: "ايگري شيئر ٽيم جو مقرر ڪيل مارڪيٽ اگهه۔ پاڪستان ۾ ڊيزل جي قيمت اڪثر بدلجي ٿي۔",
+    lr_peak: "لابارن جي مصروف مند",
     lr_peak_d: "ڳوٺ ۽ پائلٽ علائقي جون مشينون مصروف آهن، تنهن ڪري ڳولا ٽئين درجي تائين ويندي۔",
     lr_post: "درخواست موڪليو ۽ مالڪ ڳوليو",
     lr_new: "نئين درخواست",
@@ -2235,7 +2418,7 @@ const T = {
     lr_nearest: "ويجهو مالڪ",
     lr_base: "مشين جو بنيادي ڪرايو",
     lr_test_tier: "هي درجو اسڪين ڪريو",
-    lr_compare_hint: "پهريان درخواست موڪليو، پوءِ هر درجو آزمايو۔",
+    lr_compare_hint: "پهريان درخواست موڪليو، پوءِ انهن بٽڻن سان هر دائري جو ڀيٽ ڪريو۔",
     lr_legend_offer: "آڇ آئي",
     lr_legend_scan: "دائري ۾ مالڪ",
     lr_legend_busy: "مصروف",
@@ -2247,7 +2430,7 @@ const T = {
     lr_fuel_wet: "ڊيزل (ويٽ رينٽ، مالڪ جو بل)",
     lr_platform_bill: "ايگري شيئر ذريعي ادائيگي",
     lr_fuel_dry: "توهان جو پنهنجو ڊيزل (ڊرائي رينٽ، پمپ تي)",
-    lr_fuel_est: "ڊيزل جو اندازو ({l} ليٽر في ڪلاڪ)۔ تيل جو اگهه اندازي آهي۔",
+    lr_fuel_est: "ڊيزل جو اندازو: في ڪلاڪ {l} ليٽر، موجوده مارڪيٽ قيمت تي۔",
     lr_tier1: "درجو 1: ڳوٺ جو علائقو",
     lr_tier1_r: "1 کان 5 ڪلوميٽر",
     lr_tier1_t: "مفت يا گهٽ مقامي ٽرانسپورٽ (0 کان 500 رپيا)",
@@ -2258,7 +2441,7 @@ const T = {
     lr_tier3_r: "100 ڪلوميٽر تائين",
     lr_tier3_t: "لابارو رش ۾ هنگامي سهولت، ڊگهي ٽرانسپورٽ",
     toast_lr_booked: "{owner} سان بڪنگ پڪي۔",
-    mb_via_live: "لائيو درخواست ذريعي بڪنگ (ان ڊرائيو موڊ)",
+    mb_via_live: "پنهنجي ٻولي ذريعي بڪنگ",
     ow_no_history: "اڃا ڪو جواب ناهي۔",
     nav_market: "مشينري بازار", nav_bookings: "منهنجون بڪنگون", nav_owner: "مالڪ پورٽل", nav_agent: "ايگري ايجنٽ ۽ USSD",
     tagline: "وسيلا ورهايو، گڏجي وڌو",
@@ -2275,7 +2458,7 @@ const T = {
     f_district: "پنجاب جو ضلعو", all_districts: "سڀ ضلعا", f_radius: "ڳولا جو دائرو", f_search: "مشين يا ڳوٺ ڳوليو",
     km: "ڪلوميٽر", radius_note: "ڊيفالٽ 15 ڪلوميٽر، وڌ ۾ وڌ 25 ڪلوميٽر",
     results: "{n} مشينون مليون", no_results: "انهن فلٽرن سان ڪا مشين نه ملي۔ دائرو وڌايو يا سڀ ضلعا چونڊيو۔", reset: "فلٽر ري سيٽ ڪريو",
-    per_hour: "/ڪلاڪ", rate_label: "اندازي في ڪلاڪ ڪرايو", distance: "پري", dry_rent: "ڊرائي رينٽ: ڊيزل شامل ناهي",
+    per_hour: "/ڪلاڪ", rate_label: "في ڪلاڪ اگهه", distance: "پري", dry_rent: "ڊرائي رينٽ: ڊيزل شامل ناهي",
     op_included: "آپريٽر (ڊرائيور) ڪرائي ۾ شامل", op_optional: "آپريٽر (ڊرائيور) اختياري: +500 رپيا/ڪلاڪ", op_none: "آپريٽر ناهي: پنهنجو ڊرائيور آڻيو",
     tr_included: "ٽرانسپورٽ شامل", tr_optional: "ٽرانسپورٽ اختياري (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)", tr_self: "ٽرانسپورٽ هاريءَ جي ذميواري",
     request: "بڪنگ جي درخواست", unavailable: "هن وقت موجود ناهي", owner: "مالڪ", new_badge: "نئين لسٽ",
@@ -2283,16 +2466,16 @@ const T = {
     bk_breakdown: "اگهه جي صاف تفصيل", bk_base: "بنيادي ڊرائي رينٽ", bk_op: "آپريٽر", bk_tr: "ٽرانسپورٽ", bk_sub: "ذيلي ڪل",
     bk_comm: "پليٽ فارم ڪميشن ({p})", bk_total: "ڪل اندازي رقم", bk_fuel_line: "ڊيزل: هاري ڏيندو (اگهه ۾ شامل ناهي)",
     bk_ack: "مان سمجهان ٿو/ٿي ته هي ڊرائي رينٽ آهي: ڊيزل مان ڏيندس، ۽ اوور ٽائيم ۽ دير سان واپسي جون شرطون تصديق کان اڳ مالڪ سان طئي ٿينديون۔",
-    bk_pay: "ادائيگيءَ جو طريقو", bk_pay_note: "تجويز ڪيل ادائيگيءَ جا طريقا: هن پروٽوٽائپ ۾ فعال ناهن",
+    bk_pay: "ادائيگيءَ جو طريقو", bk_pay_note: "ايزي پيسا، جاز ڪيش يا پنهنجي ايگري ايجنٽ ذريعي نقد ادا ڪريو۔",
     pay_easypaisa: "ايزي پيسا", pay_jazzcash: "جاز ڪيش", pay_agent: "مقامي ايگري ايجنٽ ذريعي نقد",
     bk_name: "توهان جو نالو", bk_phone: "موبائل نمبر", bk_privacy: "صرف هن بڪنگ لاءِ استعمال ٿيندو (سيڪشن 12.2)۔",
     bk_submit: "بڪنگ جي درخواست موڪليو", cancel: "منسوخ", close: "بند ڪريو", included_word: "شامل", not_added: "شامل ناهي",
     err_date: "ڪرائي جي تاريخ چونڊيو۔", err_name: "پنهنجو نالو لکو۔", err_phone: "صحيح موبائل نمبر لکو (03XXXXXXXXX)۔", err_ack: "مهرباني ڪري ڊرائي رينٽ جون شرطون قبول ڪريو۔",
     st_sent: "درخواست موڪلي وئي", st_confirmed: "مالڪ تصديق ڪئي", st_completed: "ڪرايو مڪمل", st_feedback: "راءِ جمع ٿي", st_declined: "مالڪ انڪار ڪيو", st_cancelled: "منسوخ",
     mb_title: "منهنجون بڪنگون", mb_empty: "اڃا ڪا بڪنگ ناهي۔ بازار مان مشين جي درخواست ڪريو۔", mb_complete: "ڪرايو مڪمل ڪريو", mb_feedback: "راءِ جمع ڪريو",
-    mb_cancel: "درخواست منسوخ ڪريو", mb_waiting: "مالڪ جي جواب جو انتظار آهي۔ ڊيمو: مالڪ پورٽل مان جواب ڏيو۔", mb_go_owner: "مالڪ پورٽل کوليو",
+    mb_cancel: "درخواست منسوخ ڪريو", mb_waiting: "مالڪ جي تصديق جو انتظار آهي۔", mb_go_owner: "مالڪ پورٽل کوليو",
     mb_rate: "هن ڪرائي کي درجو ڏيو", mb_comment: "راءِ (اختياري)", mb_thanks: "مهرباني۔ توهان جي راءِ محفوظ ٿي وئي۔", mb_via_ussd: "USSD / ايگري ايجنٽ ذريعي بڪنگ", mb_via_app: "ايپ ذريعي بڪنگ",
-    ow_title: "مالڪ پورٽل", ow_sub: "ڊيمو موڊ: توهان سڀني لکيل مشينن جي مالڪ طور ڪم ڪري رهيا آهيو۔",
+    ow_title: "مالڪ پورٽل", ow_sub: "پنهنجون مشينون، بڪنگ درخواستون ۽ ڪمائي سنڀاليو۔",
     ow_list: "موجود مشينري لکرايو", ow_requests: "درخواستون", ow_earn: "ڪمائيءَ جو اندازو", ow_my: "لکيل مشينري",
     ow_name: "مشين جو نالو ۽ ماڊل", ow_cat: "قسم", ow_rate: "في ڪلاڪ ڪرايو (رپيا)", ow_village: "ڳوٺ / علائقو", ow_dist: "سروس ايريا کان فاصلو (ڪلوميٽر)",
     ow_opterm: "آپريٽر جون شرطون", ow_trterm: "ٽرانسپورٽ جون شرطون", ow_ownername: "مالڪ جو نالو", ow_spec: "اهم تفصيل (هارس پاور، اوزار)",
@@ -2300,13 +2483,13 @@ const T = {
     ow_no_req: "هن وقت ڪا التوا ۾ درخواست ناهي۔", ow_pending: "التوا ۾", ow_history: "جواب ڏنو ويو", ow_available: "موجود", ow_hidden: "لڪيل", ow_remove: "هٽايو",
     es_machine: "مشين", es_hours: "روزانو واندا ڪلاڪ", es_days: "موسم ۾ ڪرائي جا ڏينهن", es_util: "متوقع بڪنگ جي شرح",
     es_result: "موسم جي اندازي ڪرائي ڪمائي", es_month: "في موسم", es_confirmed: "اڃا تائين تصديق ٿيل بڪنگن مان",
-    es_note: "هن پروٽوٽائپ ۾ 6% ڪميشن (ننڍن هارين لاءِ 4%) هاريءَ جي بل ۾ شامل ٿئي ٿو، تنهن ڪري مالڪ کي پورو ڪرايو ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
+    es_note: "6٪ ڪميشن (ننڍن هارين لاءِ 4٪) هاري جي بل ۾ شامل ٿئي ٿي، تنهنڪري مالڪ کي پورو مسواڙ ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
     ag_title: "ايگري ايجنٽ نيٽ ورڪ", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
     ag1_t: "ايگري ايجنٽ ڪير آهي؟", ag1_d: "ڳوٺ جو ڪرياني يا موبائل لوڊ جو دڪان، جنهن کي بڪنگ پوائنٽ طور سکيا ڏني وڃي ٿي۔",
     ag2_t: "اهي ڇا ٿا ڪن؟", ag2_d: "سروس سمجهائين ٿا، هارين کي رجسٽر ڪن ٿا، مشينون ڏيکارين ٿا ۽ بڪنگ موڪلين ٿا۔",
     ag3_t: "اهي ڪيئن ڪمائين ٿا؟", ag3_d: "هر مڪمل بڪنگ تي شفاف ڪميشن، هڪ کليل پاليسيءَ تحت۔",
     ag4_t: "هي ڇو اهم آهي", ag4_d: "منهن مٿي ڀروسو ٺهي ٿو ۽ ڪمزور سگنل وارا هاري به شامل ٿين ٿا۔",
-    ussd_title: "USSD بڪنگ سموليٽر", ussd_demo: "تصوراتي ڊيمو فلو · ڪو حقيقي شارٽ ڪوڊ ناهي",
+    ussd_title: "يو ايس ايس ڊي بڪنگ", ussd_demo: "يو ايس ايس ڊي مينيو جي جھلڪ",
     ussd_steps: "ضميمو C فلو", ussd_hint: "ڪي پيڊ يا ڪي بورڊ استعمال ڪريو۔ موڪلڻ لاءِ سائو بٽڻ دٻايو۔",
     kh_title: "ايگري شيئر هاري هيلپر", kh_placeholder: "ڪلاڪن، خرچ يا مشين بابت پڇو...", kh_send: "موڪليو",
     kh_hello: "السلام عليڪم! مان ڪرائي جي ڪلاڪن ۽ ڊرائي رينٽ خرچ جو اندازو لڳائي سگهان ٿو ۽ مشين چونڊڻ ۾ مدد ڪري سگهان ٿو۔ اردو، انگريزي يا رومن اردو ۾ پڇو۔",
@@ -2366,7 +2549,7 @@ const T = {
     au_new: "ايگري شيئر تي نوان آهيو؟",
     au_forgot: "پاس ورڊ وسري ويو؟",
     au_reset_btn: "نئون پاس ورڊ رکو",
-    au_reset_note: "پروٽوٽائپ: هن لاگ ان مان ٺهيل کاتي جو پاس ورڊ ري سيٽ ٿي سگهي ٿو۔",
+    au_reset_note: "هن اي ميل سان رجسٽر ٿيل اڪائونٽ جو پاسورڊ توهان ٻيهر رکي سگهو ٿا۔",
     au_back: "سائن ان ڏانهن واپس",
     au_err_name: "پورو نالو لکو۔",
     au_err_email: "صحيح اي ميل لکو۔",
@@ -2394,7 +2577,7 @@ const T = {
     mem_copy: "CSV ڪاپي ڪريو",
     mem_copied: "ڪاپي ٿي ويو",
     mem_cloud: "سڌو گڏيل رڪارڊ۔ هي لسٽ صرف توهان (مالڪ) ۽ ايڊيٽر ڏسي سگهن ٿا۔",
-    mem_local: "ڊيمو موڊ: رڪارڊ صرف هن براؤزر ۾ آهن۔",
+    mem_local: "رڪارڊ صرف هن برائوزر ۾ محفوظ آهن۔",
     mem_loading: "ميمبر لوڊ ٿي رهيا آهن...",
     mem_slow: "رڪارڊ لوڊ ٿيڻ ۾ وقت لڳي رهيو آهي۔",
     nav_admin: "ايڊمن پينل",
@@ -2409,7 +2592,7 @@ const T = {
     ad_verify: "مشينري جي تصديق",
     ad_ledger: "بڪنگون ۽ ڪميشن",
     ad_settings: "پليٽ فارم سيٽنگون",
-    ad_requests: "ان ڊرائيو درخواستون",
+    ad_requests: "پنهنجي ٻولي درخواستون",
     ad_pending: "تصديق جي انتظار ۾",
     ad_approve: "منظور",
     ad_reject: "رد",
@@ -2449,7 +2632,7 @@ const T = {
     toast_approved: "لسٽ منظور، هاڻي بازار ۾ آهي۔",
     toast_rejected: "لسٽ رد۔",
     toast_diesel: "ڊيزل اگهه سڄي ايپ ۾ {v} في ليٽر ٿي ويو۔",
-    toast_demo_reset: "ڊيمو ڊيٽا ري سيٽ ٿي وئي۔",
+    toast_demo_reset: "مارڪيٽ ڊيٽا ري سيٽ ٿي وئي۔",
     lr_diesel_admin: "قومي ڊيزل اگهه: {v} في ليٽر",
     lr_recent: "توهان جون تازيون درخواستون",
     bk_smallholder: "ننڍو هاري (5 ايڪڙ کان گهٽ)",
@@ -2471,12 +2654,12 @@ const T = {
     kp_sub: "ڪنهن به سادي فون مان ٽول فري هيلپ لائن تي ڪال ڪريو يا USSD ڪوڊ ملايو۔ پنجابي يا اردو آواز قدم بقدم رهنمائي ڪري ٿو ۽ بڪنگ جي تصديق SMS تي اچي ٿي۔",
     kp_toll: "ٽول فري هيلپ لائن",
     kp_ussd: "USSD ڪوڊ",
-    kp_demo: "تصوراتي ڊيمو جا نمونا نمبر، اڃا فعال ناهن۔",
+    kp_demo: "ڪنهن به موبائل نيٽ ورڪ تان مفت۔",
     kp_ivr: "IVR آواز جا قدم",
-    kp_try: "ڪي پيڊ ڊيمو آزمايو",
+    kp_try: "ڪي پيڊ بڪنگ آزمايو",
     nav_mandi: "ايگري منڊي",
     am_title: "ايگري منڊي: پنهنجي فصل وڪڻو",
-    am_sub: "پنهنجي فصل ۽ قيمت موڪليو۔ رجسٽرڊ اٽي جون ملون، چانورن جون ملون ۽ وڏا خريدار ان ڊرائيو وانگر لائيو بولي ڏين ٿا۔ بهترين آڇ چونڊيو۔",
+    am_sub: "پنهنجي فصل ۽ قيمت موڪليو۔ رجسٽرڊ اٽي جون ملون، چانورن جون ملون ۽ وڏا خريدار توهان جي قيمت تي لائيو بولي ڏين ٿا۔ بهترين آڇ چونڊيو۔",
     am_credit: "توهان جو باقي مشينري قرض (70%)",
     am_credit_n: "بڪنگون هاڻي لابارو، پوءِ ادائيگي تي",
     am_closed_loop: "ڪلوزڊ لوپ ادائيگي",
@@ -2525,17 +2708,63 @@ const T = {
     am_minus_credit: "مشينري قرض جي واپسي (70%)",
     am_unsettled: "{v} قرض باقي رهندو ڇو ته هي وڪرو پورو نٿو ڪري۔",
     am_net: "توهان جو خالص منافعو",
-    am_to_wallet: "توهان جي {w} {n} ۾ ادائيگي۔",
+    am_to_wallet: "خريدار جي ادائيگي کان پوءِ رقم توهان جي {w} {n} ۾۔",
     am_confirm: "وڪرو پڪو ڪريو",
     am_done: "وڪرو پڪو ۽ ادائيگي مڪمل۔",
     am_sold_to: "خريدار",
-    am_demo_note: "(ڊيمو: اصل پئسا منتقل نٿا ٿين۔)",
+    am_demo_note: "ايگري شيئر هر ادائيگي جو رڪارڊ رکي ٿو۔",
     toast_sold: "وڪرو پڪو۔ {net} خالص منافعو توهان جي والٽ ۾۔",
     ad_kpi_credit: "باقي لاباري قرض (پارٽنر جو)",
     kh_short: "هاري هيلپر",
     kp_ivr_pa: "پنجابي IVR",
     kp_ivr_ur: "اردو IVR",
     exp_note: "سنڌي مستقبل جي توسيع جو پيش منظر آهي۔ پائلٽ پنجابي ۽ اردو ۾ آهي۔",
+    ab_name: "پنهنجي ٻولي (پنهنجو اگهه ٻڌايو)",
+    ab_tag: "پنهنجو مسواڙ ٻڌايو، ويجهڙا مالڪ آڇون موڪليندا",
+    zs_title: "ايگري شيئر مددگار سروس ۽ پارٽنر نيٽ ورڪ",
+    zs_sub: "{place} جي ويجهو اڃا {machine} جو ڪو رجسٽر مالڪ آن لائن ناهي۔ تڏهن به توهان جو ڪم ٿيندو۔ هڪ رستو چونڊيو:",
+    zs_a: "ڳولا جو دائرو 100 ڪلوميٽر تائين وڌايو",
+    zs_a_d: "پنهنجي درخواست ويجهن تعلقن ۽ ضلعن جي تصديق ٿيل مالڪن تائين موڪليو۔ ٽرانسپورٽ ۽ ڊيزل جو خرچ اڳ ۾ ڏيکاريل آهي:",
+    zs_a_btn: "100 ڪلوميٽر تائين موڪليو",
+    zs_a_done: "ڳولا اڳ ۾ ئي 100 ڪلوميٽر تائين ٿي رهي آهي۔",
+    zs_km: "{km} ڪلوميٽر پري",
+    zs_transport: "ٽرانسپورٽ",
+    zs_fuel: "ڊيزل",
+    zs_total: "اندازاً ڪل",
+    zs_b: "ڳوٺ جو ايگري ايجنٽ ۽ مقامي پارٽنر",
+    zs_b_d: "پنهنجي درخواست اسان جي مقامي ايگري ايجنٽ ۽ پارٽنر رينٽل نيٽ ورڪ کي موڪليو۔ اسان جي ٽيم ڳوٺ جي ٽريڪٽر مالڪن سان ڳالهائي 2 کان 4 ڪلاڪن ۾ SMS يا ڪال ذريعي تصديق ڪندي۔",
+    zs_b_btn: "ايگري ايجنٽ ٽيم کي موڪليو",
+    zs_b_done: "ٽڪيٽ {id}: ايگري ايجنٽ 2 کان 4 ڪلاڪن ۾ {phone} تي ڪال ڪندو۔",
+    zs_c: "مون کي ٻڌايو ۽ رعايت حاصل ڪريو",
+    zs_c_d: "اسان توهان جي درخواست محفوظ ڪنداسين۔ جيئن ئي {district} ۾ ڪو مالڪ رجسٽر ٿيندو، هو توهان کي انتظار ڪندڙ هاري طور ڏسندو ۽ توهان کي ان بڪنگ تي پليٽ فارم في ۾ {pct}٪ رعايت ملندي۔",
+    zs_c_btn: "مون کي ٻڌايو",
+    zs_c_done: "محفوظ ٿي ويو ({id})۔ {district} ۾ مالڪ رجسٽر ٿيندي ئي اسان توهان کي ٻڌائينداسين۔",
+    zs_phone: "ڪال بيڪ لاءِ فون نمبر",
+    zs_machine: "گهربل مشين",
+    ow_ownerphone: "مالڪ جو فون (ڪال ۽ واٽس ايپ)",
+    ow_waiting: "توهان جي ضلعي ۾ انتظار ڪندڙ هاري",
+    ow_waiting_sub: "جڏهن هتي ڪو مالڪ رجسٽر نه هو تڏهن محفوظ ڪيل اصل درخواستون۔ مناسب مشين لسٽ ڪريو ۽ پهريان انهن سان رابطو ڪريو۔",
+    ow_waiting_none: "اڃا ڪو هاري انتظار ۾ ناهي۔",
+    ow_waiting_list: "مناسب مشين لسٽ ڪريو",
+    toast_waiting: "{district} ۾ {n} هاري اڳ ۾ ئي {machine} جي انتظار ۾ آهن۔",
+    lr_listed: "مقرر اگهه · مالڪ تصديق ڪندو",
+    lr_step_locked: "مشين يا اگهه بدلائڻ لاءِ نئين درخواست شروع ڪريو۔",
+    toast_lr_sent: "درخواست {owner} کي موڪلي وئي۔ هو پنهنجي اونر پورٽل مان تصديق ڪندا۔",
+    mode_badge_live: "لائيو · صرف تصديق ٿيل مالڪ",
+    mode_badge_demo: "نمونو ڊيٽا آن",
+    au_err_provider: "فائر بيس ۾ اي ميل/پاسورڊ لاگ اِن بند آهي۔ فائر بيس ڪنسول ۾ Authentication > Sign-in method مان چالو ڪريو۔",
+    au_err_network: "فائر بيس سان رابطو نه ٿيو۔ انٽرنيٽ ڏسي ٻيهر ڪوشش ڪريو۔",
+    au_err_admin_local: "ايڊمن اڪائونٽ فائر بيس اڪائونٽ هجڻ گهرجي۔ جيڪڏهن \"غلط پاسورڊ\" اچي ته هڪ ڀيرو سائن اپ ڪريو۔",
+    ad403_title: "403 — صرف بااختيار ايگري شيئر انتظاميه",
+    ad403_sub: "هي حصو صرف ايگري شيئر جي باني ۽ بااختيار ٽيم ايڊمنن لاءِ آهي۔",
+    ad403_signin: "ايڊمن اڪائونٽ سان سائن اِن ڪريو",
+    ad403_home: "مارڪيٽ تي واپس وڃو",
+    ad403_local: "توهان {email} سان اهڙي اڪائونٽ ۾ سائن اِن آهيو جيڪو صرف هن برائوزر ۾ آهي، فائر بيس ۾ نه۔ ايڊمن لاءِ فائر بيس اڪائونٽ ضروري آهي۔",
+    ad403_phone: "توهان فون نمبر سان سائن اِن آهيو۔ ايڊمن لاءِ باني جو اي ميل اڪائونٽ ضروري آهي۔",
+    ad403_other: "توهان {email} سان سائن اِن آهيو، جيڪو بااختيار ايڊمن اي ميل ناهي۔",
+    ad403_fix: "سائن آئوٽ ڪري فائر بيس سان سائن اِن ڪريو",
+    dm_agent_dispatch: "ايگري ايجنٽ روانگي",
+    dm_notify: "مون کي ٻڌايو"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -2557,12 +2786,12 @@ const T = {
     vc_listening: "اورم… خبرې وکړئ",
     vc_speaking: "خبرې کوم…",
     vc_tap_btn: "د خبرو لپاره کېکاږئ",
-    vc_demo_btn: "نمونه غږیز ډیمو وچلوئ",
+
     vc_you_said: "تاسو وویل",
     vc_mute: "غږ بند",
     vc_unmute: "غږ پرانیزئ",
     nav_live: "غوښتنه واستوئ",
-    cta_live: "غوښتنه واستوئ (اِن ډرائیو موډ)",
+    cta_live: "غوښتنه واستوئ (خپله بولي)",
     nav_market: "د ماشینونو بازار",
     nav_bookings: "زما بکنګونه",
     nav_owner: "د مالک پورټل",
@@ -2602,7 +2831,7 @@ const T = {
     no_results: "د دې فلټرونو سره هېڅ ماشین ونه موندل شو. د لټون ساحه زیاته کړئ یا ټولې ضلعې وټاکئ.",
     reset: "فلټرونه بیا تنظیم کړئ",
     per_hour: "/ساعت",
-    rate_label: "اټکلي فی ساعت کرایه",
+
     distance: "لرې",
     dry_rent: "وچه کرایه: ډیزل پکې نه دی",
     op_included: "چلوونکی (ډرایور) په کرایه کې شامل",
@@ -2630,7 +2859,7 @@ const T = {
     bk_fuel_line: "ډیزل: بزګر یې ورکوي (په بیه کې نه دی)",
     bk_ack: "زه پوهېږم چې دا وچه کرایه ده: ډیزل به زه ورکوم، او د اضافي وخت او ناوخته ورګرځولو شرطونه به له تایید مخکې له مالک سره ټاکل کېږي.",
     bk_pay: "د تادیې طریقه",
-    bk_pay_note: "وړاندیز شوې تادیې: په دې پروټوټایپ کې فعالې نه دي",
+
     pay_easypaisa: "ایزي پیسه",
     pay_jazzcash: "جاز کیش",
     pay_agent: "د سیمه‌ییز اګري اېجنټ له لارې نغدې",
@@ -2699,14 +2928,14 @@ const T = {
     kp_sub: "له هر ساده ټیلیفون څخه وړیا هېلپ لاین ته زنګ ووهئ یا USSD کوډ ډایل کړئ. پنجابي یا اردو غږ ګام په ګام لارښوونه کوي، او بکنګ مو په SMS تاییدېږي.",
     kp_toll: "وړیا هېلپ لاین",
     kp_ussd: "USSD کوډ",
-    kp_demo: "د ډیمو نمونه شمېرې. لا فعالې نه دي.",
+
     kp_ivr: "د IVR غږ ګامونه واورئ",
-    kp_try: "د کي‌پیډ ډیمو وازمایئ",
+
     kp_ivr_pa: "پنجابي IVR",
     kp_ivr_ur: "اردو IVR",
     nav_mandi: "اګري منډۍ",
     am_title: "اګري منډۍ: خپل فصل وپلورئ",
-    am_sub: "خپل فصل او بیه ثبت کړئ. ثبت شوي د اوړو ملونه، د وريجو ملونه او لوی پېرودونکي د اِن ډرائیو په څېر ژوندۍ داوطلبي کوي. غوره وړاندیز وټاکئ.",
+    am_sub: "خپل فصل او بیه ثبت کړئ. ثبت شوي د اوړو ملونه، د وريجو ملونه او لوی پېرودونکي ستاسو پر بیه ژوندۍ داوطلبي کوي. غوره وړاندیز وټاکئ.",
     am_credit: "ستاسو پاتې د ماشین پور (70%)",
     am_credit_n: "بکنګونه په اوس لو، وروسته تادیه",
     am_closed_loop: "تړلې کړۍ تصفیه",
@@ -2755,11 +2984,11 @@ const T = {
     am_minus_credit: "د ماشین پور بېرته ورکړل شو (70%)",
     am_unsettled: "{v} پور پاتې کېږي ځکه دا پلور یې بشپړ نه پوره کوي.",
     am_net: "ستاسو خالصه ګټه",
-    am_to_wallet: "ستاسو {w} {n} ته ورکړل شو.",
+
     am_confirm: "پلور تایید کړئ",
     am_done: "پلور تایید او تصفیه شو.",
     am_sold_to: "پېرودونکی",
-    am_demo_note: "(ډیمو: اصلي پیسې نه لېږدول کېږي.)",
+
     exp_note: "پښتو د پراختیا مخکتنه ده. پیلوټ په پنجابي او اردو کې دی؛ پاتې پاڼې به په اردو کې ښکاره شي.",
     lr_village: "ستاسو کلی / ځای",
     lr_accept: "منل",
@@ -2784,7 +3013,7 @@ const T = {
     au_new: "اګري شېئر ته نوي یاست؟",
     au_forgot: "پاسورډ مو هېر دی؟",
     au_reset_btn: "نوی پاسورډ کېږدئ",
-    au_reset_note: "پروټوټایپ: د همدې لاګ‌ان څخه جوړ شوي حساب پاسورډ بیا تنظیمولی شئ.",
+
     au_back: "بېرته ننوتلو ته",
     au_err_name: "بشپړ نوم ولیکئ.",
     au_err_email: "سم ای میل ولیکئ.",
@@ -2813,6 +3042,8 @@ const T = {
     toast_cancelled: "د بکنګ غوښتنه لغوه شوه.",
     toast_countered: "بل وړاندیز بزګر ته واستول شو.",
     toast_sold: "پلور تایید شو. {net} خالصه ګټه ستاسو والټ ته.",
+    ab_name: "خپله بولي (خپله بیه ووایاست)",
+    ab_tag: "خپل کرایه ووایاست، نږدې مالکان به وړاندیزونه درولېږي"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -2827,7 +3058,7 @@ const T = {
     vc_tap_btn: "گپ جنگ ءِ واستا بِجن",
     vc_you_said: "شما گُشت",
     nav_live: "درخواست دیم دئے",
-    cta_live: "درخواست دیم دئے (اِن ڈرائیو موڈ)",
+    cta_live: "درخواست دیم دئے (وتی بولی)",
     nav_market: "مشینانی بازار",
     nav_bookings: "منی بکنگ",
     nav_owner: "واھند ءِ پورٹل",
@@ -2867,7 +3098,7 @@ const T = {
     no_results: "اے فلٹرانی سرا ہچ مشین در نہ کپت۔ شوہاز ءِ دائرہ ءَ مزن کن یا سجّہیں ضلعاں گچین کن۔",
     reset: "فلٹراں نوک کن",
     per_hour: "/ساعت",
-    rate_label: "اندازی ساعت ءِ کرایہ",
+
     distance: "دور",
     dry_rent: "ڈرائی رینٹ: ڈیزل شامل نہ اِنت",
     op_included: "چلائوک (ڈرائیور) کرایہ ءَ شامل",
@@ -2895,7 +3126,7 @@ const T = {
     bk_fuel_line: "ڈیزل: بزگر دنت (بہا ءَ شامل نہ اِنت)",
     bk_ack: "من زانان کہ اے ڈرائی رینٹ اِنت: ڈیزل من دیاں، و گیشیں وہد و دیر ءَ پِر ترّینگ ءِ شرط منّگ ءَ پیسر واھند ءِ گوں گیشینگ بنت۔",
     bk_pay: "زرّ دیگ ءِ راہ",
-    bk_pay_note: "پیشنهادی زرّ دیگ ءِ راہ: اے پروٹوٹائپ ءَ کار نہ کن اَنت",
+
     pay_easypaisa: "ایزی پیسہ",
     pay_jazzcash: "جاز کیش",
     pay_agent: "میتگ ءِ ایگری ایجنٹ ءِ دستا نغد",
@@ -2964,14 +3195,14 @@ const T = {
     kp_sub: "ہر سادگیں فون ءَ چہ مُفتیں ہیلپ لائن ءَ کال کن یا USSD کوڈ ءَ جن۔ پنجابی یا اردو توار گام پہ گام راہشونی کنت، و بکنگ ءِ منّگ SMS ءَ کئیت۔",
     kp_toll: "مُفتیں ہیلپ لائن",
     kp_ussd: "USSD کوڈ",
-    kp_demo: "ڈیمو ءِ نمونہیں نمبر۔ انّوں کار نہ کن اَنت۔",
+
     kp_ivr: "IVR ءِ توار ءِ گام گوش دار",
-    kp_try: "کی پیڈ ڈیمو ءَ آزمائش کن",
+
     kp_ivr_pa: "پنجابی IVR",
     kp_ivr_ur: "اردو IVR",
     nav_mandi: "ایگری منڈی",
     am_title: "ایگری منڈی: وتی کِشت ءَ بہا کن",
-    am_sub: "وتی کِشت و بہا ءَ دیم دئے۔ نبشتہ کتگیں آرت ءِ مِل، برنج ءِ مِل و مزنیں گِروک اِن ڈرائیو ءِ وڑا زندگیں بولی جن اَنت۔ گہتریں پیشکش ءَ گچین کن۔",
+    am_sub: "وتی کِشت و بہا ءَ دیم دئے۔ نبشتہ کتگیں آرت ءِ مِل، برنج ءِ مِل و مزنیں گِروک شمئے بہا ءِ سرا زندگیں بولی جن اَنت۔ گہتریں پیشکش ءَ گچین کن۔",
     am_credit: "شمئے پشت کپتگیں مشین ءِ وام (70%)",
     am_credit_n: "بکنگ انّوں رونگ، رند ءَ زرّ ءِ سرا",
     am_closed_loop: "بند حلقہ ءِ ہساب",
@@ -3020,11 +3251,11 @@ const T = {
     am_minus_credit: "مشین ءِ وام پِر ترّینگ بوت (70%)",
     am_unsettled: "{v} وام پشت کپیت، چیا کہ اے بہا آئی ءَ پوریں نہ کنت۔",
     am_net: "شمئے خالصیں کٹّ",
-    am_to_wallet: "شمئے {w} {n} ءَ دئیگ بوت۔",
+
     am_confirm: "بہا ءَ بمنّ",
     am_done: "بہا منّگ بوت و ہساب سرجم بوت۔",
     am_sold_to: "گِروک",
-    am_demo_note: "(ڈیمو: راستیں زرّ نہ رَوت۔)",
+
     exp_note: "بلوچی پراہی ءِ پیشی چارگ اِنت۔ پائلٹ پنجابی و اردو ءَ اِنت؛ دگہ تاک اردو ءَ پیش دارگ بنت۔",
     lr_village: "شمئے میتگ / جاگہ",
     lr_accept: "بمنّ",
@@ -3049,7 +3280,7 @@ const T = {
     au_new: "ایگری شیئر ءَ نوک اِت؟",
     au_forgot: "پاس ورڈ شموشت؟",
     au_reset_btn: "نوکیں پاس ورڈ بِل",
-    au_reset_note: "پروٹوٹائپ: ہمے لاگ ان ءَ چہ جوڑ بوتگیں اکاؤنٹ ءِ پاس ورڈ نوک بیت کنت۔",
+
     au_back: "سائن ان ءَ پِر بتر",
     au_err_name: "پوریں نام نبشتہ کن۔",
     au_err_email: "درستیں ای میل نبشتہ کن۔",
@@ -3078,9 +3309,10 @@ const T = {
     toast_cancelled: "بکنگ ءِ درخواست کنسل بوت۔",
     toast_countered: "دومی پیشکش بزگر ءَ دیم دئیگ بوت۔",
     toast_sold: "بہا منّگ بوت۔ {net} خالصیں کٹّ شمئے والٹ ءَ۔",
+    ab_name: "وتی بولی (وتی نرخ ءَ بگوش)",
+    ab_tag: "وتی کرایہ ءَ بگوش، نزّیکیں واہند آفر رَوان دئینت"
   },
 };
-EN_ONLY_KEYS.forEach((k) => Object.keys(T).forEach((l) => { if (l !== "en" && T[l]) delete T[l][k]; }));
 
 const DISTRICT_NAMES = {
   ur: { "Lahore Rural": "لاہور دیہی", Kasur: "قصور", Sheikhupura: "شیخوپورہ", Okara: "اوکاڑہ", Faisalabad: "فیصل آباد", Sahiwal: "ساہیوال" },
@@ -3697,25 +3929,25 @@ function NavBadge({ n, alert }) {
 
 function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs, account, country, setCountry, activityCount, onActivity, adminCount = 0 }) {
   return (
+    <>
     <header className="sticky top-0 z-40 w-full max-w-full border-b border-forest/10 bg-white/95 shadow-[0_1px_0_rgba(20,90,50,0.04)] backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
         <button onClick={() => setTab("marketplace")} className="flex min-w-0 items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label="Agri-Share home">
-          <Logo className="h-10 w-10 shrink-0 sm:h-11 sm:w-11" />
+          <Logo className="h-9 w-9 shrink-0 sm:h-11 sm:w-11" />
           <span className="min-w-0 text-start">
-            <span className="block whitespace-nowrap font-display text-lg font-extrabold leading-none tracking-tight text-forest sm:text-xl">Agri<span className="text-gold">-</span>Share</span>
+            <span className="block whitespace-nowrap font-display text-base font-extrabold leading-none tracking-tight text-forest min-[400px]:text-lg sm:text-xl">Agri<span className="text-gold">-</span>Share</span>
             <span className="hidden truncate text-xs font-medium text-soil/80 md:block">{t("tagline")}</span>
           </span>
         </button>
         <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
           <div className="hidden md:block"><PrefsPill t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
-          <button onClick={onActivity} className="relative inline-flex items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-3 py-2 text-sm font-bold text-forest shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" aria-label={t("act_title")}>
-            <Activity className="h-4 w-4" aria-hidden="true" /><span className="hidden lg:inline">{t("nav_activity")}</span>
+          <button onClick={onActivity} className="relative inline-flex items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest sm:px-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" aria-label={t("act_title")}>
+            <Activity className="h-4 w-4" aria-hidden="true" /><span className="text-xs sm:text-sm">{t("nav_activity")}</span>
             {activityCount > 0 && <span className="absolute -end-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-gold px-1 text-[11px] font-bold text-soil ring-2 ring-ivory">{activityCount}</span>}
           </button>
           {account}
         </div>
       </div>
-      <div className="w-full border-t border-forest/5 px-4 py-2 md:hidden"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
       {/* desktop tab bar */}
       <nav data-nav className="mx-auto hidden max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6 lg:flex" aria-label="Main">
         {tabs.map(({ key, label, icon: Icon }) => (
@@ -3730,6 +3962,9 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
         ))}
       </nav>
     </header>
+    {/* phones: country & language scroll away with the page so the sticky bar stays one compact row */}
+    <div className="w-full border-b border-forest/5 bg-white/80 px-4 py-2 md:hidden"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
+    </>
   );
 }
 
@@ -4224,7 +4459,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
               <p className="mt-3 max-w-md text-soil/80">{userLoc ? t("loc_far").replace("{km}", radius).replace("{place}", locLabel(userLoc)) : t("no_results")}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 <button onClick={() => set({ radius: MAX_RADIUS, province: "all", category: "all", query: "" })} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
-                {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_indrive")}</button>}
+                {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_live")}</button>}
               </div>
               {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
                 <div className="mt-6 w-full text-start">
@@ -5244,11 +5479,11 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
       ro: "Smartphone nahi? Kisi bhi saade phone se toll-free helpline 0800-AGRI-1 par call karein ya *AGRI# dial karein. Punjabi ya Urdu awaaz rehnumai karegi: machine ke liye 1, fasal bechne ke liye 2, agent ke liye 0. Booking ki tasdeeq SMS par aayegi.",
     });
   }
-  if (has(/indrive|in drive|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
+  if (has(/apni boli|name your price|اپنی بولی|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
     return steps({
-      en: `InDrive mode (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 5 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 100 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
-      ur: `اِن ڈرائیو موڈ (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. فی گھنٹہ اپنی پیشکش لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 5 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 100 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
-      ro: `InDrive mode (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Ghante ka apna rate likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 5 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 100 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
+      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 5 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 100 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
+      ur: `اپنی بولی (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. فی گھنٹہ اپنی پیشکش لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 5 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 100 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
+      ro: `Apni Boli (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Ghante ka apna rate likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 5 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 100 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
     });
   }
   if (has(/forgot|reset|password bhool|bhool gay|پاس ?ورڈ|password/i)) {
@@ -5401,7 +5636,7 @@ function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK,
   const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec}, about ${fmtLocal(m.min)} to ${fmtLocal(m.max)}/hr)`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
   return `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}You are "Agri-Share Kisan Helper", a friendly assistant for Agri-Share, a peer-to-peer agricultural machinery rental and crop marketplace for Pakistan (tagline "Sharing Resources, Growing Together").
 Rules of the platform:
-- Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 25 km catchment; InDrive mode searches up to 100 km.
+- Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 25 km catchment; Apni Boli requests search up to 100 km.
 - Dry rent: hourly rate EXCLUDES diesel/fuel; renter supplies fuel. Overtime and late-return terms agreed with owner before confirmation.
 - Operator terms = who drives the machine: "included" (owner's driver, already in rate), "optional" (+PKR 500/hr for the owner's driver), "none" (renter brings own driver).
 - Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform commission 6% standard (5 to 7% range), 4% subsidised for smallholders under 5 acres, added to the subtotal.
@@ -5415,10 +5650,10 @@ How to use the website (guide users step by step when they ask):
 - Sign out: click your name/initials at top right > Sign out.
 - Book: Marketplace > filters (category, district, radius 15 km default up to 25 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
 - List a machine: Owner Portal > "List Available Machinery" > name, category, hourly rate, district, village, distance, operator and transport terms > "Add to marketplace". Earnings Estimator in Owner Portal.
-- InDrive mode ("Post a Request" tab): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 5 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 100 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
+- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 5 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 100 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
 - Commission: 6% standard (5 to 7% range); smallholders under 5 acres tick a box for a subsidised 4%.
-- Harvest Now, Pay Later: payment option in the booking form (and InDrive confirm). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
-- Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live (InDrive style). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
+- Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
+- Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live on the farmer's price. Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
 - Keypad phones: toll-free helpline 0800-AGRI-1 and USSD *AGRI# with Punjabi/Urdu IVR: 1 rent a machine, 2 sell crop, 0 agent.
 - No smartphone: Agri-Agent & USSD tab shows the village shopkeeper model and the USSD booking flow.
 - Language menu at top right: English, Urdu, Punjabi, Sindhi (preview).
@@ -5791,10 +6026,10 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
 
   return (
     <>
-      <button onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="kisan-helper"
-        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 z-30 inline-flex items-center gap-2 lg:bottom-6 lg:end-6 rounded-full bg-gold px-4 py-3 font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest">
+      <button onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="kisan-helper" aria-label={t("kh_title")}
+        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 z-30 inline-flex h-12 w-12 items-center justify-center gap-2 rounded-full bg-gold font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest lg:bottom-6 lg:end-6 lg:h-auto lg:w-auto lg:px-4 lg:py-3">
         {open ? <X className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="h-5 w-5" aria-hidden="true" />}
-        <span className="hidden sm:inline">{t("kh_title")}</span><span className="sm:hidden">{t("kh_short")}</span>
+        <span className="hidden lg:inline">{t("kh_title")}</span>
       </button>
       {open && (
         <div id="kisan-helper" role="dialog" aria-label={t("kh_title")}
@@ -5882,7 +6117,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
 
 
 /* ------------------------------------------------------------------ */
-/* InDrive-style live request + 3-tier smart radius expansion          */
+/* Apni Boli (Name Your Price) live request + 3-tier radius expansion */
 /* Owners are simulated (seeded per village + machine) and merged with */
 /* real marketplace listings, so the demo is repeatable.               */
 /* ------------------------------------------------------------------ */
@@ -6213,7 +6448,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     return round50(near.reduce((s, o) => s + o.ask, 0) / Math.max(1, near.length));
   }, [pool]);
 
-  // Step 1: choose the machine type (like choosing Moto / Mini / AC in InDrive), then the offer
+  // Step 1: choose the machine type, then name your price
   const chooseMachine = (cat) => {
     setF((s) => ({ ...s, category: cat, model: "", chosen: true, rate: CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))) }));
     scrollTo(stepsRef); // smooth hand-off to Step 2 (Location & offer)
@@ -6346,8 +6581,9 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       <div className="mb-6 overflow-hidden rounded-3xl bg-forest text-ivory">
         <div className="grid gap-4 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold"><Radar className="h-3.5 w-3.5 text-gold" aria-hidden="true" />InDrive Mode</p>
+            <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold"><Radar className="h-3.5 w-3.5 text-gold" aria-hidden="true" />{t("ab_name")}</p>
             <h2 id="lr-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("lr_title")}</h2>
+            <p className="mt-1 text-sm font-bold text-gold">{t("ab_tag")}</p>
             <p className="mt-2 max-w-2xl text-ivory/80">{t("lr_sub")}</p>
           </div>
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
@@ -6358,7 +6594,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
         </div>
       </div>
 
-      {/* InDrive-style steps */}
+      {/* Apni Boli steps */}
       <ol ref={stepsRef} className="mb-5 grid scroll-mt-24 grid-cols-3 gap-2" aria-label={t("lr_steps")}>
         {[["1", t("lr_step1")], ["2", t("lr_step2")], ["3", t("lr_step3")]].map(([n, label], i) => {
           const cur = req ? 2 : f.chosen ? 1 : 0;
@@ -6696,7 +6932,7 @@ function KeypadBanner({ t, setTab }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Agri-Mandi: InDrive-style direct crop selling + closed-loop         */
+/* Agri-Mandi: name-your-price direct crop selling + closed-loop      */
 /* settlement of Harvest Now, Pay Later machinery credit.              */
 /* Buyers are simulated sample buyers. Benchmarks per 40 kg mann:      */
 /* wheat (Punjab open market, Oct 2026: Rs 4,700 to 5,300) and phutti  */
@@ -7301,7 +7537,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
   const pendingComm = bookings.filter((b) => ["sent", "countered"].includes(b.status)).reduce((s, b) => s + (b.quote.commission || 0), 0);
   const sortedBookings = [...bookings].sort((a, b) => b.createdAt - a.createdAt);
   const creditOut = bookings.filter((b) => b.financing && b.financing.status !== "settled" && !["cancelled", "declined"].includes(b.status)).reduce((s, b) => s + b.financing.balance, 0);
-  const channelLabel = (c) => (c === "ussd" ? "USSD" : c === "live" ? "InDrive" : "App");
+  const channelLabel = (c) => (c === "ussd" ? "USSD" : c === "live" ? "Apni Boli" : "App");
   // older records may lack a phone: fall back to the member profile with the same email
   const byEmail = useMemo(() => { const m = new Map(); (accounts.members || []).forEach((x) => { if (x.email) m.set(normEmail(x.email), x); }); return m; }, [accounts.members]);
   const prof = (email) => (email ? byEmail.get(normEmail(email)) : null) || {};
@@ -8241,7 +8477,7 @@ function AccountMenu({ t, session, onSignIn, onSignUp, onSignOut }) {
   if (!session) {
     return (
       <div className="flex items-center gap-1.5">
-        <button onClick={onSignIn} className="inline-flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-bold text-forest hover:bg-forest/5"><LogIn className="h-4 w-4" aria-hidden="true" /><span className="hidden sm:inline">{t("auth_signin")}</span></button>
+        <button onClick={onSignIn} className="inline-flex items-center gap-1.5 rounded-xl border border-forest/15 bg-white px-2.5 py-2 text-sm font-bold text-forest hover:bg-forest/5"><LogIn className="h-4 w-4" aria-hidden="true" /><span className="text-xs sm:text-sm">{t("auth_signin")}</span></button>
         <button onClick={onSignUp} className="hidden items-center gap-1.5 rounded-xl bg-gold px-3 py-2 text-sm font-bold text-soil hover:brightness-105 sm:inline-flex"><UserPlus className="h-4 w-4" aria-hidden="true" />{t("auth_signup")}</button>
       </div>
     );
@@ -8765,7 +9001,7 @@ function App() {
   const removeListing = (id) => { setListings((ls) => ls.filter((l) => l.id !== id)); toast(t("toast_removed")); };
 
   const pendingCount = bookings.filter((b) => b.status === "sent").length;
-  // red Admin badge: machines awaiting approval + open InDrive requests + waiting demand tickets
+  // red Admin badge: machines awaiting approval + open Apni Boli requests + waiting demand tickets
   const adminCount = accounts.isAdmin
     ? realListings.filter((l) => l.status === "pending").length + liveRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length
     : 0;
@@ -8779,7 +9015,7 @@ function App() {
   const showTab = tab === "members" && !accounts.cloudOwner ? "marketplace" : tab;
 
   return (
-    <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
+    <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${lang === "ur" || lang === "pa" ? "font-nastaliq" : langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
       <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs} adminCount={adminCount}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
       <main id="main" className="w-full">
