@@ -240,6 +240,16 @@ export async function fbSignOut() {
   try { await sdk.au.signOut(auth); } catch (e) { /* already signed out */ }
 }
 
+/* Sign-out wipe: shut Firestore down and delete its offline cache (IndexedDB), which otherwise keeps
+   the previous user's private documents (bookings, requests, crop posts) on this device. */
+export async function fbWipeLocalCache() {
+  if (!sdk || !db) return;
+  try {
+    await sdk.fs.terminate(db);
+    await sdk.fs.clearIndexedDbPersistence(db);
+  } catch (e) { console.warn("[Agri-Share] Could not clear the Firestore offline cache:", e && (e.code || e.message)); }
+}
+
 /* ---------------- Phone OTP ----------------
    fbStartPhone("+923001234567", "recaptcha-box") sends the SMS code and returns a
    confirmation; fbConfirmPhone(confirmation, "123456") signs the user in.

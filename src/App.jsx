@@ -15,7 +15,7 @@ import imgDrone from "./assets/machines/drone.jpg";
 import imgImplement from "./assets/machines/implement.jpg";
 import {
   FIREBASE_ENABLED, FIRESTORE_DATABASE_ID, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc,
-  watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser, preloadFirebase,
+  watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser, preloadFirebase, fbWipeLocalCache,
 } from "./firebase.js";
 
 // Right-to-left fonts (Noto Nastaliq Urdu + Noto Naskh Arabic) are only downloaded when an RTL language is used
@@ -983,7 +983,13 @@ const T = {
     ls_verified: "Verified",
     ad_verify_btn: "Mark verified",
     ad_remove: "Remove",
-    toast_verified: "Listing marked as verified."
+    toast_verified: "Listing marked as verified.",
+    lr_owner_offer: "Owner's offer",
+    ow_open_requests: "Open Apni Boli requests near you",
+    ow_offer_rate: "Your hourly offer",
+    ow_offer_send: "Send offer",
+    ow_offer_update: "Offer sent · update",
+    ow_offer_sent: "Your offer was sent to the farmer."
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1711,7 +1717,13 @@ const T = {
     ls_verified: "تصدیق شدہ",
     ad_verify_btn: "تصدیق کریں",
     ad_remove: "ہٹائیں",
-    toast_verified: "فہرست تصدیق شدہ ہو گئی۔"
+    toast_verified: "فہرست تصدیق شدہ ہو گئی۔",
+    lr_owner_offer: "مالک کی آفر",
+    ow_open_requests: "آپ کے قریب کھلی اپنی بولی درخواستیں",
+    ow_offer_rate: "آپ کی فی گھنٹہ آفر",
+    ow_offer_send: "آفر بھیجیں",
+    ow_offer_update: "آفر بھیج دی · تبدیل کریں",
+    ow_offer_sent: "آپ کی آفر کسان کو بھیج دی گئی۔"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2338,7 +2350,13 @@ const T = {
     zc_send: "میری تفصیل ہُݨے کنسلٹنٹ نوں گھلو",
     zc_sending: "گھلی جا رہی اے…",
     zc_sent: "تہاڈی تفصیل ساڈے کنسلٹنٹ تک اپڑ گئی۔ مشین دے بندوبست لئی اسیں چھیتی کال کراں گے۔",
-    zc_auto_sent: "100 کلومیٹر وچ کوئی مشین نئیں، ایس لئی اسیں تہاڈی درخواست کنسلٹنٹ نوں گھل دتی اے۔ چھیتی کال آوے گی۔"
+    zc_auto_sent: "100 کلومیٹر وچ کوئی مشین نئیں، ایس لئی اسیں تہاڈی درخواست کنسلٹنٹ نوں گھل دتی اے۔ چھیتی کال آوے گی۔",
+    lr_owner_offer: "مالک دی آفر",
+    ow_open_requests: "تہاڈے نیڑے کھلیاں اپنی بولی درخواستاں",
+    ow_offer_rate: "تہاڈی فی گھنٹہ آفر",
+    ow_offer_send: "آفر گھلو",
+    ow_offer_update: "آفر گھل دتی · بدلو",
+    ow_offer_sent: "تہاڈی آفر کسان نوں گھل دتی گئی۔"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2966,7 +2984,13 @@ const T = {
     zc_send: "منهنجي تفصيل هاڻي ڪنسلٽنٽ کي موڪليو",
     zc_sending: "موڪلي پئي وڃي…",
     zc_sent: "توهان جي تفصيل اسان جي ڪنسلٽنٽ تائين پهچي وئي۔ مشين جي بندوبست لاءِ جلد ڪال ڪنداسين۔",
-    zc_auto_sent: "100 ڪلوميٽرن ۾ ڪا مشين ناهي، تنهنڪري اسان توهان جي درخواست ڪنسلٽنٽ کي موڪلي ڇڏي آهي۔ جلد ڪال ايندي۔"
+    zc_auto_sent: "100 ڪلوميٽرن ۾ ڪا مشين ناهي، تنهنڪري اسان توهان جي درخواست ڪنسلٽنٽ کي موڪلي ڇڏي آهي۔ جلد ڪال ايندي۔",
+    lr_owner_offer: "مالڪ جي آڇ",
+    ow_open_requests: "توهان جي ويجهو کليل پنهنجي ٻولي درخواستون",
+    ow_offer_rate: "توهان جي في ڪلاڪ آڇ",
+    ow_offer_send: "آڇ موڪليو",
+    ow_offer_update: "آڇ موڪلي وئي · بدلايو",
+    ow_offer_sent: "توهان جي آڇ هاري کي موڪلي وئي۔"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3296,7 +3320,13 @@ const T = {
     zc_send: "زما معلومات همدا اوس مشاور ته ولېږئ",
     zc_sending: "لېږل کېږي…",
     zc_sent: "ستاسو معلومات زموږ مشاور ته ورسېدل. د ماشین د برابرولو لپاره به ژر زنګ ووهو.",
-    zc_auto_sent: "په 100 کیلومترو کې ماشین نشته، نو موږ ستاسو غوښتنه مشاور ته لېږلې ده. ژر به زنګ درشي."
+    zc_auto_sent: "په 100 کیلومترو کې ماشین نشته، نو موږ ستاسو غوښتنه مشاور ته لېږلې ده. ژر به زنګ درشي.",
+    lr_owner_offer: "د مالک وړاندیز",
+    ow_open_requests: "ستاسو سره نږدې پرانیستې خپله بولي غوښتنې",
+    ow_offer_rate: "ستاسو د ساعت وړاندیز",
+    ow_offer_send: "وړاندیز ولېږئ",
+    ow_offer_update: "وړاندیز ولېږل شو · بدل یې کړئ",
+    ow_offer_sent: "ستاسو وړاندیز بزګر ته ولېږل شو."
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3616,7 +3646,13 @@ const T = {
     zc_send: "منی سرجمی ءَ اَنّوں کنسلٹنٹ ءَ رَوان دئے",
     zc_sending: "رَوان بوگ اِنت…",
     zc_sent: "شمئے سرجمی مئے کنسلٹنٹ ءَ رست۔ مشین ءِ بندوبست ءِ واستا ما زوت کال کنیں۔",
-    zc_auto_sent: "100 کلومیٹر ءَ مشین نیست، پمیشکا ما شمئے درخواست کنسلٹنٹ ءَ رَوان دات۔ زوت کال کئیت۔"
+    zc_auto_sent: "100 کلومیٹر ءَ مشین نیست، پمیشکا ما شمئے درخواست کنسلٹنٹ ءَ رَوان دات۔ زوت کال کئیت۔",
+    lr_owner_offer: "واہند ءِ آفر",
+    ow_open_requests: "شمئے نزّیک پچ اِتگیں وتی بولی درخواست",
+    ow_offer_rate: "شمئے ساعت ءِ آفر",
+    ow_offer_send: "آفر رَوان دئے",
+    ow_offer_update: "آفر رَوان بوت · بدل کن",
+    ow_offer_sent: "شمئے آفر کِشاورز ءَ رَوان بوت۔"
   },
 };
 
@@ -3813,6 +3849,19 @@ function haversineKm(a, b) {
 }
 const ROAD_FACTOR = 1.25; // straight-line km x 1.25 as a rough road-distance estimate
 const roadKm = (a, b) => Math.round(haversineKm(a, b) * ROAD_FACTOR * 10) / 10;
+// "Tehsil Kasur", "Kasur, Punjab", " KASUR " -> "kasur"
+const PROVINCE_WORDS = /^(punjab|sindh|kpk|khyber pakhtunkhwa|balochistan|baluchistan|gilgit-baltistan|gilgit baltistan|ajk|azad kashmir|islamabad capital territory|ict|pakistan)$/;
+function normDistrict(name) {
+  const parts = String(name || "").toLowerCase().split(",").map((x) => x.replace(/\b(tehsil|district|distt?\.?|zila|zilla|city)\b/g, "").replace(/\s+/g, " ").trim()).filter((x) => x && !PROVINCE_WORDS.test(x));
+  return parts[0] || "";
+}
+const districtCentre = (name) => { const n = normDistrict(name); return n ? PK_DISTRICTS.find((d) => normDistrict(d.name) === n) || null : null; };
+// road km from a chosen location to a listing: its own pin, else its district centre; unknown -> Infinity
+function kmToListing(loc, l) {
+  if (!loc || !loc.lat) return l.distance;
+  const at = l.lat ? l : districtCentre(l.district);
+  return at ? Math.max(0.5, roadKm(loc, at)) : Infinity;
+}
 const nearestDistrict = (lat, lng) => PK_DISTRICTS.reduce((best, d) => { const km = haversineKm({ lat, lng }, d); return !best || km < best.km ? { ...d, km } : best; }, null);
 const provName = (lang, code) => (PROVINCE_NAMES[lang] || PROVINCE_NAMES.en)[code] || PROVINCE_NAMES.en[code] || code || "";
 const locLabel = (loc) => (loc ? [loc.village, loc.district].filter(Boolean).join(", ") : "");
@@ -4709,6 +4758,9 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
   // when nothing is inside the radius, still show the closest machines (with their real distance)
   const nearestBeyond = useMemo(() => (userLoc ? listings.filter((l) => l.available && (category === "all" || l.category === category) && l.distance > radius).sort((a, b) => a.distance - b.distance).slice(0, 3) : []), [listings, userLoc, category, radius]);
   const pct = ((radius - 1) / (MAX_RADIUS - 1)) * 100;
+  // the consultant card shows when no REAL, approved, available machine of this type is within 100 km
+  const realWithin100 = useMemo(() => (userLoc && userLoc.lat ? listings.filter((l) => !isSeedListing(l) && l.available && (l.status || "approved") === "approved" && (category === "all" || l.category === category) && kmToListing(userLoc, l) <= 100).length : null), [listings, userLoc, category]);
+  const showConsultant = !!(fallbackProps && fallbackProps.onSendLead && !demoMode && (realWithin100 === null ? results.length === 0 : realWithin100 === 0));
 
   return (
     <section id="market" className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="market-h">
@@ -4765,6 +4817,9 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
         </aside>
         <div>
           <div className="mb-3 flex justify-end"><ModeBadge t={t} demo={demoMode} /></div>
+          {showConsultant && (
+            <div className="mb-4"><ConsultantCard t={t} lang={lang} request={{ category: category === "all" ? "tractor" : category, district: userLoc ? userLoc.district : "", village: userLoc ? userLoc.village : "", loc: userLoc }} onSendLead={fallbackProps.onSendLead} requireAuth={fallbackProps.requireAuth} /></div>
+          )}
           {results.length === 0 ? (
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-soil/25 bg-white px-6 py-14 text-center">
               <Search className="h-10 w-10 text-soil/30" aria-hidden="true" />
@@ -4775,7 +4830,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
               </div>
               {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
                 <div className="mt-6 w-full text-start">
-                  <ZeroSupplyFallback {...fallbackProps} request={{ category, loc: userLoc, village: userLoc ? locLabel(userLoc) : "", district: userLoc ? userLoc.district : "", province: userLoc ? userLoc.province : "", country: CUR.id, hours: 4 }} pickCategory={category === "all"} onExpand={null} />
+                  <ZeroSupplyFallback {...fallbackProps} onSendLead={undefined} request={{ category, loc: userLoc, village: userLoc ? locLabel(userLoc) : "", district: userLoc ? userLoc.district : "", province: userLoc ? userLoc.province : "", country: CUR.id, hours: 4 }} pickCategory={category === "all"} onExpand={null} />
                 </div>
               )}
               {nearestBeyond.length > 0 && (
@@ -5358,7 +5413,7 @@ function PendingRequest({ b, t, updateBooking }) {
   );
 }
 
-function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [] }) {
+function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast }) {
   const [sub, setSub] = useState(initialSub || "requests");
   useEffect(() => { if (initialSub) setSub(initialSub); }, [initialSub]);
   const pending = bookings.filter((b) => b.status === "sent").sort((a, b) => a.createdAt - b.createdAt);
@@ -5387,7 +5442,7 @@ function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListin
       <span className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-l from-ivory to-transparent sm:hidden rtl:bg-gradient-to-r" aria-hidden="true" />
       </div>
 
-      {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} />}
+      {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} requests={liveRequests} myListings={listings} saveRequest={saveRequest} toast={toast} />}
       {sub === "requests" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
@@ -7055,7 +7110,7 @@ function buildOwnerPool(villageName, category, listings, model, demo = true) {
     }
   });
   listings.filter((l) => l.available && l.category === category).forEach((l, i) => {
-    pool.push({ key: "lst-" + l.id, name: l.ownerName, ownerId: l.ownerId, ownerUid: l.ownerUid || null, distance: l.distance, tier: tierOf(l.distance), angle: ((i * 137 + 40) % 360) * (Math.PI / 180), ask: l.rate, rating: l.rating, machine: l.name, seed: (i + 1) / 7, registered: true });
+    pool.push({ key: "lst-" + l.id, seed: isSeedListing(l), name: l.ownerName, ownerId: l.ownerId, ownerUid: l.ownerUid || null, distance: l.distance, tier: tierOf(l.distance), angle: ((i * 137 + 40) % 360) * (Math.PI / 180), ask: l.rate, rating: l.rating, machine: l.name, seed: (i + 1) / 7, registered: true });
   });
   return pool;
 }
@@ -7315,16 +7370,63 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
   );
 }
 
-function WaitingDemand({ t, dn, demand, session, onList }) {
-  const myDistrict = session && session.location && session.location.district;
+// One open Apni Boli request, answered by an owner with a real offer (saved on the request document)
+function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast }) {
+  const mineForCat = myListings.find((l) => l.category === r.category && (l.status || "approved") === "approved") || myListings.find((l) => l.category === r.category);
+  const existing = (r.offers || []).find((o) => o.uid === session.uid);
+  const [rate, setRate] = useState(existing ? existing.rate : mineForCat ? mineForCat.rate : r.rate);
+  const [sent, setSent] = useState(!!existing);
+  const from = mineForCat && mineForCat.lat ? mineForCat : session.location;
+  const km = r.loc && r.loc.lat && from && from.lat ? Math.max(0.5, roadKm(from, r.loc)) : null;
+  const send = () => {
+    const v = Math.round(Number(rate) || 0);
+    if (v < 100) return;
+    const offer = { uid: session.uid, ownerName: session.name || "", ownerId: mineForCat ? mineForCat.ownerId : "", listingId: mineForCat ? mineForCat.id : null, machine: mineForCat ? mineForCat.name : t("one_" + r.category), rate: v, distance: km, at: Date.now() };
+    saveRequest({ id: r.id, offers: [...(r.offers || []).filter((o) => o.uid !== session.uid), offer] });
+    setSent(true);
+    toast(t("ow_offer_sent"), { title: t("ow_waiting") });
+  };
+  return (
+    <li className="rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <span className="min-w-0">
+          <span className="block break-words font-bold text-forest"><CategoryIcon category={r.category} className="me-1 inline h-4 w-4" />{t("one_" + r.category)} · {r.village || dn(r.loc && r.loc.district)}</span>
+          <span className="block text-xs text-soil/80" dir="ltr">{r.renterName || ""} · {fmtDate(r.date)} · {r.hours}h · {t("ct_offered")} {pkr(r.rate)}/hr{km != null ? ` · ${km} km` : ""}</span>
+        </span>
+        <span className="shrink-0 rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("ab_name").split(" (")[0]}</span>
+      </div>
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <label className="sr-only" htmlFor={`ofr-${r.id}`}>{t("ow_offer_rate")}</label>
+        <MoneyInput id={`ofr-${r.id}`} min={100} step="50" value={rate} onChange={(v) => { setRate(v); setSent(false); }} className={inputCls + " max-w-[9rem] py-1.5"} />
+        <span className="text-xs text-soil/80">/hr</span>
+        <button type="button" onClick={send} className={`ms-auto rounded-lg px-3 py-1.5 text-xs font-bold ${sent ? "bg-leaf/15 text-forest" : "bg-forest text-ivory"}`}>{sent ? t("ow_offer_update") : t("ow_offer_send")}</button>
+      </div>
+    </li>
+  );
+}
+
+function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListings = [], saveRequest, toast }) {
+  // owner's districts: profile district + every district they list machines in (normalised: "Tehsil Kasur" = "Kasur, Punjab" = "kasur")
+  const myDistricts = new Set([session && session.location && session.location.district, ...myListings.map((l) => l.district)].map(normDistrict).filter(Boolean));
+  const inMyDistrict = (d) => myDistricts.size > 0 && myDistricts.has(normDistrict(d));
   const waiting = demand.filter((d) => d.status === "waiting" && (d.country || "PK") === CUR.id).sort((a, b) => b.createdAt - a.createdAt);
-  const local = myDistrict ? waiting.filter((d) => d.district === myDistrict) : [];
+  const local = waiting.filter((d) => inMyDistrict(d.district));
   const shown = (local.length ? local : waiting).slice(0, 6);
+  const reqDistrict = (r) => (r.loc && r.loc.district) || String(r.village || "").split(",").slice(-1)[0];
+  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && r.renterEmail !== session.email && inMyDistrict(reqDistrict(r))).sort((a, b) => b.createdAt - a.createdAt).slice(0, 8) : [];
   return (
     <div className="mb-5 rounded-2xl border border-gold/60 bg-gold/10 p-4">
-      <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_waiting")} <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{waiting.length}</span></h3>
+      <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_waiting")} <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{openReqs.length + waiting.length}</span></h3>
       <p className="mt-0.5 text-xs text-soil/80">{t("ow_waiting_sub")}</p>
-      {shown.length === 0 ? <p className="mt-3 rounded-xl bg-white/70 p-3 text-sm text-soil/80">{t("ow_waiting_none")}</p> : (
+      {openReqs.length > 0 && (
+        <>
+          <p className="mt-3 text-[11px] font-bold uppercase tracking-wide text-soil/80">{t("ow_open_requests")}</p>
+          <ul className="mt-1.5 grid gap-2 md:grid-cols-2">
+            {openReqs.map((r) => <OwnerOfferRow key={r.id} t={t} dn={dn} r={r} session={session} myListings={myListings} saveRequest={saveRequest} toast={toast} />)}
+          </ul>
+        </>
+      )}
+      {shown.length === 0 && openReqs.length === 0 ? <p className="mt-3 rounded-xl bg-white/70 p-3 text-sm text-soil/80">{t("ow_waiting_none")}</p> : shown.length > 0 && (
         <ul className="mt-3 grid gap-2 md:grid-cols-2">
           {shown.map((d) => (
             <li key={d.id} className="flex items-center justify-between gap-2 rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
@@ -7337,7 +7439,7 @@ function WaitingDemand({ t, dn, demand, session, onList }) {
           ))}
         </ul>
       )}
-      {waiting.length > 0 && onList && <button type="button" onClick={onList} className="mt-3 inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Plus className="h-4 w-4" aria-hidden="true" />{t("ow_waiting_list")}</button>}
+      {waiting.length > 0 && onList && myListings.length === 0 && <button type="button" onClick={onList} className="mt-3 inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Plus className="h-4 w-4" aria-hidden="true" />{t("ow_waiting_list")}</button>}
     </div>
   );
 }
@@ -7374,9 +7476,17 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = []; };
   useEffect(() => () => clearTimers(), []);
 
-  const pool = useMemo(() => buildOwnerPool((req || f).village, (req || f).category, listings, (req || f).model, demoMode), [req, f.village, f.category, f.model, listings, country, demoMode]);
+  // owners are measured from the district/pin chosen in THIS request (never the visitor's saved spot);
+  // only real, approved, available listings count, and listings with no known place are left out
+  const geoListings = (loc) => listings
+    .filter((l) => (demoMode || !isSeedListing(l)) && (l.status || "approved") === "approved")
+    .map((l) => ({ ...l, distance: kmToListing(loc, l) }))
+    .filter((l) => Number.isFinite(l.distance));
+  const reqLocKey = reqLoc ? `${reqLoc.lat},${reqLoc.lng}` : "";
+  const nearListings = useMemo(() => geoListings(reqLoc), [listings, reqLocKey, demoMode]); // eslint-disable-line
+  const pool = useMemo(() => buildOwnerPool((req || f).village, (req || f).category, nearListings, (req || f).model, demoMode), [req, f.village, f.category, f.model, nearListings, country, demoMode]);
   // real registered owners of this machine within 100 km (the consultant card shows only when there are none)
-  const realIn100 = useMemo(() => pool.filter((o) => o.registered && o.distance <= 100).length, [pool]);
+  const realIn100 = useMemo(() => pool.filter((o) => o.registered && !o.seed && o.distance <= 100).length, [pool]);
   const typical = useMemo(() => {
     const near = pool.filter((o) => o.tier <= 2);
     return round50(near.reduce((s, o) => s + o.ask, 0) / Math.max(1, near.length));
@@ -7410,7 +7520,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     if (!r) return;
     clearTimers();
     setScanTier(tierN); setScanning(true); setPicked(null);
-    const pPool = buildOwnerPool(r.village, r.category, listings, r.model, demoMode);
+    const pPool = buildOwnerPool(r.village, r.category, geoListings(r.loc), r.model, demoMode);
     const prev = fresh ? {} : { ...statusRef.current };
     const inRange = pPool.filter((o) => o.tier <= tierN && !prev[o.key]);
     let delay = 700, latest = 0;
@@ -7448,9 +7558,9 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       setReq(r); setStatuses({}); setOffers([]); setBooked(null);
       statusRef.current = {};
       setTimeout(() => scan(1, r, true), 0);
-      const near = buildOwnerPool(r.village, r.category, listings, r.model, demoMode).filter((o) => o.tier === 1).length;
+      const near = buildOwnerPool(r.village, r.category, geoListings(r.loc), r.model, demoMode).filter((o) => o.tier === 1).length;
       // no REAL owner of this machine within 100 km: alert the Agri-Share consultant straight away
-      const realWithin100 = buildOwnerPool(r.village, r.category, listings, r.model, false).filter((o) => o.distance <= 100).length;
+      const realWithin100 = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.distance <= 100).length;
       if (!demoMode && realWithin100 === 0 && sendLead) {
         sendLead({ category: r.category, district: r.loc && r.loc.district, village: r.village, hours: r.hours, rate: r.rate, requestId: r.id }, true)
           .then(() => setAutoLeadFor(r.id)).catch(() => {});
@@ -7466,7 +7576,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     statusRef.current = {};
     setTimeout(() => scan(n, req, true), 0);
   };
-  const decline = (key) => { setOffers((l) => l.filter((o) => o.key !== key)); setStatuses((s) => ({ ...s, [key]: "declined" })); if (picked === key) setPicked(null); };
+  const decline = (key) => { setDeclined((d) => new Set(d).add(key)); setOffers((l) => l.filter((o) => o.key !== key)); setStatuses((s) => ({ ...s, [key]: "declined" })); if (picked === key) setPicked(null); };
 
   const myRequests = [...liveRequests].filter((r) => (r.country || "PK") === CUR.id && (!session || !r.renterEmail || r.renterEmail === session.email)).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
 
@@ -7483,9 +7593,15 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     }
   }, []); // eslint-disable-line
 
-  const offersInTier = offers.filter((o) => o.owner.tier <= scanTier);
+  const [declined, setDeclined] = useState(() => new Set());
+  const liveReq = req ? liveRequests.find((x) => x.id === req.id) : null;
+  const ownerOffers = ((liveReq && liveReq.offers) || []).filter((o) => o && o.uid && o.rate).map((o) => ({
+    key: "ofr-" + o.uid, rate: Number(o.rate), kind: "owner_offer", at: o.at || 0,
+    owner: { key: "ofr-" + o.uid, name: o.ownerName || "Owner", ownerId: o.ownerId || "", ownerUid: o.uid, machine: o.machine || t("one_" + req.category), distance: Number(o.distance) || 0, tier: tierOf(Number(o.distance) || 0), rating: o.rating || 5, registered: true },
+  }));
+  const offersInTier = [...ownerOffers, ...offers.filter((o) => o.owner.tier <= scanTier && !ownerOffers.some((x) => x.owner.ownerUid && x.owner.ownerUid === o.owner.ownerUid))].filter((o) => !declined.has(o.key));
   const noMatch = req && !scanning && offersInTier.length === 0;
-  const pickedOffer = offers.find((o) => o.key === picked);
+  const pickedOffer = offersInTier.find((o) => o.key === picked);
   const lrCommission = (req || f).smallholder ? SMALLHOLDER_COMMISSION : COMMISSION;
   const qFor = (o) => liveQuote({ rate: o.rate, hours: req.hours, km: o.owner.distance, category: req.category, rentType: req.rentType, dieselPrice, commissionRate: lrCommission });
 
@@ -7712,9 +7828,12 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
               <div className="min-w-0">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("lr_offers")}</p>
                 {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("lr_idle_offers")}</p>}
+                {!demoMode && reqLoc && realIn100 === 0 && sendLead && (
+                  <div className="mb-3"><ConsultantCard t={t} lang={lang} request={{ ...(req || f), district: village.district, loc: reqLoc }} onSendLead={sendLead} requireAuth={requireAuth} autoSent={!!req && autoLeadFor === req.id} /></div>
+                )}
                 {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/80"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
                 {noMatch && (!demoMode || scanTier === 3) && (
-                  <ZeroSupplyFallback t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} saveDemand={saveDemand} toast={toast} dieselPrice={dieselPrice} onSendLead={realIn100 === 0 ? sendLead : undefined} autoSent={!!req && autoLeadFor === req.id}
+                  <ZeroSupplyFallback t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} saveDemand={saveDemand} toast={toast} dieselPrice={dieselPrice} onSendLead={undefined}
                     request={{ ...req, district: village.district, province: village.province }} canExpand={scanTier < 3} onExpand={() => scan(3)} />
                 )}
                 {noMatch && demoMode && scanTier < 3 && (
@@ -7738,7 +7857,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                             <p className="truncate text-xs text-soil/80">{o.owner.machine} · <span dir="ltr">{o.owner.distance} km</span> · T{o.owner.tier} · <Star className="inline h-3 w-3 fill-gold text-gold" aria-hidden="true" /> {o.owner.rating} · {t("lr_eta")} ~{Math.max(10, Math.round(o.owner.distance * 2.2))} min</p>
                           </div>
                           <div className="shrink-0 text-end">
-                            <p className={`whitespace-nowrap text-[11px] font-bold ${o.kind === "counter" ? "text-soil" : "text-leafink"}`}>{o.kind === "listed" ? t("lr_listed") : o.kind === "accept" ? t("lr_accepts") : `${t("lr_counter")} +${pkr(o.rate - req.rate)}`}</p>
+                            <p className={`whitespace-nowrap text-[11px] font-bold ${o.kind === "counter" ? "text-soil" : "text-leafink"}`}>{o.kind === "owner_offer" ? t("lr_owner_offer") : o.kind === "listed" ? t("lr_listed") : o.kind === "accept" ? t("lr_accepts") : `${t("lr_counter")} +${pkr(o.rate - req.rate)}`}</p>
                             <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(o.rate)}<span className="text-xs font-semibold text-soil/80">/hr</span></p>
                           </div>
                         </div>
@@ -9264,7 +9383,7 @@ function useAccounts() {
   };
   const phoneAuth = mode === "firebase";
 
-  const signOut = () => { setSession(null); if (mode === "firebase") fbSignOut(); };
+  const signOut = async () => { setSession(null); if (mode === "firebase") await fbSignOut(); };
   // Firebase reset sends an email link, so the reset form only needs the email address
   const resetByEmail = mode === "firebase";
 
@@ -9950,7 +10069,20 @@ function App() {
     toast((r.type === "signup" ? t("toast_registered") : t("toast_welcome").replace("{name}", r.session.name.split(" ")[0])) + (r.localOnly ? " " + t("au_local_note") : ""));
     if (then) setTimeout(then, 0);
   };
-  const signOut = () => { accounts.signOut(); toast(t("toast_signedout")); if (tab === "members") setTab("marketplace"); };
+  // Complete sign-out: Firebase sign-out, every Agri-Share key in localStorage/sessionStorage, the Firestore
+  // offline cache, then a clean reload. (Resetting synced state in place would make the sync engine treat the
+  // empty lists as deletions and remove real data from Firestore, so the page is reloaded instead.)
+  const KEEP_ON_SIGNOUT = ["agrishare.lang", "agrishare.country"]; // display preferences only, no personal data
+  const signOut = async () => {
+    toast(t("toast_signedout"));
+    try { await accounts.signOut(); } catch (e) { /* already signed out */ }
+    try {
+      Object.keys(window.localStorage).filter((k) => k.startsWith("agrishare.") && !KEEP_ON_SIGNOUT.includes(k)).forEach((k) => window.localStorage.removeItem(k));
+    } catch (e) { /* storage blocked */ }
+    try { Object.keys(window.sessionStorage).filter((k) => k.startsWith("agrishare.")).forEach((k) => window.sessionStorage.removeItem(k)); } catch (e) { /* ignore */ }
+    try { await withTimeout(fbWipeLocalCache(), 4000, null); } catch (e) { /* ignore */ }
+    try { window.location.replace(window.location.pathname + "#marketplace"); window.location.reload(); } catch (e) { setTab("marketplace"); }
+  };
   // Admin tab is hidden from everyone except the founder / authorised team emails
   const tabs = [...TABS, ...(accounts.cloudOwner && accounts.mode === "cloud" ? [MEMBERS_TAB] : []), ...(accounts.isAdmin ? [ADMIN_TAB] : [])];
   // Live Public Mode: real owner listings only (sample rows that reached the cloud earlier are hidden too).
@@ -10055,7 +10187,7 @@ function App() {
     setFilters((fl) => ({ ...fl, radius: Math.max(fl.radius, Math.ceil(l.distance)) }));
     toast(t("toast_listed"));
     // cold start: tell the new owner about farmers already waiting for this machine in their district
-    const waiting = demand.filter((d) => d.status === "waiting" && d.category === l.category && (!l.district || d.district === l.district)).length;
+    const waiting = demand.filter((d) => d.status === "waiting" && d.category === l.category && (!l.district || normDistrict(d.district) === normDistrict(l.district))).length;
     if (waiting) setTimeout(() => toast(t("toast_waiting").replace("{n}", waiting).replace("{machine}", t("one_" + l.category)).replace("{district}", dn(l.district || "")), { type: "info", title: t("ow_waiting") }), 600);
   };
   const toggleListing = (id) => setListings((ls) => ls.map((l) => (l.id === id ? { ...l, available: !l.available } : l)));
@@ -10090,7 +10222,7 @@ function App() {
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={bookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} liveRequests={liveRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={bookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}

@@ -4,12 +4,13 @@
 
   Vercel > Project > Settings > Environment Variables:
     GEMINI_API_KEY   your key from https://aistudio.google.com/apikey   (required)
-    GEMINI_MODEL               optional, first model to try (default "gemini-3.5-flash")
+    GEMINI_MODEL               optional, first model to try (default "gemini-flash-latest")
     GEMINI_FALLBACK_MODELS     optional, comma-separated fallback chain
 
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
   POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
-    Model chain: GEMINI_MODEL, then gemini-3.5-flash -> gemini-3.5-flash-lite -> gemini-flash-latest (4.5 s each)
+    Model chain: GEMINI_MODEL (default gemini-flash-latest), then gemini-3.5-flash (6 s per attempt).
+    Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 250, temperature: 0.4 }.
     on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
     json: true returns structured JSON text: { "heard": "...", "reply": "..." }
@@ -19,10 +20,10 @@ const MAX_CHARS = 60000;            // text in the conversation
 const MAX_AUDIO_B64 = 1_400_000;    // the app sends at most ~15 s of 16 kHz mono WAV (~640 KB base64); generous headroom
 const AUDIO_TYPES = /^audio\/(wav|x-wav|wave|mp3|mpeg|aiff|aac|ogg|flac|webm|mp4|m4a|x-m4a)$/;
 const DEADLINE_MS = 20000;          // whole request, all models included (vercel.json allows 30 s)
-const PER_MODEL_MS = 4500;          // a busy model fails over fast instead of eating the whole budget
+const PER_MODEL_MS = 6000;          // per attempt; a slow or busy model fails over instead of eating the whole budget
 // Tried in order after GEMINI_MODEL when Google answers 503 (busy), 429 (rate limit), 404 (retired model) or is slow.
 // Override without a redeploy of code: GEMINI_FALLBACK_MODELS="model-a,model-b" in Vercel.
-const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.5-flash,gemini-3.5-flash-lite,gemini-flash-latest")
+const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-flash-latest,gemini-3.5-flash")
   .split(",").map((m) => m.trim()).filter(Boolean);
 const RETRY_STATUS = new Set([503, 429, 404]);
 
@@ -96,12 +97,12 @@ async function handle(req, res) {
     const m = models[i];
     const remaining = DEADLINE_MS - (Date.now() - startedAt);
     if (remaining < 1500) break;
-    // 4.5 s per model; the last model in the chain may use what is left so a long answer can still finish
+    // 6 s per attempt; the last model in the chain may use what is left so a long answer can still finish
     const isLast = i === models.length - 1;
     const opts = { system, contents, voice, json };
     let r = await callGemini(key, m, opts, isLast ? remaining : Math.min(PER_MODEL_MS, remaining));
-    // HTTP 400 on the full request (unsupported thinkingConfig / responseSchema): one retry with the minimal request
-    if (r.status === 400 && !r.minimal) r = await callGemini(key, m, opts, isLast ? DEADLINE_MS - (Date.now() - startedAt) : Math.min(PER_MODEL_MS, DEADLINE_MS - (Date.now() - startedAt)), true);
+    // a thinking model used the whole 250-token budget on thoughts (empty reply): one quick retry with thinking off
+    if (r.emptyMaxTokens) r = await callGemini(key, m, opts, Math.min(PER_MODEL_MS, DEADLINE_MS - (Date.now() - startedAt)), true);
     if (r.ok) return res.status(200).json({ ok: true, text: r.text, model: m, ...(tried.length ? { fallbackFrom: tried } : {}) });
     tried.push(`${m}: ${r.status}`);
     last = r;
@@ -112,29 +113,19 @@ async function handle(req, res) {
   return res.status(last.status || 502).json({ ok: false, busy, error: busy ? `All Gemini models busy (${tried.join(", ")})` : last.error, tried });
 }
 
-// Models that reject extra generation fields (thinkingConfig, responseSchema) with HTTP 400 get a minimal request
-const MINIMAL_MODELS = /flash-lite|flash-latest/;
-function buildRequest(model, { system, contents, voice, json }, minimal) {
-  const body = { contents };
+// One clean standard payload for every model: no thinkingConfig / responseSchema (they caused 400s and slow 504s).
+// For voice turns the JSON shape {heard, reply} is requested in the system instruction instead.
+function buildRequest(model, { system, contents }, recovery) {
+  const body = { contents, generationConfig: { maxOutputTokens: 250, temperature: 0.4 } };
   if (system) body.systemInstruction = { parts: [{ text: String(system) }] };
-  if (minimal) {
-    // only standard fields; JSON shape for voice turns is requested in the system instruction instead
-    body.generationConfig = { maxOutputTokens: 220, temperature: 0.4 };
-  } else {
-    body.generationConfig = {
-      temperature: voice ? 0.6 : 0.45,
-      maxOutputTokens: voice ? 400 : 900,
-      ...(json ? { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { heard: { type: "STRING" }, reply: { type: "STRING" } }, required: ["heard", "reply"] } } : {}),
-      // no "thinking" for flash models: fast voice replies, and the output budget is not used up
-      ...(/flash/.test(model) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
-    };
-  }
+  // recovery only: a "thinking" model spent the whole budget thinking and returned no text
+  if (recovery) body.generationConfig = { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } };
   return body;
 }
 
-async function callGemini(key, model, opts, timeoutMs, forceMinimal = false) {
-  const minimal = forceMinimal || MINIMAL_MODELS.test(model);
-  const reqBody = buildRequest(model, opts, minimal);
+async function callGemini(key, model, opts, timeoutMs, recovery = false) {
+  const minimal = !recovery;
+  const reqBody = buildRequest(model, opts, recovery);
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), Math.max(1000, timeoutMs));
   try {
@@ -151,7 +142,7 @@ async function callGemini(key, model, opts, timeoutMs, forceMinimal = false) {
     }
     const cand = data.candidates && data.candidates[0];
     const text = ((cand && cand.content && cand.content.parts) || []).map((p) => p.text || "").join("").trim();
-    if (!text) return { ok: false, status: 502, error: `Gemini returned no text (${model}: ${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
+    if (!text) return { ok: false, status: 502, emptyMaxTokens: !!(cand && cand.finishReason === "MAX_TOKENS"), error: `Gemini returned no text (${model}: ${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
     return { ok: true, text };
   } catch (e) {
     return { ok: false, status: 504, error: e && e.name === "AbortError" ? `Gemini (${model}) did not answer in time` : `Gemini unreachable: ${e && e.message ? e.message : e}` };
