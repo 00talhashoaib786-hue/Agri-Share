@@ -4,11 +4,12 @@
 
   Vercel > Project > Settings > Environment Variables:
     GEMINI_API_KEY   your key from https://aistudio.google.com/apikey   (required)
-    GEMINI_MODEL     optional, default "gemini-2.5-flash"
+    GEMINI_MODEL               optional, first model to try (default "gemini-3.5-flash")
+    GEMINI_FALLBACK_MODELS     optional, comma-separated fallback chain
 
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
   POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
-    Model chain: GEMINI_MODEL, then gemini-2.5-flash -> gemini-2.5-flash-lite -> gemini-flash-latest
+    Model chain: GEMINI_MODEL, then gemini-3.5-flash -> gemini-3.5-flash-lite -> gemini-flash-latest (4.5 s each)
     on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
     json: true returns structured JSON text: { "heard": "...", "reply": "..." }
@@ -17,9 +18,12 @@ const MAX_TURNS = 24;
 const MAX_CHARS = 60000;            // text in the conversation
 const MAX_AUDIO_B64 = 1_400_000;    // the app sends at most ~15 s of 16 kHz mono WAV (~640 KB base64); generous headroom
 const AUDIO_TYPES = /^audio\/(wav|x-wav|wave|mp3|mpeg|aiff|aac|ogg|flac|webm|mp4|m4a|x-m4a)$/;
-const DEADLINE_MS = 26000;          // whole request, all models included (vercel.json allows 30 s)
-// Tried in order after the configured model when Google answers 503 (busy), 429 (rate limit) or 404 (unknown model)
-const FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest"];
+const DEADLINE_MS = 20000;          // whole request, all models included (vercel.json allows 30 s)
+const PER_MODEL_MS = 4500;          // a busy model fails over fast instead of eating the whole budget
+// Tried in order after GEMINI_MODEL when Google answers 503 (busy), 429 (rate limit), 404 (retired model) or is slow.
+// Override without a redeploy of code: GEMINI_FALLBACK_MODELS="model-a,model-b" in Vercel.
+const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.5-flash,gemini-3.5-flash-lite,gemini-flash-latest")
+  .split(",").map((m) => m.trim()).filter(Boolean);
 const RETRY_STATUS = new Set([503, 429, 404]);
 
 // Vercel may hand the body over as an object, a string, a Buffer, or not parse it at all.
@@ -52,7 +56,7 @@ export default async function handler(req, res) {
 
 async function handle(req, res) {
   const key = process.env.GEMINI_API_KEY || "";
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const model = process.env.GEMINI_MODEL || FALLBACK_MODELS[0] || "gemini-flash-latest";
   res.setHeader("Cache-Control", "no-store");
   res.setHeader("Content-Type", "application/json; charset=utf-8");
 
@@ -88,12 +92,15 @@ async function handle(req, res) {
   const startedAt = Date.now();
   const tried = [];
   let last = { status: 502, error: "Gemini did not answer" };
-  for (const m of models) {
+  for (let i = 0; i < models.length; i++) {
+    const m = models[i];
     const remaining = DEADLINE_MS - (Date.now() - startedAt);
-    if (remaining < 3000) break;
-    let r = await callGemini(key, m, { system, contents, voice, json, thinking: true }, remaining);
+    if (remaining < 1500) break;
+    // 4.5 s per model; the last model in the chain may use what is left so a long answer can still finish
+    const isLast = i === models.length - 1;
+    let r = await callGemini(key, m, { system, contents, voice, json, thinking: true }, isLast ? remaining : Math.min(PER_MODEL_MS, remaining));
     // a model that does not accept thinkingBudget 0 (e.g. newer releases) gets one try without it
-    if (r.status === 400 && /thinking/i.test(r.error || "")) r = await callGemini(key, m, { system, contents, voice, json, thinking: false }, DEADLINE_MS - (Date.now() - startedAt));
+    if (r.status === 400 && /thinking/i.test(r.error || "")) r = await callGemini(key, m, { system, contents, voice, json, thinking: false }, isLast ? DEADLINE_MS - (Date.now() - startedAt) : Math.min(PER_MODEL_MS, DEADLINE_MS - (Date.now() - startedAt)));
     if (r.ok) return res.status(200).json({ ok: true, text: r.text, model: m, ...(tried.length ? { fallbackFrom: tried } : {}) });
     tried.push(`${m}: ${r.status}`);
     last = r;

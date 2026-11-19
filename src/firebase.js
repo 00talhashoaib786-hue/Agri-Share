@@ -107,6 +107,7 @@ async function init() {
       try { db = initializeFirestore(app, { ignoreUndefinedProperties: true, experimentalAutoDetectLongPolling: true, localCache: memoryLocalCache() }, FIRESTORE_DATABASE_ID); } catch (e2) { db = getFirestore(app, FIRESTORE_DATABASE_ID); }
     }
     auth = m.au.getAuth(app);
+    console.info(`[Agri-Share] Firestore connected: project ${firebaseConfig.projectId}, database "${FIRESTORE_DATABASE_ID}"`);
     return true;
   } catch (e) {
     console.warn("[Agri-Share] Firebase could not start. Using localStorage only.", e);

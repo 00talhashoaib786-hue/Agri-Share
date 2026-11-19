@@ -56,6 +56,8 @@ service cloud.firestore {
       allow read, delete: if signedIn();
       allow create, update: if signedIn() && smallDoc();
     }
+    // Crop posts hold the seller's phone and JazzCash/EasyPaisa wallet number, so they stay members-only.
+    // (Signed-out visitors no longer subscribe to private collections, so there is no permission-denied noise.)
     match /mandi_crops/{id} {
       allow read, delete: if signedIn();
       allow create, update: if signedIn() && smallDoc();

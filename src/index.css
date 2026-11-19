@@ -14,6 +14,11 @@ img, svg, video, canvas { max-width: 100%; }
 .font-nastaliq .font-display { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', system-ui, sans-serif; }
 .font-nastaliq .leading-none, .font-nastaliq .leading-tight, .font-nastaliq .leading-snug, .font-nastaliq [class*="leading-["] { line-height: 1.7 !important; }
 .font-nastaliq .truncate { padding-block: 0.15em; }
+/* Mobile Urdu / RTL: Nastaliq marks sit far above and below the line, so give text extra room */
+@media (max-width: 767px) {
+  .font-nastaliq :is(h1, h2, h3, h4, p, li, label, dd, dt), [dir="rtl"] .font-nastaliq :is(h1, h2, h3, h4, p, li, label) { line-height: 2.1 !important; }
+  [dir="rtl"] :is(h1, h2, h3, h4) { line-height: 1.9; }
+}
 /* mirror directional arrows in right-to-left languages */
 [dir="rtl"] .lucide-chevron-right, [dir="rtl"] .lucide-chevron-left, [dir="rtl"] .lucide-arrow-right, [dir="rtl"] .lucide-arrow-left { transform: scaleX(-1); }
 .no-scrollbar { scrollbar-width: none; }
