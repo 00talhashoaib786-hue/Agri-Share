@@ -7430,7 +7430,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
   const reqDistrict = (r) => (r.loc && r.loc.district) || String(r.village || "").split(",").slice(-1)[0];
   // requests routed to my machines first, then open requests in my district
   const routedToMe = (r) => Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(session.uid);
-  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && r.renterEmail !== session.email && (routedToMe(r) || inMyDistrict(reqDistrict(r))))
+  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && !r.own && (routedToMe(r) || inMyDistrict(reqDistrict(r))))
     .sort((a, b) => (routedToMe(b) - routedToMe(a)) || b.createdAt - a.createdAt).slice(0, 10) : [];
   return (
     <div className="mb-5 rounded-2xl border border-gold/60 bg-gold/10 p-4">
@@ -7571,7 +7571,10 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     e.preventDefault();
     if (!f.loc) { setLocErr(true); scrollTo(formRef); return; }
     requireAuth(() => {
-      const r = { ...f, country: CUR.id, id: "RQ-" + Math.floor(10000 + Math.random() * 89999), rate: Math.max(1, Number(f.rate) || 0), hours: Math.min(16, Math.max(1, Number(f.hours) || 1)), createdAt: Date.now(), status: "open", tierReached: 1, renterEmail: session ? session.email : null, renterName: session ? session.name : "", renterPhone: session ? session.phone || "" : "" };
+      const r = { ...f, country: CUR.id, id: "RQ-" + Math.floor(10000 + Math.random() * 89999), rate: Math.max(1, Number(f.rate) || 0), hours: Math.min(16, Math.max(1, Number(f.hours) || 1)), createdAt: Date.now(), status: "open", tierReached: 1, renterUid: session ? session.uid : null, renterName: session ? session.name : "" };
+      // renter email / phone go to the private request_contacts/{requestId} (renter, accepted owner, founder)
+      if (session) writeDoc(COL.reqContacts, r.id, { requestId: r.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", createdAt: Date.now() })
+        .catch((e) => console.warn("[Agri-Share] Request contact not saved:", e && e.code));
       // attach every REAL owner whose machine matches within 100 km, so the request lands in their Owner Portal
       const matched = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.registered && o.ownerUid && o.distance <= 100);
       r.matchedOwnerUids = [...new Set(matched.map((o) => o.ownerUid))];
@@ -7600,14 +7603,14 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   };
   const decline = (key) => { setDeclined((d) => new Set(d).add(key)); setOffers((l) => l.filter((o) => o.key !== key)); setStatuses((s) => ({ ...s, [key]: "declined" })); if (picked === key) setPicked(null); };
 
-  const myRequests = [...liveRequests].filter((r) => (r.country || "PK") === CUR.id && (!session || !r.renterEmail || r.renterEmail === session.email)).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
+  const myRequests = [...liveRequests].filter((r) => (r.country || "PK") === CUR.id && r.own).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
 
   // Restore an open request after a page refresh and re-scan the tier it had reached
   const restored = useRef(false);
   useEffect(() => {
     if (restored.current) return;
     restored.current = true;
-    const open = [...liveRequests].filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && (!session || !r.renterEmail || r.renterEmail === session.email)).sort((a, b) => b.createdAt - a.createdAt)[0];
+    const open = [...liveRequests].filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && r.own).sort((a, b) => b.createdAt - a.createdAt)[0];
     if (open) {
       setReq(open.loc ? open : { ...open, loc: DEFAULT_LOC }); setF((s) => ({ ...s, chosen: true, model: open.model || "", loc: open.loc || s.loc, category: open.category, village: open.village, hours: open.hours, date: open.date, rate: open.rate, rentType: open.rentType, peak: open.peak }));
       statusRef.current = {};
@@ -7640,7 +7643,9 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       channel: "live", status: o.kind === "listed" ? "sent" : "confirmed",
     }, true);
     clearTimers(); setScanning(false);
-    saveRequest({ id: req.id, status: "booked", bookingId: id, agreedRate: o.rate, ownerId: o.owner.ownerId });
+    saveRequest({ id: req.id, status: "booked", bookingId: id, agreedRate: o.rate, ownerId: o.owner.ownerId, ...(o.owner.ownerUid ? { acceptedOwnerUid: o.owner.ownerUid } : {}) });
+    if (o.owner.ownerUid && session) writeDoc(COL.reqContacts, req.id, { requestId: req.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedOwnerUid: o.owner.ownerUid, acceptedAt: Date.now() })
+      .catch((e) => console.warn("[Agri-Share] Could not share contact with the accepted owner:", e && e.code));
     setBooked({ id, owner: o.owner, q });
     toast(t(o.kind === "listed" ? "toast_lr_sent" : "toast_lr_booked").replace("{owner}", o.owner.name), { title: t("toast_booked_t") });
     if (onVoucher) setTimeout(() => onVoucher(id), 350);
@@ -8635,7 +8640,7 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
@@ -9008,20 +9013,21 @@ function AdminConsole({ contacts = {}, leads = [], markLeadArranged, verifyListi
             {liveRequests.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
               <ul className="divide-y divide-soil/10">
                 {[...liveRequests].sort((x, y) => (y.createdAt || 0) - (x.createdAt || 0)).map((r) => {
-                  const p0 = prof(r.renterEmail);
+                  const rc = reqContacts[r.id] || {};
+                  const p0 = prof(rc.renterEmail);
                   return (
                     <li key={r.id} className={`grid gap-2 p-4 text-sm md:grid-cols-[1.2fr_1fr_auto] md:items-center ${r.status === "open" ? "bg-gold/5" : ""}`}>
                       <div className="min-w-0">
                         <p className="flex flex-wrap items-center gap-2"><span className="font-mono text-xs" dir="ltr">{r.id}</span><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span><span className="text-xs text-soil/80" dir="ltr">{fmtStamp(r.createdAt)}</span></p>
                         <p className="mt-1 break-words font-bold text-forest">{t("ct_farmer")}: {r.renterName || p0.name || "·"}</p>
-                        <p className="break-all text-xs text-soil/80" dir="ltr">{r.renterEmail || ""}</p>
+                        <p className="break-all text-xs text-soil/80" dir="ltr">{rc.renterEmail || ""}</p>
                       </div>
                       <div className="min-w-0 text-xs text-soil">
                         <p><span className="font-semibold text-soil/80">{t("ct_needed")}:</span> {t("one_" + r.category)}{r.model ? <span dir="ltr"> · {r.model}</span> : null}</p>
                         <p><span className="font-semibold text-soil/80">{t("ct_location")}:</span> {r.village || "·"}{r.loc && r.loc.district ? `, ${dn(r.loc.district)}` : ""}</p>
                         <p><span className="font-semibold text-soil/80">{t("ct_offered")}:</span> <b className="text-forest" dir="ltr">{pkr(r.rate)}/hr</b>{r.agreedRate ? <span dir="ltr"> → {pkr(r.agreedRate)}</span> : null} · {r.hours}h · <span dir="ltr">{fmtDate(r.date)}</span> · {r.rentType === "wet" ? t("lr_wet") : t("lr_dry")} · T{r.tierReached || 1}</p>
                       </div>
-                      <div><ContactButtons t={t} phone={r.renterPhone || p0.phone} name={r.renterName || p0.name} /></div>
+                      <div><ContactButtons t={t} phone={rc.renterPhone || p0.phone} name={r.renterName || rc.renterName || p0.name} /></div>
                     </li>
                   );
                 })}
@@ -9842,7 +9848,8 @@ const docKey = (id) => String(id).replace(/\//g, "_");
 // Signed-out visitors don't listen to them at all, so the console has no permission-denied noise.
 const PRIVATE_SYNC = new Set(["bookings", "requests", "mandi", "demand"]);
 
-function useCollectionSync(key, items, setItems, authUid, report) {
+function useCollectionSync(key, items, setItems, authUid, report, queries) {
+  const queryKey = queries ? JSON.stringify(queries) : "all";
   const synced = useRef(null); // Map id -> json last seen in (or sent to) Firestore; null until the server answers
   const failed = useRef(new Set());
   const itemsRef = useRef(items);
@@ -9899,9 +9906,9 @@ function useCollectionSync(key, items, setItems, authUid, report) {
       if (stableJson(next) !== stableJson(itemsRef.current)) setItems(next);
       toPush.forEach(push);
       report(key, failed.current.size ? "denied" : meta.fromCache ? "offline" : "live", failed.current.size ? "permission-denied (write)" : "");
-    }, (err) => { synced.current = null; report(key, syncState(err), (err && (err.code || err.message)) || "error"); });
+    }, (err) => { synced.current = null; report(key, syncState(err), (err && (err.code || err.message)) || "error"); }, queries);
     return () => { clearTimeout(slow); unsub(); };
-  }, [authUid]); // eslint-disable-line
+  }, [authUid, queryKey]); // eslint-disable-line
 
   // Send local changes (new, edited, deleted) to Firestore
   useEffect(() => {
@@ -9959,7 +9966,9 @@ const syncState = (err) => {
   return "local";
 };
 
-function useCloudSync(state, setters, authUid) {
+function useCloudSync(state, setters, authUid, isAdminReader) {
+  // listings: admins read everything; everyone else asks only for approved listings (+ their own)
+  const listingQueries = isAdminReader ? null : authUid ? [["status", "==", "approved"], ["ownerUid", "==", authUid]] : [["status", "==", "approved"]];
   const [status, setStatus] = useState({});
   const [codes, setCodes] = useState({});
   const report = useCallback((k, v, code) => {
@@ -9967,7 +9976,7 @@ function useCloudSync(state, setters, authUid) {
     setCodes((c) => ((c[k] || "") === (code || "") ? c : { ...c, [k]: code || "" }));
     if (code) console.warn(`[Agri-Share] Firestore ${k}: ${v} (${code})`);
   }, []);
-  useCollectionSync("listings", state.listings, setters.setListings, authUid, report);
+  useCollectionSync("listings", state.listings, setters.setListings, authUid, report, listingQueries);
   useCollectionSync("bookings", state.bookings, setters.setBookings, authUid, report);
   useCollectionSync("requests", state.liveRequests, setters.setLiveRequests, authUid, report);
   useCollectionSync("mandi", state.mandiPosts, setters.setMandiPosts, authUid, report);
@@ -10056,7 +10065,7 @@ function App() {
   useEffect(() => { store.set("agrishare.demand.v1", demand); }, [demand]);
 
   // Live Firestore sync (falls back to localStorage when Firebase is unreachable or refuses)
-  const cloud = useCloudSync({ listings, bookings, liveRequests, settings, mandiPosts, demand }, { setListings, setBookings, setLiveRequests, setSettings, setMandiPosts, setDemand }, accounts.fbUid);
+  const cloud = useCloudSync({ listings, bookings, liveRequests, settings, mandiPosts, demand }, { setListings, setBookings, setLiveRequests, setSettings, setMandiPosts, setDemand }, accounts.fbUid, !!(accounts.isAdmin && accounts.fbUser && accounts.fbUser.emailVerified));
   useEffect(() => {
     store.set("agrishare.lang", lang);
     document.documentElement.lang = langMeta.html || lang;
@@ -10126,6 +10135,10 @@ function App() {
   const isMineListing = (l) => Boolean(uid && l.ownerUid && l.ownerUid === uid);
   const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)).map(({ ownerEmail, ownerPhone, ...l }) => ({ ...l, mine: isMineListing(l) })), [listings, uid]); // eslint-disable-line
   const myListings = useMemo(() => realListings.filter((l) => l.mine), [realListings]);
+  // requests as the app shows them: renter email/phone removed for everyone; "own" decided by uid (legacy: email)
+  const shownRequests = useMemo(() => liveRequests.map(({ renterEmail, renterPhone, ...r }) => ({
+    ...r, own: Boolean(session && (r.renterUid ? r.renterUid === session.uid : renterEmail && renterEmail === session.email)),
+  })), [liveRequests, uid, session && session.email]); // eslint-disable-line
   // bookings that belong to MY machines (Owner Portal): matched by listing id or the booking's ownerUid
   const myListingIds = useMemo(() => new Set(myListings.map((l) => String(l.id))), [myListings]);
   const isMyOwnerBooking = (b) => Boolean(uid && ((b.ownerUid && b.ownerUid === uid) || myListingIds.has(String(b.listingId)) || myListingIds.has(String(b.listingId || "").replace(/^live-lst-/, ""))));
@@ -10157,6 +10170,38 @@ function App() {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setContacts({}); return undefined; }
     return watchCollection(COL.contacts, (list) => setContacts(Object.fromEntries(list.map((c) => [c.listingId || c.id, c]))), (e) => console.warn("[Agri-Share] Contacts listener:", e && e.code));
   }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
+  const [reqContacts, setReqContacts] = useState({}); // requestId -> renter contact (founder only)
+  useEffect(() => {
+    if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setReqContacts({}); return undefined; }
+    return watchCollection(COL.reqContacts, (list) => setReqContacts(Object.fromEntries(list.map((c) => [c.requestId || c.id, c]))), (e) => console.warn("[Agri-Share] Request contacts listener:", e && e.code));
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
+  const reqMigratedRef = useRef(false), listingCleanRef = useRef(false);
+  useEffect(() => {
+    if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) return;
+    // requests: move legacy renterEmail / renterPhone into request_contacts and remove them from the shared document
+    if (!reqMigratedRef.current) {
+      const legacy = liveRequests.filter((r) => r.renterEmail || r.renterPhone);
+      if (legacy.length) {
+        reqMigratedRef.current = true;
+        legacy.forEach((r) => writeDoc(COL.reqContacts, r.id, { requestId: r.id, renterUid: r.renterUid || "", renterName: r.renterName || "", renterEmail: r.renterEmail || "", renterPhone: r.renterPhone || "", createdAt: r.createdAt || Date.now(), migrated: true })
+          .then(() => setLiveRequests((ls) => ls.map((x) => (x.id === r.id ? (({ renterEmail, renterPhone, ...rest }) => rest)(x) : x))))
+          .catch((e) => console.warn("[Agri-Share] Request contact migration failed for", r.id, e && e.code)));
+      }
+    }
+    // listings: drop the legacy "mine" field and give status-less real listings an explicit status,
+    // so the "approved only" read rule and queries can see them
+    if (!listingCleanRef.current) {
+      const stale = listings.filter((l) => Object.prototype.hasOwnProperty.call(l, "mine") || (!l.status && !isSeedListing(l)));
+      if (stale.length) {
+        listingCleanRef.current = true;
+        setListings((ls) => ls.map((l) => {
+          if (!stale.some((x) => x.id === l.id)) return l;
+          const { mine: _legacyMine, ...rest } = l;
+          return rest.status || isSeedListing(rest) ? rest : { ...rest, status: "approved" };
+        }));
+      }
+    }
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, liveRequests, listings]); // eslint-disable-line
   const migratedRef = useRef(false);
   useEffect(() => {
     // one-time clean-up by the founder: copy legacy ownerEmail/ownerPhone into listing_contacts and remove them from the public document
@@ -10252,15 +10297,15 @@ function App() {
   const toggleListing = (id) => setListings((ls) => ls.map((l) => (l.id === id ? { ...l, available: !l.available } : l)));
   const removeListing = (id) => { setListings((ls) => ls.filter((l) => l.id !== id)); toast(t("toast_removed")); };
 
-  const routedOpen = uid ? liveRequests.filter((r) => r.status === "open" && Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(uid) && !(r.offers || []).some((o) => o.uid === uid)).length : 0;
+  const routedOpen = uid ? shownRequests.filter((r) => r.status === "open" && Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(uid) && !(r.offers || []).some((o) => o.uid === uid)).length : 0;
   const pendingCount = ownerBookings.filter((b) => b.status === "sent").length + routedOpen;
   // red Admin badge: machines awaiting approval + open Apni Boli requests + waiting demand tickets
   const adminCount = accounts.isAdmin
-    ? realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + liveRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
+    ? realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + shownRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
     : 0;
   const mine = (email) => !session || !email || email === session.email;
   const myBookings = [...bookings].filter((b) => b.channel === "ussd" || mine(b.renterEmail)).sort((a, b) => b.createdAt - a.createdAt);
-  const myRequests = [...liveRequests].filter((r) => mine(r.renterEmail)).sort((a, b) => b.createdAt - a.createdAt);
+  const myRequests = shownRequests.filter((r) => r.own).sort((a, b) => b.createdAt - a.createdAt);
   const myDeals = [...mandiPosts].filter((p) => mine(p.sellerEmail)).sort((a, b) => b.createdAt - a.createdAt);
   const activityCount = myBookings.filter((b) => ["sent", "countered", "confirmed"].includes(b.status)).length + myRequests.filter((r) => r.status === "open").length + myDeals.filter((p) => p.status === "open").length;
   const voucherBooking = voucherId ? bookings.find((b) => b.id === voucherId) : null;
@@ -10282,11 +10327,11 @@ function App() {
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={bookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} liveRequests={liveRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
-          dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
+          dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={bookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} mandiPosts={mandiPosts} cloud={cloud} />}
+        {showTab === "admin" && <AdminPanel contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={mandiPosts} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}

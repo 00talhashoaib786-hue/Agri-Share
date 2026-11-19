@@ -86,6 +86,7 @@ export const COL = {
   demand: "pending_demand_requests",
   leads: "unmatched_farmer_leads",
   contacts: "listing_contacts",
+  reqContacts: "request_contacts",
 };
 
 let app = null, auth = null;
@@ -138,17 +139,37 @@ function lazySubscribe(subscribe, onError) {
   return () => { cancelled = true; if (unsub) { try { unsub(); } catch (e) { /* ignore */ } } };
 }
 
-/* Live listener on a whole collection.
-   onData(list, { fromCache }) gets every document as { id, ...fields }. */
-export function watchCollection(name, onData, onError) {
+/* Live listener on a collection.
+   onData(list, { fromCache }) gets every document as { id, ...fields }.
+   queries (optional): [[field, op, value], ...]. Each entry is its own query and the results are merged
+   by id. Firestore rules are not filters, so a reader who may only see some documents (for example
+   approved listings + their own) must ask for exactly those; an unfiltered query would be refused. */
+export function watchCollection(name, onData, onError, queries) {
   return lazySubscribe(() => {
-    const { onSnapshot, collection } = sdk.fs;
-    return onSnapshot(
-      collection(db, name),
+    const { onSnapshot, collection, query, where } = sdk.fs;
+    const handle = (label) => (err) => { logFs("listen", label, err); if (onError) onError(err); };
+    if (!queries || !queries.length) {
+      return onSnapshot(
+        collection(db, name),
+        { includeMetadataChanges: true },
+        (snap) => onData(snap.docs.map((d) => ({ ...d.data(), id: d.id })), { fromCache: snap.metadata.fromCache }),
+        handle(name)
+      );
+    }
+    const parts = queries.map(() => null), cached = queries.map(() => true);
+    const emit = () => {
+      if (parts.some((x) => x === null)) return; // wait until every query has answered once
+      const byId = new Map();
+      parts.forEach((list) => list.forEach((d) => byId.set(d.id, d)));
+      onData([...byId.values()], { fromCache: cached.some(Boolean) });
+    };
+    const unsubs = queries.map(([field, op, value], i) => onSnapshot(
+      query(collection(db, name), where(field, op, value)),
       { includeMetadataChanges: true },
-      (snap) => onData(snap.docs.map((d) => ({ ...d.data(), id: d.id })), { fromCache: snap.metadata.fromCache }),
-      (err) => { logFs("listen", name, err); if (onError) onError(err); }
-    );
+      (snap) => { parts[i] = snap.docs.map((d) => ({ ...d.data(), id: d.id })); cached[i] = snap.metadata.fromCache; emit(); },
+      handle(`${name} where ${field} ${op} ${value}`)
+    ));
+    return () => unsubs.forEach((u) => { try { u(); } catch (e) { /* ignore */ } });
   }, onError);
 }
 

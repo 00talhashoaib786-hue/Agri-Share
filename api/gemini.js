@@ -4,12 +4,12 @@
 
   Vercel > Project > Settings > Environment Variables:
     GEMINI_API_KEY   your key from https://aistudio.google.com/apikey   (required)
-    GEMINI_MODEL               optional, first model to try (default "gemini-2.5-flash-lite")
+    GEMINI_MODEL               optional, first model to try (default "gemini-3.5-flash-lite")
     GEMINI_FALLBACK_MODELS     optional, comma-separated fallback chain
 
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
   POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
-    Model chain: GEMINI_MODEL (default gemini-2.5-flash-lite) -> gemini-flash-latest -> gemini-2.5-flash -> gemini-3.5-flash (4 s per attempt).
+    Model chain: GEMINI_MODEL (default gemini-3.5-flash-lite) -> gemini-3.5-flash -> gemini-flash-latest (4 s per attempt).
     Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 250, temperature: 0.4 }.
     on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
@@ -23,8 +23,8 @@ const DEADLINE_MS = 20000;          // whole request, all models included (verce
 const PER_MODEL_MS = 4000;          // per attempt; a slow or busy model fails over instead of eating the whole budget
 // Tried in order after GEMINI_MODEL when Google answers 503 (busy), 429 (rate limit), 404 (retired model) or is slow.
 // Override without a redeploy of code: GEMINI_FALLBACK_MODELS="model-a,model-b" in Vercel.
-// free-tier friendly first (highest quota, fastest), then the bigger flash models
-const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-2.5-flash-lite,gemini-flash-latest,gemini-2.5-flash,gemini-3.5-flash")
+// active models only: 3.5 Flash-Lite first (highest free-tier RPM, fastest), then 3.5 Flash, then the "latest" alias
+const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.5-flash-lite,gemini-3.5-flash,gemini-flash-latest")
   .split(",").map((m) => m.trim()).filter(Boolean);
 const RETRY_STATUS = new Set([503, 429, 404]);
 

@@ -27,7 +27,11 @@ service cloud.firestore {
     function isAdmin() { return isFounder() || isTeamAdmin(); }
 
     match /machinery_listings/{id} {
-      allow read: if true;
+      // public sees approved listings only; owners also see their own pending/rejected ones; admins see all.
+      // (the app queries "status == approved" plus "ownerUid == me", because rules are not filters)
+      allow read: if resource.data.get('status', '') == 'approved'
+        || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid)
+        || isAdmin();
       // new listings go live instantly ("approved") but unverified; the creator must be the owner
       // owner contact details never go on this public document (see listing_contacts)
       allow create: if signedIn() && smallDoc() && (isAdmin()
@@ -59,9 +63,21 @@ service cloud.firestore {
       allow read, delete: if signedIn();
       allow create, update: if signedIn() && smallDoc();
     }
+    // renter email / phone never go on this shared document (see request_contacts)
     match /indrive_requests/{id} {
       allow read, delete: if signedIn();
-      allow create, update: if signedIn() && smallDoc();
+      allow create: if signedIn() && smallDoc() && !request.resource.data.keys().hasAny(['renterEmail', 'renterPhone']);
+      allow update: if signedIn() && smallDoc()
+        && (isFounder() || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['renterEmail', 'renterPhone']));
+    }
+    // Renter contact for an Apni Boli request: the renter, the owner whose offer was accepted, and the founder
+    match /request_contacts/{requestId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.renterUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && (resource.data.renterUid == request.auth.uid
+        || resource.data.get('acceptedOwnerUid', '') == request.auth.uid));
+      allow update: if signedIn() && smallDoc() && (isFounder()
+        || (resource.data.renterUid == request.auth.uid && request.resource.data.renterUid == request.auth.uid));
+      allow delete: if isFounder();
     }
     // Crop posts hold the seller's phone and JazzCash/EasyPaisa wallet number, so they stay members-only.
     // (Signed-out visitors no longer subscribe to private collections, so there is no permission-denied noise.)
