@@ -3,6 +3,11 @@
 @tailwind utilities;
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: #FAF8EE; }
+/* never scroll sideways on phones. "clip" (where supported) keeps position: sticky working on the header */
+html, body { overflow-x: hidden; width: 100%; max-width: 100%; }
+@supports (overflow-x: clip) { html, body { overflow-x: clip; } }
+#root { width: 100%; max-width: 100%; }
+img, svg, video, canvas { max-width: 100%; }
 [dir="rtl"] .font-display { font-family: 'Noto Naskh Arabic', 'Bricolage Grotesque', system-ui, sans-serif; }
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }

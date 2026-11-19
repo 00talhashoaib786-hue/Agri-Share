@@ -359,31 +359,40 @@ const T = {
     adv_still: "Your email is not verified yet.",
     adp_create_title: "Create a new Admin Password",
     adp_create_sub: "First-time setup. This password unlocks the Agri-Share control room. Only its salted SHA-256 hash is stored.",
-    adp_enter_title: "Admin Password",
-    adp_enter_sub: "Signed in as {email}. Enter the admin password to unlock the control room.",
-    adp_new: "New admin password",
+    adp_enter_title: "Founder PIN",
+    adp_enter_sub: "Signed in as {email}. The secondary PIN is switched on: enter it to open the control room.",
+    adp_opening: "Opening the control room",
+    adp_new: "New PIN",
     adp_confirm: "Confirm password",
-    adp_current: "Current admin password",
-    adp_pass: "Admin password",
+    adp_current: "Current PIN",
+    adp_pass: "PIN",
     adp_save: "Save & unlock",
     adp_unlock: "Unlock control room",
     adp_short: "Use at least {n} characters.",
     adp_mismatch: "The passwords do not match.",
-    adp_wrong: "Wrong admin password.",
+    adp_wrong: "Wrong PIN.",
     adp_locked: "Too many attempts. Try again in {s} seconds.",
     adp_waiting: "The founder has not set an admin password yet.",
     adp_load_err: "Could not refresh your account. Check the connection and try again.",
     adp_offline: "Firestore could not be reached, so this browser's saved admin settings are used. They sync when the connection returns.",
-    adp_cloud_queued: "Saved on this device. It will sync to Firestore when the connection returns.",
-    adp_cloud_denied: "Saved on this device, but Firestore refused it. Publish the latest firestore.rules and make sure your email is verified.",
+    adp_cloud_queued: "Saved. It will sync to Firestore when the connection returns.",
+    adp_cloud_denied: "Firestore refused the change. Publish the latest firestore.rules and make sure your email is verified.",
     adp_save_err: "Could not save. Check the connection and that firestore.rules are published.",
     ads_tab: "Security",
     ads_title: "Security & Admin Password",
-    ads_change: "Change Admin Password",
-    ads_changed: "Admin password changed.",
-    ads_founder_only: "Only the founder can change the admin password and team list.",
+    ads_change: "Change PIN",
+    ads_changed: "PIN changed. It now applies on every device.",
+    ads_founder_only: "Only the founder can change the PIN and team list.",
+    ads_pin_title: "Founder Session Lock (optional PIN)",
+    ads_pin_sub: "Off by default: your verified founder email opens the Admin Panel on any device. Turn this on to also ask for a PIN. It is stored only in Firestore, so the same PIN works on every device.",
+    ads_pin_status_on: "PIN on",
+    ads_pin_status_off: "PIN off",
+    ads_pin_enable: "Turn on PIN",
+    ads_pin_disable: "Turn off PIN",
+    ads_pin_on: "PIN switched on for every device.",
+    ads_pin_off: "PIN switched off. Your verified email opens the Admin Panel.",
     ads_team: "Authorised team admins",
-    ads_team_sub: "Team admins sign in with their own verified email and unlock with the admin password.",
+    ads_team_sub: "Team admins open the Admin Panel with their own verified email (plus the PIN, if it is switched on).",
     ads_team_add: "Add",
     ads_team_none: "No team admins yet.",
     ads_team_saved: "Team admin list saved.",
@@ -3136,14 +3145,17 @@ function MachineArt({ category, className = "", label }) {
     </div>
   );
 }
-function MachinePhoto({ category, name, className = "", alt }) {
+// priority: "high" for the hero (LCP image), "eager" for other above-the-fold images, otherwise lazy
+function MachinePhoto({ category, name, className = "", alt, priority, width = 640, height = 360 }) {
   const key = photoKeyFor(category, name);
   const info = key ? MACHINE_PHOTOS[key] : null;
   const src = info ? info.src || commonsUrl(info.file, 640) : null;
   const [failed, setFailed] = useState(false);
   useEffect(() => { setFailed(false); }, [src]);
   if (!src || failed) return <MachineArt category={category} className={className} label={alt || name} />;
-  return <img src={src} alt={alt || name || info.label} title={`${info.label} · ${info.credit} (Wikimedia Commons)`} decoding="async" onError={() => setFailed(true)} className={`bg-forest/20 object-cover ${className}`} />;
+  return <img src={src} alt={alt || name || info.label} title={`${info.label} · ${info.credit} (Wikimedia Commons)`} width={width} height={height}
+    loading={priority ? "eager" : "lazy"} decoding={priority === "high" ? "sync" : "async"} fetchpriority={priority === "high" ? "high" : priority ? "auto" : "low"}
+    onError={() => setFailed(true)} className={`bg-forest/20 object-cover ${className}`} />;
 }
 
 /* Number input in the selected country's currency; reads and writes PKR */
@@ -3385,7 +3397,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
             <div className="relative">
               <Field label={t("loc_district")} htmlFor="loc-dist">
                 <div className="relative">
-                  <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/40" aria-hidden="true" />
+                  <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
                   <input id="loc-dist" dir="ltr" role="combobox" aria-expanded={sugOpen} aria-autocomplete="list" autoComplete="off" value={query}
                     onChange={(e) => { setQuery(e.target.value); setDistrict(""); setSugOpen(true); }} onFocus={() => setSugOpen(true)}
                     onKeyDown={(e) => { if (e.key === "Enter" && suggestions[0]) { e.preventDefault(); chooseDistrict(suggestions[0]); } }}
@@ -3398,7 +3410,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
                     <li key={d.name} role="option" aria-selected={district === d.name}>
                       <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => chooseDistrict(d)} className="flex w-full items-center justify-between gap-2 px-3 py-2 text-start text-sm hover:bg-ivory">
                         <span className="font-semibold text-soil" dir="ltr">{d.name}</span>
-                        <span className="text-xs text-soil/60">{provLabel(lang, cc, d.province)}</span>
+                        <span className="text-xs text-soil/80">{provLabel(lang, cc, d.province)}</span>
                       </button>
                     </li>
                   ))}
@@ -3430,7 +3442,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
             <div className="relative flex-1 overflow-hidden rounded-xl ring-1 ring-soil/15" style={{ minHeight: 300 }}>
               <PakistanMap t={t} lang={lang} province={province} pin={pin} selectedDistrict={district} onPick={(ll) => dropPin(ll)} onPickDistrict={(d) => chooseDistrict(d)} />
             </div>
-            <p className="mt-2 flex items-center gap-1.5 text-xs text-soil/70"><Crosshair className="h-3.5 w-3.5" aria-hidden="true" />{t("loc_map_hint")}</p>
+            <p className="mt-2 flex items-center gap-1.5 text-xs text-soil/80"><Crosshair className="h-3.5 w-3.5" aria-hidden="true" />{t("loc_map_hint")}</p>
           </div>
           ) : (
             <div className="flex min-h-[320px] flex-col">
@@ -3440,7 +3452,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
                   <button type="button" key={r.name + r.province} onClick={() => chooseDistrict(r)} aria-pressed={district === r.name && province === r.province}
                     className={`rounded-xl px-3 py-2.5 text-start ring-1 transition ${district === r.name && province === r.province ? "bg-forest text-ivory ring-forest" : "bg-white text-soil ring-soil/15 hover:ring-leaf"}`}>
                     <span className="block text-sm font-bold" dir="ltr">{r.name}</span>
-                    <span className={`block text-[11px] ${district === r.name && province === r.province ? "text-ivory/80" : "text-soil/60"}`}>{r.province}</span>
+                    <span className={`block text-[11px] ${district === r.name && province === r.province ? "text-ivory/80" : "text-soil/80"}`}>{r.province}</span>
                   </button>
                 ))}
               </div>
@@ -3463,17 +3475,17 @@ function LocationField({ t, lang, value, onChange, label, error, allowClear, id 
     <div>
       {label && <p className="mb-1 text-sm font-semibold text-soil" id={id ? id + "-l" : undefined}>{label}</p>}
       <div className={`flex items-center gap-2 rounded-xl border bg-white px-3 py-2 ${error ? "border-red-400" : "border-soil/20"}`}>
-        <MapPin className={`h-5 w-5 shrink-0 ${value ? "text-red-700" : "text-soil/40"}`} aria-hidden="true" />
+        <MapPin className={`h-5 w-5 shrink-0 ${value ? "text-red-700" : "text-soil/80"}`} aria-hidden="true" />
         <button type="button" id={id} onClick={() => setOpen(true)} className="min-w-0 flex-1 text-start" aria-describedby={id ? id + "-l" : undefined}>
           {value ? (
             <>
               <span className="block truncate text-sm font-bold text-soil">{locLabel(value)}</span>
-              <span className="block truncate text-[11px] text-soil/60">{provLabel(lang, value.country, value.province)} · <span dir="ltr">{fmtLL(value.lat, value.lng)}</span></span>
+              <span className="block truncate text-[11px] text-soil/80">{provLabel(lang, value.country, value.province)} · <span dir="ltr">{fmtLL(value.lat, value.lng)}</span></span>
             </>
-          ) : <span className="text-sm text-soil/50">{t("loc_none")}</span>}
+          ) : <span className="text-sm text-soil/80">{t("loc_none")}</span>}
         </button>
         <button type="button" onClick={() => setOpen(true)} className="shrink-0 rounded-lg bg-forest/5 px-2.5 py-1.5 text-xs font-bold text-forest hover:bg-forest/10">{value ? t("loc_change") : t("loc_set")}</button>
-        {allowClear && value && <button type="button" onClick={() => onChange(null)} className="shrink-0 rounded-lg p-1.5 text-soil/50 hover:text-soil" aria-label={t("loc_clear")}><X className="h-4 w-4" /></button>}
+        {allowClear && value && <button type="button" onClick={() => onChange(null)} className="shrink-0 rounded-lg p-1.5 text-soil/80 hover:text-soil" aria-label={t("loc_clear")}><X className="h-4 w-4" /></button>}
       </div>
       {error && <p className="mt-1 text-xs font-medium text-red-700">{error}</p>}
       {open && createPortal(<LocationPicker t={t} lang={lang} value={value} onClose={() => setOpen(false)} onSave={(loc) => { onChange(loc); setOpen(false); }} />, document.body)}
@@ -3548,7 +3560,7 @@ function Toggle({ checked, onChange, disabled, label, sub, id }) {
     <label htmlFor={id} className={`flex items-center justify-between gap-3 rounded-xl border px-3 py-2.5 ${disabled ? "border-soil/10 bg-ivory/60 opacity-70" : "cursor-pointer border-soil/15 bg-white hover:border-leaf/60"}`}>
       <span className="min-w-0">
         <span className="block text-sm font-semibold text-soil">{label}</span>
-        {sub && <span className="block text-xs text-soil/70">{sub}</span>}
+        {sub && <span className="block text-xs text-soil/80">{sub}</span>}
       </span>
       <span className="relative inline-flex shrink-0">
         <input id={id} type="checkbox" className="peer sr-only" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
@@ -3564,18 +3576,18 @@ function Field({ label, children, error, htmlFor, hint }) {
     <div>
       <label htmlFor={htmlFor} className="mb-1 block text-sm font-semibold text-soil">{label}</label>
       {children}
-      {hint && !error && <p className="mt-1 text-xs text-soil/60">{hint}</p>}
+      {hint && !error && <p className="mt-1 text-xs text-soil/80">{hint}</p>}
       {error && <p className="mt-1 text-xs font-medium text-red-700">{error}</p>}
     </div>
   );
 }
 
-const inputCls = "w-full rounded-xl border border-soil/20 bg-white px-3 py-2.5 text-sm text-soil placeholder:text-soil/40 focus:border-leaf focus:outline-none focus:ring-2 focus:ring-leaf/30";
+const inputCls = "w-full rounded-xl border border-soil/20 bg-white px-3 py-2.5 text-sm text-soil placeholder:text-soil/80 focus:border-leaf focus:outline-none focus:ring-2 focus:ring-leaf/30";
 
 function StatusPill({ status, t }) {
   const map = {
     sent: "bg-gold/20 text-soil", confirmed: "bg-leaf/15 text-forest", completed: "bg-forest/10 text-forest",
-    feedback: "bg-forest text-ivory", declined: "bg-red-100 text-red-800", cancelled: "bg-soil/10 text-soil/70", countered: "bg-gold text-soil",
+    feedback: "bg-forest text-ivory", declined: "bg-red-100 text-red-800", cancelled: "bg-soil/10 text-soil/80", countered: "bg-gold text-soil",
   };
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold ${map[status]}`}>{t("st_" + status)}</span>;
 }
@@ -3588,7 +3600,7 @@ function StatusPill({ status, t }) {
 /* ------------------------------------------------------------------ */
 function Toasts({ toasts, dismiss }) {
   const tone = {
-    success: { Icon: CircleCheck, ring: "ring-leaf/30", icon: "text-leaf bg-leaf/10", bar: "bg-leaf" },
+    success: { Icon: CircleCheck, ring: "ring-leaf/30", icon: "text-leafink bg-leaf/10", bar: "bg-leaf" },
     info: { Icon: Info, ring: "ring-forest/20", icon: "text-forest bg-forest/10", bar: "bg-forest" },
     warn: { Icon: TriangleAlert, ring: "ring-gold/50", icon: "text-soil bg-gold/25", bar: "bg-gold" },
     error: { Icon: TriangleAlert, ring: "ring-red-300", icon: "text-red-700 bg-red-50", bar: "bg-red-500" },
@@ -3605,7 +3617,7 @@ function Toasts({ toasts, dismiss }) {
               <p className="leading-snug">{x.text}</p>
               {x.action && <button onClick={() => { x.action.run(); dismiss(x.id); }} className="mt-1.5 text-xs font-bold text-forest underline-offset-2 hover:underline">{x.action.label}</button>}
             </div>
-            <button onClick={() => dismiss(x.id)} className="rounded-lg p-1 text-soil/50 transition hover:bg-soil/5 hover:text-soil" aria-label="Dismiss"><X className="h-4 w-4" /></button>
+            <button onClick={() => dismiss(x.id)} className="rounded-lg p-1 text-soil/80 transition hover:bg-soil/5 hover:text-soil" aria-label="Dismiss"><X className="h-4 w-4" /></button>
             <span className={`toast-bar absolute bottom-0 start-0 h-0.5 ${s.bar}`} style={{ animationDuration: `${x.ms}ms` }} aria-hidden="true" />
           </div>
         );
@@ -3627,23 +3639,23 @@ const TABS = [
   { key: "agri-agent", label: "nav_agent", short: "nav_s_agent", icon: Smartphone },
 ];
 
-function PrefsPill({ t, lang, setLang, country, setCountry }) {
+function PrefsPill({ t, lang, setLang, country, setCountry, full }) {
   return (
-    <div className="flex items-center rounded-full border border-forest/15 bg-white/80 p-0.5 shadow-sm backdrop-blur" title={t("fx_note")}>
+    <div className={`flex items-center rounded-full border border-forest/15 bg-white/80 p-0.5 shadow-sm backdrop-blur ${full ? "w-full" : ""}`} title={t("fx_note")}>
       {setCountry && (
-        <label className="flex items-center gap-1 rounded-full py-1 pe-1 ps-2.5 transition hover:bg-forest/5">
+        <label className={`flex min-w-0 items-center gap-1 rounded-full py-1 pe-1 ps-2.5 transition hover:bg-forest/5 ${full ? "flex-1" : ""}`}>
           <Globe className="h-4 w-4 shrink-0 text-forest" aria-hidden="true" />
           <span className="sr-only">{t("country")}</span>
-          <select id="country" value={country} onChange={(e) => setCountry(e.target.value)} className="max-w-[7.5rem] cursor-pointer bg-transparent text-sm font-semibold text-forest focus:outline-none sm:max-w-[10rem]">
+          <select id={full ? "country-m" : "country"} value={country} onChange={(e) => setCountry(e.target.value)} className={`cursor-pointer bg-transparent text-sm font-semibold text-forest focus:outline-none ${full ? "w-full min-w-0" : "max-w-[7.5rem] sm:max-w-[10rem]"}`}>
             {COUNTRY_IDS.map((cc) => <option key={cc} value={cc}>{t("country_" + cc)}</option>)}
           </select>
         </label>
       )}
       {setCountry && <span className="h-5 w-px bg-forest/15" aria-hidden="true" />}
-      <label className="flex items-center gap-1 rounded-full py-1 pe-1 ps-2 transition hover:bg-forest/5">
+      <label className={`flex min-w-0 items-center gap-1 rounded-full py-1 pe-1 ps-2 transition hover:bg-forest/5 ${full ? "flex-1" : ""}`}>
         <Languages className="h-4 w-4 shrink-0 text-forest" aria-hidden="true" />
         <span className="sr-only">Language</span>
-        <select id="lang" value={lang} onChange={(e) => setLang(e.target.value)} className="max-w-[6.5rem] cursor-pointer bg-transparent text-sm font-semibold text-forest focus:outline-none sm:max-w-none">
+        <select id={full ? "lang-m" : "lang"} value={lang} onChange={(e) => setLang(e.target.value)} className={`cursor-pointer bg-transparent text-sm font-semibold text-forest focus:outline-none ${full ? "w-full min-w-0" : "max-w-[6.5rem] sm:max-w-none"}`}>
           {LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
         </select>
       </label>
@@ -3657,16 +3669,16 @@ function NavBadge({ n }) {
 
 function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs, account, country, setCountry, activityCount, onActivity }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-forest/10 bg-ivory/80 shadow-[0_1px_0_rgba(20,90,50,0.04)] backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
+    <header className="sticky top-0 z-40 w-full max-w-full border-b border-forest/10 bg-white/95 shadow-[0_1px_0_rgba(20,90,50,0.04)] backdrop-blur">
+      <div className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
         <button onClick={() => setTab("marketplace")} className="flex min-w-0 items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label="Agri-Share home">
           <Logo className="h-10 w-10 shrink-0 sm:h-11 sm:w-11" />
           <span className="min-w-0 text-start">
             <span className="block whitespace-nowrap font-display text-lg font-extrabold leading-none tracking-tight text-forest sm:text-xl">Agri<span className="text-gold">-</span>Share</span>
-            <span className="hidden truncate text-xs font-medium text-soil/70 md:block">{t("tagline")}</span>
+            <span className="hidden truncate text-xs font-medium text-soil/80 md:block">{t("tagline")}</span>
           </span>
         </button>
-        <div className="ms-auto flex items-center gap-1.5 sm:gap-2">
+        <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
           <div className="hidden md:block"><PrefsPill t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
           <button onClick={onActivity} className="relative inline-flex items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-3 py-2 text-sm font-bold text-forest shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" aria-label={t("act_title")}>
             <Activity className="h-4 w-4" aria-hidden="true" /><span className="hidden lg:inline">{t("nav_activity")}</span>
@@ -3675,12 +3687,12 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
           {account}
         </div>
       </div>
-      <div className="border-t border-forest/5 px-4 py-2 md:hidden"><PrefsPill t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
+      <div className="w-full border-t border-forest/5 px-4 py-2 md:hidden"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
       {/* desktop tab bar */}
       <nav data-nav className="mx-auto hidden max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6 lg:flex" aria-label="Main">
         {tabs.map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}
-            className={`relative flex items-center gap-1.5 whitespace-nowrap px-3 pb-2.5 pt-1.5 text-sm font-semibold transition ${tab === key ? "text-forest" : "text-soil/70 hover:text-forest"}`}>
+            className={`relative flex items-center gap-1.5 whitespace-nowrap px-3 pb-2.5 pt-1.5 text-sm font-semibold transition ${tab === key ? "text-forest" : "text-soil/80 hover:text-forest"}`}>
             <Icon className="h-4 w-4" aria-hidden="true" />{t(label)}
             {key === "bookings" && <NavBadge n={activeCount} />}
             {key === "owner-portal" && <NavBadge n={pendingCount} />}
@@ -3698,7 +3710,7 @@ function BottomNav({ t, tab, setTab, tabs, activeCount, pendingCount, onActivity
   const rest = tabs.filter((x) => !main.includes(x.key));
   const item = (key, Icon, label, badge, onClick) => (
     <button key={key} onClick={onClick} aria-current={tab === key ? "page" : undefined}
-      className={`relative flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[11px] font-semibold transition ${tab === key ? "text-forest" : "text-soil/60"}`}>
+      className={`relative flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[11px] font-semibold transition ${tab === key ? "text-forest" : "text-soil/80"}`}>
       <span className={`flex h-8 w-12 items-center justify-center rounded-full transition ${tab === key ? "bg-forest/10" : ""}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
       <span className="max-w-full truncate px-1">{label}</span>
       {badge > 0 && <span className="absolute end-[18%] top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-gold px-1 text-[10px] font-bold text-soil">{badge}</span>}
@@ -3748,13 +3760,13 @@ function Hero({ t, onFind, onList, onLive, isEnglish, stats }) {
             {t("hero_kicker")}
           </p>
           <h1 className="mt-4 font-display text-3xl font-extrabold leading-[1.18] tracking-tight sm:text-4xl sm:leading-[1.15] lg:text-5xl lg:leading-[1.15]">{t("hero_title")}</h1>
-          {isEnglish && <p className="mt-2 text-base font-medium italic text-ivory/60 sm:text-lg" lang="ur-Latn">"{t("hero_local")}"</p>}
+          {isEnglish && <p className="mt-2 text-base font-medium italic text-ivory/80 sm:text-lg" lang="ur-Latn">"{t("hero_local")}"</p>}
           <p className="mt-4 max-w-xl text-base text-ivory/80 sm:text-lg">{t("hero_desc")}</p>
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             <button onClick={onLive} className="group flex items-center gap-3 rounded-2xl bg-gold p-4 text-start text-soil shadow-xl shadow-black/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ivory">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-soil/10"><Tractor className="h-6 w-6" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-soil/70">{t("hero_role_farmer")}</span>
+                <span className="block text-[11px] font-bold uppercase tracking-wider text-soil/80">{t("hero_role_farmer")}</span>
                 <span className="block font-display text-lg font-extrabold leading-tight">{t("hero_need")}</span>
                 <span className="block truncate text-xs font-semibold text-soil/80">{t("cta_live")}</span>
               </span>
@@ -3763,9 +3775,9 @@ function Hero({ t, onFind, onList, onLive, isEnglish, stats }) {
             <button onClick={onList} className="group flex items-center gap-3 rounded-2xl bg-ivory/10 p-4 text-start text-ivory ring-1 ring-ivory/25 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:bg-ivory/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ivory/10"><Coins className="h-6 w-6 text-gold" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-ivory/60">{t("hero_role_owner")}</span>
+                <span className="block text-[11px] font-bold uppercase tracking-wider text-ivory/80">{t("hero_role_owner")}</span>
                 <span className="block font-display text-lg font-extrabold leading-tight">{t("hero_earn")}</span>
-                <span className="block truncate text-xs font-semibold text-ivory/70">{t("cta_list")}</span>
+                <span className="block truncate text-xs font-semibold text-ivory/80">{t("cta_list")}</span>
               </span>
               <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-1 rtl:-scale-x-100" aria-hidden="true" />
             </button>
@@ -3774,17 +3786,17 @@ function Hero({ t, onFind, onList, onLive, isEnglish, stats }) {
         </div>
         {/* photo collage with live counts */}
         <div className="relative hidden h-[420px] lg:block" aria-hidden="true">
-          <div className="absolute end-0 top-0 h-[300px] w-[78%] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-ivory/20"><MachinePhoto category="tractor" className="h-full w-full" alt="" /></div>
+          <div className="absolute end-0 top-0 h-[300px] w-[78%] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-ivory/20"><MachinePhoto category="tractor" className="h-full w-full" alt="" priority="high" width={960} height={540} /></div>
           <div className="absolute bottom-0 start-0 h-[190px] w-[48%] overflow-hidden rounded-3xl shadow-2xl ring-4 ring-forest"><MachinePhoto category="harvester" className="h-full w-full" alt="" /></div>
           <div className="absolute bottom-6 end-6 h-[150px] w-[36%] overflow-hidden rounded-3xl shadow-2xl ring-4 ring-forest"><MachinePhoto category="drone" className="h-full w-full" alt="" /></div>
           <div className="float-y absolute start-4 top-10 rounded-2xl bg-white/90 p-3 text-soil shadow-xl ring-1 ring-white/60 backdrop-blur-xl">
-            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-leaf"><span className="h-2 w-2 animate-pulse rounded-full bg-leaf" />{t("hero_live")}</p>
+            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-leafink"><span className="h-2 w-2 animate-pulse rounded-full bg-leaf" />{t("hero_live")}</p>
             <p className="mt-1 font-display text-2xl font-extrabold text-forest">{stats.machines}</p>
-            <p className="text-xs text-soil/70">{t("hero_machines")}</p>
+            <p className="text-xs text-soil/80">{t("hero_machines")}</p>
           </div>
           <div className="float-y-slow absolute bottom-[200px] end-[40%] rounded-2xl bg-white/90 px-3 py-2.5 text-soil shadow-xl ring-1 ring-white/60 backdrop-blur-xl">
-            <p className="flex items-center gap-2 text-sm font-bold text-forest"><BadgeCheck className="h-5 w-5 text-leaf" />{stats.owners} {t("hero_owners")}</p>
-            {stats.bookings > 0 && <p className="text-xs text-soil/70">{stats.bookings} {t("hero_bookings")}</p>}
+            <p className="flex items-center gap-2 text-sm font-bold text-forest"><BadgeCheck className="h-5 w-5 text-leafink" />{stats.owners} {t("hero_owners")}</p>
+            {stats.bookings > 0 && <p className="text-xs text-soil/80">{stats.bookings} {t("hero_bookings")}</p>}
           </div>
         </div>
       </div>
@@ -3807,7 +3819,7 @@ function TrustStrip({ t }) {
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest/10 text-forest"><Icon className="h-5 w-5" aria-hidden="true" /></span>
             <span className="min-w-0">
               <span className="block text-sm font-extrabold text-forest">{title}</span>
-              <span className="block text-xs leading-snug text-soil/70">{sub}</span>
+              <span className="block text-xs leading-snug text-soil/80">{sub}</span>
             </span>
           </li>
         ))}
@@ -3911,7 +3923,7 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
                 <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">Agri-Share</p>
                 <h2 id="vo-h" className="font-display text-xl font-extrabold">{t("vo_title")}</h2>
                 <p className="mt-1 font-mono text-lg font-bold tracking-wider text-gold" dir="ltr"><b>{code}</b></p>
-                <p className="muted text-xs text-ivory/70" dir="ltr">{t("vo_ref")}: {b.id} · {t("vo_issued")} {fmtDate(new Date(b.createdAt || Date.now()).toISOString().slice(0, 10))}</p>
+                <p className="muted text-xs text-ivory/80" dir="ltr">{t("vo_ref")}: {b.id} · {t("vo_issued")} {fmtDate(new Date(b.createdAt || Date.now()).toISOString().slice(0, 10))}</p>
               </div>
               <div className="shrink-0 rounded-xl bg-white p-1.5 shadow-lg"><VerifyPattern seed={b.id + "|" + b.createdAt} size={92} /></div>
             </div>
@@ -3923,39 +3935,39 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
             </div>
             {!stopped && (
               <div>
-                <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/60">{t("vo_track")}</p>
+                <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/80">{t("vo_track")}</p>
                 <ol className="grid grid-cols-3 gap-1">
                   {[t("vo_s1"), t("vo_s2"), t("vo_s3")].map((label, i) => (
                     <li key={label} className="flex flex-col items-center text-center">
                       <div className="flex w-full items-center">
                         <span className={`h-1 flex-1 rounded ${i === 0 ? "invisible" : steps[i] ? "bg-leaf" : "bg-soil/15"}`} />
-                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${steps[i] ? "bg-leaf text-white" : i === cur ? "bg-gold text-soil ring-4 ring-gold/25" : "bg-soil/10 text-soil/50"}`}>
+                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${steps[i] ? "bg-leafink text-white" : i === cur ? "bg-gold text-soil ring-4 ring-gold/25" : "bg-soil/10 text-soil/80"}`}>
                           {steps[i] ? <Check className="h-4 w-4" aria-hidden="true" /> : i === 1 ? <Truck className="h-4 w-4" aria-hidden="true" /> : i + 1}
                         </span>
                         <span className={`h-1 flex-1 rounded ${i === 2 ? "invisible" : steps[i + 1] ? "bg-leaf" : "bg-soil/15"}`} />
                       </div>
-                      <span className={`mt-1 text-[11px] font-semibold leading-tight ${steps[i] ? "text-forest" : i === cur ? "text-soil" : "text-soil/50"}`}>{label}</span>
+                      <span className={`mt-1 text-[11px] font-semibold leading-tight ${steps[i] ? "text-forest" : i === cur ? "text-soil" : "text-soil/80"}`}>{label}</span>
                     </li>
                   ))}
                 </ol>
-                {cur === 0 && <p className="mt-2 text-center text-xs text-soil/70">{t("vo_waiting")}</p>}
+                {cur === 0 && <p className="mt-2 text-center text-xs text-soil/80">{t("vo_waiting")}</p>}
                 {cur === 1 && updateBooking && <div className="mt-2 text-center"><button onClick={() => updateBooking(b.id, b.status, { enRouteAt: Date.now() }, true)} className="rounded-lg bg-forest/5 px-3 py-1.5 text-xs font-bold text-forest hover:bg-forest/10">{t("vo_mark_route")}</button></div>}
               </div>
             )}
             <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
               {[[t("vo_machine"), b.listingName], [t("vo_date"), fmtDate(b.date) + " · " + (q.hours || b.hours) + " h"], [t("owner"), b.ownerId], [t("vo_location"), dn ? dn(b.district || "") : b.district], [t("vo_renter"), b.renterName || "-"], [t("bk_pay"), t("pay_" + b.payment)]].map(([k, v]) => (
-                <div key={k} className="min-w-0"><dt className="text-[11px] font-semibold uppercase tracking-wide text-soil/50">{k}</dt><dd className="truncate font-bold text-soil" dir="auto">{v}</dd></div>
+                <div key={k} className="min-w-0"><dt className="text-[11px] font-semibold uppercase tracking-wide text-soil/80">{k}</dt><dd className="truncate font-bold text-soil" dir="auto">{v}</dd></div>
               ))}
             </dl>
             <div className="rounded-xl bg-ivory/70 p-3 ring-1 ring-soil/10">
-              <p className="mb-1 text-xs font-bold uppercase tracking-wide text-soil/60">{t("vo_items")}</p>
+              <p className="mb-1 text-xs font-bold uppercase tracking-wide text-soil/80">{t("vo_items")}</p>
               <table className="w-full text-sm"><tbody>
                 {rows.map(([k, v]) => <tr key={k} className="border-b border-soil/10"><td className="py-1.5 text-soil/80">{k}</td><td className="py-1.5 text-end font-semibold" dir="ltr">{pkr(v)}</td></tr>)}
                 <tr className="tot"><td className="pt-2 font-display text-base font-extrabold text-forest">{t("vo_total")}</td><td className="pt-2 text-end font-display text-xl font-extrabold text-forest" dir="ltr">{pkr(q.total || 0)}</td></tr>
               </tbody></table>
               {b.financing && <p className="mt-2 text-xs text-soil/80" dir="ltr">{t("pay_paylater")}: {t("pl_now")} <b>{pkr(b.financing.advance)}</b> · {t("pl_later")} <b>{pkr(b.financing.balance)}</b> ({b.financing.partner})</p>}
             </div>
-            <p className="muted text-[11px] leading-snug text-soil/60">{t("vo_note")} {t("vo_pattern_note")}</p>
+            <p className="muted text-[11px] leading-snug text-soil/80">{t("vo_note")} {t("vo_pattern_note")}</p>
           </div>
         </div>
         <div className="no-print sticky bottom-0 flex flex-wrap gap-2 border-t border-soil/10 bg-ivory/95 p-4 backdrop-blur">
@@ -3986,7 +3998,7 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
   const Empty = ({ text, cta, to }) => (
     <div className="flex flex-col items-center gap-3 rounded-2xl bg-white p-8 text-center ring-1 ring-soil/10">
       <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-forest/10 text-forest"><Inbox className="h-6 w-6" aria-hidden="true" /></span>
-      <p className="text-sm text-soil/70">{text}</p>
+      <p className="text-sm text-soil/80">{text}</p>
       <button onClick={() => go(to)} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{cta}</button>
     </div>
   );
@@ -3996,13 +4008,13 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
         <div className="flex items-center justify-between gap-2 border-b border-soil/10 bg-white/80 px-5 py-4 backdrop-blur">
           <div>
             <h2 id="act-h" className="font-display text-xl font-extrabold text-forest">{t("act_title")}</h2>
-            <p className="text-xs text-soil/60">{t("act_sub")}</p>
+            <p className="text-xs text-soil/80">{t("act_sub")}</p>
           </div>
-          <button onClick={onClose} className="rounded-xl p-2 text-soil/60 hover:bg-soil/5" aria-label={t("vo_close")}><X className="h-5 w-5" /></button>
+          <button onClick={onClose} className="rounded-xl p-2 text-soil/80 hover:bg-soil/5" aria-label={t("vo_close")}><X className="h-5 w-5" /></button>
         </div>
         <div className="flex gap-1 border-b border-soil/10 bg-white/60 px-3 py-2" role="tablist">
           {tabs.map(([k, label, n]) => (
-            <button key={k} role="tab" aria-selected={view === k} onClick={() => setView(k)} className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-bold transition ${view === k ? "bg-forest text-ivory shadow" : "text-soil/70 hover:bg-soil/5"}`}>
+            <button key={k} role="tab" aria-selected={view === k} onClick={() => setView(k)} className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-bold transition ${view === k ? "bg-forest text-ivory shadow" : "text-soil/80 hover:bg-soil/5"}`}>
               {label}<span className={`rounded-full px-1.5 text-[11px] ${view === k ? "bg-ivory/20" : "bg-soil/10"}`}>{n}</span>
             </button>
           ))}
@@ -4010,10 +4022,10 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
         <div className="flex-1 space-y-2.5 overflow-y-auto p-4">
           {view === "bookings" && (bookings.length ? bookings.map((b) => (
             <button key={b.id} onClick={() => onVoucher(b.id)} className="flex w-full items-center gap-3 rounded-2xl bg-white p-3 text-start shadow-sm ring-1 ring-soil/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-              <MachinePhoto category={b.category} name={b.listingName} className="h-14 w-16 shrink-0 rounded-xl" alt="" />
+              <MachinePhoto category={b.category} name={b.listingName} className="h-14 w-16 shrink-0 rounded-xl" alt="" width={128} height={112} />
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-bold text-forest">{b.listingName}</span>
-                <span className="block truncate text-xs text-soil/60" dir="ltr">{voucherCode(b)} · {fmtDate(b.date)} · {pkr((b.quote && b.quote.total) || 0)}</span>
+                <span className="block truncate text-xs text-soil/80" dir="ltr">{voucherCode(b)} · {fmtDate(b.date)} · {pkr((b.quote && b.quote.total) || 0)}</span>
                 <span className="mt-1 inline-block"><StatusPill status={b.status} t={t} /></span>
               </span>
               <span className="flex shrink-0 flex-col items-center text-[10px] font-bold text-forest"><Ticket className="h-5 w-5" aria-hidden="true" />{t("act_voucher")}</span>
@@ -4024,9 +4036,9 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-forest/10 text-forest"><Radar className="h-6 w-6" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-bold text-forest">{t("one_" + r.category)} · {r.village}</span>
-                <span className="block truncate text-xs text-soil/60" dir="ltr">{r.id} · {fmtDate(r.date)} · {pkr(r.rate)}/hr · T{r.tierReached || 1}</span>
+                <span className="block truncate text-xs text-soil/80" dir="ltr">{r.id} · {fmtDate(r.date)} · {pkr(r.rate)}/hr · T{r.tierReached || 1}</span>
               </span>
-              <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("rq_" + r.status)}</span>
+              <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>
             </button>
           )) : <Empty text={t("act_empty_r")} cta={t("nav_live")} to="live-request" />)}
           {view === "deals" && (deals.length ? deals.map((p) => (
@@ -4034,7 +4046,7 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold/20 text-soil"><Wheat className="h-6 w-6" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-bold text-forest">{t("crop_" + p.crop) !== "crop_" + p.crop ? t("crop_" + p.crop) : p.crop} · {p.qty} {t("am_mann")}</span>
-                <span className="block truncate text-xs text-soil/60" dir="ltr">{p.id} · {pkr(p.rate)} / {t("am_mann")}{p.sale ? ` · ${pkr(p.sale.gross || 0)}` : ""}</span>
+                <span className="block truncate text-xs text-soil/80" dir="ltr">{p.id} · {pkr(p.rate)} / {t("am_mann")}{p.sale ? ` · ${pkr(p.sale.gross || 0)}` : ""}</span>
               </span>
               <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${p.status === "sold" ? "bg-leaf/15 text-forest" : "bg-gold/25 text-soil"}`}>{p.status === "sold" ? t("act_sold") : t("act_open")}</span>
             </button>
@@ -4059,42 +4071,42 @@ function ListingCard({ l, t, dn, lang, onBook }) {
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-soil/10 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-forest/10 hover:ring-forest/10">
       <div className="relative aspect-video overflow-hidden text-ivory">
         <MachinePhoto category={l.category} name={l.name} className="h-full w-full transition-transform duration-500 group-hover:scale-105" alt={l.name} />
-        <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
+        <div className="absolute start-3 end-3 top-3 flex flex-wrap gap-1.5">
           {l.spec && <span className="rounded-full bg-black/45 px-2 py-0.5 text-[11px] font-bold text-white ring-1 ring-white/25 backdrop-blur-md" dir="ltr">{String(l.spec).split(/[,·]/)[0].trim().slice(0, 22)}</span>}
           <span className="rounded-full bg-gold/90 px-2 py-0.5 text-[11px] font-bold text-soil backdrop-blur-md">{t("ov_dry")}</span>
           {l.operator === "included" && <span className="rounded-full bg-white/85 px-2 py-0.5 text-[11px] font-bold text-forest backdrop-blur-md">{t("ov_op")}</span>}
         </div>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 pb-3 pt-12">
           <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ivory/85"><CategoryIcon category={l.category} className="h-3.5 w-3.5 text-gold" />{t("one_" + l.category)}</p>
-          <h3 className="line-clamp-2 font-display text-base font-extrabold leading-tight" title={l.name}>{l.name}</h3>
+          <h3 className="break-words font-display text-base font-extrabold leading-tight" title={l.name}>{l.name}</h3>
         </div>
         {l.mine && <span className="absolute end-3 top-3 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil">{t("new_badge")}</span>}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-soil/60">{t("rate_label")}</p>
-          <p className="whitespace-nowrap font-display text-2xl font-extrabold text-forest"><span dir="ltr">{pkr(l.rate)}</span><span className="text-sm font-semibold text-soil/60">{t("per_hour")}</span></p>
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-soil/80">{t("rate_label")}</p>
+          <p className="flex flex-wrap items-baseline font-display text-2xl font-extrabold text-forest"><span dir="ltr">{pkr(l.rate)}</span><span className="text-sm font-semibold text-soil/80">{t("per_hour")}</span></p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-ivory px-2.5 py-1 text-sm font-bold text-soil ring-1 ring-soil/10">
-            <MapPin className="h-4 w-4 text-leaf" aria-hidden="true" /><span dir="ltr">{l.distance}</span> {t("km")}{l.fromPin && <span className="text-[10px] font-semibold text-soil/60">({t("loc_road")})</span>}
+            <MapPin className="h-4 w-4 text-leafink" aria-hidden="true" /><span dir="ltr">{l.distance}</span> {t("km")}{l.fromPin && <span className="text-[10px] font-semibold text-soil/80">({t("loc_road")})</span>}
           </span>
-          <span className="text-xs text-soil/70">{l.village}, {dn(l.district)}{l.province && l.province !== "PB" ? `, ${provLabel(lang, l.country, l.province)}` : ""}</span>
+          <span className="text-xs text-soil/80">{l.village}, {dn(l.district)}{l.province && l.province !== "PB" ? `, ${provLabel(lang, l.country, l.province)}` : ""}</span>
         </div>
         <p className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-gold/15 px-2.5 py-1 text-xs font-bold text-soil ring-1 ring-gold/40">
           <Fuel className="h-3.5 w-3.5" aria-hidden="true" />{t("dry_rent")}
         </p>
         <ul className="space-y-1.5 text-sm text-soil/90">
-          <li className="flex items-start gap-2"><User className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" />{opText}</li>
-          <li className="flex items-start gap-2"><Truck className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" />{trText}</li>
-          {l.spec && <li className="flex items-start gap-2"><Info className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" /><span dir="ltr">{l.spec}</span></li>}
+          <li className="flex items-start gap-2"><User className="mt-0.5 h-4 w-4 shrink-0 text-leafink" aria-hidden="true" />{opText}</li>
+          <li className="flex items-start gap-2"><Truck className="mt-0.5 h-4 w-4 shrink-0 text-leafink" aria-hidden="true" />{trText}</li>
+          {l.spec && <li className="flex items-start gap-2"><Info className="mt-0.5 h-4 w-4 shrink-0 text-leafink" aria-hidden="true" /><span dir="ltr">{l.spec}</span></li>}
         </ul>
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-soil/10 pt-3 text-xs text-soil/70">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-soil/10 pt-3 text-xs text-soil/80">
           <span className="inline-flex items-center gap-1"><BadgeCheck className="h-4 w-4 text-forest" aria-hidden="true" />{t("owner")}: {l.ownerId}</span>
           <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-gold text-gold" aria-hidden="true" />{l.rating.toFixed(1)}</span>
         </div>
         <button onClick={() => onBook(l)} disabled={!l.available}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory shadow-sm transition-all duration-200 hover:bg-[#0f4a28] hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-soil/20 disabled:text-soil/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2">
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory shadow-sm transition-all duration-200 hover:bg-[#0f4a28] hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-soil/20 disabled:text-soil/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2">
           <CalendarDays className="h-4 w-4" aria-hidden="true" />{l.available ? t("request") : t("unavailable")}
         </button>
       </div>
@@ -4134,11 +4146,11 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
             <div>
               {setCountry && <div className="mb-2"><CountrySelect t={t} country={country} setCountry={setCountry} id="country-market" /></div>}
               <LocationField t={t} lang={lang} id="my-loc" label={t("loc_your")} value={userLoc} onChange={setUserLoc} allowClear />
-              <p className="mt-1 text-[11px] text-soil/60">{userLoc ? t("loc_dist_note") : t("loc_dist_hint")}</p>
+              <p className="mt-1 text-[11px] text-soil/80">{userLoc ? t("loc_dist_note") : t("loc_dist_hint")}</p>
             </div>
             <div className="relative">
               <label htmlFor="q" className="sr-only">{t("f_search")}</label>
-              <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/40" aria-hidden="true" />
+              <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
               <input id="q" value={query} onChange={(e) => set({ query: e.target.value })} placeholder={t("f_search")} className={inputCls + " ps-9"} />
             </div>
             <fieldset>
@@ -4165,8 +4177,8 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
               </div>
               <input id="radius" type="range" min="1" max={MAX_RADIUS} step="1" value={radius} onChange={(e) => set({ radius: Number(e.target.value) })}
                 className="range w-full" style={{ "--pct": pct + "%" }} aria-valuetext={`${radius} km`} />
-              <div className="mt-1 flex justify-between text-[11px] text-soil/60" dir="ltr"><span>1</span><span>15</span><span>25 km</span></div>
-              <p className="mt-1 text-xs text-soil/60">{t("radius_note")}</p>
+              <div className="mt-1 flex justify-between text-[11px] text-soil/80" dir="ltr"><span>1</span><span>15</span><span>25 km</span></div>
+              <p className="mt-1 text-xs text-soil/80">{t("radius_note")}</p>
             </div>
             <button type="button" onClick={() => setFilters({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" })}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-soil/15 px-3 py-2 text-sm font-semibold text-soil hover:bg-ivory">
@@ -4182,7 +4194,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
               <p className="mt-3 max-w-md text-soil/80">{userLoc ? t("loc_far").replace("{km}", radius).replace("{place}", locLabel(userLoc)) : t("no_results")}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 <button onClick={() => set({ radius: MAX_RADIUS, province: "all", category: "all", query: "" })} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
-                {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leaf px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_indrive")}</button>}
+                {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_indrive")}</button>}
               </div>
               {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
                 <div className="mt-6 w-full text-start">
@@ -4279,7 +4291,7 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session }) {
   };
 
   const Row = ({ label, value, muted, strong }) => (
-    <div className={`flex items-center justify-between gap-3 py-1.5 ${strong ? "text-base font-extrabold text-forest" : "text-sm"} ${muted ? "text-soil/60" : "text-soil"}`}>
+    <div className={`flex items-center justify-between gap-3 py-1.5 ${strong ? "text-base font-extrabold text-forest" : "text-sm"} ${muted ? "text-soil/80" : "text-soil"}`}>
       <span>{label}</span><span className="tabular-nums" dir="ltr">{value}</span>
     </div>
   );
@@ -4351,12 +4363,12 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session }) {
               <Row label={t("bk_comm").replace("{p}", pctLabel(q.commissionRate))} value={pkr(q.commission)} />
               <div className="my-1 border-t border-soil/20" />
               <Row label={t("bk_total")} value={pkr(q.total)} strong />
-              {offerOn && q.total !== listedQ.total && <p className="text-end text-xs text-soil/60" dir="ltr">{t("bk_listed")}: <s>{pkr(listedQ.total)}</s> · −{pkr(listedQ.total - q.total)}</p>}
+              {offerOn && q.total !== listedQ.total && <p className="text-end text-xs text-soil/80" dir="ltr">{t("bk_listed")}: <s>{pkr(listedQ.total)}</s> · −{pkr(listedQ.total - q.total)}</p>}
               <p className="mt-2 flex items-start gap-2 rounded-lg bg-gold/15 p-2 text-xs font-semibold text-soil"><Fuel className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />{t("bk_fuel_line")}</p>
             </div>
             <fieldset>
               <legend className="mb-1 text-sm font-semibold text-soil">{t("bk_pay")}</legend>
-              <p className="mb-2 text-xs text-soil/60">{t("bk_pay_note")}</p>
+              <p className="mb-2 text-xs text-soil/80">{t("bk_pay_note")}</p>
               <div className="grid gap-2">
                 {[["paylater", t("pay_paylater"), Sprout], ["easypaisa", t("pay_easypaisa"), Wallet], ["jazzcash", t("pay_jazzcash"), Smartphone], ["agent", t("pay_agent"), Users]].map(([v, l, Icon]) => (
                   <label key={v} className={`flex cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 text-sm font-semibold ${payment === v ? "border-forest bg-forest/5 text-forest" : "border-soil/15 bg-white text-soil"}`}>
@@ -4368,8 +4380,8 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session }) {
               {payLater && (
                 <div className="mt-2 space-y-3 rounded-xl border border-leaf/40 bg-leaf/10 p-3">
                   <div className="grid grid-cols-2 gap-2 text-center">
-                    <div className="rounded-lg bg-white p-2 ring-1 ring-soil/10"><p className="text-[11px] font-semibold text-soil/70">{t("pl_now")}</p><p className="font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(advance)}</p></div>
-                    <div className="rounded-lg bg-white p-2 ring-1 ring-soil/10"><p className="text-[11px] font-semibold text-soil/70">{t("pl_later")}</p><p className="font-display text-lg font-extrabold text-soil" dir="ltr">{pkr(balance)}</p></div>
+                    <div className="rounded-lg bg-white p-2 ring-1 ring-soil/10"><p className="text-[11px] font-semibold text-soil/80">{t("pl_now")}</p><p className="font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(advance)}</p></div>
+                    <div className="rounded-lg bg-white p-2 ring-1 ring-soil/10"><p className="text-[11px] font-semibold text-soil/80">{t("pl_later")}</p><p className="font-display text-lg font-extrabold text-soil" dir="ltr">{pkr(balance)}</p></div>
                   </div>
                   <fieldset>
                     <legend className="mb-1 text-xs font-bold text-soil">{t("pl_partner")}</legend>
@@ -4425,12 +4437,12 @@ function StatusTracker({ status, t }) {
           <li key={s} className="flex flex-col items-center text-center">
             <div className="flex w-full items-center">
               <span className={`h-1 flex-1 rounded ${i === 0 ? "invisible" : done ? "bg-leaf" : "bg-soil/15"}`} />
-              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${done ? "bg-leaf text-white" : "bg-soil/10 text-soil/50"} ${current ? "ring-4 ring-leaf/25" : ""}`}>
+              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${done ? "bg-leafink text-white" : "bg-soil/10 text-soil/80"} ${current ? "ring-4 ring-leaf/25" : ""}`}>
                 {done ? <Check className="h-4 w-4" aria-hidden="true" /> : i + 1}
               </span>
               <span className={`h-1 flex-1 rounded ${i === STATUS_FLOW.length - 1 ? "invisible" : !stopped && i < idx ? "bg-leaf" : "bg-soil/15"}`} />
             </div>
-            <span className={`mt-1 text-[11px] font-semibold leading-tight ${done ? "text-forest" : "text-soil/50"}`}>{t("st_" + s)}</span>
+            <span className={`mt-1 text-[11px] font-semibold leading-tight ${done ? "text-forest" : "text-soil/80"}`}>{t("st_" + s)}</span>
           </li>
         );
       })}
@@ -4517,7 +4529,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
                   </p>
                 </div>
                 <div className="text-end">
-                  <p className="text-xs text-soil/60">{t("bk_total")}</p>
+                  <p className="text-xs text-soil/80">{t("bk_total")}</p>
                   <p className="font-display text-xl font-extrabold text-forest" dir="ltr">{pkr(b.quote.total)}</p>
                 </div>
               </div>
@@ -4535,7 +4547,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-soil">
                   <span className="inline-flex items-center gap-1 rounded-full bg-gold/25 px-2 py-0.5 font-bold"><Tag className="h-3 w-3" aria-hidden="true" />{t("offer_badge")}</span>
                   <span dir="ltr">{t("mb_offer_line").replace("{rate}", pkr(b.offer.rate))} · {t("bk_listed")} {pkr(b.quote.listedRate)}/hr</span>
-                  {b.offer.note && <span className="italic text-soil/70">"{b.offer.note}"</span>}
+                  {b.offer.note && <span className="italic text-soil/80">"{b.offer.note}"</span>}
                 </p>
               )}
               {b.financing && !["cancelled", "declined"].includes(b.status) && (
@@ -4621,10 +4633,10 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
             {CUR.catalog.filter((m) => m.cat === f.category).map((m) => (
               <button type="button" key={m.name} onClick={() => setF((s) => ({ ...s, name: m.name, spec: m.spec, rate: Math.round(((m.min + m.max) / 2) / CUR.fx) }))} aria-pressed={f.name === m.name}
                 className={`flex items-center gap-2 overflow-hidden rounded-xl text-start ring-1 transition ${f.name === m.name ? "bg-forest/5 ring-forest" : "bg-white ring-soil/15 hover:ring-leaf"}`}>
-                <MachinePhoto category={m.cat} name={m.name} className="h-14 w-16 shrink-0" alt={m.name} />
+                <MachinePhoto category={m.cat} name={m.name} className="h-14 w-16 shrink-0" alt={m.name} width={128} height={112} />
                 <span className="min-w-0 py-1 pe-2">
                   <span className="block truncate text-sm font-bold text-forest" dir="ltr">{m.name}</span>
-                  <span className="block truncate text-[11px] text-soil/60" dir="ltr">{m.spec} · {fmtLocal(m.min)} to {fmtLocal(m.max)}/hr</span>
+                  <span className="block truncate text-[11px] text-soil/80" dir="ltr">{m.spec} · {fmtLocal(m.min)} to {fmtLocal(m.max)}/hr</span>
                 </span>
               </button>
             ))}
@@ -4687,15 +4699,15 @@ function EarningsEstimator({ t, listings, bookings }) {
         <div className="rounded-2xl bg-forest p-5 text-ivory">
           <p className="text-sm text-ivory/80">{t("es_result")}</p>
           <p className="mt-1 font-display text-4xl font-extrabold text-gold" dir="ltr">{pkr(expected)}</p>
-          <p className="text-sm text-ivory/70">{t("es_month")} · <span dir="ltr">{pkr(rate)} × {hoursDay}h × {days}d × {util}%</span></p>
+          <p className="text-sm text-ivory/80">{t("es_month")} · <span dir="ltr">{pkr(rate)} × {hoursDay}h × {days}d × {util}%</span></p>
           <div className="mt-4 h-3 overflow-hidden rounded-full bg-ivory/15" aria-hidden="true"><div className="h-full rounded-full bg-gold transition-all" style={{ width: util + "%" }} /></div>
-          <p className="mt-1 text-xs text-ivory/60" dir="ltr">Max potential: {pkr(potential)}</p>
+          <p className="mt-1 text-xs text-ivory/80" dir="ltr">Max potential: {pkr(potential)}</p>
         </div>
         <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10">
-          <p className="text-sm text-soil/70">{t("es_confirmed")}</p>
+          <p className="text-sm text-soil/80">{t("es_confirmed")}</p>
           <p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(earned)}</p>
         </div>
-        <p className="flex items-start gap-2 text-xs text-soil/70"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("es_note")}</p>
+        <p className="flex items-start gap-2 text-xs text-soil/80"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("es_note")}</p>
       </div>
     </div>
   );
@@ -4719,7 +4731,7 @@ function PendingRequest({ b, t, updateBooking }) {
         <div className="min-w-0">
           <p className="font-bold text-forest">{b.listingName}</p>
           <p className="text-xs text-soil/80"><span dir="ltr" className="font-mono">{b.id}</span> · {fmtDate(b.date)} · {b.quote.hours}h · {b.renterName} {b.channel === "ussd" ? "· USSD" : ""}</p>
-          <p className="mt-1 text-xs text-soil/70">{t("bk_op")}: {b.operator ? t("included_word") : t("not_added")} · {t("bk_tr")}: {b.transport ? t("included_word") : t("not_added")} · <Fuel className="inline h-3 w-3" aria-hidden="true" /> {t("dry_rent")}</p>
+          <p className="mt-1 text-xs text-soil/80">{t("bk_op")}: {b.operator ? t("included_word") : t("not_added")} · {t("bk_tr")}: {b.transport ? t("included_word") : t("not_added")} · <Fuel className="inline h-3 w-3" aria-hidden="true" /> {t("dry_rent")}</p>
         </div>
         <p className="font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.quote.subtotal)}</p>
       </div>
@@ -4764,7 +4776,7 @@ function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListin
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="ow-h">
       <div className="mb-5">
         <h2 id="ow-h" className="font-display text-2xl font-extrabold text-forest">{t("ow_title")}</h2>
-        <p className="mt-1 flex items-center gap-2 text-sm text-soil/80"><Coins className="h-4 w-4 text-gold" aria-hidden="true" />{t("hero_owner")} <span className="text-soil/60">· {t("ow_sub")}</span></p>
+        <p className="mt-1 flex items-center gap-2 text-sm text-soil/80"><Coins className="h-4 w-4 text-gold" aria-hidden="true" />{t("hero_owner")} <span className="text-soil/80">· {t("ow_sub")}</span></p>
       </div>
       <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
@@ -4780,19 +4792,19 @@ function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListin
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><Hourglass className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_pending")} ({pending.length})</h3>
-            {pending.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/70">{t("ow_no_req")}</p> : (
+            {pending.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_req")}</p> : (
               <ul className="space-y-3">
                 {pending.map((b) => <PendingRequest key={b.id} b={b} t={t} updateBooking={updateBooking} />)}
               </ul>
             )}
           </div>
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
-            <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><CircleCheck className="h-4 w-4 text-leaf" aria-hidden="true" />{t("ow_history")}</h3>
-            {responded.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/70">{t("ow_no_history")}</p> : (
+            <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><CircleCheck className="h-4 w-4 text-leafink" aria-hidden="true" />{t("ow_history")}</h3>
+            {responded.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_history")}</p> : (
               <ul className="divide-y divide-soil/10">
                 {responded.map((b) => (
                   <li key={b.id} className="flex items-center justify-between gap-2 py-2.5 text-sm">
-                    <span className="min-w-0"><span className="block truncate font-semibold text-soil">{b.listingName}</span><span className="text-xs text-soil/60" dir="ltr">{b.id} · {fmtDate(b.date)}</span></span>
+                    <span className="min-w-0"><span className="block truncate font-semibold text-soil">{b.listingName}</span><span className="text-xs text-soil/80" dir="ltr">{b.id} · {fmtDate(b.date)}</span></span>
                     <StatusPill status={b.status} t={t} />
                   </li>
                 ))}
@@ -4812,16 +4824,18 @@ function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListin
             <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><Tractor className="h-4 w-4" aria-hidden="true" />{t("ow_my")} ({listings.length})</h3>
             <ul className="max-h-[560px] space-y-2 overflow-y-auto pe-1">
               {[...listings].sort((a, b) => ((b.status === "pending") - (a.status === "pending")) || ((b.submittedAt || 0) - (a.submittedAt || 0))).map((l) => (
-                <li key={l.id} className="flex items-center gap-3 rounded-xl bg-ivory p-2.5">
+                <li key={l.id} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-ivory p-2.5">
                   <CategoryIcon category={l.category} className="h-5 w-5 shrink-0 text-forest" />
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-1.5"><span className="truncate text-sm font-semibold text-soil">{l.name}</span><ListingStatusPill status={l.status} t={t} /></span>
-                    <span className="text-xs text-soil/60" dir="ltr">{pkr(l.rate)}/hr · {l.distance} km · {l.ownerId}</span>
+                  <span className="min-w-0 flex-1 basis-40">
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1"><span className="break-words text-sm font-semibold text-soil">{l.name}</span><ListingStatusPill status={l.status} t={t} /></span>
+                    <span className="block break-words text-xs text-soil/80" dir="ltr">{pkr(l.rate)}/hr · {l.distance} km · {l.ownerId}</span>
                   </span>
-                  <button onClick={() => toggleListing(l.id)} className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold ${l.available ? "bg-leaf/15 text-forest" : "bg-soil/10 text-soil/60"}`} aria-pressed={l.available}>
+                  <span className="ms-auto flex shrink-0 items-center gap-1">
+                  <button onClick={() => toggleListing(l.id)} className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold ${l.available ? "bg-leaf/15 text-forest" : "bg-soil/10 text-soil/80"}`} aria-pressed={l.available}>
                     {l.available ? <Eye className="h-3.5 w-3.5" aria-hidden="true" /> : <EyeOff className="h-3.5 w-3.5" aria-hidden="true" />}{l.available ? t("ow_available") : t("ow_hidden")}
                   </button>
                   {l.mine && <button onClick={() => removeListing(l.id)} className="rounded-lg p-1.5 text-red-700 hover:bg-red-50" aria-label={t("ow_remove")}><Trash2 className="h-4 w-4" /></button>}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -5043,7 +5057,7 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
             const n = i + 1, done = step > n || (step === 7 && ["done", "issue"].includes(phase)), active = step === n && !done;
             return (
               <li key={i} className={`flex items-center gap-3 rounded-xl p-3 ring-1 transition ${active ? "bg-forest text-ivory ring-forest" : done ? "bg-leaf/10 text-forest ring-leaf/30" : "bg-white text-soil ring-soil/10"}`}>
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${active ? "bg-gold text-soil" : done ? "bg-leaf text-white" : "bg-ivory text-soil/60"}`}>
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${active ? "bg-gold text-soil" : done ? "bg-leafink text-white" : "bg-ivory text-soil/80"}`}>
                   {done ? <Check className="h-4 w-4" aria-hidden="true" /> : n}
                 </span>
                 <span className="text-sm font-semibold">{s}</span>
@@ -5051,7 +5065,7 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
             );
           })}
         </ol>
-        <p className="mt-3 flex items-start gap-2 text-xs text-soil/70"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ussd_hint")} Bookings made here appear live in My Bookings and the Owner Portal.</p>
+        <p className="mt-3 flex items-start gap-2 text-xs text-soil/80"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ussd_hint")} Bookings made here appear live in My Bookings and the Owner Portal.</p>
         <button onClick={() => { reset(); setTimeout(() => phoneRef.current && phoneRef.current.focus(), 0); }} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil hover:bg-ivory">
           <RotateCcw className="h-4 w-4" aria-hidden="true" />Restart
         </button>
@@ -5746,13 +5760,13 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   return (
     <>
       <button onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="kisan-helper"
-        className="fixed bottom-24 end-4 z-50 inline-flex lg:bottom-4 items-center gap-2 rounded-full bg-gold px-4 py-3 font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest">
+        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 z-30 inline-flex items-center gap-2 lg:bottom-6 lg:end-6 rounded-full bg-gold px-4 py-3 font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest">
         {open ? <X className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="h-5 w-5" aria-hidden="true" />}
         <span className="hidden sm:inline">{t("kh_title")}</span><span className="sm:hidden">{t("kh_short")}</span>
       </button>
       {open && (
         <div id="kisan-helper" role="dialog" aria-label={t("kh_title")}
-          className="fixed inset-x-2 bottom-20 z-50 flex max-h-[72vh] flex-col overflow-hidden rounded-3xl border border-forest/15 bg-ivory shadow-2xl sm:inset-x-auto sm:end-4 sm:w-[390px]">
+          className="fixed inset-x-2 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-50 flex max-h-[72vh] lg:bottom-6 flex-col overflow-hidden rounded-3xl border border-forest/15 bg-ivory shadow-2xl sm:inset-x-auto sm:end-4 sm:w-[390px]">
           <div className="flex items-center gap-3 bg-forest px-4 py-3 text-ivory">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ivory"><Logo className="h-8 w-8" /></span>
             <div className="min-w-0 flex-1">
@@ -5783,7 +5797,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
                   <div className={`relative mt-2 flex h-36 w-36 items-center justify-center rounded-full transition-colors duration-300 ${phase === "listening" ? "bg-leaf/30" : phase === "speaking" ? "bg-gold/25" : phase === "thinking" ? "bg-ivory/15" : "bg-ivory/10"}`}>
                     {(phase === "listening" || phase === "speaking") && <span className="absolute inset-0 animate-ping rounded-full bg-ivory/10" aria-hidden="true" />}
                     <span className={`absolute inset-3 rounded-full ring-4 ${phase === "listening" ? "ring-leaf/60" : phase === "speaking" ? "ring-gold/60" : "ring-ivory/15"}`} aria-hidden="true" />
-                    {phase === "speaking" ? <Volume2 className="h-16 w-16 text-gold" aria-hidden="true" /> : phase === "thinking" ? <Sparkles className="h-16 w-16 animate-pulse text-gold" aria-hidden="true" /> : <Mic className={`h-16 w-16 ${phase === "listening" ? "text-ivory" : "text-ivory/60"}`} aria-hidden="true" />}
+                    {phase === "speaking" ? <Volume2 className="h-16 w-16 text-gold" aria-hidden="true" /> : phase === "thinking" ? <Sparkles className="h-16 w-16 animate-pulse text-gold" aria-hidden="true" /> : <Mic className={`h-16 w-16 ${phase === "listening" ? "text-ivory" : "text-ivory/80"}`} aria-hidden="true" />}
                   </div>
                   <div className="scale-125"><VoiceWaves active={phase === "listening" || phase === "speaking"} tone={phase === "speaking" ? "speak" : "listen"} /></div>
                   <p className="font-display text-2xl font-extrabold" aria-live="assertive" data-phase={phase}>{phaseLabel}</p>
@@ -5811,8 +5825,8 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.role === "user" ? "rounded-ee-md bg-forest text-ivory" : "rounded-es-md bg-white text-soil ring-1 ring-soil/10"}`}
                   dir={/[؀-ۿ]/.test(m.text) ? "rtl" : "ltr"}>
-                  {m.pending && !m.text ? <span className="inline-flex items-center gap-1 text-soil/60"><span className="animate-pulse">●</span>{t("kh_thinking")}</span> : m.text}
-                  {m.source === "rules" && <span className="mt-1 block text-[10px] text-soil/50" dir="ltr">{t("kh_offline")}</span>}
+                  {m.pending && !m.text ? <span className="inline-flex items-center gap-1 text-soil/80"><span className="animate-pulse">●</span>{t("kh_thinking")}</span> : m.text}
+                  {m.source === "rules" && <span className="mt-1 block text-[10px] text-soil/80" dir="ltr">{t("kh_offline")}</span>}
                 </div>
               </div>
             ))}
@@ -5972,7 +5986,7 @@ function RadarView({ t, pool, scanTier, scanning, statuses, onPick }) {
 
 function CostBreakdown({ t, q, rentType, dieselPrice, category, strong }) {
   const Row = ({ label, value, muted, bold }) => (
-    <div className={`flex items-center justify-between gap-3 py-1.5 text-sm ${bold ? "text-base font-extrabold text-forest" : muted ? "text-soil/70" : "text-soil"}`}><span>{label}</span><span className="tabular-nums" dir="ltr">{value}</span></div>
+    <div className={`flex items-center justify-between gap-3 py-1.5 text-sm ${bold ? "text-base font-extrabold text-forest" : muted ? "text-soil/80" : "text-soil"}`}><span>{label}</span><span className="tabular-nums" dir="ltr">{value}</span></div>
   );
   return (
     <div className={`rounded-2xl p-4 ${strong ? "bg-white ring-2 ring-gold" : "bg-white ring-1 ring-soil/10"}`}>
@@ -5991,7 +6005,7 @@ function CostBreakdown({ t, q, rentType, dieselPrice, category, strong }) {
       {rentType === "dry" && <Row label={`${t("lr_fuel_dry")} (~${q.litres} L × ${pkr(dieselPrice)})`} value={pkr(q.fuel)} muted />}
       <div className="my-1 border-t border-soil/20" />
       <Row label={t("lr_grand")} value={pkr(q.grand)} bold />
-      <p className="mt-2 flex items-start gap-1.5 text-[11px] text-soil/60"><Fuel className="mt-0.5 h-3 w-3 shrink-0" aria-hidden="true" />{DIESEL_L_PER_HR[category] ? t("lr_fuel_est").replace("{l}", DIESEL_L_PER_HR[category]) : t("lr_fuel_battery")}</p>
+      <p className="mt-2 flex items-start gap-1.5 text-[11px] text-soil/80"><Fuel className="mt-0.5 h-3 w-3 shrink-0" aria-hidden="true" />{DIESEL_L_PER_HR[category] ? t("lr_fuel_est").replace("{l}", DIESEL_L_PER_HR[category]) : t("lr_fuel_battery")}</p>
     </div>
   );
 }
@@ -6012,7 +6026,7 @@ const ZsCard = ({ letter, icon: Icon, title, children, tone }) => (
   <div className={`flex flex-col rounded-xl bg-white p-3.5 ring-1 ${tone}`}>
     <p className="flex items-start gap-2 font-bold text-forest">
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-forest text-[11px] font-extrabold text-gold">{letter}</span>
-      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" /><span>{title}</span>
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-leafink" aria-hidden="true" /><span>{title}</span>
     </p>
     <div className="mt-2 flex flex-1 flex-col text-sm text-soil/80">{children}</div>
   </div>
@@ -6075,7 +6089,7 @@ function ZeroSupplyFallback({ t, dn, session, requireAuth, saveDemand, toast, di
           </div>
           {onExpand && (canExpand
             ? <button type="button" onClick={onExpand} className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Radar className="h-4 w-4" aria-hidden="true" />{t("zs_a_btn")}</button>
-            : <p className="mt-2 text-xs font-semibold text-soil/60">{t("zs_a_done")}</p>)}
+            : <p className="mt-2 text-xs font-semibold text-soil/80">{t("zs_a_done")}</p>)}
         </ZsCard>
         <ZsCard letter="B" icon={Headphones} title={t("zs_b")} tone="ring-gold/50">
           <p>{t("zs_b_d")}</p>
@@ -6096,7 +6110,7 @@ function ZeroSupplyFallback({ t, dn, session, requireAuth, saveDemand, toast, di
           {doneC ? (
             <p className="mt-3 flex items-start gap-2 rounded-lg bg-leaf/15 p-2.5 text-xs font-semibold text-forest" role="status"><CircleCheck className="h-4 w-4 shrink-0" aria-hidden="true" />{t("zs_c_done").replace("{id}", doneC.id).replace("{district}", district ? dn(district) : place)}</p>
           ) : (
-            <button type="button" onClick={notify} className="mt-3 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-leaf px-4 py-2.5 text-sm font-bold text-white"><Percent className="h-4 w-4" aria-hidden="true" />{t("zs_c_btn")} · {PRIORITY_DISCOUNT_PCT}%</button>
+            <button type="button" onClick={notify} className="mt-3 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-leafink px-4 py-2.5 text-sm font-bold text-white"><Percent className="h-4 w-4" aria-hidden="true" />{t("zs_c_btn")} · {PRIORITY_DISCOUNT_PCT}%</button>
           )}
         </ZsCard>
       </div>
@@ -6112,14 +6126,14 @@ function WaitingDemand({ t, dn, demand, session, onList }) {
   return (
     <div className="mb-5 rounded-2xl border border-gold/60 bg-gold/10 p-4">
       <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_waiting")} <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{waiting.length}</span></h3>
-      <p className="mt-0.5 text-xs text-soil/70">{t("ow_waiting_sub")}</p>
-      {shown.length === 0 ? <p className="mt-3 rounded-xl bg-white/70 p-3 text-sm text-soil/70">{t("ow_waiting_none")}</p> : (
+      <p className="mt-0.5 text-xs text-soil/80">{t("ow_waiting_sub")}</p>
+      {shown.length === 0 ? <p className="mt-3 rounded-xl bg-white/70 p-3 text-sm text-soil/80">{t("ow_waiting_none")}</p> : (
         <ul className="mt-3 grid gap-2 md:grid-cols-2">
           {shown.map((d) => (
             <li key={d.id} className="flex items-center justify-between gap-2 rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
               <span className="min-w-0">
                 <span className="block truncate font-bold text-forest"><CategoryIcon category={d.category} className="me-1 inline h-4 w-4" />{t("one_" + d.category)} · {d.village || dn(d.district)}</span>
-                <span className="block truncate text-xs text-soil/70" dir="ltr">{d.id} · {fmtDate(d.date)} · {d.hours}h · {pkr(d.rate)}/hr</span>
+                <span className="block truncate text-xs text-soil/80" dir="ltr">{d.id} · {fmtDate(d.date)} · {d.hours}h · {pkr(d.rate)}/hr</span>
               </span>
               <span className="shrink-0 rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("dm_" + d.type)}</span>
             </li>
@@ -6319,8 +6333,8 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
           return (
             <li key={n} className="min-w-0">
               <button type="button" onClick={() => goStep(i)} aria-current={cur === i ? "step" : undefined}
-                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-start text-xs font-bold ring-1 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.98] sm:text-sm ${cur === i ? "bg-forest text-ivory ring-forest" : cur > i ? "bg-leaf/15 text-forest ring-leaf/40 hover:bg-leaf/25" : "bg-white text-soil/60 ring-soil/15 hover:text-forest hover:ring-leaf"}`}>
-                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${cur === i ? "bg-gold text-soil" : cur > i ? "bg-leaf text-white" : "bg-soil/10"}`}>{cur > i ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : n}</span>
+                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-start text-xs font-bold ring-1 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.98] sm:text-sm ${cur === i ? "bg-forest text-ivory ring-forest" : cur > i ? "bg-leaf/15 text-forest ring-leaf/40 hover:bg-leaf/25" : "bg-white text-soil/80 ring-soil/15 hover:text-forest hover:ring-leaf"}`}>
+                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${cur === i ? "bg-gold text-soil" : cur > i ? "bg-leafink text-white" : "bg-soil/10"}`}>{cur > i ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : n}</span>
                 <span className={`min-w-0 truncate ${cur === i ? "" : "hidden sm:inline"}`}>{label}</span>
               </button>
             </li>
@@ -6333,11 +6347,11 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
           <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
             <div>
               <h3 className="font-display text-xl font-extrabold text-forest">{t("lr_choose")}</h3>
-              <p className="text-sm text-soil/70">{t("lr_choose_sub").replace("{country}", t("country_" + CUR.id))}</p>
+              <p className="text-sm text-soil/80">{t("lr_choose_sub").replace("{country}", t("country_" + CUR.id))}</p>
             </div>
             <div className="flex flex-col items-end gap-1">
               {setCountry && <CountrySelect t={t} country={country} setCountry={setCountry} id="country-live" />}
-              <p className="text-[11px] text-soil/60">{t("cat_rates_note")}</p>
+              <p className="text-[11px] text-soil/80">{t("cat_rates_note")}</p>
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -6356,11 +6370,11 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                   <div className="space-y-2 p-4">
                     <p className="font-display text-lg font-extrabold text-forest">{t("one_" + c)}</p>
                     <ul className="space-y-1 text-xs text-soil/80">
-                      {ms.map((m) => <li key={m.name} className="flex justify-between gap-2" dir="ltr"><span className="truncate font-semibold">{m.name}</span><span className="shrink-0 text-soil/60">{m.spec.split(" · ")[0]}</span></li>)}
+                      {ms.map((m) => <li key={m.name} className="flex justify-between gap-2" dir="ltr"><span className="truncate font-semibold">{m.name}</span><span className="shrink-0 text-soil/80">{m.spec.split(" · ")[0]}</span></li>)}
                     </ul>
                     <div className="flex items-center justify-between gap-2 border-t border-soil/10 pt-2">
-                      <span className="text-[11px] font-semibold uppercase tracking-wide text-soil/60">{t("lr_est_rate")}</span>
-                      <span className="font-display text-base font-extrabold text-forest" dir="ltr">{fmtLocal(lo)} to {fmtLocal(hi)}<span className="text-xs font-semibold text-soil/60">/hr</span></span>
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-soil/80">{t("lr_est_rate")}</span>
+                      <span className="font-display text-base font-extrabold text-forest" dir="ltr">{fmtLocal(lo)} to {fmtLocal(hi)}<span className="text-xs font-semibold text-soil/80">/hr</span></span>
                     </div>
                     <span className="flex items-center justify-center gap-1.5 rounded-xl bg-forest px-3 py-2 text-sm font-bold text-ivory group-hover:bg-[#0f4a28]">{t("lr_select")}<ChevronRight className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" /></span>
                   </div>
@@ -6370,12 +6384,12 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
           </div>
           {myRequests.length > 0 && (
             <div className="mt-6 rounded-2xl border border-soil/10 bg-white p-4">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/60">{t("lr_recent")}</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/80">{t("lr_recent")}</p>
               <ul className="grid gap-1.5 sm:grid-cols-2">
                 {myRequests.map((r) => (
                   <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
                     <span className="min-w-0 truncate"><span dir="ltr" className="font-mono">{r.id}</span> · {t("one_" + r.category)} · {r.village} · T{r.tierReached || 1}</span>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("rq_" + r.status)}</span>
+                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>
                   </li>
                 ))}
               </ul>
@@ -6392,7 +6406,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
               <span className="absolute start-2 top-2 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-bold text-forest shadow">{t("lr_selected")}</span>
             </div>
             <div className="flex items-center justify-between gap-2 bg-ivory px-3 py-2">
-              <p className="min-w-0 truncate font-bold text-forest"><CategoryIcon category={f.category} className="me-1 inline h-4 w-4" />{t("one_" + f.category)}{f.model ? <span className="font-semibold text-soil/70" dir="ltr"> · {f.model}</span> : null}</p>
+              <p className="min-w-0 truncate font-bold text-forest"><CategoryIcon category={f.category} className="me-1 inline h-4 w-4" />{t("one_" + f.category)}{f.model ? <span className="font-semibold text-soil/80" dir="ltr"> · {f.model}</span> : null}</p>
               {!req && <button type="button" onClick={() => setF((s) => ({ ...s, chosen: false }))} className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-xs font-bold text-forest ring-1 ring-soil/15">{t("lr_change_machine")}</button>}
             </div>
           </div>
@@ -6427,14 +6441,14 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                   <button type="button" key={v} onClick={() => set("rentType", v)} aria-pressed={f.rentType === v}
                     className={`rounded-xl p-2.5 text-start ring-1 ${f.rentType === v ? "bg-gold/20 ring-gold" : "bg-ivory ring-soil/15"}`}>
                     <span className="flex items-center gap-1.5 text-sm font-bold text-soil"><Fuel className="h-4 w-4" aria-hidden="true" />{l}</span>
-                    <span className="mt-0.5 block text-[11px] leading-snug text-soil/70">{d}</span>
+                    <span className="mt-0.5 block text-[11px] leading-snug text-soil/80">{d}</span>
                   </button>
                 ))}
               </div>
             </fieldset>
             <div className="rounded-xl bg-ivory p-3 ring-1 ring-soil/10">
               <p className="flex items-center gap-2 text-sm font-bold text-soil"><Fuel className="h-4 w-4" aria-hidden="true" />{(CUR.id === "PK" ? t("lr_diesel_admin") : t("lr_diesel_intl")).replace("{v}", pkr(dieselPrice))}</p>
-              <p className="mt-1 text-[11px] leading-snug text-soil/60">{CUR.id === "PK" ? t("lr_diesel_note") : t("lr_diesel_note_intl")}</p>
+              <p className="mt-1 text-[11px] leading-snug text-soil/80">{CUR.id === "PK" ? t("lr_diesel_note") : t("lr_diesel_note_intl")}</p>
             </div>
             <Toggle id="lr-peak" label={t("lr_peak")} sub={t("lr_peak_d")} checked={f.peak} onChange={(v) => set("peak", v)} />
             <Toggle id="lr-small" label={t("bk_smallholder")} sub={t("bk_smallholder_sub")} checked={f.smallholder} onChange={(v) => set("smallholder", v)} />
@@ -6450,12 +6464,12 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
           )}
           {myRequests.length > 0 && (
             <div className="border-t border-soil/10 pt-3">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/60">{t("lr_recent")}</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/80">{t("lr_recent")}</p>
               <ul className="space-y-1.5">
                 {myRequests.map((r) => (
                   <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
                     <span className="min-w-0 truncate"><span dir="ltr" className="font-mono">{r.id}</span> · {t("one_" + r.category)} · {r.village} · T{r.tierReached || 1}</span>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("rq_" + r.status)}</span>
+                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>
                   </li>
                 ))}
               </ul>
@@ -6486,8 +6500,8 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
               </div>
               <div className="min-w-0">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("lr_offers")}</p>
-                {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/70">{t("lr_idle_offers")}</p>}
-                {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/70"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
+                {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("lr_idle_offers")}</p>}
+                {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/80"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
                 {noMatch && (!demoMode || scanTier === 3) && (
                   <ZeroSupplyFallback t={t} dn={dn} session={session} requireAuth={requireAuth} saveDemand={saveDemand} toast={toast} dieselPrice={dieselPrice}
                     request={{ ...req, district: village.district, province: village.province }} canExpand={scanTier < 3} onExpand={() => scan(3)} />
@@ -6509,12 +6523,12 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                       <li key={o.key} className={`rounded-xl border p-3 transition animate-[slidein_.3s_ease-out] ${picked === o.key ? "border-forest bg-forest/5" : "border-soil/10 bg-ivory/60"}`}>
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
-                            <p className="truncate font-bold text-forest">{o.owner.name} <span className="font-normal text-soil/60" dir="ltr">· {o.owner.ownerId}</span></p>
-                            <p className="truncate text-xs text-soil/70">{o.owner.machine} · <span dir="ltr">{o.owner.distance} km</span> · T{o.owner.tier} · <Star className="inline h-3 w-3 fill-gold text-gold" aria-hidden="true" /> {o.owner.rating} · {t("lr_eta")} ~{Math.max(10, Math.round(o.owner.distance * 2.2))} min</p>
+                            <p className="truncate font-bold text-forest">{o.owner.name} <span className="font-normal text-soil/80" dir="ltr">· {o.owner.ownerId}</span></p>
+                            <p className="truncate text-xs text-soil/80">{o.owner.machine} · <span dir="ltr">{o.owner.distance} km</span> · T{o.owner.tier} · <Star className="inline h-3 w-3 fill-gold text-gold" aria-hidden="true" /> {o.owner.rating} · {t("lr_eta")} ~{Math.max(10, Math.round(o.owner.distance * 2.2))} min</p>
                           </div>
                           <div className="shrink-0 text-end">
-                            <p className={`whitespace-nowrap text-[11px] font-bold ${o.kind === "counter" ? "text-soil" : "text-leaf"}`}>{o.kind === "listed" ? t("lr_listed") : o.kind === "accept" ? t("lr_accepts") : `${t("lr_counter")} +${pkr(o.rate - req.rate)}`}</p>
-                            <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(o.rate)}<span className="text-xs font-semibold text-soil/60">/hr</span></p>
+                            <p className={`whitespace-nowrap text-[11px] font-bold ${o.kind === "counter" ? "text-soil" : "text-leafink"}`}>{o.kind === "listed" ? t("lr_listed") : o.kind === "accept" ? t("lr_accepts") : `${t("lr_counter")} +${pkr(o.rate - req.rate)}`}</p>
+                            <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(o.rate)}<span className="text-xs font-semibold text-soil/80">/hr</span></p>
                           </div>
                         </div>
                         <p className="mt-1 text-xs text-soil/80" dir="ltr">Transport {q.transport ? pkr(q.transport) : t("lr_free")} · {t("lr_grand")}: <b>{pkr(q.grand)}</b></p>
@@ -6560,12 +6574,12 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
           {/* one-click tier comparison */}
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <h3 className="mb-1 flex items-center gap-2 font-bold text-forest"><Gauge className="h-4 w-4" aria-hidden="true" />{t("lr_compare")}</h3>
-            <p className="mb-3 text-xs text-soil/70">{t("lr_compare_sub")}</p>
+            <p className="mb-3 text-xs text-soil/80">{t("lr_compare_sub")}</p>
             <div className="grid gap-3 md:grid-cols-3">
               {compare.map(({ tr, km, q }) => (
                 <div key={tr.n} className={`flex flex-col rounded-xl p-3 ring-1 ${tr.n === 3 ? "bg-red-50/60 ring-red-200" : tr.n === 2 ? "bg-gold/10 ring-gold/40" : "bg-leaf/10 ring-leaf/30"}`}>
                   <p className="font-bold text-forest">{t(tr.key)}</p>
-                  <p className="text-xs text-soil/70">{t(tr.range)} · {t(tr.note)}</p>
+                  <p className="text-xs text-soil/80">{t(tr.range)} · {t(tr.note)}</p>
                   <dl className="mt-2 space-y-1 text-sm text-soil" dir="ltr">
                     <div className="flex justify-between"><dt>{t("lr_nearest")}</dt><dd className="font-semibold">{km} km</dd></div>
                     <div className="flex justify-between"><dt>{t("lr_base")}</dt><dd>{pkr(q.base)}</dd></div>
@@ -6580,7 +6594,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
                 </div>
               ))}
             </div>
-            {!req && <p className="mt-2 text-xs text-soil/60">{t("lr_compare_hint")}</p>}
+            {!req && <p className="mt-2 text-xs text-soil/80">{t("lr_compare_hint")}</p>}
           </div>
         </div>
       </div>
@@ -6614,14 +6628,14 @@ function KeypadBanner({ t, setTab }) {
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-2xl bg-ivory/10 px-4 py-3 text-center ring-1 ring-ivory/20">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/70">{t("kp_toll")}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/80">{t("kp_toll")}</p>
               <p className="font-mono text-xl font-extrabold text-gold" dir="ltr">0800-AGRI-1</p>
             </div>
             <div className="rounded-2xl bg-ivory/10 px-4 py-3 text-center ring-1 ring-ivory/20">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/70">{t("kp_ussd")}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/80">{t("kp_ussd")}</p>
               <p className="font-mono text-xl font-extrabold text-gold" dir="ltr">*AGRI#</p>
             </div>
-            {t("kp_demo") ? <p className="col-span-2 text-center text-[11px] text-ivory/60">{t("kp_demo")}</p> : null}
+            {t("kp_demo") ? <p className="col-span-2 text-center text-[11px] text-ivory/80">{t("kp_demo")}</p> : null}
           </div>
         </div>
         <div className="flex flex-wrap gap-2 border-t border-ivory/10 px-5 py-3 md:px-6">
@@ -6753,9 +6767,9 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
             <p className="mt-2 max-w-2xl text-ivory/80">{t("am_sub")}</p>
           </div>
           <div className="rounded-2xl bg-ivory/10 p-4 ring-1 ring-ivory/20">
-            <p className="text-xs text-ivory/70">{t("am_credit")}</p>
+            <p className="text-xs text-ivory/80">{t("am_credit")}</p>
             <p className="font-display text-2xl font-extrabold text-gold" dir="ltr">{pkr(creditTotal)}</p>
-            <p className="text-[11px] text-ivory/60">{pendingCredit.length} {t("am_credit_n")}</p>
+            <p className="text-[11px] text-ivory/80">{pendingCredit.length} {t("am_credit_n")}</p>
           </div>
         </div>
       </div>
@@ -6813,12 +6827,12 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
           )}
           {myPosts.length > 0 && (
             <div className="border-t border-soil/10 pt-3">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/60">{t("am_recent")}</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/80">{t("am_recent")}</p>
               <ul className="space-y-1.5">
                 {myPosts.map((p) => (
                   <li key={p.id} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
                     <span className="min-w-0 truncate"><span dir="ltr" className="font-mono">{p.id}</span> · {t("crop_" + p.crop)} · {p.qty} {t("am_mann")}</span>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${p.status === "sold" ? "bg-leaf/15 text-forest" : p.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("am_st_" + p.status)}</span>
+                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${p.status === "sold" ? "bg-leaf/15 text-forest" : p.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("am_st_" + p.status)}</span>
                   </li>
                 ))}
               </ul>
@@ -6830,9 +6844,9 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-2">
               <h3 className="flex items-center gap-2 font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("am_bids")}</h3>
-              {post && <span className="text-xs font-semibold text-soil/70" aria-live="polite">{scanning ? t("am_waiting") : `${bids.length} ${t("am_bids_n")}`}</span>}
+              {post && <span className="text-xs font-semibold text-soil/80" aria-live="polite">{scanning ? t("am_waiting") : `${bids.length} ${t("am_bids_n")}`}</span>}
             </div>
-            {!post && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/70">{t("am_idle")}</p>}
+            {!post && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("am_idle")}</p>}
             {post && !scanning && bids.length === 0 && <p className="rounded-xl bg-gold/10 p-4 text-sm text-soil">{t("am_no_bids")}</p>}
             <ul className="grid gap-2 md:grid-cols-2">
               {[...bids].sort((a, b) => b.rate - a.rate).map((b) => (
@@ -6840,11 +6854,11 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="truncate font-bold text-forest">{b.name}</p>
-                      <p className="text-xs text-soil/70">{typeLabel(b.type)} · <span dir="ltr">{b.distance} km</span> · {t("am_sample")}</p>
+                      <p className="text-xs text-soil/80">{typeLabel(b.type)} · <span dir="ltr">{b.distance} km</span> · {t("am_sample")}</p>
                     </div>
                     <div className="shrink-0 text-end">
-                      <p className={`whitespace-nowrap text-[11px] font-bold ${b.kind === "counter" ? "text-soil" : "text-leaf"}`}>{b.kind === "above" ? t("am_above") : b.kind === "accept" ? t("lr_accepts") : t("lr_counter")}</p>
-                      <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.rate)}<span className="text-xs font-semibold text-soil/60">/{t("am_mann")}</span></p>
+                      <p className={`whitespace-nowrap text-[11px] font-bold ${b.kind === "counter" ? "text-soil" : "text-leafink"}`}>{b.kind === "above" ? t("am_above") : b.kind === "accept" ? t("lr_accepts") : t("lr_counter")}</p>
+                      <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.rate)}<span className="text-xs font-semibold text-soil/80">/{t("am_mann")}</span></p>
                     </div>
                   </div>
                   <p className="mt-1 text-xs text-soil/80" dir="ltr">{post.qty} × {pkr(b.rate)} = <b>{pkr(post.qty * b.rate)}</b> · {t("am_pickup")}</p>
@@ -6869,9 +6883,9 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                   <div className="space-y-1.5 text-sm text-soil" dir="ltr">
                     <div className="flex justify-between gap-3"><span>{t("am_gross")} ({post.qty} × {pkr(pickedBid.rate)})</span><b>{pkr(gross)}</b></div>
                     <div className="flex justify-between gap-3"><span>{t("am_minus_credit")} ({pl.ids.length})</span><b className="text-red-800">− {pkr(pl.settled)}</b></div>
-                    {pl.unsettled > 0 && <p className="text-xs text-soil/60">{t("am_unsettled").replace("{v}", pkr(pl.unsettled))}</p>}
+                    {pl.unsettled > 0 && <p className="text-xs text-soil/80">{t("am_unsettled").replace("{v}", pkr(pl.unsettled))}</p>}
                     <div className="flex justify-between gap-3 border-t border-soil/20 pt-1.5 text-base font-extrabold text-forest"><span>{t("am_net")}</span><span>{pkr(pl.net)}</span></div>
-                    <p className="text-xs text-soil/70">{t("am_to_wallet").replace("{w}", post.wallet === "jazzcash" ? "JazzCash" : "EasyPaisa").replace("{n}", maskWallet(post.walletNo))}</p>
+                    <p className="text-xs text-soil/80">{t("am_to_wallet").replace("{w}", post.wallet === "jazzcash" ? "JazzCash" : "EasyPaisa").replace("{n}", maskWallet(post.walletNo))}</p>
                   </div>
                 </div>
                 <div className="space-y-2 md:w-56">
@@ -6887,10 +6901,10 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
             <div className="rounded-2xl bg-leaf/15 p-5 ring-1 ring-leaf/40">
               <p className="flex items-center gap-2 font-bold text-forest"><CircleCheck className="h-6 w-6" aria-hidden="true" />{t("am_done")}</p>
               <dl className="mt-3 grid gap-2 text-sm text-soil sm:grid-cols-2" dir="ltr">
-                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/60">{t("am_sold_to")}</dt><dd className="font-bold">{receipt.buyer} · {receipt.qty} {t("am_mann")} × {pkr(receipt.rate)}</dd></div>
-                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/60">{t("am_gross")}</dt><dd className="font-bold">{pkr(receipt.gross)}</dd></div>
-                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/60">{t("am_minus_credit")}</dt><dd className="font-bold">{pkr(receipt.settled)} ({receipt.ids.length})</dd></div>
-                <div className="rounded-xl bg-forest p-3 text-ivory"><dt className="text-xs text-ivory/70">{t("am_net")}</dt><dd className="font-display text-xl font-extrabold text-gold">{pkr(receipt.net)}</dd></div>
+                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_sold_to")}</dt><dd className="font-bold">{receipt.buyer} · {receipt.qty} {t("am_mann")} × {pkr(receipt.rate)}</dd></div>
+                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_gross")}</dt><dd className="font-bold">{pkr(receipt.gross)}</dd></div>
+                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_minus_credit")}</dt><dd className="font-bold">{pkr(receipt.settled)} ({receipt.ids.length})</dd></div>
+                <div className="rounded-xl bg-forest p-3 text-ivory"><dt className="text-xs text-ivory/80">{t("am_net")}</dt><dd className="font-display text-xl font-extrabold text-gold">{pkr(receipt.net)}</dd></div>
               </dl>
               <p className="mt-3 text-xs text-soil/80">{t("am_to_wallet").replace("{w}", receipt.wallet === "jazzcash" ? "JazzCash" : "EasyPaisa").replace("{n}", maskWallet(receipt.walletNo))} {t("am_demo_note")}</p>
               {receipt.ids.length > 0 && <button type="button" onClick={() => setTab("bookings")} className="mt-3 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("nav_bookings")}</button>}
@@ -6914,7 +6928,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
 /* ------------------------------------------------------------------ */
 const FOUNDER_EMAIL = "00talhashoaib786@gmail.com";
 const ADMIN_EMAILS = [FOUNDER_EMAIL];
-const ADMIN_MIN_PASS = 8;
+const ADMIN_MIN_PIN = 4;
 const normEmail = (e) => String(e || "").trim().toLowerCase();
 const randomSalt = () => { try { return Array.from(window.crypto.getRandomValues(new Uint8Array(16))).map((x) => x.toString(16).padStart(2, "0")).join(""); } catch (e) { return String(Date.now()) + Math.random().toString(16).slice(2); } };
 async function sha256Hex(text) {
@@ -6927,7 +6941,7 @@ const ACTIVE_STATUSES = ["confirmed", "completed", "feedback"];
 function ListingStatusPill({ status, t }) {
   const s = status || "approved";
   const cls = s === "pending" ? "bg-gold/25 text-soil" : s === "rejected" ? "bg-red-100 text-red-800" : "bg-leaf/15 text-forest";
-  return <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${cls}`}>{t("ls_" + s)}</span>;
+  return <span className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-bold ${cls}`}>{t("ls_" + s)}</span>;
 }
 
 function CloudBadge({ t, cloud }) {
@@ -6946,7 +6960,7 @@ function AdminPanel(props) {
   const { t, accounts, openAuth } = props;
   const u = accounts.fbUser;
   // wait for Firebase Auth to report the user, otherwise a signed-in founder briefly sees 403
-  if (accounts.mode === "loading" || (accounts.mode === "firebase" && !accounts.fbReady)) return <section className="mx-auto max-w-md px-4 py-14 text-center text-sm text-soil/70"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></section>;
+  if (accounts.mode === "loading" || (accounts.mode === "firebase" && !accounts.fbReady)) return <section className="mx-auto max-w-md px-4 py-14 text-center text-sm text-soil/80"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></section>;
   if (!accounts.isAdmin || !u) return <Admin403 t={t} accounts={accounts} openAuth={openAuth} />;
   if (!u.emailVerified) return <AdminVerifyEmail t={t} accounts={accounts} toast={props.toast} />;
   return <AdminVault key={u.uid} {...props} />;
@@ -7018,53 +7032,44 @@ function AdminVerifyEmail({ t, accounts, toast }) {
 }
 
 const unlockKey = (uid, sec) => `${uid}:${sec && sec.hash ? sec.hash.slice(0, 16) : ""}`;
-// Admin password hash: Firestore admin_settings/security is the source of truth, with a copy in this
-// browser so the founder is never locked out while Firestore is unreachable or the rules lag behind.
-const secCacheKey = (uid) => "agrishare.admin.sec." + uid;
-const validSec = (d) => (d && typeof d.hash === "string" && typeof d.salt === "string" ? d : null);
+// admin_settings/security holds an OPTIONAL secondary PIN, synced only through Firestore.
+// Off by default: a verified founder / team-admin email opens the panel on any device.
+// { pinEnabled: true, hash, salt } turns the PIN on; anything else means no PIN.
+const pinOn = (d) => !!(d && d.pinEnabled === true && typeof d.hash === "string" && typeof d.salt === "string");
 const TIMED_OUT = "__timeout__";
 // returns "ok" (saved in Firestore), "queued" (offline: Firestore sends it when back online) or "denied"
-async function saveAdminSecurity(uid, v) {
-  store.set(secCacheKey(uid), v);
+async function saveAdminSecurity(v) {
   try {
     const r = await withTimeout(writeDoc(COL.settings, "security", v), 7000, TIMED_OUT);
     return r === TIMED_OUT ? "queued" : "ok";
   } catch (e) {
-    console.warn("[Agri-Share] Admin security not saved to Firestore:", e && e.code);
+    console.warn("[Agri-Share] Admin security not saved:", e && e.code);
     return e && e.code === "permission-denied" ? "denied" : "queued";
   }
 }
-// Read admin_settings/security. A missing document is first-time setup (null), never an error.
-async function loadAdminSecurity(uid, isFounder) {
-  const cached = validSec(store.get(secCacheKey(uid), null));
-  let remote, reached = false;
-  for (let attempt = 0; attempt < 2 && !reached; attempt++) {
+// Read admin_settings/security. Missing doc, unreachable Firestore or refused read all mean "no PIN":
+// the verified admin email is the real gate, so the founder is never locked out on a new device.
+async function loadAdminSecurity() {
+  for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const d = await withTimeout(readDoc(COL.settings, "security"), 7000, TIMED_OUT);
-      if (d !== TIMED_OUT) { remote = d; reached = true; }
+      const d = await withTimeout(readDoc(COL.settings, "security"), 6000, TIMED_OUT);
+      if (d !== TIMED_OUT) return d || null;
+      return null;
     } catch (e) {
       console.warn("[Agri-Share] Admin security read failed:", e && e.code);
-      if (e && e.code === "not-found") { remote = null; reached = true; }
       // a token issued before the email was verified is refused by the rules: refresh it and retry once
-      else if (attempt === 0) { try { await fbRefreshUser(); } catch (er) { /* offline */ } }
+      if (attempt === 0) { try { await fbRefreshUser(); } catch (er) { /* offline */ } }
     }
   }
-  if (!reached) return { sec: cached, source: cached ? "cache" : "none-offline" };
-  const v = validSec(remote);
-  if (v) { store.set(secCacheKey(uid), v); return { sec: v, source: "cloud" }; }
-  // no document yet: first-time setup, unless this browser holds a password that never reached Firestore
-  if (cached && isFounder) { saveAdminSecurity(uid, cached); return { sec: cached, source: "cache" }; }
-  return { sec: null, source: "cloud" };
+  return null;
 }
 
 function AdminVault(props) {
   const { t, accounts } = props;
   const u = accounts.fbUser;
-  const [sec, setSec] = useState(undefined); // undefined loading | null first-time setup | { hash, salt, ... }
-  const [note, setNote] = useState(""); // shown when Firestore could not be reached or refused the save
+  const [sec, setSec] = useState(undefined); // undefined while loading, then the security doc or null
   const [unlocked, setUnlocked] = useState(false);
-  const [pass, setPass] = useState("");
-  const [pass2, setPass2] = useState("");
+  const [pin, setPin] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   const fails = useRef(0);
@@ -7075,77 +7080,45 @@ function AdminVault(props) {
   useEffect(() => {
     let alive = true;
     (async () => {
-      // reload the Firebase user first so emailVerified and the ID token are current
-      try { await accounts.refreshFbUser(); } catch (e) { /* offline: use the cached user */ }
-      const { sec: v, source } = await loadAdminSecurity(u.uid, accounts.isFounder);
+      try { await withTimeout(accounts.refreshFbUser(), 5000, null); } catch (e) { /* offline: keep the cached user */ }
+      const d = await loadAdminSecurity();
       if (!alive) return;
-      setSec(v);
-      if (source !== "cloud") setNote(t("adp_offline"));
-      try { if (v && window.sessionStorage.getItem("agrishare.admin.unlock") === unlockKey(u.uid, v)) setUnlocked(true); } catch (e) { /* ignore */ }
+      setSec(d);
+      try { if (pinOn(d) && window.sessionStorage.getItem("agrishare.admin.unlock") === unlockKey(u.uid, d)) setUnlocked(true); } catch (e) { /* ignore */ }
     })();
     return () => { alive = false; };
   }, [u.uid]); // eslint-disable-line
 
   const remember = (v) => { try { window.sessionStorage.setItem("agrishare.admin.unlock", unlockKey(u.uid, v)); } catch (e) { /* ignore */ } };
-  const lock = () => { setUnlocked(false); setPass(""); try { window.sessionStorage.removeItem("agrishare.admin.unlock"); } catch (e) { /* ignore */ } };
+  const lock = () => { setUnlocked(false); setPin(""); try { window.sessionStorage.removeItem("agrishare.admin.unlock"); } catch (e) { /* ignore */ } };
+  const updateSec = (v) => { setSec(v); if (pinOn(v)) { remember(v); setUnlocked(true); } };
 
-  const create = async (e) => {
-    e.preventDefault(); setErr("");
-    if (pass.length < ADMIN_MIN_PASS) { setErr(t("adp_short").replace("{n}", ADMIN_MIN_PASS)); return; }
-    if (pass !== pass2) { setErr(t("adp_mismatch")); return; }
-    setBusy(true);
-    try {
-      const salt = randomSalt();
-      const v = { hash: await adminHash(salt, pass), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
-      const res = await saveAdminSecurity(u.uid, v);
-      if (res !== "ok") props.toast(t(res === "denied" ? "adp_cloud_denied" : "adp_cloud_queued"), { type: "warn", ms: 8000 });
-      setSec(v); remember(v); setUnlocked(true); setPass(""); setPass2("");
-    } catch (er) { setErr(t("adp_save_err")); }
-    setBusy(false);
-  };
   const verify = async (e) => {
     e.preventDefault(); setErr("");
     if (lockUntil > Date.now()) return;
     setBusy(true);
-    const ok = (await adminHash(sec.salt, pass)) === sec.hash;
-    setBusy(false); setPass("");
+    const ok = (await adminHash(sec.salt, pin)) === sec.hash;
+    setBusy(false); setPin("");
     if (ok) { fails.current = 0; remember(sec); setUnlocked(true); return; }
     fails.current += 1;
     if (fails.current >= 5) { fails.current = 0; setLockUntil(Date.now() + 60000); }
     setErr(t("adp_wrong"));
   };
 
-  if (sec === undefined) return <AdminShell icon={KeyRound} title={t("adp_enter_title")}><p className="mt-4 text-sm text-soil/70"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></p></AdminShell>;
-  if (unlocked) return <AdminConsole {...props} onLock={lock} sec={sec} setSec={(v) => { setSec(v); remember(v); }} />;
+  if (sec === undefined) return <AdminShell icon={ShieldCheck} title={t("adp_opening")}><p className="mt-4 text-sm text-soil/80"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></p></AdminShell>;
+  const needPin = pinOn(sec) && !unlocked;
+  if (!needPin) return <AdminConsole {...props} onLock={pinOn(sec) ? lock : null} sec={sec} setSec={updateSec} />;
 
   const wait = Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
-  const pwInput = (id, label, value, set, auto) => (
-    <div className="mt-4 text-start">
-      <label htmlFor={id} className="text-sm font-semibold text-soil">{label}</label>
-      <input id={id} type="password" autoComplete={auto} value={value} onChange={(e) => { set(e.target.value); setErr(""); }} className={inputCls + " mt-1"} dir="ltr" />
-    </div>
-  );
-  if (sec === null) {
-    if (!accounts.isFounder) return <AdminShell icon={KeyRound} title={t("adp_create_title")} sub={t("adp_waiting")} />;
-    return (
-      <AdminShell icon={KeyRound} title={t("adp_create_title")} sub={t("adp_create_sub")}>
-        {note && <p className="mt-3 rounded-xl bg-gold/15 p-2.5 text-xs font-semibold text-soil">{note}</p>}
-        <form onSubmit={create} noValidate>
-          {pwInput("adp-new", t("adp_new"), pass, setPass, "new-password")}
-          {pwInput("adp-new2", t("adp_confirm"), pass2, setPass2, "new-password")}
-          {err && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{err}</p>}
-          <button type="submit" disabled={busy} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t("adp_save")}</button>
-        </form>
-      </AdminShell>
-    );
-  }
   return (
     <AdminShell icon={Lock} title={t("adp_enter_title")} sub={t("adp_enter_sub").replace("{email}", u.email)}>
-      {note && <p className="mt-3 rounded-xl bg-gold/15 p-2.5 text-xs font-semibold text-soil">{note}</p>}
       <form onSubmit={verify} noValidate>
-        {pwInput("adp-pass", t("adp_pass"), pass, setPass, "current-password")}
+        <div className="mt-4 text-start">
+          <label htmlFor="adp-pin" className="text-sm font-semibold text-soil">{t("adp_pass")}</label>
+          <input id="adp-pin" type="password" autoComplete="current-password" value={pin} onChange={(e) => { setPin(e.target.value); setErr(""); }} className={inputCls + " mt-1"} dir="ltr" />
+        </div>
         {(err || wait > 0) && <p className="mt-2 text-sm font-semibold text-red-700" role="alert">{wait > 0 ? t("adp_locked").replace("{s}", wait) : err}</p>}
-        <button type="submit" disabled={busy || wait > 0 || !pass} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("adp_unlock")}</button>
+        <button type="submit" disabled={busy || wait > 0 || !pin} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("adp_unlock")}</button>
       </form>
     </AdminShell>
   );
@@ -7154,23 +7127,37 @@ function AdminVault(props) {
 function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   const u = accounts.fbUser;
   const founder = accounts.isFounder;
+  const enabled = pinOn(sec);
   const [cur, setCur] = useState(""), [nw, setNw] = useState(""), [nw2, setNw2] = useState("");
   const [err, setErr] = useState(""), [busy, setBusy] = useState(false);
   const [email, setEmail] = useState(""), [teamErr, setTeamErr] = useState("");
-  const change = async (e) => {
+  const clear = () => { setCur(""); setNw(""); setNw2(""); setErr(""); };
+  const report = (res, okKey) => {
+    if (res === "denied") { setErr(t("adp_cloud_denied")); return false; }
+    toast(res === "ok" ? t(okKey) : t("adp_cloud_queued"), { type: res === "ok" ? "success" : "warn", ms: res === "ok" ? 4200 : 8000 });
+    return true;
+  };
+  const checkCurrent = async () => { if (enabled && (await adminHash(sec.salt, cur)) !== sec.hash) { setErr(t("adp_wrong")); return false; } return true; };
+  const savePin = async (e) => {
     e.preventDefault(); setErr("");
-    if ((await adminHash(sec.salt, cur)) !== sec.hash) { setErr(t("adp_wrong")); return; }
-    if (nw.length < ADMIN_MIN_PASS) { setErr(t("adp_short").replace("{n}", ADMIN_MIN_PASS)); return; }
+    if (!(await checkCurrent())) return;
+    if (nw.length < ADMIN_MIN_PIN) { setErr(t("adp_short").replace("{n}", ADMIN_MIN_PIN)); return; }
     if (nw !== nw2) { setErr(t("adp_mismatch")); return; }
     setBusy(true);
-    try {
-      const salt = randomSalt();
-      const v = { hash: await adminHash(salt, nw), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
-      const res = await saveAdminSecurity(u.uid, v);
-      setSec(v); setCur(""); setNw(""); setNw2("");
-      toast(res === "ok" ? t("ads_changed") : t(res === "denied" ? "adp_cloud_denied" : "adp_cloud_queued"), { type: res === "ok" ? "success" : "warn", ms: res === "ok" ? 4200 : 8000 });
-    } catch (er) { setErr(t("adp_save_err")); }
+    const salt = randomSalt();
+    const v = { pinEnabled: true, hash: await adminHash(salt, nw), salt, algo: "sha256", updatedAt: Date.now(), updatedBy: u.email };
+    const res = await saveAdminSecurity(v);
     setBusy(false);
+    if (report(res, enabled ? "ads_changed" : "ads_pin_on")) { setSec(v); clear(); }
+  };
+  const turnOff = async () => {
+    setErr("");
+    if (!(await checkCurrent())) return;
+    setBusy(true);
+    const v = { pinEnabled: false, updatedAt: Date.now(), updatedBy: u.email };
+    const res = await saveAdminSecurity(v);
+    setBusy(false);
+    if (report(res, "ads_pin_off")) { setSec(v); clear(); }
   };
   const saveTeam = async (emails) => {
     setTeamErr("");
@@ -7190,22 +7177,29 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
   return (
     <div className="grid gap-5 lg:grid-cols-2">
-      <form onSubmit={change} className="space-y-3 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm" noValidate>
-        <h3 className="flex items-center gap-2 font-bold text-forest"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("ads_change")}</h3>
-        {sec.updatedAt && <p className="text-xs text-soil/60">{t("ads_last").replace("{d}", new Date(sec.updatedAt).toLocaleString("en-GB")).replace("{e}", sec.updatedBy || "·")}</p>}
+      <form onSubmit={savePin} className="space-y-3 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm" noValidate>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 className="flex items-center gap-2 font-bold text-forest"><KeyRound className="h-4 w-4" aria-hidden="true" />{t("ads_pin_title")}</h3>
+          <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${enabled ? "bg-leaf/15 text-forest" : "bg-soil/10 text-soil/80"}`}>{t(enabled ? "ads_pin_status_on" : "ads_pin_status_off")}</span>
+        </div>
+        <p className="text-xs text-soil/80">{t("ads_pin_sub")}</p>
+        {enabled && sec.updatedAt && <p className="text-xs text-soil/80">{t("ads_last").replace("{d}", new Date(sec.updatedAt).toLocaleString("en-GB")).replace("{e}", sec.updatedBy || "·")}</p>}
         {!founder && <p className="rounded-xl bg-gold/15 p-2.5 text-xs font-semibold text-soil">{t("ads_founder_only")}</p>}
-        {pw("ads-cur", t("adp_current"), cur, setCur, "current-password")}
+        {enabled && pw("ads-cur", t("adp_current"), cur, setCur, "current-password")}
         {pw("ads-new", t("adp_new"), nw, setNw, "new-password")}
         {pw("ads-new2", t("adp_confirm"), nw2, setNw2, "new-password")}
         {err && <p className="text-sm font-semibold text-red-700" role="alert">{err}</p>}
-        <button type="submit" disabled={!founder || busy || !cur || !nw} className="inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory disabled:opacity-40"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t("ads_change")}</button>
+        <div className="flex flex-wrap gap-2">
+          <button type="submit" disabled={!founder || busy || !nw || (enabled && !cur)} className="inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory disabled:opacity-40"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t(enabled ? "ads_change" : "ads_pin_enable")}</button>
+          {enabled && <button type="button" onClick={turnOff} disabled={!founder || busy || !cur} className="rounded-xl border border-red-300 px-4 py-2.5 text-sm font-bold text-red-800 disabled:opacity-40">{t("ads_pin_disable")}</button>}
+        </div>
       </form>
       <div className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
         <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4" aria-hidden="true" />{t("ads_team")}</h3>
-        <p className="mt-0.5 text-xs text-soil/70">{t("ads_team_sub")}</p>
+        <p className="mt-0.5 text-xs text-soil/80">{t("ads_team_sub")}</p>
         <ul className="mt-3 space-y-1.5 text-sm">
           <li className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-3 py-2"><span className="truncate font-mono text-xs" dir="ltr">{FOUNDER_EMAIL}</span><span className="rounded-full bg-forest px-2 py-0.5 text-[11px] font-bold text-gold">{t("ads_founder")}</span></li>
-          {accounts.teamEmails.length === 0 && <li className="px-1 text-xs text-soil/60">{t("ads_team_none")}</li>}
+          {accounts.teamEmails.length === 0 && <li className="px-1 text-xs text-soil/80">{t("ads_team_none")}</li>}
           {accounts.teamEmails.map((em) => (
             <li key={em} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-3 py-2">
               <span className="truncate font-mono text-xs" dir="ltr">{em}</span>
@@ -7288,7 +7282,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
         <div className="flex flex-wrap items-center gap-2">
           <ModeBadge t={t} demo={demoMode} />
           <CloudBadge t={t} cloud={cloud} />
-          <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>
+          {lock && <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
         </div>
       </div>
       {/* Marketplace mode: Live Public Mode (default) vs Sample Demo Data (evaluators) */}
@@ -7296,7 +7290,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div>
             <h3 className="flex items-center gap-2 font-bold text-forest"><Globe className="h-4 w-4" aria-hidden="true" />{t("mode_title")}</h3>
-            <p className="mt-0.5 text-xs text-soil/70">{t("mode_sub")}</p>
+            <p className="mt-0.5 text-xs text-soil/80">{t("mode_sub")}</p>
           </div>
         </div>
         <div className="mt-3 grid gap-2 md:grid-cols-2" role="radiogroup" aria-label={t("mode_title")}>
@@ -7305,10 +7299,10 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
             return (
               <button key={String(val)} type="button" role="radio" aria-checked={on} onClick={() => { if (!on && setDemoMode) setDemoMode(val); }}
                 className={`flex items-start gap-3 rounded-xl p-3 text-start ring-1 transition ${on ? (val ? "bg-gold/15 ring-2 ring-gold" : "bg-leaf/15 ring-2 ring-leaf") : "bg-ivory ring-soil/15 hover:ring-leaf"}`}>
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${on ? "bg-forest text-gold" : "bg-white text-soil/60 ring-1 ring-soil/15"}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${on ? "bg-forest text-gold" : "bg-white text-soil/80 ring-1 ring-soil/15"}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
                 <span className="min-w-0">
-                  <span className="flex flex-wrap items-center gap-2 text-sm font-bold text-forest">{title}{on && <CircleCheck className="h-4 w-4 text-leaf" aria-hidden="true" />}</span>
-                  <span className="mt-0.5 block text-xs text-soil/70">{desc}</span>
+                  <span className="flex flex-wrap items-center gap-2 text-sm font-bold text-forest">{title}{on && <CircleCheck className="h-4 w-4 text-leafink" aria-hidden="true" />}</span>
+                  <span className="mt-0.5 block text-xs text-soil/80">{desc}</span>
                   {!on && <span className="mt-2 inline-flex rounded-lg bg-forest px-2.5 py-1 text-xs font-bold text-ivory">{cta}</span>}
                 </span>
               </button>
@@ -7317,11 +7311,11 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
         </div>
       </div>
       <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
-        <div className="rounded-2xl bg-forest p-4 text-ivory"><p className="text-xs text-ivory/70">{t("ad_kpi_comm")}</p><p className="font-display text-2xl font-extrabold text-gold" dir="ltr">{pkr(earned)}</p></div>
-        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/60">{t("ad_kpi_gtv")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(gtv)}</p></div>
-        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/60">{t("ad_kpi_pending")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(pendingComm)}</p></div>
-        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/60">{t("ad_pending")}</p><p className="font-display text-2xl font-extrabold text-forest">{counts.pending}</p></div>
-        <div className="rounded-2xl bg-gold/15 p-4 ring-1 ring-gold/40"><p className="text-xs text-soil/70">{t("ad_kpi_credit")}</p><p className="font-display text-2xl font-extrabold text-soil" dir="ltr">{pkr(creditOut)}</p></div>
+        <div className="rounded-2xl bg-forest p-4 text-ivory"><p className="text-xs text-ivory/80">{t("ad_kpi_comm")}</p><p className="font-display text-2xl font-extrabold text-gold" dir="ltr">{pkr(earned)}</p></div>
+        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_kpi_gtv")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(gtv)}</p></div>
+        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_kpi_pending")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(pendingComm)}</p></div>
+        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_pending")}</p><p className="font-display text-2xl font-extrabold text-forest">{counts.pending}</p></div>
+        <div className="rounded-2xl bg-gold/15 p-4 ring-1 ring-gold/40"><p className="text-xs text-soil/80">{t("ad_kpi_credit")}</p><p className="font-display text-2xl font-extrabold text-soil" dir="ltr">{pkr(creditOut)}</p></div>
       </div>
       <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
@@ -7340,7 +7334,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                 className={`rounded-full px-3 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t("ls_" + s)} ({counts[s]})</button>
             ))}
           </div>
-          {shownListings.length === 0 ? <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/70">{t("ad_none")}</p> : (
+          {shownListings.length === 0 ? <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
             <ul className="grid gap-3 md:grid-cols-2">
               {shownListings.map((l) => (
                 <li key={l.id} className={`rounded-xl border p-4 ${(l.status || "approved") === "pending" ? "border-gold bg-gold/5" : "border-soil/10 bg-ivory/50"}`}>
@@ -7351,8 +7345,8 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                       <p className="text-xs text-soil/80">{t("one_" + l.category)} · {l.village}, {dn(l.district)} · <span dir="ltr">{l.distance} km</span></p>
                       <p className="text-xs text-soil/80">{t("owner")}: {l.ownerName} (<span dir="ltr">{l.ownerId}</span>){l.submittedAt ? ` · ${t("ad_submitted")} ${new Date(l.submittedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` : ""}</p>
                       <p className="mt-1 text-sm font-bold text-forest" dir="ltr">{pkr(l.rate)}/hr</p>
-                      <p className="text-xs text-soil/70">{l.operator === "included" ? t("op_included") : l.operator === "optional" ? t("op_optional") : t("op_none")} · {l.transport === "included" ? t("tr_included") : l.transport === "optional" ? t("tr_optional") : t("tr_self")}</p>
-                      {l.spec && <p className="text-xs italic text-soil/70" dir="ltr">{l.spec}</p>}
+                      <p className="text-xs text-soil/80">{l.operator === "included" ? t("op_included") : l.operator === "optional" ? t("op_optional") : t("op_none")} · {l.transport === "included" ? t("tr_included") : l.transport === "optional" ? t("tr_optional") : t("tr_self")}</p>
+                      {l.spec && <p className="text-xs italic text-soil/80" dir="ltr">{l.spec}</p>}
                     </div>
                   </div>
                   <div className="mt-3 flex gap-2">
@@ -7372,10 +7366,10 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
             <p className="text-sm font-semibold text-soil">{t("ad_kpi_bookings")}: <b>{bookings.length}</b></p>
             <button onClick={copyLedger} disabled={!bookings.length} className="inline-flex items-center gap-2 rounded-xl border border-forest/20 px-3 py-2 text-sm font-bold text-forest disabled:opacity-40"><Copy className="h-4 w-4" aria-hidden="true" />{t("mem_copy")}</button>
           </div>
-          {sortedBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/70">{t("ad_none")}</p> : (
+          {sortedBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[820px] text-sm">
-                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/60">
+                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
                   <tr>{["ad_col_id", "ad_col_date", "ad_col_machine", "ad_col_renter", "ad_col_channel", "ad_col_status", "ad_col_value", "ad_col_comm"].map((h) => <th key={h} className="px-4 py-2.5 text-start font-semibold">{t(h)}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-soil/10">
@@ -7388,7 +7382,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                       <td className="px-4 py-3"><span className="rounded-full bg-ivory px-2 py-0.5 text-xs font-bold ring-1 ring-soil/15">{channelLabel(b.channel)}</span></td>
                       <td className="px-4 py-3"><StatusPill status={b.status} t={t} /></td>
                       <td className="px-4 py-3 font-semibold tabular-nums" dir="ltr">{pkr(b.quote.total)}</td>
-                      <td className={`px-4 py-3 font-bold tabular-nums ${ACTIVE_STATUSES.includes(b.status) ? "text-forest" : "text-soil/50"}`} dir="ltr">{pkr(b.quote.commission)}</td>
+                      <td className={`px-4 py-3 font-bold tabular-nums ${ACTIVE_STATUSES.includes(b.status) ? "text-forest" : "text-soil/80"}`} dir="ltr">{pkr(b.quote.commission)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -7405,24 +7399,24 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
         <div className="grid gap-5 lg:grid-cols-2">
           <form onSubmit={saveDiesel} className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
             <h3 className="flex items-center gap-2 font-bold text-forest"><Fuel className="h-4 w-4" aria-hidden="true" />{t("ad_diesel")}</h3>
-            <p className="mt-1 text-xs text-soil/70">{t("ad_diesel_sub")}</p>
+            <p className="mt-1 text-xs text-soil/80">{t("ad_diesel_sub")}</p>
             <div className="mt-4 flex gap-2">
               <label htmlFor="ad-diesel" className="sr-only">{t("ad_diesel")}</label>
               <input id="ad-diesel" type="number" min="50" max="2000" step="0.01" value={diesel} onChange={(e) => setDiesel(e.target.value)} className={inputCls + " text-lg font-extrabold text-forest"} dir="ltr" />
               <button type="submit" className="rounded-xl bg-forest px-5 text-sm font-bold text-ivory">{t("ad_save")}</button>
             </div>
-            <p className="mt-2 text-xs text-soil/60" dir="ltr">{t("ad_updated")}: {settings.dieselUpdatedAt ? new Date(settings.dieselUpdatedAt).toLocaleString("en-GB") : "13 Nov 2026 benchmark"}</p>
+            <p className="mt-2 text-xs text-soil/80" dir="ltr">{t("ad_updated")}: {settings.dieselUpdatedAt ? new Date(settings.dieselUpdatedAt).toLocaleString("en-GB") : "13 Nov 2026 benchmark"}</p>
             <p className="mt-3 rounded-xl bg-gold/15 p-3 text-sm font-semibold text-soil">{t("ad_diesel_preview").replace("{l}", previewLitres).replace("{v}", pkr(previewLitres * settings.dieselPrice))}</p>
           </form>
           <div className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
             <h3 className="flex items-center gap-2 font-bold text-forest"><MapPin className="h-4 w-4" aria-hidden="true" />{t("ad_provinces")}</h3>
-            <p className="mt-1 text-xs text-soil/70">{t("ad_provinces_sub")}</p>
+            <p className="mt-1 text-xs text-soil/80">{t("ad_provinces_sub")}</p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               {PROVINCES.map((c) => {
                 const on = settings.activeProvinces.includes(c);
                 return (
                   <button key={c} type="button" onClick={() => toggleProvince(c)} aria-pressed={on}
-                    className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-start text-sm font-bold ring-1 ${on ? "bg-leaf/15 text-forest ring-leaf/40" : "bg-ivory text-soil/50 ring-soil/15"}`}>
+                    className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-start text-sm font-bold ring-1 ${on ? "bg-leaf/15 text-forest ring-leaf/40" : "bg-ivory text-soil/80 ring-soil/15"}`}>
                     {provName(lang, c)}{on ? <CircleCheck className="h-4 w-4 shrink-0" aria-hidden="true" /> : <EyeOff className="h-4 w-4 shrink-0" aria-hidden="true" />}
                   </button>
                 );
@@ -7449,10 +7443,10 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
 
       {sub === "demand" && (
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-          {demand.length === 0 ? <p className="p-6 text-center text-sm text-soil/70">{t("ad_demand_none")}</p> : (
+          {demand.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_demand_none")}</p> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[860px] text-sm">
-                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/60">
+                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
                   <tr>{["ID", t("ad_demand"), t("lr_machine"), t("lr_village"), t("lr_date"), t("ad_req_rate"), t("ad_col_renter"), t("ad_col_status"), ""].map((h, i) => <th key={i} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-soil/10">
@@ -7465,7 +7459,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                       <td className="px-4 py-3 text-xs" dir="ltr">{fmtDate(d.date)} · {d.hours}h</td>
                       <td className="px-4 py-3 font-semibold" dir="ltr">{pkr(d.rate)}/hr</td>
                       <td className="px-4 py-3 text-xs">{d.renterName || "·"}{d.renterPhone ? <span className="block font-mono" dir="ltr">{d.renterPhone}</span> : null}</td>
-                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${d.status === "matched" ? "bg-leaf/15 text-forest" : d.status === "waiting" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("dm_" + d.status)}</span></td>
+                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${d.status === "matched" ? "bg-leaf/15 text-forest" : d.status === "waiting" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("dm_" + d.status)}</span></td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1.5">
                           {d.status === "waiting" && <button type="button" onClick={() => saveDemand({ id: d.id, status: "contacted", updatedAt: Date.now() })} className="rounded-lg border border-soil/20 px-2 py-1 text-xs font-bold text-soil">{t("ad_demand_contacted")}</button>}
@@ -7483,10 +7477,10 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
 
       {sub === "mandi" && (
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-          {mandiPosts.length === 0 ? <p className="p-6 text-center text-sm text-soil/70">{t("ad_none")}</p> : (
+          {mandiPosts.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] text-sm">
-                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/60">
+                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
                   <tr>{["ID", t("am_crop"), t("am_qty"), t("lr_village"), t("am_rate"), t("am_sold_to"), t("am_minus_credit"), t("am_net"), t("ad_col_status")].map((h) => <th key={h} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-soil/10">
@@ -7500,7 +7494,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                       <td className="px-4 py-3">{m.soldTo || "·"}</td>
                       <td className="px-4 py-3" dir="ltr">{m.creditSettled != null ? pkr(m.creditSettled) : "·"}</td>
                       <td className="px-4 py-3 font-bold text-forest" dir="ltr">{m.net != null ? pkr(m.net) : "·"}</td>
-                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${m.status === "sold" ? "bg-leaf/15 text-forest" : m.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("am_st_" + m.status)}</span></td>
+                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${m.status === "sold" ? "bg-leaf/15 text-forest" : m.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("am_st_" + m.status)}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -7512,10 +7506,10 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
 
       {sub === "requests" && (
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-          {liveRequests.length === 0 ? <p className="p-6 text-center text-sm text-soil/70">{t("ad_none")}</p> : (
+          {liveRequests.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] text-sm">
-                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/60">
+                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
                   <tr>{["ID", t("lr_machine"), t("lr_village"), t("lr_date"), t("ad_req_rate"), t("lr_rent"), t("ad_req_tier"), t("ad_col_status")].map((h) => <th key={h} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-soil/10">
@@ -7528,7 +7522,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                       <td className="px-4 py-3 font-semibold" dir="ltr">{pkr(r.rate)}/hr{r.agreedRate ? ` → ${pkr(r.agreedRate)}` : ""}</td>
                       <td className="px-4 py-3">{r.rentType === "wet" ? t("lr_wet") : t("lr_dry")}</td>
                       <td className="px-4 py-3 font-bold">T{r.tierReached || 1}</td>
-                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/70"}`}>{t("rq_" + r.status)}</span></td>
+                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -7998,7 +7992,7 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
             <div className="grid grid-cols-2 gap-2 rounded-xl bg-soil/5 p-1" role="radiogroup" aria-label={t("au_method")}>
               {[["email", t("au_m_email"), Mail], ["phone", t("au_m_phone"), Smartphone]].map(([k, l, Icon]) => (
                 <button type="button" key={k} role="radio" aria-checked={method === k} onClick={() => switchMethod(k)}
-                  className={`flex items-center justify-center gap-2 rounded-lg py-2 text-sm font-bold ${method === k ? "bg-white text-forest shadow-sm ring-1 ring-forest/20" : "text-soil/70 hover:text-soil"}`}>
+                  className={`flex items-center justify-center gap-2 rounded-lg py-2 text-sm font-bold ${method === k ? "bg-white text-forest shadow-sm ring-1 ring-forest/20" : "text-soil/80 hover:text-soil"}`}>
                   <Icon className="h-4 w-4" aria-hidden="true" />{l}
                 </button>
               ))}
@@ -8026,7 +8020,7 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
           {!(method === "phone" && tab !== "reset") && <>
           <Field label={t("au_email")} htmlFor="au-email" error={errors.email}>
             <div className="relative">
-              <Mail className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/40" aria-hidden="true" />
+              <Mail className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
               <input id="au-email" type="email" dir="ltr" value={f.email} onChange={set("email")} placeholder="name@example.com" className={inputCls + " ps-9"} autoComplete="email" />
             </div>
           </Field>
@@ -8055,9 +8049,9 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
           {!(tab === "reset" && accounts.resetByEmail) && !(method === "phone" && tab !== "reset") && <>
           <Field label={tab === "reset" ? t("au_reset_btn") : t("au_pass")} htmlFor="au-pass" error={errors.password}>
             <div className="relative">
-              <Lock className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/40" aria-hidden="true" />
+              <Lock className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
               <input id="au-pass" type={showPass ? "text" : "password"} dir="ltr" value={f.password} onChange={set("password")} className={inputCls + " pe-10 ps-9"} autoComplete={tab === "signin" ? "current-password" : "new-password"} />
-              <button type="button" onClick={() => setShowPass((v) => !v)} className="absolute end-2 top-1/2 -translate-y-1/2 rounded p-1 text-soil/50 hover:text-soil" aria-label={showPass ? "Hide password" : "Show password"}>
+              <button type="button" onClick={() => setShowPass((v) => !v)} className="absolute end-2 top-1/2 -translate-y-1/2 rounded p-1 text-soil/80 hover:text-soil" aria-label={showPass ? "Hide password" : "Show password"}>
                 {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
@@ -8089,7 +8083,7 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
             {tab === "signup" && <button type="button" onClick={() => switchTab("signin")} className="text-soil/80">{t("au_have")} <b className="text-forest">{t("auth_signin")}</b></button>}
             {tab === "reset" && <button type="button" onClick={() => switchTab("signin")} className="font-semibold text-forest">{t("au_back")}</button>}
           </div>
-          {accounts.mode === "local" && <p className="flex items-center gap-1.5 text-[11px] text-soil/60"><Database className="h-3.5 w-3.5" aria-hidden="true" />{t("au_local_note")}</p>}
+          {accounts.mode === "local" && <p className="flex items-center gap-1.5 text-[11px] text-soil/80"><Database className="h-3.5 w-3.5" aria-hidden="true" />{t("au_local_note")}</p>}
         </form>
       </div>
     </div>
@@ -8123,7 +8117,7 @@ function AccountMenu({ t, session, onSignIn, onSignUp, onSignOut }) {
       {open && (
         <div className="absolute end-0 top-full z-50 mt-2 w-64 rounded-2xl border border-soil/10 bg-white p-3 shadow-xl">
           <p className="font-bold text-forest">{session.name}</p>
-          <p className="truncate text-sm text-soil/70" dir="ltr">{session.email}</p>
+          <p className="truncate text-sm text-soil/80" dir="ltr">{session.email}</p>
           <p className="mt-1 inline-flex rounded-full bg-leaf/15 px-2 py-0.5 text-xs font-bold text-forest">{t("role_" + session.role)}</p>
           <button onClick={() => { setOpen(false); onSignOut(); }} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-soil/15 px-3 py-2 text-sm font-bold text-soil hover:bg-ivory">
             <LogOut className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />{t("auth_signout")}
@@ -8163,27 +8157,27 @@ function MembersAdmin({ t, dn, accounts, toast, embedded }) {
         {accounts.mode === "cloud" ? t("mem_cloud") : t("mem_local")}
       </p>
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-2xl bg-forest p-4 text-ivory"><p className="text-xs text-ivory/70">{t("mem_total")}</p><p className="font-display text-3xl font-extrabold text-gold">{accounts.members.length}</p></div>
+        <div className="rounded-2xl bg-forest p-4 text-ivory"><p className="text-xs text-ivory/80">{t("mem_total")}</p><p className="font-display text-3xl font-extrabold text-gold">{accounts.members.length}</p></div>
         {counts.map(([r, n]) => (
-          <div key={r} className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/60">{t("role_" + r)}</p><p className="font-display text-3xl font-extrabold text-forest">{n}</p></div>
+          <div key={r} className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("role_" + r)}</p><p className="font-display text-3xl font-extrabold text-forest">{n}</p></div>
         ))}
       </div>
       <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
         <div className="border-b border-soil/10 p-3">
           <div className="relative max-w-sm">
-            <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/40" aria-hidden="true" />
+            <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
             <label htmlFor="mem-q" className="sr-only">{t("mem_search")}</label>
             <input id="mem-q" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("mem_search")} className={inputCls + " ps-9"} />
           </div>
         </div>
         {(accounts.membersState === "loading" || accounts.membersState === "slow") && !accounts.members.length ? (
-          <p className="p-6 text-sm text-soil/70">{accounts.membersState === "slow" ? t("mem_slow") : t("mem_loading")}</p>
+          <p className="p-6 text-sm text-soil/80">{accounts.membersState === "slow" ? t("mem_slow") : t("mem_loading")}</p>
         ) : list.length === 0 ? (
-          <p className="p-6 text-center text-sm text-soil/70">{t("mem_empty")}</p>
+          <p className="p-6 text-center text-sm text-soil/80">{t("mem_empty")}</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] text-sm">
-              <thead className="bg-ivory text-start text-xs uppercase tracking-wide text-soil/60">
+              <thead className="bg-ivory text-start text-xs uppercase tracking-wide text-soil/80">
                 <tr>{[t("au_name"), t("au_email"), t("au_phone"), t("au_role"), t("au_district"), t("mem_joined"), t("mem_last")].map((h) => <th key={h} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
               </thead>
               <tbody className="divide-y divide-soil/10">
@@ -8193,9 +8187,9 @@ function MembersAdmin({ t, dn, accounts, toast, embedded }) {
                     <td className="px-4 py-3" dir="ltr"><a href={`mailto:${m.email}`} className="text-soil underline-offset-2 hover:underline">{m.email}</a></td>
                     <td className="px-4 py-3" dir="ltr">{m.phone || "·"}</td>
                     <td className="px-4 py-3"><span className="rounded-full bg-leaf/15 px-2 py-0.5 text-xs font-bold text-forest">{t("role_" + m.role)}</span></td>
-                    <td className="px-4 py-3">{[m.village, dn(m.district)].filter(Boolean).join(", ")}{m.province ? <span className="block text-[11px] text-soil/60">{provName("en", m.province)}</span> : null}</td>
-                    <td className="px-4 py-3 text-xs text-soil/70" dir="ltr">{when(m.createdAt)}</td>
-                    <td className="px-4 py-3 text-xs text-soil/70" dir="ltr">{when(m.lastLoginAt)}</td>
+                    <td className="px-4 py-3">{[m.village, dn(m.district)].filter(Boolean).join(", ")}{m.province ? <span className="block text-[11px] text-soil/80">{provName("en", m.province)}</span> : null}</td>
+                    <td className="px-4 py-3 text-xs text-soil/80" dir="ltr">{when(m.createdAt)}</td>
+                    <td className="px-4 py-3 text-xs text-soil/80" dir="ltr">{when(m.lastLoginAt)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -8244,7 +8238,7 @@ function Footer({ t, setTab }) {
   const [info, setInfo] = useState(null);
   const links = [["how", ClipboardList], ["safety", ShieldCheck], ["agent", Handshake]];
   return (
-    <footer className="mt-10 bg-soil text-ivory" dir="ltr">
+    <footer className="mt-8 w-full bg-[#4A3219] pb-28 text-ivory lg:pb-12" dir="ltr">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_1.4fr]">
         <div>
           <div className="flex items-center gap-3">
@@ -8254,7 +8248,7 @@ function Footer({ t, setTab }) {
               <p className="text-sm italic text-ivory/75">Sharing Resources, Growing Together</p>
             </div>
           </div>
-          <p className="mt-4 max-w-sm text-sm text-ivory/70">Agri-Share is a peer-to-peer agricultural machinery rental and crop marketplace connecting farmers, machinery owners, and bulk buyers across Pakistan and beyond.</p>
+          <p className="mt-4 max-w-sm text-sm text-ivory/80">Agri-Share is a peer-to-peer agricultural machinery rental and crop marketplace connecting farmers, machinery owners, and bulk buyers across Pakistan and beyond.</p>
         </div>
         <nav className="grid gap-2 sm:grid-cols-2" aria-label="Agri-Share">
           {links.map(([k, Icon]) => (
@@ -8267,7 +8261,7 @@ function Footer({ t, setTab }) {
           </a>
         </nav>
       </div>
-      <div className="mx-auto max-w-7xl px-4 pb-6 text-[11px] leading-relaxed text-ivory/60 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 pb-6 text-[11px] leading-relaxed text-ivory/80 sm:px-6">
         <p className="mb-1 flex items-center gap-1.5 font-bold uppercase tracking-wide text-ivory/75"><Camera className="h-3.5 w-3.5" aria-hidden="true" />Machine photo credits (Wikimedia Commons)</p>
         <p>
           {Object.values(MACHINE_PHOTOS).map((ph, i) => (
@@ -8276,7 +8270,7 @@ function Footer({ t, setTab }) {
           . Photos show the machine type, not always the exact model listed. Currencies are converted at reference rates (1 USD ≈ {USD_PKR} PKR ≈ 6.67 CNY ≈ 94 INR, Nov 2026).
         </p>
       </div>
-      <div className="border-t border-ivory/10 py-4 text-center text-xs text-ivory/60">© 2026 Agri-Share Technologies. All rights reserved.</div>
+      <div className="border-t border-ivory/10 py-4 text-center text-xs text-ivory/80">© 2026 Agri-Share Technologies. All rights reserved.</div>
       {info && (
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-soil/50 backdrop-blur-sm sm:items-center sm:p-4" onMouseDown={(e) => { if (e.target === e.currentTarget) setInfo(null); }}>
           <div role="dialog" aria-modal="true" aria-labelledby="ft-h" className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-ivory p-6 text-soil shadow-2xl sm:rounded-3xl">
@@ -8285,7 +8279,7 @@ function Footer({ t, setTab }) {
               <button type="button" onClick={() => setInfo(null)} className="rounded-lg p-1.5 hover:bg-soil/10" aria-label={t("close")}><X className="h-5 w-5" /></button>
             </div>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {FOOTER_INFO[info].body.map((line) => <li key={line} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-leaf" aria-hidden="true" />{line}</li>)}
+              {FOOTER_INFO[info].body.map((line) => <li key={line} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-leafink" aria-hidden="true" />{line}</li>)}
             </ul>
             <div className="mt-5 flex flex-wrap gap-2">
               {info === "agent" && setTab && <button type="button" onClick={() => { setInfo(null); setTab("agri-agent"); }} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">Open Agri-Agent & USSD</button>}
@@ -8626,10 +8620,10 @@ function App() {
   const showTab = tab === "members" && !accounts.cloudOwner ? "marketplace" : tab;
 
   return (
-    <div dir={langMeta.dir} lang={lang} className={`min-h-screen bg-ivory text-soil ${langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
+    <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
       <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
-      <main id="main" className="pb-24 lg:pb-0">
+      <main id="main" className="w-full">
         {showTab === "marketplace" && (
           <>
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} />
