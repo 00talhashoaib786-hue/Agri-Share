@@ -348,6 +348,31 @@ const T = {
     lr_step3: "Live offers",
     lr_step_locked: "Start a new request to change the machine or offer.",
     ad403_title: "403 — Authorized Agri-Share Administration Only",
+    ow_ownerphone: "Owner phone (calls & WhatsApp)",
+    al_title: "New Activity Alerts",
+    al_sub: "{n} item(s) need attention",
+    al_none: "All caught up. New listings and farmer requests appear here instantly.",
+    al_listing: "New machine awaiting approval",
+    al_request: "Farmer request",
+    al_demand: "Waiting demand ticket",
+    al_booking: "Booking awaiting owner",
+    al_view: "Review",
+    ad_live: "Live Requests & Bookings",
+    ad_live_req: "InDrive machinery requests",
+    ad_live_bk: "Bookings",
+    ct_call: "Call",
+    ct_wa: "WhatsApp",
+    ct_none: "No phone on file",
+    ct_owner: "Owner",
+    ct_farmer: "Farmer",
+    ct_rent_dry: "Dry rent (renter buys diesel)",
+    ct_rent_wet: "Wet rent (diesel included)",
+    ct_model: "Machine",
+    ct_rate: "Hourly rate",
+    ct_offered: "Offered",
+    ct_needed: "Machine needed",
+    ct_location: "Location",
+    ct_time: "Submitted",
     ad403_sub: "This area is restricted to the Agri-Share founder and authorised team administrators.",
     ad403_signin: "Sign in with an admin account",
     ad403_home: "Back to marketplace",
@@ -3663,11 +3688,11 @@ function PrefsPill({ t, lang, setLang, country, setCountry, full }) {
   );
 }
 
-function NavBadge({ n }) {
-  return n > 0 ? <span className="min-w-[18px] rounded-full bg-gold px-1.5 text-center text-[11px] font-bold leading-[18px] text-soil">{n}</span> : null;
+function NavBadge({ n, alert }) {
+  return n > 0 ? <span className={`min-w-[18px] rounded-full px-1.5 text-center text-[11px] font-bold leading-[18px] ${alert ? "bg-red-600 text-white" : "bg-gold text-soil"}`} aria-label={alert ? `${n} new` : undefined}>{n}</span> : null;
 }
 
-function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs, account, country, setCountry, activityCount, onActivity }) {
+function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs, account, country, setCountry, activityCount, onActivity, adminCount = 0 }) {
   return (
     <header className="sticky top-0 z-40 w-full max-w-full border-b border-forest/10 bg-white/95 shadow-[0_1px_0_rgba(20,90,50,0.04)] backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
@@ -3696,6 +3721,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
             <Icon className="h-4 w-4" aria-hidden="true" />{t(label)}
             {key === "bookings" && <NavBadge n={activeCount} />}
             {key === "owner-portal" && <NavBadge n={pendingCount} />}
+            {key === "admin" && <NavBadge n={adminCount} alert />}
             <span className={`absolute inset-x-2 bottom-0 h-[3px] rounded-t-full transition-all ${tab === key ? "bg-forest" : "bg-transparent"}`} aria-hidden="true" />
           </button>
         ))}
@@ -3704,7 +3730,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
   );
 }
 
-function BottomNav({ t, tab, setTab, tabs, activeCount, pendingCount, onActivity, activityCount }) {
+function BottomNav({ t, tab, setTab, tabs, activeCount, pendingCount, onActivity, activityCount, adminCount = 0 }) {
   const [more, setMore] = useState(false);
   const main = ["marketplace", "live-request", "agri-mandi", "bookings"];
   const rest = tabs.filter((x) => !main.includes(x.key));
@@ -3721,7 +3747,7 @@ function BottomNav({ t, tab, setTab, tabs, activeCount, pendingCount, onActivity
       <nav data-nav aria-label="Main mobile" className="fixed inset-x-0 bottom-0 z-40 border-t border-forest/10 bg-white/85 px-2 pb-[max(env(safe-area-inset-bottom),6px)] pt-1.5 shadow-[0_-8px_30px_rgba(20,90,50,0.10)] backdrop-blur-xl lg:hidden">
         <div className="mx-auto flex max-w-lg items-stretch">
           {main.map((k) => { const x = TABS.find((y) => y.key === k); return item(k, x.icon, t(x.short), k === "bookings" ? activeCount : 0, () => setTab(k)); })}
-          {item("__more", Menu, t("nav_s_more"), rest.some((x) => x.key === "owner-portal") ? pendingCount : 0, () => setMore(true))}
+          {item("__more", Menu, t("nav_s_more"), (rest.some((x) => x.key === "owner-portal") ? pendingCount : 0) + (rest.some((x) => x.key === "admin") ? adminCount : 0), () => setMore(true))}
         </div>
       </nav>
       {more && (
@@ -3733,6 +3759,7 @@ function BottomNav({ t, tab, setTab, tabs, activeCount, pendingCount, onActivity
                 <button key={k} onClick={() => { setMore(false); run(); }} className="relative flex flex-col items-center gap-1.5 rounded-2xl bg-white p-3 text-center text-xs font-bold text-forest shadow-sm ring-1 ring-soil/10 transition active:scale-95">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-forest/10"><Icon className="h-5 w-5" aria-hidden="true" /></span>{label}
                   {k === "owner-portal" && pendingCount > 0 && <span className="absolute end-2 top-2 rounded-full bg-gold px-1.5 text-[10px] text-soil">{pendingCount}</span>}
+                  {k === "admin" && adminCount > 0 && <span className="absolute end-2 top-2 rounded-full bg-red-600 px-1.5 text-[10px] font-bold text-white">{adminCount}</span>}
                   {k === "__act" && activityCount > 0 && <span className="absolute end-2 top-2 rounded-full bg-gold px-1.5 text-[10px] text-soil">{activityCount}</span>}
                 </button>
               ))}
@@ -4593,7 +4620,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
 /* ------------------------------------------------------------------ */
 function ListMachineForm({ t, dn, lang, onAdd, session }) {
   const sessLoc = session && session.location && locCountry(session.location) === CUR.id ? session.location : null;
-  const blank = { name: "", category: "tractor", loc: sessLoc, distance: 5, rate: Math.round(askFor("tractor", 2500)), operator: "optional", transport: "optional", ownerName: (session && session.name) || "", spec: "" };
+  const blank = { name: "", category: "tractor", loc: sessLoc, distance: 5, rate: Math.round(askFor("tractor", 2500)), operator: "optional", transport: "optional", ownerName: (session && session.name) || "", ownerPhone: (session && session.phone) || "", spec: "" };
   const [f, setF] = useState(blank);
   const [tried, setTried] = useState(false);
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }));
@@ -4602,6 +4629,7 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
     if (f.name.trim().length < 3) err.name = "Required";
     if (!f.loc) err.loc = t("loc_err");
     if (!f.ownerName.trim()) err.ownerName = "Required";
+    if (!/^\+?\d{10,13}$/.test(f.ownerPhone.replace(/[\s-]/g, ""))) err.ownerPhone = t("err_phone");
     const rate = Number(f.rate);
     if (!(rate >= 500 && rate <= 500000)) err.rate = `${pkr(500)} to ${pkr(500000)}`;
     return err;
@@ -4614,7 +4642,7 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
     const rate = Number(f.rate);
     const { loc, ...rest } = f;
     // distance 5 km is only a fallback shown to renters who have not set their own location
-    onAdd({ ...rest, name: f.name.trim(), ownerName: f.ownerName.trim(), spec: f.spec.trim(), rate: Math.round(rate), distance: 5, country: loc.country || CUR.id,
+    onAdd({ ...rest, name: f.name.trim(), ownerName: f.ownerName.trim(), ownerPhone: f.ownerPhone.replace(/[\s-]/g, ""), spec: f.spec.trim(), rentType: "dry", rate: Math.round(rate), distance: 5, country: loc.country || CUR.id,
       province: loc.province, district: loc.district, village: loc.village || loc.district, lat: loc.lat, lng: loc.lng });
     setF(blank);
     setTried(false);
@@ -4645,6 +4673,7 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
       )}
       <div className="sm:col-span-2"><LocationField t={t} lang={lang} id="m-loc" label={t("loc_machine")} value={f.loc} onChange={(loc) => setF((s) => ({ ...s, loc }))} error={errors.loc} /></div>
       <Field label={t("ow_ownername")} htmlFor="m-own" error={errors.ownerName}><input id="m-own" value={f.ownerName} onChange={set("ownerName")} className={inputCls} /></Field>
+      <Field label={t("ow_ownerphone")} htmlFor="m-phone" error={errors.ownerPhone}><input id="m-phone" type="tel" inputMode="tel" autoComplete="tel" value={f.ownerPhone} onChange={set("ownerPhone")} placeholder="0300 1234567" className={inputCls} dir="ltr" /></Field>
       <Field label={t("ow_opterm")} htmlFor="m-op">
         <select id="m-op" value={f.operator} onChange={set("operator")} className={inputCls}>
           <option value="included">{t("op_included")}</option><option value="optional">{t("op_optional")}</option><option value="none">{t("op_none")}</option>
@@ -6241,7 +6270,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   const post = (e) => {
     e.preventDefault();
     requireAuth(() => {
-      const r = { ...f, country: CUR.id, id: "RQ-" + Math.floor(10000 + Math.random() * 89999), rate: Math.max(1, Number(f.rate) || 0), hours: Math.min(16, Math.max(1, Number(f.hours) || 1)), createdAt: Date.now(), status: "open", tierReached: 1, renterEmail: session ? session.email : null, renterName: session ? session.name : "" };
+      const r = { ...f, country: CUR.id, id: "RQ-" + Math.floor(10000 + Math.random() * 89999), rate: Math.max(1, Number(f.rate) || 0), hours: Math.min(16, Math.max(1, Number(f.hours) || 1)), createdAt: Date.now(), status: "open", tierReached: 1, renterEmail: session ? session.email : null, renterName: session ? session.name : "", renterPhone: session ? session.phone || "" : "" };
       saveRequest(r);
       setReq(r); setStatuses({}); setOffers([]); setBooked(null);
       statusRef.current = {};
@@ -6938,6 +6967,28 @@ async function sha256Hex(text) {
 const adminHash = (salt, password) => sha256Hex(`agrishare-admin:${salt}:${password}`);
 const ACTIVE_STATUSES = ["confirmed", "completed", "feedback"];
 
+// "0300 1234567" / "+92 300..." -> "923001234567" for wa.me links (Pakistani 03xx numbers get the 92 code)
+const waDigits = (raw) => {
+  let d = String(raw || "").replace(/\D/g, "");
+  if (d.startsWith("00")) d = d.slice(2);
+  if (/^03\d{9}$/.test(d)) d = "92" + d.slice(1);
+  else if (/^3\d{9}$/.test(d)) d = "92" + d;
+  return d.length >= 10 ? d : "";
+};
+const fmtStamp = (ms) => (ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "·");
+
+function ContactButtons({ t, phone, name }) {
+  const wa = waDigits(phone);
+  if (!phone || !wa) return <span className="text-xs font-semibold text-soil/80">{t("ct_none")}</span>;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-1.5">
+      <span className="font-mono text-xs font-semibold text-soil" dir="ltr">{phone}</span>
+      <a href={`tel:+${wa}`} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2 py-1 text-[11px] font-bold text-ivory" aria-label={`${t("ct_call")} ${name || phone}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_call")}</a>
+      <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg bg-[#1E7A45] px-2 py-1 text-[11px] font-bold text-white" aria-label={`${t("ct_wa")} ${name || phone}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_wa")}</a>
+    </span>
+  );
+}
+
 function ListingStatusPill({ status, t }) {
   const s = status || "approved";
   const cls = s === "pending" ? "bg-gold/25 text-soil" : s === "rejected" ? "bg-red-100 text-red-800" : "bg-leaf/15 text-forest";
@@ -7238,6 +7289,15 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
   const sortedBookings = [...bookings].sort((a, b) => b.createdAt - a.createdAt);
   const creditOut = bookings.filter((b) => b.financing && b.financing.status !== "settled" && !["cancelled", "declined"].includes(b.status)).reduce((s, b) => s + b.financing.balance, 0);
   const channelLabel = (c) => (c === "ussd" ? "USSD" : c === "live" ? "InDrive" : "App");
+  // older records may lack a phone: fall back to the member profile with the same email
+  const byEmail = useMemo(() => { const m = new Map(); (accounts.members || []).forEach((x) => { if (x.email) m.set(normEmail(x.email), x); }); return m; }, [accounts.members]);
+  const prof = (email) => (email ? byEmail.get(normEmail(email)) : null) || {};
+  const alerts = [
+    ...listings.filter((l) => l.status === "pending").map((l) => ({ id: "l" + l.id, at: l.submittedAt || 0, kind: "listing", sub: "verify", title: l.name, who: l.ownerName, where: `${l.village || ""}${l.district ? ", " + dn(l.district) : ""}` })),
+    ...liveRequests.filter((r) => r.status === "open").map((r) => ({ id: "r" + r.id, at: r.createdAt || 0, kind: "request", sub: "live", title: `${t("one_" + r.category)} · ${pkr(r.rate)}/hr`, who: r.renterName || prof(r.renterEmail).name || "", where: r.village || "" })),
+    ...demand.filter((d) => d.status === "waiting").map((d) => ({ id: "d" + d.id, at: d.createdAt || 0, kind: "demand", sub: "demand", title: `${t("one_" + d.category)} · ${t("dm_" + d.type)}`, who: d.renterName || "", where: d.village || dn(d.district || "") })),
+    ...bookings.filter((b) => b.status === "sent").map((b) => ({ id: "b" + b.id, at: b.createdAt || 0, kind: "booking", sub: "live", title: b.listingName, who: b.renterName || "", where: dn(b.district || "") })),
+  ].sort((a, b) => b.at - a.at);
 
   const copyLedger = async () => {
     const rows = [["Booking", "Date", "Machine", "Renter", "Channel", "Status", "Value PKR", "Commission PKR"], ...sortedBookings.map((b) => [b.id, b.date, b.listingName, b.renterName, channelLabel(b.channel), b.status, b.quote.total, b.quote.commission])];
@@ -7265,7 +7325,7 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
     { key: "verify", label: t("ad_verify"), icon: BadgeCheck, badge: counts.pending },
     { key: "ledger", label: t("ad_ledger"), icon: Wallet },
     { key: "settings", label: t("ad_settings"), icon: SlidersHorizontal },
-    { key: "requests", label: t("ad_requests"), icon: Radar, badge: liveRequests.filter((r) => r.status === "open").length },
+    { key: "live", label: t("ad_live"), icon: Radar, badge: liveRequests.filter((r) => r.status === "open").length + bookings.filter((b) => b.status === "sent").length },
     { key: "demand", label: t("ad_demand"), icon: Inbox, badge: demand.filter((d) => d.status === "waiting").length },
     { key: "mandi", label: t("nav_mandi"), icon: Wheat },
     { key: "members", label: t("nav_members"), icon: Users },
@@ -7285,6 +7345,31 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
           {lock && <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
         </div>
       </div>
+      {/* New Activity Alerts: everything that needs the founder's attention, newest first */}
+      <div className={`mb-5 rounded-2xl p-4 ring-1 ${alerts.length ? "bg-red-50 ring-red-200" : "bg-white ring-soil/10"}`} role="region" aria-labelledby="al-h" aria-live="polite">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 id="al-h" className="flex items-center gap-2 font-bold text-forest">
+            <span className="relative flex h-2.5 w-2.5">{alerts.length > 0 && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />}<span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${alerts.length ? "bg-red-600" : "bg-leafink"}`} /></span>
+            {t("al_title")}
+          </h3>
+          {alerts.length > 0 && <span className="rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold text-white">{t("al_sub").replace("{n}", alerts.length)}</span>}
+        </div>
+        {alerts.length === 0 ? <p className="mt-2 text-sm text-soil/80">{t("al_none")}</p> : (
+          <ul className="mt-3 grid gap-2 md:grid-cols-2">
+            {alerts.slice(0, 6).map((a) => (
+              <li key={a.id} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl bg-white p-3 text-sm ring-1 ring-red-100">
+                <span className="min-w-0 flex-1 basis-48">
+                  <span className="block text-[11px] font-bold uppercase tracking-wide text-red-700">{t("al_" + a.kind)}</span>
+                  <span className="block break-words font-bold text-forest">{a.title}</span>
+                  <span className="block break-words text-xs text-soil/80">{[a.who, a.where, fmtStamp(a.at)].filter(Boolean).join(" · ")}</span>
+                </span>
+                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") setLsFilter("pending"); }} className="ms-auto shrink-0 rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       {/* Marketplace mode: Live Public Mode (default) vs Sample Demo Data (evaluators) */}
       <div className="mb-5 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-2">
@@ -7343,10 +7428,24 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2"><p className="font-bold text-forest">{l.name}</p><ListingStatusPill status={l.status} t={t} /></div>
                       <p className="text-xs text-soil/80">{t("one_" + l.category)} · {l.village}, {dn(l.district)} · <span dir="ltr">{l.distance} km</span></p>
-                      <p className="text-xs text-soil/80">{t("owner")}: {l.ownerName} (<span dir="ltr">{l.ownerId}</span>){l.submittedAt ? ` · ${t("ad_submitted")} ${new Date(l.submittedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` : ""}</p>
-                      <p className="mt-1 text-sm font-bold text-forest" dir="ltr">{pkr(l.rate)}/hr</p>
-                      <p className="text-xs text-soil/80">{l.operator === "included" ? t("op_included") : l.operator === "optional" ? t("op_optional") : t("op_none")} · {l.transport === "included" ? t("tr_included") : l.transport === "optional" ? t("tr_optional") : t("tr_self")}</p>
-                      {l.spec && <p className="text-xs italic text-soil/80" dir="ltr">{l.spec}</p>}
+                      <dl className="mt-2 grid gap-x-3 gap-y-1 text-xs text-soil sm:grid-cols-[auto_1fr]">
+                        <dt className="font-semibold text-soil/80">{t("ct_owner")}</dt>
+                        <dd className="break-words font-bold">{l.ownerName || prof(l.ownerEmail).name || "·"} <span className="font-normal text-soil/80" dir="ltr">({l.ownerId})</span></dd>
+                        <dt className="font-semibold text-soil/80">{t("au_phone")}</dt>
+                        <dd><ContactButtons t={t} phone={l.ownerPhone || prof(l.ownerEmail).phone} name={l.ownerName} /></dd>
+                        <dt className="font-semibold text-soil/80">{t("au_email")}</dt>
+                        <dd className="break-all">{l.ownerEmail ? <a href={`mailto:${l.ownerEmail}`} className="font-semibold text-forest underline underline-offset-2" dir="ltr">{l.ownerEmail}</a> : "·"}</dd>
+                        <dt className="font-semibold text-soil/80">{t("ct_location")}</dt>
+                        <dd className="break-words">{[l.village, dn(l.district || ""), l.province && l.province !== "PB" ? l.province : ""].filter(Boolean).join(", ")}</dd>
+                        <dt className="font-semibold text-soil/80">{t("ct_model")}</dt>
+                        <dd className="break-words" dir="ltr">{l.name}{l.spec ? ` · ${l.spec}` : ""}</dd>
+                        <dt className="font-semibold text-soil/80">{t("ct_rate")}</dt>
+                        <dd className="font-bold text-forest" dir="ltr">{pkr(l.rate)}/hr</dd>
+                        <dt className="font-semibold text-soil/80">{t("lr_rent")}</dt>
+                        <dd>{t(l.rentType === "wet" ? "ct_rent_wet" : "ct_rent_dry")} · {l.operator === "included" ? t("op_included") : l.operator === "optional" ? t("op_optional") : t("op_none")} · {l.transport === "included" ? t("tr_included") : l.transport === "optional" ? t("tr_optional") : t("tr_self")}</dd>
+                        <dt className="font-semibold text-soil/80">{t("ct_time")}</dt>
+                        <dd dir="ltr">{fmtStamp(l.submittedAt)}</dd>
+                      </dl>
                     </div>
                   </div>
                   <div className="mt-3 flex gap-2">
@@ -7504,31 +7603,58 @@ function AdminConsole({ t, dn, lang, listings, setListingStatus, bookings, liveR
         </div>
       )}
 
-      {sub === "requests" && (
-        <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-          {liveRequests.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] text-sm">
-                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
-                  <tr>{["ID", t("lr_machine"), t("lr_village"), t("lr_date"), t("ad_req_rate"), t("lr_rent"), t("ad_req_tier"), t("ad_col_status")].map((h) => <th key={h} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
-                </thead>
-                <tbody className="divide-y divide-soil/10">
-                  {[...liveRequests].sort((a, b) => b.createdAt - a.createdAt).map((r) => (
-                    <tr key={r.id}>
-                      <td className="px-4 py-3 font-mono text-xs" dir="ltr">{r.id}</td>
-                      <td className="px-4 py-3">{t("one_" + r.category)}</td>
-                      <td className="px-4 py-3">{r.village}</td>
-                      <td className="px-4 py-3 text-xs" dir="ltr">{fmtDate(r.date)} · {r.hours}h</td>
-                      <td className="px-4 py-3 font-semibold" dir="ltr">{pkr(r.rate)}/hr{r.agreedRate ? ` → ${pkr(r.agreedRate)}` : ""}</td>
-                      <td className="px-4 py-3">{r.rentType === "wet" ? t("lr_wet") : t("lr_dry")}</td>
-                      <td className="px-4 py-3 font-bold">T{r.tierReached || 1}</td>
-                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+      {sub === "live" && (
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
+            <h3 className="flex items-center gap-2 border-b border-soil/10 p-4 font-bold text-forest"><Radar className="h-4 w-4" aria-hidden="true" />{t("ad_live_req")} ({liveRequests.length})</h3>
+            {liveRequests.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
+              <ul className="divide-y divide-soil/10">
+                {[...liveRequests].sort((x, y) => (y.createdAt || 0) - (x.createdAt || 0)).map((r) => {
+                  const p0 = prof(r.renterEmail);
+                  return (
+                    <li key={r.id} className={`grid gap-2 p-4 text-sm md:grid-cols-[1.2fr_1fr_auto] md:items-center ${r.status === "open" ? "bg-gold/5" : ""}`}>
+                      <div className="min-w-0">
+                        <p className="flex flex-wrap items-center gap-2"><span className="font-mono text-xs" dir="ltr">{r.id}</span><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span><span className="text-xs text-soil/80" dir="ltr">{fmtStamp(r.createdAt)}</span></p>
+                        <p className="mt-1 break-words font-bold text-forest">{t("ct_farmer")}: {r.renterName || p0.name || "·"}</p>
+                        <p className="break-all text-xs text-soil/80" dir="ltr">{r.renterEmail || ""}</p>
+                      </div>
+                      <div className="min-w-0 text-xs text-soil">
+                        <p><span className="font-semibold text-soil/80">{t("ct_needed")}:</span> {t("one_" + r.category)}{r.model ? <span dir="ltr"> · {r.model}</span> : null}</p>
+                        <p><span className="font-semibold text-soil/80">{t("ct_location")}:</span> {r.village || "·"}{r.loc && r.loc.district ? `, ${dn(r.loc.district)}` : ""}</p>
+                        <p><span className="font-semibold text-soil/80">{t("ct_offered")}:</span> <b className="text-forest" dir="ltr">{pkr(r.rate)}/hr</b>{r.agreedRate ? <span dir="ltr"> → {pkr(r.agreedRate)}</span> : null} · {r.hours}h · <span dir="ltr">{fmtDate(r.date)}</span> · {r.rentType === "wet" ? t("lr_wet") : t("lr_dry")} · T{r.tierReached || 1}</p>
+                      </div>
+                      <div><ContactButtons t={t} phone={r.renterPhone || p0.phone} name={r.renterName || p0.name} /></div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+          <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
+            <h3 className="flex items-center gap-2 border-b border-soil/10 p-4 font-bold text-forest"><ClipboardList className="h-4 w-4" aria-hidden="true" />{t("ad_live_bk")} ({bookings.length})</h3>
+            {sortedBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
+              <ul className="divide-y divide-soil/10">
+                {sortedBookings.map((b) => {
+                  const p0 = prof(b.renterEmail);
+                  return (
+                    <li key={b.id} className={`grid gap-2 p-4 text-sm md:grid-cols-[1.2fr_1fr_auto] md:items-center ${b.status === "sent" ? "bg-gold/5" : ""}`}>
+                      <div className="min-w-0">
+                        <p className="flex flex-wrap items-center gap-2"><span className="font-mono text-xs" dir="ltr">{b.id}</span><StatusPill status={b.status} t={t} /><span className="rounded-full bg-ivory px-2 py-0.5 text-[11px] font-bold ring-1 ring-soil/15">{channelLabel(b.channel)}</span><span className="text-xs text-soil/80" dir="ltr">{fmtStamp(b.createdAt)}</span></p>
+                        <p className="mt-1 break-words font-bold text-forest">{t("ct_farmer")}: {b.renterName || p0.name || "·"}</p>
+                        <p className="break-all text-xs text-soil/80" dir="ltr">{b.renterEmail || ""}</p>
+                      </div>
+                      <div className="min-w-0 text-xs text-soil">
+                        <p><span className="font-semibold text-soil/80">{t("ct_model")}:</span> <span dir="ltr">{b.listingName}</span> ({t("one_" + b.category)})</p>
+                        <p><span className="font-semibold text-soil/80">{t("ct_location")}:</span> {dn(b.district || "") || "·"}</p>
+                        <p><span className="font-semibold text-soil/80">{t("ct_rate")}:</span> <b className="text-forest" dir="ltr">{pkr(b.quote.rate || 0)}/hr</b> · {b.hours}h · <span dir="ltr">{fmtDate(b.date)}</span> · <span dir="ltr">{pkr(b.quote.total || 0)}</span></p>
+                      </div>
+                      <div><ContactButtons t={t} phone={b.renterPhone || p0.phone} name={b.renterName || p0.name} /></div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
       )}
     </section>
@@ -8610,6 +8736,10 @@ function App() {
   const removeListing = (id) => { setListings((ls) => ls.filter((l) => l.id !== id)); toast(t("toast_removed")); };
 
   const pendingCount = bookings.filter((b) => b.status === "sent").length;
+  // red Admin badge: machines awaiting approval + open InDrive requests + waiting demand tickets
+  const adminCount = accounts.isAdmin
+    ? realListings.filter((l) => l.status === "pending").length + liveRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length
+    : 0;
   const mine = (email) => !session || !email || email === session.email;
   const myBookings = [...bookings].filter((b) => b.channel === "ussd" || mine(b.renterEmail)).sort((a, b) => b.createdAt - a.createdAt);
   const myRequests = [...liveRequests].filter((r) => mine(r.renterEmail)).sort((a, b) => b.createdAt - a.createdAt);
@@ -8621,7 +8751,7 @@ function App() {
 
   return (
     <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
-      <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs}
+      <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs} adminCount={adminCount}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
       <main id="main" className="w-full">
         {showTab === "marketplace" && (
@@ -8650,7 +8780,7 @@ function App() {
       )}
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
       <KisanHelper t={t} lang={lang} listings={publicListings} open={helperOpen} setOpen={setHelperOpen} session={session} dieselPrice={dieselPrice} />
-      <BottomNav t={t} tab={showTab} setTab={setTab} tabs={tabs} activeCount={activeCount} pendingCount={pendingCount} activityCount={activityCount} onActivity={() => setActivityOpen(true)} />
+      <BottomNav t={t} adminCount={adminCount} tab={showTab} setTab={setTab} tabs={tabs} activeCount={activeCount} pendingCount={pendingCount} activityCount={activityCount} onActivity={() => setActivityOpen(true)} />
       <ActivityDrawer t={t} dn={dn} open={activityOpen} onClose={() => setActivityOpen(false)} bookings={myBookings} requests={myRequests} deals={myDeals} onVoucher={(id) => { setActivityOpen(false); setVoucherId(id); }} setTab={setTab} />
       {voucherBooking && <VoucherModal b={voucherBooking} t={t} dn={dn} onClose={() => setVoucherId(null)} updateBooking={updateBooking} />}
       <Toasts toasts={toasts} dismiss={dismissToast} />
