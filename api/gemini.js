@@ -98,9 +98,10 @@ async function handle(req, res) {
     if (remaining < 1500) break;
     // 4.5 s per model; the last model in the chain may use what is left so a long answer can still finish
     const isLast = i === models.length - 1;
-    let r = await callGemini(key, m, { system, contents, voice, json, thinking: true }, isLast ? remaining : Math.min(PER_MODEL_MS, remaining));
-    // a model that does not accept thinkingBudget 0 (e.g. newer releases) gets one try without it
-    if (r.status === 400 && /thinking/i.test(r.error || "")) r = await callGemini(key, m, { system, contents, voice, json, thinking: false }, isLast ? DEADLINE_MS - (Date.now() - startedAt) : Math.min(PER_MODEL_MS, DEADLINE_MS - (Date.now() - startedAt)));
+    const opts = { system, contents, voice, json };
+    let r = await callGemini(key, m, opts, isLast ? remaining : Math.min(PER_MODEL_MS, remaining));
+    // HTTP 400 on the full request (unsupported thinkingConfig / responseSchema): one retry with the minimal request
+    if (r.status === 400 && !r.minimal) r = await callGemini(key, m, opts, isLast ? DEADLINE_MS - (Date.now() - startedAt) : Math.min(PER_MODEL_MS, DEADLINE_MS - (Date.now() - startedAt)), true);
     if (r.ok) return res.status(200).json({ ok: true, text: r.text, model: m, ...(tried.length ? { fallbackFrom: tried } : {}) });
     tried.push(`${m}: ${r.status}`);
     last = r;
@@ -111,7 +112,29 @@ async function handle(req, res) {
   return res.status(last.status || 502).json({ ok: false, busy, error: busy ? `All Gemini models busy (${tried.join(", ")})` : last.error, tried });
 }
 
-async function callGemini(key, model, { system, contents, voice, json, thinking }, timeoutMs) {
+// Models that reject extra generation fields (thinkingConfig, responseSchema) with HTTP 400 get a minimal request
+const MINIMAL_MODELS = /flash-lite|flash-latest/;
+function buildRequest(model, { system, contents, voice, json }, minimal) {
+  const body = { contents };
+  if (system) body.systemInstruction = { parts: [{ text: String(system) }] };
+  if (minimal) {
+    // only standard fields; JSON shape for voice turns is requested in the system instruction instead
+    body.generationConfig = { maxOutputTokens: voice ? 220 : 600, temperature: 0.4 };
+  } else {
+    body.generationConfig = {
+      temperature: voice ? 0.6 : 0.45,
+      maxOutputTokens: voice ? 400 : 900,
+      ...(json ? { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { heard: { type: "STRING" }, reply: { type: "STRING" } }, required: ["heard", "reply"] } } : {}),
+      // no "thinking" for flash models: fast voice replies, and the output budget is not used up
+      ...(/flash/.test(model) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+    };
+  }
+  return body;
+}
+
+async function callGemini(key, model, opts, timeoutMs, forceMinimal = false) {
+  const minimal = forceMinimal || MINIMAL_MODELS.test(model);
+  const reqBody = buildRequest(model, opts, minimal);
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), Math.max(1000, timeoutMs));
   try {
@@ -119,20 +142,13 @@ async function callGemini(key, model, { system, contents, voice, json, thinking 
       method: "POST",
       signal: ctrl.signal,
       headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-      body: JSON.stringify({
-        ...(system ? { systemInstruction: { parts: [{ text: String(system) }] } } : {}),
-        contents,
-        generationConfig: {
-          temperature: voice ? 0.6 : 0.45,
-          maxOutputTokens: voice ? 400 : 900,
-          ...(json ? { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { heard: { type: "STRING" }, reply: { type: "STRING" } }, required: ["heard", "reply"] } } : {}),
-          // no "thinking" for flash models: sub-second voice replies, and the output budget is not used up
-          ...(thinking && /flash/.test(model) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
-        },
-      }),
+      body: JSON.stringify(reqBody),
     });
     const data = await r.json().catch(() => ({}));
-    if (!r.ok) return { ok: false, status: r.status, error: `Gemini ${r.status} (${model}): ${(data.error && data.error.message) || "request rejected"}` };
+    if (!r.ok) {
+      console.error(`[api/gemini] ${model} HTTP ${r.status} (${minimal ? "minimal" : "full"} request). Request keys: ${Object.keys(reqBody).join(", ")}; generationConfig keys: ${Object.keys(reqBody.generationConfig || {}).join(", ")}. Google said: ${(data.error && data.error.message) || "-"}`);
+      return { ok: false, status: r.status, minimal, error: `Gemini ${r.status} (${model}): ${(data.error && data.error.message) || "request rejected"}` };
+    }
     const cand = data.candidates && data.candidates[0];
     const text = ((cand && cand.content && cand.content.parts) || []).map((p) => p.text || "").join("").trim();
     if (!text) return { ok: false, status: 502, error: `Gemini returned no text (${model}: ${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };

@@ -952,12 +952,14 @@ const T = {
     am_err_rate: "Enter your expected price (at least Rs 100 per maund).",
     am_err_wallet: "Enter a valid mobile wallet number, e.g. 0300 1234567.",
     lr_expanding: "Expanding network in your district",
-    lr_step1_s: "1. Machine",
-    lr_step2_s: "2. Rate & Area",
-    lr_step3_s: "3. Offers",
+    lr_step1_s: "Machine",
+    lr_step2_s: "Rate",
+    lr_step3_s: "Offers",
     results_one: "1 machine found",
     toast_broadcast_one: "Sent to 1 nearby owner. The search widens automatically if they don't accept.",
-    kp_ussd_soon: "Coming soon"
+    kp_ussd_soon: "Coming soon",
+    ai_fallback: "AI is temporarily busy — built-in Kisan Helper is answering",
+    ai_offline_note: "AI advisor is offline — built-in Kisan Helper is answering"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1654,12 +1656,14 @@ const T = {
     am_err_rate: "اپنی متوقع قیمت لکھیں (کم از کم 100 روپے فی من)۔",
     am_err_wallet: "درست موبائل والیٹ نمبر لکھیں، مثلاً 0300 1234567۔",
     lr_expanding: "آپ کے ضلع میں نیٹ ورک بڑھ رہا ہے",
-    lr_step1_s: "1. مشین",
-    lr_step2_s: "2. ریٹ اور جگہ",
-    lr_step3_s: "3. آفرز",
+    lr_step1_s: "مشین",
+    lr_step2_s: "ریٹ",
+    lr_step3_s: "آفرز",
     results_one: "1 مشین ملی",
     toast_broadcast_one: "1 قریبی مالک کو بھیج دیا۔ قبول نہ ہونے پر دائرہ خود بڑھے گا۔",
-    kp_ussd_soon: "جلد آ رہا ہے"
+    kp_ussd_soon: "جلد آ رہا ہے",
+    ai_fallback: "اے آئی ابھی مصروف ہے، بلٹ ان کسان مددگار جواب دے رہا ہے",
+    ai_offline_note: "اے آئی مشیر آف لائن ہے، بلٹ ان کسان مددگار جواب دے رہا ہے"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2265,12 +2269,14 @@ const T = {
     am_err_rate: "اپنی متوقع قیمت لکھو (گھٹ توں گھٹ 100 روپے فی من)۔",
     am_err_wallet: "ٹھیک موبائل والیٹ نمبر لکھو، جیویں 0300 1234567۔",
     lr_expanding: "تہاڈے ضلعے وچ نیٹ ورک ودھ رہیا اے",
-    lr_step1_s: "1. مشین",
-    lr_step2_s: "2. ریٹ تے تھاں",
-    lr_step3_s: "3. آفراں",
+    lr_step1_s: "مشین",
+    lr_step2_s: "ریٹ",
+    lr_step3_s: "آفراں",
     results_one: "1 مشین لبھی",
     toast_broadcast_one: "1 نیڑے دے مالک نوں گھل دتا۔ نہ منے تے گھیرا آپے ودھے گا۔",
-    kp_ussd_soon: "چھیتی آ رہیا اے"
+    kp_ussd_soon: "چھیتی آ رہیا اے",
+    ai_fallback: "اے آئی ہلے رُجھیا اے، اندرلا کسان مددگار جواب دے رہیا اے",
+    ai_offline_note: "اے آئی صلاح کار آف لائن اے، اندرلا کسان مددگار جواب دے رہیا اے"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2877,12 +2883,14 @@ const T = {
     am_err_rate: "پنهنجي متوقع قيمت لکو (گهٽ ۾ گهٽ 100 رپيا في مڻ)۔",
     am_err_wallet: "صحيح موبائل والٽ نمبر لکو، جيئن 0300 1234567۔",
     lr_expanding: "توهان جي ضلعي ۾ نيٽ ورڪ وڌي رهيو آهي",
-    lr_step1_s: "1. مشين",
-    lr_step2_s: "2. اگهه ۽ جاءِ",
-    lr_step3_s: "3. آڇون",
+    lr_step1_s: "مشين",
+    lr_step2_s: "اگهه",
+    lr_step3_s: "آڇون",
     results_one: "1 مشين ملي",
     toast_broadcast_one: "1 ويجهي مالڪ کي موڪليو ويو۔ قبول نه ڪرڻ تي دائرو پاڻ وڌندو۔",
-    kp_ussd_soon: "جلد اچي رهيو آهي"
+    kp_ussd_soon: "جلد اچي رهيو آهي",
+    ai_fallback: "اي آءِ هن وقت مصروف آهي، اندروني ڪسان مددگار جواب ڏئي رهيو آهي",
+    ai_offline_note: "اي آءِ صلاحڪار آف لائن آهي، اندروني ڪسان مددگار جواب ڏئي رهيو آهي"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3191,12 +3199,14 @@ const T = {
     am_err_rate: "خپله تمه شوې بیه ولیکئ (لږ تر لږه 100 روپۍ په مڼ).",
     am_err_wallet: "سم موبایل والټ نمبر ولیکئ، لکه 0300 1234567.",
     lr_expanding: "ستاسو په ولسوالۍ کې شبکه پراخېږي",
-    lr_step1_s: "1. ماشین",
-    lr_step2_s: "2. بیه او ځای",
-    lr_step3_s: "3. وړاندیزونه",
+    lr_step1_s: "ماشین",
+    lr_step2_s: "بیه",
+    lr_step3_s: "وړاندیزونه",
     results_one: "1 ماشین وموندل شو",
     toast_broadcast_one: "1 نږدې مالک ته ولېږل شو. که ونه مني، لټون به پخپله پراخ شي.",
-    kp_ussd_soon: "ژر راځي"
+    kp_ussd_soon: "ژر راځي",
+    ai_fallback: "AI اوس بوخت دی، دننی کسان مرستندوی ځواب ورکوي",
+    ai_offline_note: "AI سلاکار آفلاین دی، دننی کسان مرستندوی ځواب ورکوي"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3495,12 +3505,14 @@ const T = {
     am_err_rate: "وتی امیتیں بہا بنویس (کم چہ کم 100 کلدار من ءَ)۔",
     am_err_wallet: "راستیں موبائل والیٹ نمبر بنویس، پیم 0300 1234567۔",
     lr_expanding: "شمئے ضلع ءَ نیٹ ورک مزن بوگ اِنت",
-    lr_step1_s: "1. مشین",
-    lr_step2_s: "2. نرخ و جاگہ",
-    lr_step3_s: "3. آفر",
+    lr_step1_s: "مشین",
+    lr_step2_s: "نرخ",
+    lr_step3_s: "آفر",
     results_one: "1 مشین در کپت",
     toast_broadcast_one: "1 نزّیکیں واہند ءَ رَوان دات۔ اگاں منّ نہ کنت، دائرہ وت مزن بیت۔",
-    kp_ussd_soon: "زوت کئیت"
+    kp_ussd_soon: "زوت کئیت",
+    ai_fallback: "AI اَنّوں اوستمان اِنت، تہی کِشاورزی کُمکی پسّو دئیگ اِنت",
+    ai_offline_note: "AI سلاہ کار آف لائن اِنت، تہی کِشاورزی کُمکی پسّو دئیگ اِنت"
   },
 };
 
@@ -4226,18 +4238,18 @@ function Hero({ t, onFind, onList, onLive, isEnglish, stats }) {
             <button onClick={onLive} className="group flex items-center gap-3 rounded-2xl bg-gold p-4 text-start text-soil shadow-xl shadow-black/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ivory">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-soil/10"><Tractor className="h-6 w-6" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-soil/80">{t("hero_role_farmer")}</span>
-                <span className="block font-display text-lg font-extrabold leading-tight">{t("hero_need")}</span>
-                <span className="block truncate text-xs font-semibold text-soil/80">{t("cta_live")}</span>
+                <span className="hero-card-text block text-[11px] font-bold uppercase tracking-wider text-soil/80">{t("hero_role_farmer")}</span>
+                <span className="hero-card-text block font-display text-lg font-extrabold leading-tight">{t("hero_need")}</span>
+                <span className="hero-card-text block text-xs font-semibold text-soil/80">{t("cta_live")}</span>
               </span>
               <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-1 rtl:-scale-x-100" aria-hidden="true" />
             </button>
             <button onClick={onList} className="group flex items-center gap-3 rounded-2xl bg-ivory/10 p-4 text-start text-ivory ring-1 ring-ivory/25 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:bg-ivory/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ivory/10"><Coins className="h-6 w-6 text-gold" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-ivory/80">{t("hero_role_owner")}</span>
-                <span className="block font-display text-lg font-extrabold leading-tight">{t("hero_earn")}</span>
-                <span className="block truncate text-xs font-semibold text-ivory/80">{t("cta_list")}</span>
+                <span className="hero-card-text block text-[11px] font-bold uppercase tracking-wider text-ivory/80">{t("hero_role_owner")}</span>
+                <span className="hero-card-text block font-display text-lg font-extrabold leading-tight">{t("hero_earn")}</span>
+                <span className="hero-card-text block text-xs font-semibold text-ivory/80">{t("cta_list")}</span>
               </span>
               <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-1 rtl:-scale-x-100" aria-hidden="true" />
             </button>
@@ -6225,8 +6237,11 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       await probeGemini(true);
       if (!alive) return;
       if (geminiProxy === "on" || GEMINI_KEY) { setMode((m) => (m === "claude" ? m : "gemini")); setAi({ status: "live", reason: "" }); }
-      else if (geminiProxy === "unknown") setAi({ status: "retry", reason: "AI advisor not reachable yet, will retry on your next message" });
-      else setAi({ status: "offline", reason: geminiProxy === "missing" ? "No /api/gemini route (local dev without VITE_GEMINI_API_KEY)" : "GEMINI_API_KEY is not set on the server" });
+      else if (geminiProxy === "unknown") setAi({ status: "retry", reasonKey: "ai_fallback" });
+      else {
+        console.warn("[Agri-Share] Kisan Advisor offline:", geminiProxy === "missing" ? "no /api/gemini route (local dev without VITE_GEMINI_API_KEY)" : "GEMINI_API_KEY is not set on the server");
+        setAi({ status: "offline", reasonKey: "ai_offline_note" });
+      }
     })();
     (async () => {
       try {
@@ -6274,7 +6289,8 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
         fallbackWhy = r.error || "unknown error";
         console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy);
         // all models temporarily busy: no raw "503" text, just a friendly note while the built-in advisor answers
-        setAi({ status: r.transient || r.busy ? "retry" : "offline", reason: fallbackWhy, reasonKey: r.busy ? "ai_busy" : "" });
+        const st = r.transient || r.busy ? "retry" : "offline";
+        setAi({ status: st, reasonKey: st === "retry" ? "ai_fallback" : "ai_offline_note" }); // raw error stays in the console
       }
     }
     try {
@@ -6294,7 +6310,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     if (!answered) {
       if (fallbackWhy) console.info("[Agri-Share] Answering with the built-in helper because:", fallbackWhy);
       answered = ruleAnswer(text, listings, dieselPrice, lang, undefined, { voice: !!viaVoice });
-      setBot(viaVoice ? toSpoken(answered) : answered, { pending: false, source: "rules" });
+      setBot(viaVoice ? toSpoken(answered) : answered, { pending: false, source: "rules", fallback: !!fallbackWhy });
     }
     // live call: keep spoken replies short and natural, whichever engine answered
     if (viaVoice) { answered = toSpoken(answered); setBot(answered); }
@@ -6318,12 +6334,17 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     const r = await askGemini({ system, contents, voice: true, json: true });
     if (!r.text) {
       setMessages((m) => m.filter((x) => x.id !== userId && x.id !== botId));
-      setAi({ status: r.transient || r.busy ? "retry" : "offline", reason: r.error || "voice request failed", reasonKey: r.busy ? "ai_busy" : "" });
+      setAi({ status: r.transient || r.busy ? "retry" : "offline", reasonKey: r.transient || r.busy ? "ai_fallback" : "ai_offline_note" });
       console.warn("[Agri-Share] Voice message could not be answered by Gemini:", r.error);
       return { error: r.error || "failed", transient: !!r.transient, busy: !!r.busy };
     }
     let heard = "", reply = "";
-    try { const j = JSON.parse(r.text); heard = String(j.heard || ""); reply = String(j.reply || ""); } catch (e) { reply = r.text; }
+    try {
+      const raw = String(r.text).replace(/^```(?:json)?\s*|\s*```$/g, "");
+      const m = raw.match(/\{[\s\S]*\}/);
+      const j = JSON.parse(m ? m[0] : raw);
+      heard = String(j.heard || ""); reply = String(j.reply || "");
+    } catch (e) { reply = String(r.text).replace(/```(?:json)?/g, ""); }
     heard = fixScript(heard.trim(), lang); reply = toSpoken(fixScript(reply.trim(), lang)) || t("vc_no_speech");
     setMessages((m) => m.map((x) => (x.id === userId ? { ...x, text: heard || "🎤", pending: false } : x.id === botId ? { ...x, text: reply, pending: false, source: "gemini" } : x)));
     setAi({ status: "live", reason: "" });
@@ -6531,7 +6552,8 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
       }
       // keep Gemini audio for the next turns; after 2 failures in a row use the browser's recognition for ONE turn
       audioFailsRef.current += 1;
-      setVoiceNote(`${t("vc_audio_retry")} · ${r.error}`);
+      console.warn("[Agri-Share] Voice turn failed:", r.error);
+      setVoiceNote("vc_audio_retry");
       setPhase("tap");
       return;
     }
@@ -6742,7 +6764,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ivory"><Logo className="h-8 w-8" /></span>
             <div className="min-w-0 flex-1">
               <p className="truncate font-bold">{t("kh_title")}</p>
-              <p className="flex items-center gap-1.5 text-[11px] text-ivory/80" role="status" title={ai.reason || undefined}>
+              <p className="flex items-center gap-1.5 text-[11px] text-ivory/80" role="status">
                 {mode === "claude" ? <Sparkles className="h-3 w-3 text-gold" aria-hidden="true" /> : (
                   <span className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 font-bold ${ai.status === "live" ? "bg-leaf/25 text-ivory" : ai.status === "checking" ? "bg-ivory/10" : "bg-ivory/15"}`}>
                     <span className={`h-1.5 w-1.5 rounded-full ${ai.status === "live" ? "animate-pulse bg-leaf" : ai.status === "checking" ? "bg-ivory/60" : ai.status === "retry" ? "animate-pulse bg-gold" : "bg-red-400"}`} aria-hidden="true" />
@@ -6751,8 +6773,8 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
                 )}
                 {mode === "claude" ? t("kh_ai") : null}
               </p>
-              {ai.status !== "live" && ai.status !== "checking" && (ai.reasonKey || ai.reason) && mode !== "claude" && (
-                <p className="mt-0.5 truncate text-[10px] text-ivory/80" dir={ai.reasonKey ? "auto" : "ltr"} title={ai.reason}>{ai.reasonKey ? t(ai.reasonKey) : ai.reason}</p>
+              {ai.status !== "live" && ai.status !== "checking" && ai.reasonKey && mode !== "claude" && (
+                <p className="mt-0.5 truncate text-[10px] text-ivory/80" dir="auto">{t(ai.reasonKey)}</p>
               )}
             </div>
             <button onClick={() => setOpen(false)} className="rounded-lg p-1.5 hover:bg-ivory/10" aria-label={t("close")}><X className="h-5 w-5" /></button>
@@ -6819,7 +6841,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
                 <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.role === "user" ? "rounded-ee-md bg-forest text-ivory" : "rounded-es-md bg-white text-soil ring-1 ring-soil/10"}`}
                   dir={/[؀-ۿ]/.test(m.text) ? "rtl" : "ltr"}>
                   {m.pending && !m.text ? <span className="inline-flex items-center gap-1 text-soil/80"><span className="animate-pulse">●</span>{t("kh_thinking")}</span> : m.id === 0 ? t("kh_hello") : m.text}
-                  {m.source === "rules" && <span className="mt-1 block text-[10px] text-soil/80" dir="ltr">{t("kh_offline")}</span>}
+                  {m.source === "rules" && <span className="mt-1 block text-[10px] text-soil/80" dir="auto">{t(m.fallback ? "ai_fallback" : "kh_offline")}</span>}
                   {m.role === "assistant" && m.text && !m.pending && (synth || ttsRef.current) && (
                     <button type="button" onClick={() => replay(m.text)} className="mt-1 inline-flex items-center gap-1 rounded-full bg-forest/5 px-2 py-0.5 text-[11px] font-bold text-forest hover:bg-forest/10" aria-label={t("vc_replay")}>
                       <Volume2 className="h-3.5 w-3.5" aria-hidden="true" />{t("vc_replay")}
@@ -9701,7 +9723,9 @@ function App() {
   const tabs = [...TABS, ...(accounts.cloudOwner && accounts.mode === "cloud" ? [MEMBERS_TAB] : []), ...(accounts.isAdmin ? [ADMIN_TAB] : [])];
   // Live Public Mode: real owner listings only (sample rows that reached the cloud earlier are hidden too).
   // Demo mode: real listings plus the sample fleet.
-  const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)), [listings]);
+  // "mine" is derived from the current signed-in user on every render; any stored "mine" flag is ignored
+  const isMineListing = (l) => Boolean(session && ((l.ownerUid && session.uid && l.ownerUid === session.uid) || (l.ownerEmail && session.email && l.ownerEmail === session.email)));
+  const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)).map((l) => ({ ...l, mine: isMineListing(l) })), [listings, session && session.uid, session && session.email]); // eslint-disable-line
   const marketListings = useMemo(() => (demoMode ? [...realListings, ...SEED_LISTINGS.filter((x) => !realListings.some((l) => l.id === x.id))] : realListings), [realListings, demoMode]);
   const setDemoMode = (on) => { setDemoModeState(on); store.set("agrishare.demoMode", on); toast(t(on ? "toast_mode_demo" : "toast_mode_live"), { type: "info" }); };
   const saveDemand = (rec) => setDemand((list) => (list.some((d) => d.id === rec.id) ? list.map((d) => (d.id === rec.id ? { ...d, ...rec } : d)) : [...list, rec]));
@@ -9751,7 +9775,7 @@ function App() {
   };
 
   const addListing = (f) => {
-    const l = { ...f, id: "U" + Date.now(), ownerId: "AS-" + Math.floor(2000 + Math.random() * 7000), rating: 5.0, available: true, mine: true, status: "pending", submittedAt: Date.now(), ownerEmail: session ? session.email : null };
+    const l = { ...f, id: "U" + Date.now(), ownerId: "AS-" + Math.floor(2000 + Math.random() * 7000), ownerUid: session ? session.uid : null, rating: 5.0, available: true, status: "pending", submittedAt: Date.now(), ownerEmail: session ? session.email : null };
     setListings((ls) => [...ls, l]);
     setFilters((fl) => ({ ...fl, radius: Math.max(fl.radius, Math.ceil(l.distance)) }));
     toast(t("toast_listed"));

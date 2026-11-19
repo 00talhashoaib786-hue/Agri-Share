@@ -14,6 +14,8 @@ img, svg, video, canvas { max-width: 100%; }
 .font-nastaliq .font-display { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', system-ui, sans-serif; }
 .font-nastaliq .leading-none, .font-nastaliq .leading-tight, .font-nastaliq .leading-snug, .font-nastaliq [class*="leading-["] { line-height: 1.7 !important; }
 .font-nastaliq .truncate { padding-block: 0.15em; }
+/* Hero role cards ("مشین چاہیے؟" / "اپنی مشین درج کریں"): roomy Nastaliq lines so strokes never clip */
+.font-nastaliq .hero-card-text, [dir="rtl"] .hero-card-text { line-height: 1.95 !important; padding-block: 0.25rem; letter-spacing: 0; text-transform: none; }
 /* Mobile Urdu / RTL: Nastaliq marks sit far above and below the line, so give text extra room */
 @media (max-width: 767px) {
   .font-nastaliq :is(h1, h2, h3, h4, p, li, label, dd, dt), [dir="rtl"] .font-nastaliq :is(h1, h2, h3, h4, p, li, label) { line-height: 2.1 !important; }
