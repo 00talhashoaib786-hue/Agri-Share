@@ -933,7 +933,8 @@ const T = {
     vc_advisor: "Advisor",
     vc_audio_fail: "Your voice couldn't reach the AI advisor. Switching to the browser's speech recognition — tap to speak again.",
     ai_retry: "Reconnecting AI…",
-    vc_audio_retry: "Audio upload failed — retrying"
+    vc_audio_retry: "Audio upload failed — retrying",
+    vc_quiet: "Hard to hear you. Speak a little louder, or tap \"Done speaking\" to send what you said."
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1621,7 +1622,8 @@ const T = {
     vc_advisor: "مشیر",
     vc_audio_fail: "آپ کی آواز اے آئی مشیر تک نہیں پہنچ سکی۔ براؤزر کی آواز پہچان پر جا رہے ہیں — دوبارہ بولنے کے لیے دبائیں۔",
     ai_retry: "اے آئی دوبارہ جڑ رہا ہے…",
-    vc_audio_retry: "آواز اپ لوڈ نہیں ہوئی — دوبارہ کوشش ہو رہی ہے"
+    vc_audio_retry: "آواز اپ لوڈ نہیں ہوئی — دوبارہ کوشش ہو رہی ہے",
+    vc_quiet: "آواز صاف نہیں آ رہی۔ تھوڑا اونچا بولیں، یا جو کہا ہے بھیجنے کے لیے \"بات مکمل\" دبائیں۔"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2218,7 +2220,8 @@ const T = {
     vc_advisor: "صلاح کار",
     vc_audio_fail: "تہاڈی آواز اے آئی صلاح کار تک نئیں اپڑی۔ براؤزر دی آواز پچھان تے جا رہے آں — دوبارہ بولن لئی دباؤ۔",
     ai_retry: "اے آئی فیر جُڑ رہیا اے…",
-    vc_audio_retry: "آواز اپ لوڈ نئیں ہوئی — فیر کوشش ہو رہی اے"
+    vc_audio_retry: "آواز اپ لوڈ نئیں ہوئی — فیر کوشش ہو رہی اے",
+    vc_quiet: "آواز صاف نئیں آ رہی۔ تھوڑا اُچا بولو، یا جو آکھیا اے گھلن لئی \"بات مکمل\" دباؤ۔"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2816,7 +2819,8 @@ const T = {
     vc_advisor: "صلاحڪار",
     vc_audio_fail: "توهان جو آواز اي آءِ صلاحڪار تائين نه پهتو۔ برائوزر جي آواز سڃاڻپ تي وڃي رهيا آهيون — ٻيهر ڳالهائڻ لاءِ دٻايو۔",
     ai_retry: "اي آءِ ٻيهر ڳنڍجي رهيو آهي…",
-    vc_audio_retry: "آواز اپ لوڊ نه ٿيو — ٻيهر ڪوشش ٿي رهي آهي"
+    vc_audio_retry: "آواز اپ لوڊ نه ٿيو — ٻيهر ڪوشش ٿي رهي آهي",
+    vc_quiet: "آواز صاف نه پيو اچي۔ ٿورو وڌيڪ زور سان ڳالهايو، يا جيڪو چيو آهي موڪلڻ لاءِ \"بات مکمل\" دٻايو۔"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3116,7 +3120,8 @@ const T = {
     vc_advisor: "سلاکار",
     vc_audio_fail: "ستاسو غږ AI سلاکار ته ونه رسېد. د براوزر غږ پېژندنې ته ځو — بیا د خبرو لپاره کېکاږئ.",
     ai_retry: "AI بیا نښلي…",
-    vc_audio_retry: "غږ پورته نه شو — بیا هڅه کېږي"
+    vc_audio_retry: "غږ پورته نه شو — بیا هڅه کېږي",
+    vc_quiet: "غږ مو ښه نه اورېږي. لږ لوړ ووایاست، یا د لېږلو لپاره \"خبرې مې پای ته ورسېدې\" کېکاږئ."
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3406,7 +3411,8 @@ const T = {
     vc_advisor: "سلاہ کار",
     vc_audio_fail: "شمئے توار AI سلاہ کار ءَ نہ رست۔ براؤزر ءِ توار پجّار ءَ رئوگ اِیں — پدا گپ جنگ ءِ واستا بِجن۔",
     ai_retry: "AI پدا گنڈگ بوگ اِنت…",
-    vc_audio_retry: "توار اپ لوڈ نہ بوت — پدا کوشست بوگ اِنت"
+    vc_audio_retry: "توار اپ لوڈ نہ بوت — پدا کوشست بوگ اِنت",
+    vc_quiet: "شمئے توار شرّ نہ کئیت۔ کمّے بُرز گپ جن، یا دیم دئیگ ءِ واستا \"منی گپ ہلاس بوت\" ءَ بِجن۔"
   },
 };
 
@@ -5952,6 +5958,7 @@ async function askGemini({ system, contents, voice, json }) {
    then it is decoded and re-encoded as 16 kHz mono WAV, a format Gemini documents for audio input. */
 const REC_TYPES = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/aac"];
 const pickRecType = () => (typeof window !== "undefined" && window.MediaRecorder && MediaRecorder.isTypeSupported ? REC_TYPES.find((m) => { try { return MediaRecorder.isTypeSupported(m); } catch (e) { return false; } }) || "" : "");
+const VAD_MIN_RMS = 0.005; // lowest speech level counted as voice (quiet MacBook built-in mics)
 const canRecordVoice = () => typeof window !== "undefined" && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && (window.AudioContext || window.webkitAudioContext));
 function abToBase64(buf) {
   const bytes = new Uint8Array(buf);
@@ -6301,7 +6308,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     if (callRef.current && !demoRef.current) setTimeout(() => { if (callRef.current && !demoRef.current && turn === turnRef.current) live.current.listen(false); }, 350);
   };
 
-  const stopMeter = () => { cancelAnimationFrame(rafRef.current); rafRef.current = 0; setLevel(0); };
+  const stopMeter = () => { clearInterval(rafRef.current); rafRef.current = 0; setLevel(0); };
   const releaseMic = () => {
     stopMeter();
     try { mrRef.current && mrRef.current.state !== "inactive" && mrRef.current.stop(); } catch (e) { /* ignore */ }
@@ -6330,21 +6337,29 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
       mr.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
       const analyser = ctx.createAnalyser(); analyser.fftSize = 1024;
       const source = ctx.createMediaStreamSource(stream); source.connect(analyser);
+      // Safari only analyses audio that flows to the output: route it through a silent gain node
+      const mute = ctx.createGain(); mute.gain.value = 0; analyser.connect(mute); mute.connect(ctx.destination);
       const buf = new Float32Array(analyser.fftSize);
       const t0 = performance.now();
-      let base = 0, baseN = 0, spokeMs = 0, lastLoud = 0, lastTick = t0, lastUi = 0, stopped = false;
+      let base = 0, baseN = 0, spokeMs = 0, lastLoud = 0, lastTick = t0, lastUi = 0, stopped = false, quietHint = false;
       const finish = (why) => {
         if (stopped) return; stopped = true;
-        stopMeter(); try { source.disconnect(); } catch (e) { /* ignore */ }
+        const recordedMs = performance.now() - t0;
+        stopMeter(); try { source.disconnect(); analyser.disconnect(); mute.disconnect(); } catch (e) { /* ignore */ }
         mr.onstop = async () => {
           if (mrRef.current === mr) mrRef.current = null;
           if (!callRef.current || why === "abort") return;
-          if (spokeMs < 250 || !chunks.length) { setVoiceNote(t("vc_no_speech")); setPhase("tap"); return; }
+          // "Done speaking" always sends what was recorded (quiet laptop mics may never cross the threshold);
+          // automatic stops only send when speech was actually detected
+          const manual = why === "done";
+          if (!chunks.length || (manual ? recordedMs < 400 : spokeMs < 250)) { setVoiceNote(t("vc_no_speech")); setPhase("tap"); return; }
           live.current.handleRecording(new Blob(chunks, { type: mr.mimeType || type || "audio/webm" }));
         };
         try { mr.state !== "inactive" ? mr.stop() : mr.onstop(); } catch (e) { mr.onstop(); }
       };
       mr._finish = finish;
+      // Voice activity detection. Laptop mics (MacBook) speak at RMS 0.004-0.015, phones much louder:
+      // threshold = 2.5 x the room noise measured in the first 300 ms, never below 0.005, never above 0.015.
       const tick = () => {
         if (stopped) return;
         const now = performance.now();
@@ -6352,19 +6367,21 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
         let sum = 0; for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
         const rms = Math.sqrt(sum / buf.length);
         if (now - t0 < 300) { base += rms; baseN += 1; }
-        const floor = baseN ? base / baseN : 0.01;
-        const thr = Math.min(0.08, Math.max(0.015, floor * 3));
+        const floor = Math.min(baseN ? base / baseN : 0.002, 0.006); // cap: talking during calibration must not hide the voice
+        const thr = Math.max(VAD_MIN_RMS, floor * 2.5);                // 0.005 .. 0.015
         const dt = now - lastTick; lastTick = now;
-        if (rms > thr) { spokeMs += dt; lastLoud = now; }
-        if (now - lastUi > 70) { lastUi = now; setLevel(Math.min(1, rms * 6)); }
+        if (now - t0 >= 300 && rms > thr) { spokeMs += dt; lastLoud = now; }
+        // bars: square-root scale so quiet laptop voices still move them clearly
+        if (now - lastUi > 70) { lastUi = now; setLevel(Math.min(1, Math.sqrt(rms) * 3.2)); }
+        if (!quietHint && spokeMs < 250 && now - t0 > 4000) { quietHint = true; setVoiceNote(t("vc_quiet")); }
         if (spokeMs >= 250 && now - lastLoud > 1300) return finish("silence");      // 1.3 s pause after speaking
-        if (spokeMs < 250 && now - t0 > 9000) return finish("nospeech");           // nobody spoke
+        if (spokeMs < 250 && now - t0 > 12000) return finish("nospeech");          // nobody spoke
         if (now - t0 > 15000) return finish("max");                                 // 15 s cap keeps uploads ~640 KB
-        rafRef.current = requestAnimationFrame(tick);
       };
       mr.start(250);
-      setPhase("listening");
-      rafRef.current = requestAnimationFrame(tick);
+      setPhase("listening"); setVoiceNote("");
+      // a timer (not requestAnimationFrame) keeps detection running when the tab is in the background
+      rafRef.current = setInterval(tick, 50);
     } catch (e) {
       console.warn("[Agri-Share] Microphone could not start:", e && (e.name || e.message));
       releaseMic();
