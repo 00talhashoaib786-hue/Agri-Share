@@ -10264,7 +10264,8 @@ function App() {
     try { const mine = store.get("agrishare.leads.mine", []); store.set("agrishare.leads.mine", [...mine, lead].slice(-20)); } catch (e) { /* ignore */ }
     const saved = writeDoc(COL.leads, lead.id, lead).then(() => true).catch((e) => { console.warn("[Agri-Share] Lead not saved to Firestore:", e && e.code); return false; });
     const emailed = fetch("/api/notify-lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(lead) })
-      .then((r) => r.json()).then((j) => !!(j && j.sent)).catch(() => false);
+      .then((r) => r.json()).then((j) => { if (!(j && j.sent)) console.warn("[Agri-Share] Lead email not sent:", (j && (j.reason || j.error)) || "unknown reason"); return !!(j && j.sent); })
+      .catch((e) => { console.warn("[Agri-Share] Lead email request failed:", e && e.message); return false; });
     const [ok1, ok2] = await Promise.all([saved, emailed]);
     if (!ok1 && !ok2) console.warn("[Agri-Share] Lead kept on this device only (Firestore and email unavailable)");
     if (!auto) toast(t(ok2 ? "zc_emailed" : "zc_queued"), { title: t("zc_title"), type: ok2 ? "success" : "info" });

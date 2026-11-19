@@ -40,6 +40,15 @@ async function readBody(req) {
   } catch (e) { return null; }
 }
 
+// Read a key from the environment: trims spaces/newlines and surrounding quotes (common copy-paste mistakes)
+const envKey = (...names) => {
+  for (const n of names) {
+    const v = String(process.env[n] || "").trim().replace(/^["']+|["']+$/g, "").trim();
+    if (v) return { value: v, source: n };
+  }
+  return { value: "", source: null };
+};
+
 const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const waLink = (phone) => {
   let d = String(phone || "").replace(/\D/g, "");
@@ -51,7 +60,17 @@ export default async function handler(req, res) {
   try {
     res.setHeader("Cache-Control", "no-store");
     if (req.method === "OPTIONS") { res.setHeader("Allow", "POST, OPTIONS"); return res.status(204).end(); }
-    if (req.method === "GET") return res.status(200).json({ ok: true, email: process.env.RESEND_API_KEY ? "resend" : process.env.WEB3FORMS_ACCESS_KEY ? "web3forms" : "none" });
+    const w3 = envKey("WEB3FORMS_ACCESS_KEY", "VITE_WEB3FORMS_ACCESS_KEY");
+    const resend = envKey("RESEND_API_KEY");
+    // diagnostics only (never the key itself): open /api/notify-lead on the live site to check
+    if (req.method === "GET") return res.status(200).json({
+      ok: true,
+      hasWeb3FormsKey: Boolean(w3.value),
+      web3FormsKeySource: w3.source,
+      hasResendKey: Boolean(resend.value),
+      email: resend.value ? "resend" : w3.value ? "web3forms" : "none",
+      vercelEnv: process.env.VERCEL_ENV || "unknown", // production / preview / development: env vars are set per environment
+    });
     if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Method not allowed" });
 
     const body = await readBody(req);
@@ -76,28 +95,40 @@ export default async function handler(req, res) {
 <table style="font-family:sans-serif;border-collapse:collapse">${rows.map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#5C3A21"><b>${esc(k)}</b></td><td style="padding:4px 0">${esc(v)}</td></tr>`).join("")}</table>
 ${lead.farmerPhone ? `<p style="font-family:sans-serif"><a href="tel:${esc(lead.farmerPhone)}">Call farmer</a>${waLink(lead.farmerPhone) ? ` &middot; <a href="${waLink(lead.farmerPhone)}">WhatsApp farmer</a>` : ""}</p>` : ""}`;
 
-    if (process.env.RESEND_API_KEY) {
+    const reasons = []; // why email was not sent (returned to the app and logged; never contains a key)
+    if (resend.value) {
       const r = await fetch("https://api.resend.com/emails", {
         method: "POST",
-        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+        headers: { Authorization: `Bearer ${resend.value}`, "Content-Type": "application/json" },
         body: JSON.stringify({ from: process.env.RESEND_FROM || "Agri-Share <onboarding@resend.dev>", to: [to], subject, html, text, ...(lead.farmerEmail ? { reply_to: lead.farmerEmail } : {}) }),
       });
       if (r.ok) return res.status(200).json({ ok: true, sent: true, via: "resend" });
       const err = await r.json().catch(() => ({}));
-      console.error("[api/notify-lead] Resend failed:", r.status, err && (err.message || err.name));
+      const why = `resend HTTP ${r.status}: ${(err && (err.message || err.name)) || "rejected"}`;
+      reasons.push(why); console.error("[api/notify-lead] Resend failed:", why);
     }
-    if (process.env.WEB3FORMS_ACCESS_KEY) {
-      const r = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ access_key: process.env.WEB3FORMS_ACCESS_KEY, subject, from_name: "Agri-Share Leads", message: text, ...(lead.farmerEmail ? { replyto: lead.farmerEmail } : {}) }),
-      });
-      const j = await r.json().catch(() => ({}));
-      if (r.ok && j.success !== false) return res.status(200).json({ ok: true, sent: true, via: "web3forms" });
-      console.error("[api/notify-lead] Web3Forms failed:", r.status, j && j.message);
+    if (w3.value) {
+      try {
+        const r = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json", "User-Agent": "Agri-Share-Lead-Alerts/1.0" },
+          body: JSON.stringify({ access_key: w3.value, subject, from_name: "Agri-Share Leads", message: text, ...(lead.farmerEmail ? { replyto: lead.farmerEmail } : {}) }),
+        });
+        const raw = await r.text();
+        let j = {}; try { j = JSON.parse(raw); } catch (e) { j = { message: `non-JSON reply: ${raw.replace(/\s+/g, " ").slice(0, 120)}` }; }
+        if (r.ok && j.success !== false) return res.status(200).json({ ok: true, sent: true, via: "web3forms" });
+        const why = `web3forms HTTP ${r.status}: ${j.message || "rejected"}`;
+        reasons.push(why); console.error("[api/notify-lead] Web3Forms failed:", why);
+      } catch (e) {
+        const why = `web3forms unreachable: ${e && e.message ? e.message : e}`;
+        reasons.push(why); console.error("[api/notify-lead]", why);
+      }
+    } else {
+      const why = "no Web3Forms key in this deployment (WEB3FORMS_ACCESS_KEY empty or not set for this environment; redeploy after adding it)";
+      reasons.push(why); console.warn("[api/notify-lead] Web3Forms skipped:", why, "| VERCEL_ENV =", process.env.VERCEL_ENV || "unknown");
     }
-    // no email service configured (or it failed): the lead is still saved in Firestore by the app
-    return res.status(200).json({ ok: true, sent: false, via: "none" });
+    // no email sent: the lead is still saved in Firestore by the app; "reason" says why
+    return res.status(200).json({ ok: true, sent: false, via: "none", reason: reasons.join(" | ") });
   } catch (err) {
     console.error("[api/notify-lead] unexpected error:", err);
     try { if (!res.headersSent) return res.status(200).json({ ok: true, sent: false, via: "none", note: "email step failed" }); } catch (e) { /* gone */ }
