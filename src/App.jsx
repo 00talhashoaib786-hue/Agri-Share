@@ -944,7 +944,9 @@ const T = {
     vc_audio_fail: "Your voice couldn't reach the AI advisor. Switching to the browser's speech recognition — tap to speak again.",
     ai_retry: "Reconnecting AI…",
     vc_audio_retry: "Audio upload failed — retrying",
-    vc_quiet: "Hard to hear you. Speak a little louder, or tap \"Done speaking\" to send what you said."
+    vc_quiet: "Hard to hear you. Speak a little louder, or tap \"Done speaking\" to send what you said.",
+    ai_busy: "AI is very busy right now, so the built-in advisor is answering.",
+    ai_busy_voice: "The AI is busy right now. Please say it again: the built-in advisor will answer."
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1633,7 +1635,9 @@ const T = {
     vc_audio_fail: "آپ کی آواز اے آئی مشیر تک نہیں پہنچ سکی۔ براؤزر کی آواز پہچان پر جا رہے ہیں — دوبارہ بولنے کے لیے دبائیں۔",
     ai_retry: "اے آئی دوبارہ جڑ رہا ہے…",
     vc_audio_retry: "آواز اپ لوڈ نہیں ہوئی — دوبارہ کوشش ہو رہی ہے",
-    vc_quiet: "آواز صاف نہیں آ رہی۔ تھوڑا اونچا بولیں، یا جو کہا ہے بھیجنے کے لیے \"بات مکمل\" دبائیں۔"
+    vc_quiet: "آواز صاف نہیں آ رہی۔ تھوڑا اونچا بولیں، یا جو کہا ہے بھیجنے کے لیے \"بات مکمل\" دبائیں۔",
+    ai_busy: "اے آئی اس وقت بہت مصروف ہے، اس لیے اندرونی مشیر جواب دے رہا ہے۔",
+    ai_busy_voice: "اے آئی اس وقت مصروف ہے۔ براہ کرم دوبارہ بولیں، اندرونی مشیر جواب دے گا۔"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2231,7 +2235,9 @@ const T = {
     vc_audio_fail: "تہاڈی آواز اے آئی صلاح کار تک نئیں اپڑی۔ براؤزر دی آواز پچھان تے جا رہے آں — دوبارہ بولن لئی دباؤ۔",
     ai_retry: "اے آئی فیر جُڑ رہیا اے…",
     vc_audio_retry: "آواز اپ لوڈ نئیں ہوئی — فیر کوشش ہو رہی اے",
-    vc_quiet: "آواز صاف نئیں آ رہی۔ تھوڑا اُچا بولو، یا جو آکھیا اے گھلن لئی \"بات مکمل\" دباؤ۔"
+    vc_quiet: "آواز صاف نئیں آ رہی۔ تھوڑا اُچا بولو، یا جو آکھیا اے گھلن لئی \"بات مکمل\" دباؤ۔",
+    ai_busy: "اے آئی ایس ویلے بہت رُجھیا اے، ایس لئی اندرلا صلاح کار جواب دے رہیا اے۔",
+    ai_busy_voice: "اے آئی ایس ویلے رُجھیا اے۔ مہربانی کر کے فیر بولو، اندرلا صلاح کار جواب دیوے گا۔"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2830,7 +2836,9 @@ const T = {
     vc_audio_fail: "توهان جو آواز اي آءِ صلاحڪار تائين نه پهتو۔ برائوزر جي آواز سڃاڻپ تي وڃي رهيا آهيون — ٻيهر ڳالهائڻ لاءِ دٻايو۔",
     ai_retry: "اي آءِ ٻيهر ڳنڍجي رهيو آهي…",
     vc_audio_retry: "آواز اپ لوڊ نه ٿيو — ٻيهر ڪوشش ٿي رهي آهي",
-    vc_quiet: "آواز صاف نه پيو اچي۔ ٿورو وڌيڪ زور سان ڳالهايو، يا جيڪو چيو آهي موڪلڻ لاءِ \"بات مکمل\" دٻايو۔"
+    vc_quiet: "آواز صاف نه پيو اچي۔ ٿورو وڌيڪ زور سان ڳالهايو، يا جيڪو چيو آهي موڪلڻ لاءِ \"بات مکمل\" دٻايو۔",
+    ai_busy: "اي آءِ هن وقت تمام مصروف آهي، تنهنڪري اندروني صلاحڪار جواب ڏئي رهيو آهي۔",
+    ai_busy_voice: "اي آءِ هن وقت مصروف آهي۔ مهرباني ڪري ٻيهر ڳالهايو، اندروني صلاحڪار جواب ڏيندو۔"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3131,7 +3139,9 @@ const T = {
     vc_audio_fail: "ستاسو غږ AI سلاکار ته ونه رسېد. د براوزر غږ پېژندنې ته ځو — بیا د خبرو لپاره کېکاږئ.",
     ai_retry: "AI بیا نښلي…",
     vc_audio_retry: "غږ پورته نه شو — بیا هڅه کېږي",
-    vc_quiet: "غږ مو ښه نه اورېږي. لږ لوړ ووایاست، یا د لېږلو لپاره \"خبرې مې پای ته ورسېدې\" کېکاږئ."
+    vc_quiet: "غږ مو ښه نه اورېږي. لږ لوړ ووایاست، یا د لېږلو لپاره \"خبرې مې پای ته ورسېدې\" کېکاږئ.",
+    ai_busy: "AI اوس ډېر بوخت دی، نو دننی سلاکار ځواب ورکوي.",
+    ai_busy_voice: "AI اوس بوخت دی. مهرباني وکړئ بیا ووایاست، دننی سلاکار به ځواب درکړي."
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3422,7 +3432,9 @@ const T = {
     vc_audio_fail: "شمئے توار AI سلاہ کار ءَ نہ رست۔ براؤزر ءِ توار پجّار ءَ رئوگ اِیں — پدا گپ جنگ ءِ واستا بِجن۔",
     ai_retry: "AI پدا گنڈگ بوگ اِنت…",
     vc_audio_retry: "توار اپ لوڈ نہ بوت — پدا کوشست بوگ اِنت",
-    vc_quiet: "شمئے توار شرّ نہ کئیت۔ کمّے بُرز گپ جن، یا دیم دئیگ ءِ واستا \"منی گپ ہلاس بوت\" ءَ بِجن۔"
+    vc_quiet: "شمئے توار شرّ نہ کئیت۔ کمّے بُرز گپ جن، یا دیم دئیگ ءِ واستا \"منی گپ ہلاس بوت\" ءَ بِجن۔",
+    ai_busy: "AI اَنّوں باز اوستمان اِنت، پمیشکا تہی سلاہ کار پسّو دئیگ اِنت۔",
+    ai_busy_voice: "AI اَنّوں اوستمان اِنت۔ مہربانی کن پدا بگوش، تہی سلاہ کار پسّو دنت۔"
   },
 };
 
@@ -5946,7 +5958,7 @@ async function askGemini({ system, contents, voice, json }) {
           err = `AI advisor HTTP ${r.status}${code ? ` ${code}` : ""} (${hint}${ct.includes("json") ? "" : ", non-JSON reply"})`;
         }
         console.warn("[Agri-Share] /api/gemini POST failed:", r.status, err, raw ? raw.slice(0, 200) : "");
-        if (!GEMINI_KEY) return { error: err, transient: r.status >= 500 || r.status === 429 || r.status === 408 };
+        if (!GEMINI_KEY) return { error: err, transient: r.status >= 500 || r.status === 429 || r.status === 408, busy: !!j.busy || r.status === 503 || r.status === 429 };
       }
     } catch (e) { if (!GEMINI_KEY) return { error: `AI advisor unreachable: ${e && e.message ? e.message : e}`, transient: true }; }
   }
@@ -5967,7 +5979,7 @@ async function askGemini({ system, contents, voice, json }) {
     }));
     if (r === "__timeout__") return { error: "Gemini timed out (30 s)", transient: true };
     const data = await r.json().catch(() => ({}));
-    if (!r.ok) return { error: (data.error && data.error.message) || `Gemini HTTP ${r.status}` };
+    if (!r.ok) return { error: (data.error && data.error.message) || `Gemini HTTP ${r.status}`, transient: r.status >= 500 || r.status === 429, busy: r.status === 503 || r.status === 429 };
     const cand = data.candidates && data.candidates[0];
     const text = ((cand && cand.content && cand.content.parts) || []).map((x) => x.text || "").join("").trim();
     return text ? { text, via: "direct" } : { error: `Gemini returned no text (${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
@@ -6181,7 +6193,12 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       const contents = turns.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] }));
       const r = await askGemini({ system: buildSystem(listings, session, dieselPrice, lang, !!viaVoice), contents, voice: !!viaVoice });
       if (r.text) { answered = fixScript(r.text, lang); setBot(answered, { pending: false, source: "gemini" }); setAi({ status: "live", reason: "" }); }
-      else { fallbackWhy = r.error || "unknown error"; console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy); setAi({ status: r.transient ? "retry" : "offline", reason: fallbackWhy }); }
+      else {
+        fallbackWhy = r.error || "unknown error";
+        console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy);
+        // all models temporarily busy: no raw "503" text, just a friendly note while the built-in advisor answers
+        setAi({ status: r.transient || r.busy ? "retry" : "offline", reason: r.busy ? t("ai_busy") : fallbackWhy });
+      }
     }
     try {
       if (answered) { /* Gemini answered */ }
@@ -6224,9 +6241,9 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     const r = await askGemini({ system, contents, voice: true, json: true });
     if (!r.text) {
       setMessages((m) => m.filter((x) => x.id !== userId && x.id !== botId));
-      setAi({ status: r.transient ? "retry" : "offline", reason: r.error || "voice request failed" });
+      setAi({ status: r.transient || r.busy ? "retry" : "offline", reason: r.busy ? t("ai_busy") : r.error || "voice request failed" });
       console.warn("[Agri-Share] Voice message could not be answered by Gemini:", r.error);
-      return { error: r.error || "failed", transient: !!r.transient };
+      return { error: r.error || "failed", transient: !!r.transient, busy: !!r.busy };
     }
     let heard = "", reply = "";
     try { const j = JSON.parse(r.text); heard = String(j.heard || ""); reply = String(j.reply || ""); } catch (e) { reply = r.text; }
@@ -6420,7 +6437,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     setPhase("thinking");
     let r = clip ? await sendVoice(clip) : { error: "could not read the recording" };
     // a mobile network blip: resend the same clip once before giving up on this turn
-    if (r.error && clip && callRef.current && turn === turnRef.current) {
+    if (r.error && !r.busy && clip && callRef.current && turn === turnRef.current) {
       setVoiceNote(t("vc_audio_retry"));
       await new Promise((res) => setTimeout(res, 900));
       if (!callRef.current || turn !== turnRef.current) return;
@@ -6428,6 +6445,13 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     }
     if (!callRef.current || turn !== turnRef.current) return;
     if (r.error) {
+      if (r.busy) {
+        // every Gemini model is busy: the built-in advisor takes this turn through the browser's recognition
+        audioFailsRef.current = 2;
+        setVoiceNote(t("ai_busy_voice"));
+        setTimeout(() => { if (callRef.current && turn === turnRef.current) live.current.listen(false); }, 400);
+        return;
+      }
       // keep Gemini audio for the next turns; after 2 failures in a row use the browser's recognition for ONE turn
       audioFailsRef.current += 1;
       setVoiceNote(`${t("vc_audio_retry")} · ${r.error}`);

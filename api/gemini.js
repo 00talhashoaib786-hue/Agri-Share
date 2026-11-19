@@ -7,7 +7,9 @@
     GEMINI_MODEL     optional, default "gemini-2.5-flash"
 
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
-  POST /api/gemini  { system, contents, voice, json } -> { ok: true, text } or { ok: false, error }
+  POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
+    Model chain: GEMINI_MODEL, then gemini-2.5-flash -> gemini-2.5-flash-lite -> gemini-flash-latest
+    on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
     json: true returns structured JSON text: { "heard": "...", "reply": "..." }
 */
@@ -15,7 +17,10 @@ const MAX_TURNS = 24;
 const MAX_CHARS = 60000;            // text in the conversation
 const MAX_AUDIO_B64 = 1_400_000;    // the app sends at most ~15 s of 16 kHz mono WAV (~640 KB base64); generous headroom
 const AUDIO_TYPES = /^audio\/(wav|x-wav|wave|mp3|mpeg|aiff|aac|ogg|flac|webm|mp4|m4a|x-m4a)$/;
-const GEMINI_TIMEOUT_MS = 25000;
+const DEADLINE_MS = 26000;          // whole request, all models included (vercel.json allows 30 s)
+// Tried in order after the configured model when Google answers 503 (busy), 429 (rate limit) or 404 (unknown model)
+const FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest"];
+const RETRY_STATUS = new Set([503, 429, 404]);
 
 // Vercel may hand the body over as an object, a string, a Buffer, or not parse it at all.
 // Its req.body getter can also THROW on malformed input, so every access is guarded.
@@ -79,8 +84,29 @@ async function handle(req, res) {
     part.inlineData.mimeType = /wav|wave/.test(m) ? "audio/wav" : /m4a|mp4|aac/.test(m) ? "audio/aac" : /mpeg|mp3/.test(m) ? "audio/mp3" : m;
   }
 
+  const models = [...new Set([model, ...FALLBACK_MODELS])];
+  const startedAt = Date.now();
+  const tried = [];
+  let last = { status: 502, error: "Gemini did not answer" };
+  for (const m of models) {
+    const remaining = DEADLINE_MS - (Date.now() - startedAt);
+    if (remaining < 3000) break;
+    let r = await callGemini(key, m, { system, contents, voice, json, thinking: true }, remaining);
+    // a model that does not accept thinkingBudget 0 (e.g. newer releases) gets one try without it
+    if (r.status === 400 && /thinking/i.test(r.error || "")) r = await callGemini(key, m, { system, contents, voice, json, thinking: false }, DEADLINE_MS - (Date.now() - startedAt));
+    if (r.ok) return res.status(200).json({ ok: true, text: r.text, model: m, ...(tried.length ? { fallbackFrom: tried } : {}) });
+    tried.push(`${m}: ${r.status}`);
+    last = r;
+    if (!(RETRY_STATUS.has(r.status) || r.status === 504)) break; // a real error (bad key, bad request): don't hide it
+    console.warn(`[api/gemini] ${m} answered ${r.status}, trying the next model`);
+  }
+  const busy = tried.length > 0 && tried.every((x) => /: (503|429|404|504)$/.test(x));
+  return res.status(last.status || 502).json({ ok: false, busy, error: busy ? `All Gemini models busy (${tried.join(", ")})` : last.error, tried });
+}
+
+async function callGemini(key, model, { system, contents, voice, json, thinking }, timeoutMs) {
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), GEMINI_TIMEOUT_MS);
+  const timer = setTimeout(() => ctrl.abort(), Math.max(1000, timeoutMs));
   try {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: "POST",
@@ -93,19 +119,19 @@ async function handle(req, res) {
           temperature: voice ? 0.6 : 0.45,
           maxOutputTokens: voice ? 400 : 900,
           ...(json ? { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { heard: { type: "STRING" }, reply: { type: "STRING" } }, required: ["heard", "reply"] } } : {}),
-          // 2.5 Flash "thinking" would otherwise use up the output budget and return an empty answer
-          ...(/2\.5/.test(model) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+          // no "thinking" for flash models: sub-second voice replies, and the output budget is not used up
+          ...(thinking && /flash/.test(model) ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
         },
       }),
     });
     const data = await r.json().catch(() => ({}));
-    if (!r.ok) return fail(res, r.status, `Gemini ${r.status}: ${(data.error && data.error.message) || "request rejected"}`);
+    if (!r.ok) return { ok: false, status: r.status, error: `Gemini ${r.status} (${model}): ${(data.error && data.error.message) || "request rejected"}` };
     const cand = data.candidates && data.candidates[0];
     const text = ((cand && cand.content && cand.content.parts) || []).map((p) => p.text || "").join("").trim();
-    if (!text) return fail(res, 502, `Gemini returned no text (${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})`);
-    return res.status(200).json({ ok: true, text, model });
+    if (!text) return { ok: false, status: 502, error: `Gemini returned no text (${model}: ${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
+    return { ok: true, text };
   } catch (e) {
-    return fail(res, 504, e && e.name === "AbortError" ? `Gemini did not answer within ${GEMINI_TIMEOUT_MS / 1000} s` : `Gemini unreachable: ${e && e.message ? e.message : e}`);
+    return { ok: false, status: 504, error: e && e.name === "AbortError" ? `Gemini (${model}) did not answer in time` : `Gemini unreachable: ${e && e.message ? e.message : e}` };
   } finally {
     clearTimeout(timer);
   }
