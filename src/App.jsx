@@ -550,7 +550,7 @@ const T = {
     vc_end: "End voice call",
     vc_ready: "Ready",
     vc_listening: "Listening… speak now",
-    vc_thinking: "Processing…",
+    vc_thinking: "Thinking…",
     vc_speaking: "Speaking…",
     vc_tap: "Tap the mic and speak",
     vc_tap_btn: "Tap to talk",
@@ -923,7 +923,9 @@ const T = {
     ab_tag: "Enter your rate, nearby owners send offers",
     vc_no_speech: "No speech detected — tap the mic to try again.",
     vc_again: "Tap to Speak Again",
-    vc_replay: "Listen"
+    vc_replay: "Listen",
+    vc_interrupt: "Tap to interrupt",
+    vc_live: "Live call active"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1102,7 +1104,7 @@ const T = {
     vc_end: "وائس کال ختم کریں",
     vc_ready: "تیار",
     vc_listening: "سن رہا ہوں… بولیں",
-    vc_thinking: "سمجھ رہا ہوں…",
+    vc_thinking: "سوچ رہا ہوں…",
     vc_speaking: "بول رہا ہوں…",
     vc_tap: "مائیک دبائیں اور بولیں",
     vc_tap_btn: "بولنے کے لیے دبائیں",
@@ -1601,7 +1603,9 @@ const T = {
     ads_last: "پن آخری بار {d} کو {e} نے بدلا",
     vc_no_speech: "کوئی آواز نہیں سنی — دوبارہ کوشش کے لیے مائیک دبائیں۔",
     vc_again: "دوبارہ بولنے کے لیے دبائیں",
-    vc_replay: "سنیں"
+    vc_replay: "سنیں",
+    vc_interrupt: "روکنے کے لیے دبائیں",
+    vc_live: "لائیو کال جاری"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -1780,7 +1784,7 @@ const T = {
     vc_end: "آواز کال مکاؤ",
     vc_ready: "تیار",
     vc_listening: "سن رہیا واں… بولو",
-    vc_thinking: "سمجھ رہیا واں…",
+    vc_thinking: "سوچ رہیا واں…",
     vc_speaking: "بول رہیا واں…",
     vc_tap: "مائیک دباؤ تے بولو",
     vc_tap_btn: "بولن لئی دباؤ",
@@ -2188,7 +2192,9 @@ const T = {
     dm_notify: "مینوں دسو",
     vc_no_speech: "کوئی آواز نئیں سنی — فیر کوشش لئی مائیک دباؤ۔",
     vc_again: "دوبارہ بولن لئی دباؤ",
-    vc_replay: "سنو"
+    vc_replay: "سنو",
+    vc_interrupt: "روکن لئی دباؤ",
+    vc_live: "لائیو کال چل رہی اے"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2367,7 +2373,7 @@ const T = {
     vc_end: "آواز ڪال ختم ڪريو",
     vc_ready: "تيار",
     vc_listening: "ٻڌي رهيو آهيان… ڳالهايو",
-    vc_thinking: "سمجهي رهيو آهيان…",
+    vc_thinking: "سوچي رهيو آهيان…",
     vc_speaking: "ڳالهائي رهيو آهيان…",
     vc_tap: "مائيڪ دٻايو ۽ ڳالهايو",
     vc_tap_btn: "ڳالهائڻ لاءِ دٻايو",
@@ -2776,7 +2782,9 @@ const T = {
     dm_notify: "مون کي ٻڌايو",
     vc_no_speech: "ڪو آواز نه ٻڌو — ٻيهر ڪوشش لاءِ مائيڪ دٻايو۔",
     vc_again: "ٻيهر ڳالهائڻ لاءِ دٻايو",
-    vc_replay: "ٻڌو"
+    vc_replay: "ٻڌو",
+    vc_interrupt: "روڪڻ لاءِ دٻايو",
+    vc_live: "لائيو ڪال جاري"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3056,7 +3064,7 @@ const T = {
     toast_sold: "پلور تایید شو. {net} خالصه ګټه ستاسو والټ ته.",
     ab_name: "خپله بولي (خپله بیه ووایاست)",
     ab_tag: "خپل کرایه ووایاست، نږدې مالکان به وړاندیزونه درولېږي",
-    vc_thinking: "پوهېږم…",
+    vc_thinking: "فکر کوم…",
     vc_ready: "چمتو",
     vc_tap: "مایک کېکاږئ او خبرې وکړئ",
     vc_mic_blocked: "د مایک اجازه ونه شوه. په براوزر کې مایک ته اجازه ورکړئ، بیا د خبرو لپاره بیا کېکاږئ.",
@@ -3066,7 +3074,9 @@ const T = {
     vc_net: "د غږ پېژندلو لپاره انټرنېټ پکار دی. اړیکه وګورئ، بیا کېکاږئ.",
     vc_again: "بیا د خبرو لپاره کېکاږئ",
     vc_replay: "واورئ",
-    vc_done_speaking: "خبرې مې پای ته ورسېدې"
+    vc_done_speaking: "خبرې مې پای ته ورسېدې",
+    vc_interrupt: "د درولو لپاره کېکاږئ",
+    vc_live: "ژوندۍ اړیکه روانه ده"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3335,7 +3345,7 @@ const T = {
     ab_name: "وتی بولی (وتی نرخ ءَ بگوش)",
     ab_tag: "وتی کرایہ ءَ بگوش، نزّیکیں واہند آفر رَوان دئینت",
     vc_listening: "گوش دارگ اِیں… گپ جن",
-    vc_thinking: "سرپد بوگ اِیں…",
+    vc_thinking: "پِگر کنگ اِیں…",
     vc_speaking: "گپ جنگ اِیں…",
     vc_ready: "تیار",
     vc_tap: "مائیک ءَ بِجن و گپ جن",
@@ -3346,7 +3356,9 @@ const T = {
     vc_net: "توار ءِ پجّار ءِ واستا انٹرنیٹ پکار انت۔ کنکشن ءَ بچار، پدا بِجن۔",
     vc_again: "پدا گپ جنگ ءِ واستا بِجن",
     vc_replay: "گوش کن",
-    vc_done_speaking: "منی گپ ہلاس بوت"
+    vc_done_speaking: "منی گپ ہلاس بوت",
+    vc_interrupt: "داشتگ ءِ واستا بِجن",
+    vc_live: "زندگیں کال روان اِنت"
   },
 };
 
@@ -5440,7 +5452,75 @@ function pickReplyLang(raw, uiLang) {
   return uiLang;
 }
 
-function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", forceLang) {
+// Machinery rate replies in every language. Ranges come from the country's rate card (CUR.catalog),
+// the same numbers shown on the machine-type cards, so the helper never contradicts the app.
+const RATE_NAMES = {
+  en: { tractor: "Tractor", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser land leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
+  ro: { tractor: "Tractor", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
+  ur: { tractor: "ٹریکٹر", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لینڈ لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زرعی آلہ" },
+  pa: { tractor: "ٹریکٹر", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زرعی سند" },
+  sd: { tractor: "ٽريڪٽر", harvester: "ڪمبائن هارويسٽر", thresher: "ٿريشر", leveler: "ليزر ليولر", drone: "اسپري ڊرون", planter: "پلانٽر", implement: "زرعي اوزار" },
+  ps: { tractor: "ټراکټور", harvester: "کمباین هارویسټر", thresher: "تریشر", leveler: "لېزر لیولر", drone: "سپرې ډرون", planter: "پلانټر", implement: "کرنیزه آله" },
+  bal: { tractor: "ٹریکٹر", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زراعتی اوزار" },
+};
+const RATE_TPL = {
+  en: { head: "Current hourly rental rates (dry rent, diesel extra):", item: (n, lo, hi) => `• ${n}: ${lo} – ${hi} per hour`, tip: "Tip: you can also name your own price with Apni Boli, and nearby owners will send you offers.",
+        one: (n, lo, hi) => `${n} rent is about ${lo} to ${hi} per hour right now, with diesel extra.`, many: (l) => `Right now, per hour: ${l}. Diesel is extra.`, part: (n, lo, hi) => `${n.toLowerCase()} ${lo} to ${hi}`, tipV: "You can also name your own price with Apni Boli." },
+  ro: { head: "Is waqt ghante ka kiraya (dry rent, diesel alag):", item: (n, lo, hi) => `• ${n}: ${lo} se ${hi} fi ghanta`, tip: "Mashwara: Apni Boli mein apna rate bhi de sakte hain, qareebi maalik offers bhejenge.",
+        one: (n, lo, hi) => `${n} ka kiraya is waqt taqreeban ${lo} se ${hi} fi ghanta hai, diesel alag.`, many: (l) => `Is waqt fi ghanta kiraya: ${l}. Diesel alag hai.`, part: (n, lo, hi) => `${n} ${lo} se ${hi}`, tipV: "Apni Boli mein apna rate bhi de sakte hain." },
+  ur: { head: "موجودہ فی گھنٹہ کرایہ (ڈرائی رینٹ، ڈیزل الگ):", item: (n, lo, hi) => `• ${n}: ${lo} سے ${hi} فی گھنٹہ`, tip: "مشورہ: آپ اپنی بولی میں اپنا ریٹ بھی بتا سکتے ہیں، قریبی مالکان آفرز بھیجیں گے۔",
+        one: (n, lo, hi) => `${n} کا کرایہ اس وقت تقریباً ${lo} سے ${hi} فی گھنٹہ ہے، ڈیزل الگ۔`, many: (l) => `اس وقت فی گھنٹہ کرایہ: ${l}۔ ڈیزل الگ ہے۔`, part: (n, lo, hi) => `${n} ${lo} سے ${hi}`, tipV: "آپ اپنی بولی میں اپنا ریٹ بھی دے سکتے ہیں۔" },
+  pa: { head: "اج کل دا فی گھنٹہ کرایہ (ڈرائی رینٹ، ڈیزل وکھرا):", item: (n, lo, hi) => `• ${n}: ${lo} توں ${hi} فی گھنٹہ`, tip: "مشورہ: تسیں اپنی بولی وچ اپنا ریٹ وی دس سکدے او، نیڑے دے مالک آفر گھلن گے۔",
+        one: (n, lo, hi) => `${n} دا کرایہ اج کل تقریباً ${lo} توں ${hi} فی گھنٹہ اے، ڈیزل وکھرا۔`, many: (l) => `اج کل فی گھنٹہ کرایہ: ${l}۔ ڈیزل وکھرا اے۔`, part: (n, lo, hi) => `${n} ${lo} توں ${hi}`, tipV: "تسیں اپنی بولی وچ اپنا ریٹ وی دس سکدے او۔" },
+  sd: { head: "هن وقت في ڪلاڪ مسواڙ (ڊرائي رينٽ، ڊيزل الڳ):", item: (n, lo, hi) => `• ${n}: ${lo} کان ${hi} في ڪلاڪ`, tip: "صلاح: توهان پنهنجي ٻولي ۾ پنهنجو اگهه به ٻڌائي سگهو ٿا، ويجهڙا مالڪ آڇون موڪليندا۔",
+        one: (n, lo, hi) => `${n} جو مسواڙ هن وقت لڳ ڀڳ ${lo} کان ${hi} في ڪلاڪ آهي، ڊيزل الڳ۔`, many: (l) => `هن وقت في ڪلاڪ مسواڙ: ${l}۔ ڊيزل الڳ آهي۔`, part: (n, lo, hi) => `${n} ${lo} کان ${hi}`, tipV: "توهان پنهنجي ٻولي ۾ پنهنجو اگهه به ٻڌائي سگهو ٿا۔" },
+  ps: { head: "اوسنۍ د ساعت کرایه (ډیزل جلا):", item: (n, lo, hi) => `• ${n}: ${lo} نه تر ${hi} په ساعت`, tip: "مشوره: تاسو په خپله بولي کې خپله بیه هم ویلای شئ، نږدې مالکان به وړاندیزونه درولېږي.",
+        one: (n, lo, hi) => `د ${n} کرایه اوس نږدې ${lo} نه تر ${hi} پورې په ساعت ده، ډیزل جلا.`, many: (l) => `اوس د ساعت کرایه: ${l}. ډیزل جلا دی.`, part: (n, lo, hi) => `${n} ${lo} نه تر ${hi}`, tipV: "تاسو په خپله بولي کې خپله بیه هم ویلای شئ." },
+  bal: { head: "اَنّوگیں ساعت ءِ کرایہ (ڈیزل جتا):", item: (n, lo, hi) => `• ${n}: ${lo} تا ${hi} ساعت ءَ`, tip: "سلاہ: شما وتی بولی ءَ وتی نرخ ءَ هم گوشت کن ات، نزّیکیں واہند آفر رَوان دئینت۔",
+        one: (n, lo, hi) => `${n} ءِ کرایہ اَنّوں نزّیک ${lo} تا ${hi} ساعت ءَ اِنت، ڈیزل جتا۔`, many: (l) => `اَنّوں ساعت ءِ کرایہ: ${l}۔ ڈیزل جتا اِنت۔`, part: (n, lo, hi) => `${n} ${lo} تا ${hi}`, tipV: "شما وتی بولی ءَ وتی نرخ ءَ هم گوشت کن ات۔" },
+};
+const RATE_RE = /\brates?\b|\brent\b|\brental|price|kiraya|kiraye|kiraaya|kiraa|kitne|kitna|kharcha|kharch|qeemat|keemat|کرایہ|کرائے|کرایا|ریٹ|قیمت|خرچ|کتنے|کتنا|کتنی|مسواڙ|اگهه|بیه|کرایه|نرخ|किराया|रेट/i;
+function rateAnswer(lang, cat, voice) {
+  const tpl = RATE_TPL[lang] || RATE_TPL.en;
+  const names = RATE_NAMES[lang] || RATE_NAMES.en;
+  const card = (CUR && CUR.catalog) || [];
+  const range = (c) => {
+    const ms = card.filter((m) => m.cat === c);
+    if (!ms.length) return null;
+    const hp = ms.map((m) => (String(m.spec).match(/(\d+)\s*HP/) || [])[1]).filter(Boolean).map(Number);
+    return { c, lo: fmtLocal(Math.min(...ms.map((m) => m.min))), hi: fmtLocal(Math.max(...ms.map((m) => m.max))), hp: hp.length > 1 ? `${Math.min(...hp)}–${Math.max(...hp)} HP` : "" };
+  };
+  const want = cat && range(cat) ? [cat] : ["tractor", "harvester", "thresher", "leveler", "drone"].filter((c) => range(c)).slice(0, 4);
+  // spoken: "1,800 to 3,500 rupees" instead of reading "PKR" letter by letter
+  const RUPEE = { en: "rupees", ro: "rupay", ur: "روپے", pa: "روپے", sd: "رپيا", ps: "روپۍ", bal: "کلدار" };
+  const spoken = (r) => {
+    if (CUR.id !== "PK") return r;
+    const ms = card.filter((m) => m.cat === r.c);
+    const n = (v) => Math.round(v).toLocaleString("en-PK");
+    return { ...r, lo: n(Math.min(...ms.map((m) => m.min))), hi: `${n(Math.max(...ms.map((m) => m.max)))} ${RUPEE[lang] || RUPEE.en}` };
+  };
+  const rows = want.map(range);
+  const label = (r) => names[r.c] + (r.hp && !voice ? ` (${r.hp})` : "");
+  if (voice) {
+    const rowsV = rows.map(spoken);
+    const body = rowsV.length === 1 ? tpl.one(names[rowsV[0].c], rowsV[0].lo, rowsV[0].hi) : tpl.many(rowsV.slice(0, 3).map((r) => tpl.part(names[r.c], r.lo, r.hi)).join(lang === "en" || lang === "ro" ? ", " : "، "));
+    return body + " " + tpl.tipV;
+  }
+  return tpl.head + "\n" + rows.map((r) => tpl.item(label(r), r.lo, r.hi)).join("\n") + "\n\n" + tpl.tip;
+}
+
+// Live voice call: turn any answer into 2-3 short spoken sentences (no lists, bullets or symbols)
+function toSpoken(txt, max = 3) {
+  const lines = String(txt || "").replace(/\r/g, "").split("\n")
+    .map((l) => l.replace(/^\s*(?:[•●▪\-*]|\d+[.)])\s*/, "").trim()).filter(Boolean)
+    .map((l) => (/[.!?۔؟:]$/.test(l) ? l : l + (/[\u0600-\u06FF]/.test(l) ? "۔" : ".")));
+  const flat = lines.join(" ").replace(/[*_#`|]/g, " ").replace(/→/g, ", ").replace(/\s{2,}/g, " ").trim();
+  // split on sentence ends followed by a space, so "0.8" or "Rs 1,800" stay intact
+  const parts = flat.replace(/([.!?۔؟])\s+/g, "$1\u0001").split("\u0001").filter(Boolean);
+  return parts.slice(0, max).join(" ").trim();
+}
+
+function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", forceLang, opts = {}) {
   const text = normDigits(raw);
   const lang = forceLang || pickReplyLang(raw, uiLang);
   const L = (o) => o[lang] || (["pa", "sd", "ps", "bal"].includes(lang) ? o.ur : null) || o.en;
@@ -5455,9 +5535,16 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   const money = (n) => "Rs " + Math.round(n).toLocaleString("en-PK");
 
   let machine = null;
-  if (/harvest|harvestor|combine|ہارویسٹر|ہاروسٹر|ہارویسٹرز|کمبائن|کٹائی|katai|kataai|wadhi|वाढी|हार्वेस्टर/i.test(text)) machine = "harvester";
-  else if (/thresh|thrash|tharesh|تھریشر|تھریسر|تھریشر|گہائی|gahai|sheller|थ्रेशर/i.test(text)) machine = "thresher";
-  else if (/tractor|tractar|traktar|tracter|ٹریکٹر|ٹریکٹرز|ٹیکٹر|plough|plow|rotavator|cultivat|hal chala|ہل|زمین تیار|bijai|بیجائی|sowing|ट्रैक्टर/i.test(text)) machine = "tractor";
+  if (/harvest|harvestor|combine|ہارویسٹر|ہاروسٹر|ہارویسٹرز|کمبائن|کٹائی|هارويسٽر|ڪمبائن|هارویسټر|کمباین|katai|kataai|wadhi|वाढी|हार्वेस्टर/i.test(text)) machine = "harvester";
+  else if (/thresh|thrash|tharesh|تھریشر|تھریسر|تھریشر|ٿريشر|تریشر|گہائی|gahai|sheller|थ्रेशर/i.test(text)) machine = "thresher";
+  else if (/tractor|tractar|traktar|tracter|ٹریکٹر|ٹریکٹرز|ٹیکٹر|ٽريڪٽر|ټراکټور|ټرکټر|plough|plow|rotavator|cultivat|hal chala|ہل|زمین تیار|bijai|بیجائی|sowing|ट्रैक्टर/i.test(text)) machine = "tractor";
+
+  let rateCat = machine;
+  if (!rateCat) {
+    if (/drone|ڈرون|ڊرون|ډرون|spray|اسپرے|سپرے/i.test(text)) rateCat = "drone";
+    else if (/laser|leveler|leveller|levelling|لیزر|لیولر|ليزر|کراہ|karah/i.test(text)) rateCat = "leveler";
+    else if (/planter|transplant|seed drill|ڈرل|پلانٹر/i.test(text)) rateCat = "planter";
+  }
 
   const acreM = text.match(/(\d+(?:\.\d+)?)\s*(acres?|ekar|ekr|eker|ایکڑ|ایکر|killa|killay|kille|qila|کلے|کلہ)/i);
   const kanalM = text.match(/(\d+(?:\.\d+)?)\s*(kanal|کنال)/i);
@@ -5494,6 +5581,12 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   // ---------- Website / portal guidance ----------
   const has = (re) => re.test(text);
   const steps = (o) => L(o) + "";
+  // Rate / rent questions answer with real hourly ranges BEFORE any other intent (Apni Boli, offers, diesel...)
+  const askingTime = /waqt|time|kitni der|der lag|کتنا وقت|کتنی دیر|وقت/i.test(text);
+  const aboutFees = /commission|کمیشن|\bfee|فیس/i.test(text);
+  const dieselOnly = /diesel|fuel|ڈیزل|ایندھن/i.test(text) && !rateCat;
+  const negotiating = /kam kar|kam kaise|kum kar|کم کیسے|کم کر|negotiat|bargain|discount|sasta|سستا|رعایت|mehnga|مہنگا|too high/i.test(text);
+  if (RATE_RE.test(text) && !askingTime && !aboutFees && !dieselOnly && !negotiating) return rateAnswer(lang, rateCat, !!opts.voice);
   if (has(/pay later|baad me|baad mein|bad mein|30 ?%|70 ?%|advance|udhaar|udhar|qarz|loan|credit|ztbl|ادھار|قرض|بعد میں|پیشگی|pay after|after harvest|پور|قرض|اڌار|زرّ/i)) {
     return LX("paylater", {
       en: "Harvest Now, Pay Later: in the booking form choose that payment option. You pay only 30% now; the other 70% is lent by a third-party microfinance partner (proposed: JazzCash Credit, EasyPaisa or ZTBL) and is due after harvest (60 to 180 days). The partner carries the repayment risk, not Agri-Share. Easiest repayment: sell your crop on Agri-Market and the 70% is deducted automatically before your profit is paid out.",
@@ -5543,7 +5636,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
       ro: "Sign in ke liye: upar \"Sign in\" dabayein, registered email aur password likhein aur Sign in dabayein. Kamyab hone par aap ka naam upar nazar aayega. Bahar nikalne ke liye usi menu se Sign out chunein.",
     });
   }
-  if (has(/offer|negotiat|bargain|discount|cheap|expensive|too high|reduce|kam kar|kam kaise|zyada hai|ziada hai|zada hai|kum kar|mehnga|mehenga|mehanga|sasta|رعایت|مہنگا|سستا|کم کر|پیشکش|قیمت|گران اِنت|ګرانه|مهانگو|قيمت|بیه|کمه کړم|گهٽ ڪيئن/i)) {
+  if (has(/offer|negotiat|bargain|discount|cheap|expensive|too high|reduce|kam kar|kam kaise|zyada hai|ziada hai|zada hai|kum kar|mehnga|mehenga|mehanga|sasta|رعایت|مہنگا|سستا|کم کر|کم کیسے|کم ہو|پیشکش|قیمت|گران اِنت|ګرانه|مهانگو|قيمت|بیه|کمه کړم|گهٽ ڪيئن/i)) {
     return LX("offer", {
       en: "Think a rate is too high? You can suggest your own price:\n1. Press \"Request Booking\" on a machine.\n2. Turn on \"Suggest your own price\".\n3. Enter your hourly offer (at least 60% of the listed rate) and, if you add transport, your transport offer.\n4. Add a note, e.g. \"I live 2 km away\", and send.\nThe owner can accept, send a counter-offer or decline. You will see it in My Bookings. Transport is already distance based (PKR 100/km, min 500), so nearby farmers pay less.",
       ur: "کرایہ زیادہ لگتا ہے؟ آپ اپنی قیمت تجویز کر سکتے ہیں:\n1. مشین پر \"بکنگ کی درخواست\" دبائیں۔\n2. \"اپنی قیمت تجویز کریں\" آن کریں۔\n3. فی گھنٹہ پیشکش (کم از کم درج ریٹ کا 60%) اور ٹرانسپورٹ کی پیشکش لکھیں۔\n4. پیغام لکھیں، مثلاً \"میں 2 کلومیٹر دور ہوں\"، اور بھیج دیں۔\nمالک قبول، جوابی پیشکش یا انکار کر سکتا ہے، جو میری بکنگز میں نظر آئے گا۔ ٹرانسپورٹ پہلے ہی فاصلے کے حساب سے ہے (100 روپے فی کلومیٹر، کم از کم 500)۔",
@@ -5648,15 +5741,6 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
       ro: "Payment: EasyPaisa, JazzCash, ya Agri-Agent ke zariye cash.",
     });
   }
-  // "rate / kiraya / کرایہ / price / kitne ka" without acres or hours: today's typical hourly rates
-  if (/\brate|rates|price|kiraya|kiraye|kiraaya|kitne ka|kitna|kharcha|kharch|qeemat|keemat|کرایہ|کرائے|کرایا|ریٹ|قیمت|خرچ|کتنے کا|کتنا|مسواڙ|اگهه|بیه|کرایه/i.test(text)) {
-    const cats = machine ? [machine] : ["tractor", "thresher", "harvester"];
-    const rows = cats.map((c) => `• ${name(c)}: ${money(avgRate(c))} ${L({ en: "per hour", ur: "فی گھنٹہ", ro: "fi ghanta" })}`).join("\n");
-    return L({ en: "Typical hourly rates right now:", ur: "اس وقت عام فی گھنٹہ کرایہ:", ro: "Is waqt aam ghante ka kiraya:" }) + "\n" + rows + "\n\n" +
-      L({ en: "Want a lower price? Use Apni Boli (Name Your Price): enter your own rate and nearby owners send offers. Tell me your acres for a full cost estimate.",
-          ur: "کم قیمت چاہیے؟ اپنی بولی استعمال کریں: اپنا ریٹ بتائیں، قریبی مالکان آفرز بھیجیں گے۔ پورے خرچ کے لیے اپنے ایکڑ بتائیں۔",
-          ro: "Kam qeemat chahiye? Apni Boli istemal karein: apna rate batayein, qareebi maalik offers bhejenge. Poore kharche ke liye apne acre batayein." });
-  }
   if (machine || wheat || maize || rice || /which|kaun|konsi|کون|recommend/i.test(text)) {
     const rec = wheat || rice ? "harvester" : maize ? "thresher" : machine || "tractor";
     const nearest = avail.filter((l) => l.category === rec).sort((a, b) => a.distance - b.distance)[0];
@@ -5706,7 +5790,7 @@ How to use the website (guide users step by step when they ask):
 ${session ? `The farmer is signed in as ${session.name} (${session.role}).` : "The farmer is not signed in."}
 Current listings:
 ${lst}
-Answer ANY question: about using this website, renting, farming machinery, crops, or general topics. ${uiLang === "en" ? "The app is in English: reply in the language and script the farmer used (English, Urdu script, or Roman Urdu)." : `The farmer selected ${langName} in the app: reply in ${langName}, written in its usual Perso-Arabic script, unless the farmer clearly writes in another language. If unsure of a ${langName} word, keep it simple rather than switching to English.`} SCRIPT RULE: never write Hindi or any Devanagari characters. Urdu must be in Urdu (Perso-Arabic) script and Punjabi in Shahmukhi (Perso-Arabic) script; use Roman Urdu or Roman Punjabi only if the farmer wrote in Roman letters.${voice ? (uiLang === "en" ? " This is a live voice call in English: reply only in English." : ` This is a live voice call in ${langName}: reply only in ${langName}.`) + " Your reply will be read aloud to a farmer who may not read: use 2 to 4 short spoken sentences, no lists, no symbols, no tables." : ""} In English replies call the crop-selling tab "Agri-Market". Keep answers short (under 150 words), use numbered steps for how-to questions, show the arithmetic for cost estimates, and never use em dashes.
+Answer ANY question: about using this website, renting, farming machinery, crops, or general topics. ${uiLang === "en" ? "The app is in English: reply in the language and script the farmer used (English, Urdu script, or Roman Urdu)." : `The farmer selected ${langName} in the app: reply in ${langName}, written in its usual Perso-Arabic script, unless the farmer clearly writes in another language. If unsure of a ${langName} word, keep it simple rather than switching to English.`} SCRIPT RULE: never write Hindi or any Devanagari characters. Urdu must be in Urdu (Perso-Arabic) script and Punjabi in Shahmukhi (Perso-Arabic) script; use Roman Urdu or Roman Punjabi only if the farmer wrote in Roman letters.${voice ? (uiLang === "en" ? " This is a live voice call in English: reply only in English." : ` This is a live voice call in ${langName}: reply only in ${langName}.`) + " VOICE-CALL MODE: you are a warm, friendly agricultural advisor talking on the phone. Reply in exactly 2 short, natural spoken sentences in the farmer's exact language. No lists, bullets, numbering, markdown, symbols or tables. For machine rates, say the hourly range first, then one short tip about Apni Boli (Name Your Price)." : ""} In English replies call the crop-selling tab "Agri-Market". Keep answers short (under 150 words), use numbered steps for how-to questions, show the arithmetic for cost estimates, and never use em dashes.
 
 Conversation so far:
 ${convo}
@@ -5723,7 +5807,7 @@ Helper:`;
 const VITE_ENV = (typeof import.meta !== "undefined" && import.meta.env) || {};
 const GEMINI_KEY = VITE_ENV.VITE_GEMINI_API_KEY || "";
 const GEMINI_MODEL = VITE_ENV.VITE_GEMINI_MODEL || "gemini-flash-latest";
-async function askGemini(prompt) {
+async function askGemini(prompt, system) {
   if (!GEMINI_KEY) return "";
   const ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
   const timer = setTimeout(() => ctrl && ctrl.abort(), 20000);
@@ -5731,7 +5815,11 @@ async function askGemini(prompt) {
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_KEY },
-      body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.4, maxOutputTokens: 700 } }),
+      body: JSON.stringify({
+        ...(system ? { systemInstruction: { parts: [{ text: system }] } } : {}),
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: { temperature: system ? 0.6 : 0.4, maxOutputTokens: system ? 220 : 700 },
+      }),
       signal: ctrl ? ctrl.signal : undefined,
     });
     if (!res.ok) { console.warn("[Agri-Share] Gemini error", res.status); return ""; }
@@ -5792,7 +5880,7 @@ function pickVoice(voices, codes) {
   const norm = (v) => String(v.lang || "").toLowerCase().replace("_", "-");
   for (const c of codes) {
     const exact = voices.filter((v) => norm(v) === c || (c.length === 2 && norm(v).startsWith(c + "-")) || norm(v) === c);
-    if (exact.length) return exact.find((v) => /google|natural|enhanced|premium/i.test(v.name)) || exact.find((v) => v.localService) || exact[0];
+    if (exact.length) return exact.find((v) => /natural|neural|enhanced|premium|siri/i.test(v.name)) || exact.find((v) => /google/i.test(v.name)) || exact.find((v) => v.localService) || exact[0];
   }
   return null;
 }
@@ -5802,8 +5890,8 @@ function VoiceWaves({ active, tone }) {
   return (
     <div className="flex h-16 items-center justify-center gap-1" aria-hidden="true">
       {Array.from({ length: 13 }).map((_, i) => (
-        <span key={i} className={`w-1.5 rounded-full ${tone === "speak" ? "bg-gold" : "bg-leaf"} ${active ? "voice-bar" : ""}`}
-          style={{ height: active ? undefined : 6, animationDelay: `${(i % 5) * 0.11 + (i % 3) * 0.07}s`, animationDuration: `${0.7 + (i % 4) * 0.13}s` }} />
+        <span key={i} className={`w-1.5 rounded-full ${tone === "speak" ? "bg-gold" : tone === "think" ? "bg-ivory/60" : "bg-leaf"} ${active ? "voice-bar" : ""}`}
+          style={{ height: active ? undefined : 6, animationDelay: `${(i % 5) * 0.11 + (i % 3) * 0.07}s`, animationDuration: tone === "think" ? `${1.6 + (i % 4) * 0.2}s` : `${0.7 + (i % 4) * 0.13}s`, opacity: tone === "think" ? 0.7 : 1 }} />
       ))}
     </div>
   );
@@ -5832,6 +5920,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   const silentRef = useRef(0);          // consecutive turns with no speech heard
   const voicesRef = useRef([]);         // browser voices (they load asynchronously in Chrome)
   const live = useRef({});              // latest send/listen/handleUtterance, so recognition callbacks never use stale state
+  const turnRef = useRef(0);            // bumps on every new turn or interruption; stale replies are dropped
   const SR = typeof window !== "undefined" ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
   const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
 
@@ -5871,7 +5960,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
 
   const send = async (textArg, viaVoice) => {
     const text = fixScript((textArg != null ? textArg : input).trim(), lang);
-    if (!text || busy) return "";
+    if (!text || (busy && !viaVoice)) return ""; // a voice turn after an interruption may overlap the previous answer
     setInput("");
     const userMsg = { role: "user", text, id: Date.now() };
     const botId = Date.now() + 1;
@@ -5890,13 +5979,16 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
         const txt = typeof out === "string" ? out : out && out.text;
         if (txt && txt.trim()) { answered = fixScript(txt.trim(), lang); setBot(answered, { pending: false, source: "claude" }); }
       } else if (GEMINI_KEY) {
-        const txt = await askGemini(prompt);
+        const langName = (LANGS.find((x) => x.code === lang) || LANGS[0]).name;
+        const txt = await askGemini(prompt, viaVoice ? `Voice-call mode: you are a warm agricultural advisor on a phone call with a farmer. Reply in 2 short spoken sentences in the user's exact language (${langName}${lang === "en" ? "" : ", Perso-Arabic script, never Devanagari"}). No lists, bullets, markdown or symbols.` : undefined);
         if (txt) { answered = fixScript(txt, lang); setBot(answered, { pending: false, source: "gemini" }); }
       }
     } catch (e) {
       if (e && e.code === "not_granted") { sampleRef.current = null; setMode("offline"); }
     }
-    if (!answered) { answered = ruleAnswer(text, listings, dieselPrice, lang); setBot(answered, { pending: false, source: "rules" }); }
+    if (!answered) { answered = ruleAnswer(text, listings, dieselPrice, lang, undefined, { voice: !!viaVoice }); setBot(viaVoice ? toSpoken(answered) : answered, { pending: false, source: "rules" }); }
+    // live call: keep spoken replies short and natural, whichever engine answered
+    if (viaVoice) { answered = toSpoken(answered); setBot(answered); }
     setBusy(false);
     return answered;
   };
@@ -5955,12 +6047,12 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
         const parts = say.match(/[^.!?۔؟\n]+[.!?۔؟]?/g) || [say];
         let i = 0;
         const next = () => {
-          if (i >= parts.length || mutedRef.current || (!callRef.current && !opts.force)) { resolve(); return; }
+          if (i >= parts.length || mutedRef.current || (!callRef.current && !opts.force) || (opts.turn != null && opts.turn !== turnRef.current)) { resolve(); return; }
           const chunk = parts[i++].trim();
           if (!chunk) { next(); return; }
           const u = new SpeechSynthesisUtterance(chunk);
           if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = lang === "en" ? "en-US" : "ur-PK";
-          u.rate = 0.97;
+          u.rate = 0.98; u.pitch = 1.02;
           // Safari sometimes never fires onend: move on after the expected duration so the call never freezes
           let done = false;
           const finish = () => { if (done) return; done = true; clearTimeout(guard); next(); };
@@ -5981,14 +6073,16 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     const said = fixScript(String(text || "").trim(), lang);
     if (!said || !callRef.current) { if (callRef.current) live.current.listen(false); return; }
     silentRef.current = 0;
+    const turn = ++turnRef.current;
     setHeard(said); setPhase("thinking");
     const ans = await live.current.send(said, true);
-    if (!callRef.current) return;
+    if (!callRef.current || turn !== turnRef.current) return; // the farmer interrupted
     setReply(ans); setPhase("speaking");
-    const roman = lang !== "en" && !hasNativeVoice() ? ruleAnswer(said, listings, dieselPrice, lang, "ro") : "";
-    await speakText(ans, { roman });
+    const roman = lang !== "en" && !hasNativeVoice() ? toSpoken(ruleAnswer(said, listings, dieselPrice, lang, "ro", { voice: true })) : "";
+    await speakText(ans, { roman, turn });
+    if (turn !== turnRef.current) return;
     // short pause so the microphone does not catch the end of our own voice, then listen again
-    if (callRef.current && !demoRef.current) setTimeout(() => { if (callRef.current && !demoRef.current) live.current.listen(false); }, 350);
+    if (callRef.current && !demoRef.current) setTimeout(() => { if (callRef.current && !demoRef.current && turn === turnRef.current) live.current.listen(false); }, 350);
   };
 
   // fromGesture: true when called straight from a click (Claude dictation requires it)
@@ -6118,9 +6212,23 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       }
     } catch (e) { /* not supported */ }
   };
-  const endCall = () => { callRef.current = false; demoRef.current = false; stopAudio(); setPhase("idle"); setVoiceOpen(false); };
+  const endCall = () => { callRef.current = false; demoRef.current = false; turnRef.current += 1; stopAudio(); setPhase("idle"); setVoiceOpen(false); };
+  const stopSpeaking = () => {
+    try { ttsRef.current && ttsRef.current.stop().catch(() => {}); } catch (e) { /* ignore */ }
+    try { synth && synth.cancel(); } catch (e) { /* ignore */ }
+  };
+  // Barge-in: tapping while the helper thinks or speaks cancels that turn and listens straight away
+  const interrupt = () => {
+    turnRef.current += 1;
+    stopSpeaking();
+    try { recRef.current && recRef.current.abort(); } catch (e) { /* ignore */ }
+    recRef.current = null;
+    demoRef.current = false; silentRef.current = 0; setVoiceErr(""); setVoiceNote("");
+    try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_error")); setPhase("tap"); }
+  };
   const tapToTalk = () => {
     if (!callRef.current) callRef.current = true;
+    if (phase === "speaking" || phase === "thinking") { interrupt(); return; }
     demoRef.current = false; silentRef.current = 0; setVoiceErr(""); setVoiceNote("");
     unlockTTS();
     try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_error")); setPhase("tap"); }
@@ -6177,7 +6285,12 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
             /* Audio-only call screen: no transcript or reply text, so farmers who cannot read can still use it.
                The conversation is still saved in the chat history (shown after the call ends). */
             <div className="flex flex-1 flex-col items-center gap-4 overflow-y-auto bg-gradient-to-b from-forest to-[#0d3d22] px-4 pb-5 pt-4 text-center text-ivory" role="region" aria-label={t("vc_title")} data-voice-screen>
-              <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-gold"><AudioLines className="h-4 w-4" aria-hidden="true" />{t("vc_title")}</p>
+              <div className="flex w-full items-center justify-between gap-2">
+                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-gold"><AudioLines className="h-4 w-4" aria-hidden="true" />{t("vc_title")}</p>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600/90 px-2.5 py-1 text-[11px] font-bold text-white" role="status">
+                  <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-white" /></span>{t("vc_live")}
+                </span>
+              </div>
               {voiceErr ? (
                 <div className="flex w-full flex-1 flex-col items-center justify-center gap-3" role="alert">
                   <span className="flex h-20 w-20 items-center justify-center rounded-full bg-red-500/20 ring-4 ring-red-400/30"><MicOff className="h-10 w-10 text-red-200" aria-hidden="true" /></span>
@@ -6189,14 +6302,17 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
                 </div>
               ) : (
                 <>
-                  <div className={`relative mt-2 flex h-36 w-36 items-center justify-center rounded-full transition-colors duration-300 ${phase === "listening" ? "bg-leaf/30" : phase === "speaking" ? "bg-gold/25" : phase === "thinking" ? "bg-ivory/15" : "bg-ivory/10"}`}>
+                  <button type="button" onClick={phase === "speaking" || phase === "thinking" ? interrupt : phase === "listening" ? stopListening : tapToTalk}
+                    aria-label={phase === "speaking" || phase === "thinking" ? t("vc_interrupt") : phase === "listening" ? t("vc_done_speaking") : t("vc_tap_btn")}
+                    className={`relative mt-2 flex h-36 w-36 items-center justify-center rounded-full transition-all duration-500 ${phase === "listening" ? "bg-leaf/30 shadow-[0_0_60px_rgba(103,168,52,0.55)]" : phase === "speaking" ? "bg-gold/25 shadow-[0_0_60px_rgba(237,192,74,0.55)]" : phase === "thinking" ? "animate-pulse bg-ivory/15 shadow-[0_0_40px_rgba(250,248,238,0.25)]" : "bg-ivory/10"}`}>
                     {(phase === "listening" || phase === "speaking") && <span className="absolute inset-0 animate-ping rounded-full bg-ivory/10" aria-hidden="true" />}
                     <span className={`absolute inset-3 rounded-full ring-4 ${phase === "listening" ? "ring-leaf/60" : phase === "speaking" ? "ring-gold/60" : "ring-ivory/15"}`} aria-hidden="true" />
                     {phase === "speaking" ? <Volume2 className="h-16 w-16 text-gold" aria-hidden="true" /> : phase === "thinking" ? <Sparkles className="h-16 w-16 animate-pulse text-gold" aria-hidden="true" /> : <Mic className={`h-16 w-16 ${phase === "listening" ? "text-ivory" : "text-ivory/80"}`} aria-hidden="true" />}
-                  </div>
-                  <div className="scale-125"><VoiceWaves active={phase === "listening" || phase === "speaking"} tone={phase === "speaking" ? "speak" : "listen"} /></div>
+                  </button>
+                  <div className="scale-125 drop-shadow-[0_0_12px_rgba(237,192,74,0.45)]"><VoiceWaves active={phase === "listening" || phase === "speaking" || phase === "thinking"} tone={phase === "speaking" ? "speak" : phase === "thinking" ? "think" : "listen"} /></div>
                   <p className="font-display text-2xl font-extrabold" aria-live="assertive" data-phase={phase}>{phaseLabel}</p>
                   {phase === "listening" && <button type="button" onClick={stopListening} className="rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25">{t("vc_done_speaking")}</button>}
+                  {(phase === "speaking" || phase === "thinking") && <button type="button" onClick={interrupt} className="inline-flex items-center gap-2 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_interrupt")}</button>}
                   {(phase === "tap" || phase === "idle") && voiceEngine !== "none" && (
                     <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-base font-extrabold text-soil shadow-lg transition active:scale-95"><Mic className="h-5 w-5" aria-hidden="true" />{voiceNote === t("vc_no_speech") || phase === "tap" ? t("vc_again") : t("vc_tap_btn")}</button>
                   )}
