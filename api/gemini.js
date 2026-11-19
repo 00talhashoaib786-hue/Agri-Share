@@ -4,12 +4,12 @@
 
   Vercel > Project > Settings > Environment Variables:
     GEMINI_API_KEY   your key from https://aistudio.google.com/apikey   (required)
-    GEMINI_MODEL               optional, first model to try (default "gemini-flash-latest")
+    GEMINI_MODEL               optional, first model to try (default "gemini-2.5-flash-lite")
     GEMINI_FALLBACK_MODELS     optional, comma-separated fallback chain
 
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
   POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
-    Model chain: GEMINI_MODEL (default gemini-flash-latest), then gemini-3.5-flash (6 s per attempt).
+    Model chain: GEMINI_MODEL (default gemini-2.5-flash-lite) -> gemini-flash-latest -> gemini-2.5-flash -> gemini-3.5-flash (4 s per attempt).
     Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 250, temperature: 0.4 }.
     on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
@@ -20,10 +20,11 @@ const MAX_CHARS = 60000;            // text in the conversation
 const MAX_AUDIO_B64 = 1_400_000;    // the app sends at most ~15 s of 16 kHz mono WAV (~640 KB base64); generous headroom
 const AUDIO_TYPES = /^audio\/(wav|x-wav|wave|mp3|mpeg|aiff|aac|ogg|flac|webm|mp4|m4a|x-m4a)$/;
 const DEADLINE_MS = 20000;          // whole request, all models included (vercel.json allows 30 s)
-const PER_MODEL_MS = 6000;          // per attempt; a slow or busy model fails over instead of eating the whole budget
+const PER_MODEL_MS = 4000;          // per attempt; a slow or busy model fails over instead of eating the whole budget
 // Tried in order after GEMINI_MODEL when Google answers 503 (busy), 429 (rate limit), 404 (retired model) or is slow.
 // Override without a redeploy of code: GEMINI_FALLBACK_MODELS="model-a,model-b" in Vercel.
-const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-flash-latest,gemini-3.5-flash")
+// free-tier friendly first (highest quota, fastest), then the bigger flash models
+const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-2.5-flash-lite,gemini-flash-latest,gemini-2.5-flash,gemini-3.5-flash")
   .split(",").map((m) => m.trim()).filter(Boolean);
 const RETRY_STATUS = new Set([503, 429, 404]);
 
@@ -97,7 +98,7 @@ async function handle(req, res) {
     const m = models[i];
     const remaining = DEADLINE_MS - (Date.now() - startedAt);
     if (remaining < 1500) break;
-    // 6 s per attempt; the last model in the chain may use what is left so a long answer can still finish
+    // 4 s per attempt; the last model in the chain may use what is left so a long answer can still finish
     const isLast = i === models.length - 1;
     const opts = { system, contents, voice, json };
     let r = await callGemini(key, m, opts, isLast ? remaining : Math.min(PER_MODEL_MS, remaining));

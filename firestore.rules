@@ -29,15 +29,17 @@ service cloud.firestore {
     match /machinery_listings/{id} {
       allow read: if true;
       // new listings go live instantly ("approved") but unverified; the creator must be the owner
+      // owner contact details never go on this public document (see listing_contacts)
       allow create: if signedIn() && smallDoc() && (isAdmin()
         || (request.resource.data.ownerUid == request.auth.uid
             && request.resource.data.status in ['approved', 'pending']
-            && request.resource.data.get('isVerified', false) == false));
+            && request.resource.data.get('isVerified', false) == false
+            && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone'])));
       // only the owner (by uid) or an admin may change a listing; owners can never verify, approve or reject
       allow update: if signedIn() && smallDoc() && (isAdmin()
         || (resource.data.get('ownerUid', '') == request.auth.uid
             && request.resource.data.get('ownerUid', '') == request.auth.uid
-            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'reviewedAt', 'isVerified', 'verifiedAt'])));
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'reviewedAt', 'isVerified', 'verifiedAt', 'ownerEmail', 'ownerPhone'])));
       allow delete: if isAdmin() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid);
     }
 
@@ -72,6 +74,11 @@ service cloud.firestore {
       allow read: if signedIn();
       allow delete: if isAdmin();
       allow create, update: if signedIn() && smallDoc();
+    }
+    // Private owner contact for a listing (phone, email): only that owner and the founder
+    match /listing_contacts/{listingId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.ownerUid == request.auth.uid);
+      allow read, update, delete: if isFounder() || (signedIn() && resource.data.ownerUid == request.auth.uid);
     }
     // Farmers with no machine within 25-100 km: any member can file their own lead; only the founder reads/manages
     match /unmatched_farmer_leads/{id} {

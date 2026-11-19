@@ -979,7 +979,7 @@ const T = {
     ad_lead_new: "New",
     ad_lead_arranged: "Arranged",
     ad_lead_mark: "Mark Arranged",
-    ls_unverified: "Live · unverified",
+    ls_unverified: "Live · Unverified",
     ls_verified: "Verified",
     ad_verify_btn: "Mark verified",
     ad_remove: "Remove",
@@ -989,7 +989,8 @@ const T = {
     ow_offer_rate: "Your hourly offer",
     ow_offer_send: "Send offer",
     ow_offer_update: "Offer sent · update",
-    ow_offer_sent: "Your offer was sent to the farmer."
+    ow_offer_sent: "Your offer was sent to the farmer.",
+    results_beyond: "No machines within {km} km · showing the {n} nearest"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1723,7 +1724,8 @@ const T = {
     ow_offer_rate: "آپ کی فی گھنٹہ آفر",
     ow_offer_send: "آفر بھیجیں",
     ow_offer_update: "آفر بھیج دی · تبدیل کریں",
-    ow_offer_sent: "آپ کی آفر کسان کو بھیج دی گئی۔"
+    ow_offer_sent: "آپ کی آفر کسان کو بھیج دی گئی۔",
+    results_beyond: "{km} کلومیٹر میں کوئی مشین نہیں · قریب ترین {n} دکھائی جا رہی ہیں"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2356,7 +2358,9 @@ const T = {
     ow_offer_rate: "تہاڈی فی گھنٹہ آفر",
     ow_offer_send: "آفر گھلو",
     ow_offer_update: "آفر گھل دتی · بدلو",
-    ow_offer_sent: "تہاڈی آفر کسان نوں گھل دتی گئی۔"
+    ow_offer_sent: "تہاڈی آفر کسان نوں گھل دتی گئی۔",
+    results_beyond: "{km} کلومیٹر وچ کوئی مشین نئیں · نیڑے دیاں {n} وکھائیاں جا رہیاں نیں",
+    ls_unverified: "لائیو · غیر تصدیق شدہ"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2990,7 +2994,9 @@ const T = {
     ow_offer_rate: "توهان جي في ڪلاڪ آڇ",
     ow_offer_send: "آڇ موڪليو",
     ow_offer_update: "آڇ موڪلي وئي · بدلايو",
-    ow_offer_sent: "توهان جي آڇ هاري کي موڪلي وئي۔"
+    ow_offer_sent: "توهان جي آڇ هاري کي موڪلي وئي۔",
+    results_beyond: "{km} ڪلوميٽرن ۾ ڪا مشين ناهي · ويجهيون {n} ڏيکاريون پيون وڃن",
+    ls_unverified: "لائيو · غير تصديق ٿيل"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3326,7 +3332,9 @@ const T = {
     ow_offer_rate: "ستاسو د ساعت وړاندیز",
     ow_offer_send: "وړاندیز ولېږئ",
     ow_offer_update: "وړاندیز ولېږل شو · بدل یې کړئ",
-    ow_offer_sent: "ستاسو وړاندیز بزګر ته ولېږل شو."
+    ow_offer_sent: "ستاسو وړاندیز بزګر ته ولېږل شو.",
+    results_beyond: "په {km} کیلومترو کې ماشین نشته · {n} نږدې ښودل کېږي",
+    ls_unverified: "ژوندی · نه تایید شوی"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3652,7 +3660,9 @@ const T = {
     ow_offer_rate: "شمئے ساعت ءِ آفر",
     ow_offer_send: "آفر رَوان دئے",
     ow_offer_update: "آفر رَوان بوت · بدل کن",
-    ow_offer_sent: "شمئے آفر کِشاورز ءَ رَوان بوت۔"
+    ow_offer_sent: "شمئے آفر کِشاورز ءَ رَوان بوت۔",
+    results_beyond: "{km} کلومیٹر ءَ مشین نیست · {n} نزّیک پیش دارگ بنت",
+    ls_unverified: "زندگ · تصدیق نہ بوتگ"
   },
 };
 
@@ -4705,8 +4715,11 @@ function ListingCard({ l, t, dn, lang, onBook }) {
           <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ivory/85"><CategoryIcon category={l.category} className="h-3.5 w-3.5 text-gold" />{t("one_" + l.category)}</p>
           <h3 className="break-words font-display text-base font-extrabold leading-tight" title={l.name}>{l.name}</h3>
         </div>
-        {l.mine && <span className="absolute end-3 top-3 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil">{t("new_badge")}</span>}
-        {!l.mine && l.isVerified && <span className="absolute end-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-bold text-forest shadow"><BadgeCheck className="h-3 w-3" aria-hidden="true" />{t("ls_verified")}</span>}
+        {l.isVerified ? (
+          <span className="absolute end-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-bold text-forest shadow"><BadgeCheck className="h-3 w-3" aria-hidden="true" />{t("ls_verified")}</span>
+        ) : (l.status || "approved") === "approved" && l.ownerUid ? (
+          <span className="absolute end-3 top-3 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil shadow">{t("ls_unverified")}</span>
+        ) : null}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
@@ -4756,7 +4769,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
       .sort((a, b) => (b.available - a.available) || a.distance - b.distance);
   }, [listings, category, province, radius, query]);
   // when nothing is inside the radius, still show the closest machines (with their real distance)
-  const nearestBeyond = useMemo(() => (userLoc ? listings.filter((l) => l.available && (category === "all" || l.category === category) && l.distance > radius).sort((a, b) => a.distance - b.distance).slice(0, 3) : []), [listings, userLoc, category, radius]);
+  const nearestBeyond = useMemo(() => (userLoc ? listings.filter((l) => l.available && !l.unknownPlace && (category === "all" || l.category === category) && l.distance > radius).sort((a, b) => a.distance - b.distance).slice(0, 3) : []), [listings, userLoc, category, radius]);
   const pct = ((radius - 1) / (MAX_RADIUS - 1)) * 100;
   // the consultant card shows when no REAL, approved, available machine of this type is within 100 km
   const realWithin100 = useMemo(() => (userLoc && userLoc.lat ? listings.filter((l) => !isSeedListing(l) && l.available && (l.status || "approved") === "approved" && (category === "all" || l.category === category) && kmToListing(userLoc, l) <= 100).length : null), [listings, userLoc, category]);
@@ -4766,7 +4779,9 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
     <section id="market" className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="market-h">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <h2 id="market-h" className="font-display text-2xl font-extrabold text-forest">{t("nav_market")}</h2>
-        <p className="text-sm font-semibold text-soil/80" aria-live="polite">{t(results.length === 1 ? "results_one" : "results").replace("{n}", results.length)}</p>
+        <p className="text-sm font-semibold text-soil/80" aria-live="polite">{results.length === 0 && nearestBeyond.length > 0
+          ? t("results_beyond").replace("{n}", nearestBeyond.length).replace("{km}", radius)
+          : t(results.length === 1 ? "results_one" : "results").replace("{n}", results.length)}</p>
       </div>
       <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
         <aside className="h-fit rounded-2xl border border-soil/10 bg-white p-4 shadow-sm lg:sticky lg:top-24" aria-label={t("filters")}>
@@ -7413,7 +7428,10 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
   const local = waiting.filter((d) => inMyDistrict(d.district));
   const shown = (local.length ? local : waiting).slice(0, 6);
   const reqDistrict = (r) => (r.loc && r.loc.district) || String(r.village || "").split(",").slice(-1)[0];
-  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && r.renterEmail !== session.email && inMyDistrict(reqDistrict(r))).sort((a, b) => b.createdAt - a.createdAt).slice(0, 8) : [];
+  // requests routed to my machines first, then open requests in my district
+  const routedToMe = (r) => Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(session.uid);
+  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && r.renterEmail !== session.email && (routedToMe(r) || inMyDistrict(reqDistrict(r))))
+    .sort((a, b) => (routedToMe(b) - routedToMe(a)) || b.createdAt - a.createdAt).slice(0, 10) : [];
   return (
     <div className="mb-5 rounded-2xl border border-gold/60 bg-gold/10 p-4">
       <h3 className="flex items-center gap-2 font-bold text-forest"><Users className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_waiting")} <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{openReqs.length + waiting.length}</span></h3>
@@ -7554,6 +7572,10 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     if (!f.loc) { setLocErr(true); scrollTo(formRef); return; }
     requireAuth(() => {
       const r = { ...f, country: CUR.id, id: "RQ-" + Math.floor(10000 + Math.random() * 89999), rate: Math.max(1, Number(f.rate) || 0), hours: Math.min(16, Math.max(1, Number(f.hours) || 1)), createdAt: Date.now(), status: "open", tierReached: 1, renterEmail: session ? session.email : null, renterName: session ? session.name : "", renterPhone: session ? session.phone || "" : "" };
+      // attach every REAL owner whose machine matches within 100 km, so the request lands in their Owner Portal
+      const matched = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.registered && o.ownerUid && o.distance <= 100);
+      r.matchedOwnerUids = [...new Set(matched.map((o) => o.ownerUid))];
+      r.matchedListingIds = matched.map((o) => String(o.key).replace(/^lst-/, ""));
       saveRequest(r);
       setReq(r); setStatuses({}); setOffers([]); setBooked(null);
       statusRef.current = {};
@@ -7628,10 +7650,14 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   const compare = TIERS.map((tr) => {
     const band = tr.n === 2 ? (o) => o.distance >= 15 && o.distance <= 25 : (o) => o.tier === tr.n;
     const inTier = pool.filter(band).sort((a, b) => a.distance - b.distance);
+    // an offer already in this band: preview exactly that offer (same helper, same rate and km as the offer card)
+    const bandOffers = req ? offersInTier.filter((o) => band(o.owner)) : [];
+    const best = bandOffers.length ? bandOffers.map((o) => ({ o, q: qFor(o) })).sort((a, b) => a.q.grand - b.q.grand)[0] : null;
+    if (best) return { tr, km: best.o.owner.distance, real: true, q: best.q };
     const km = inTier.length ? inTier[0].distance : tr.repKm;
     const real = inTier.length > 0; // no owner in this band yet: don't show a made-up distance
     const rate = req ? req.rate : Number(f.rate) || 0;
-    return { tr, km, real, q: liveQuote({ rate, hours: (req || f).hours, km, category: (req || f).category, rentType: (req || f).rentType, dieselPrice, commissionRate: (req || f).smallholder ? SMALLHOLDER_COMMISSION : COMMISSION }) };
+    return { tr, km, real, q: liveQuote({ rate, hours: (req || f).hours, km, category: (req || f).category, rentType: (req || f).rentType, dieselPrice, commissionRate: lrCommission }) };
   });
 
   return (
@@ -8609,7 +8635,7 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
@@ -8801,11 +8827,11 @@ function AdminConsole({ leads = [], markLeadArranged, verifyListing, t, dn, lang
                       <p className="text-xs text-soil/80">{t("one_" + l.category)} · {l.village}, {dn(l.district)} · <span dir="ltr">{l.distance} km</span></p>
                       <dl className="mt-2 grid gap-x-3 gap-y-1 text-xs text-soil sm:grid-cols-[auto_1fr]">
                         <dt className="font-semibold text-soil/80">{t("ct_owner")}</dt>
-                        <dd className="break-words font-bold">{l.ownerName || prof(l.ownerEmail).name || "·"} <span className="font-normal text-soil/80" dir="ltr">({l.ownerId})</span></dd>
+                        <dd className="break-words font-bold">{l.ownerName || ((contacts[l.id] || {}).ownerName) || "·"} <span className="font-normal text-soil/80" dir="ltr">({l.ownerId})</span></dd>
                         <dt className="font-semibold text-soil/80">{t("au_phone")}</dt>
-                        <dd><ContactButtons t={t} phone={l.ownerPhone || prof(l.ownerEmail).phone} name={l.ownerName} /></dd>
+                        <dd><ContactButtons t={t} phone={(contacts[l.id] || {}).ownerPhone || prof((contacts[l.id] || {}).ownerEmail).phone} name={l.ownerName} /></dd>
                         <dt className="font-semibold text-soil/80">{t("au_email")}</dt>
-                        <dd className="break-all">{l.ownerEmail ? <a href={`mailto:${l.ownerEmail}`} className="font-semibold text-forest underline underline-offset-2" dir="ltr">{l.ownerEmail}</a> : "·"}</dd>
+                        <dd className="break-all">{(contacts[l.id] || {}).ownerEmail ? <a href={`mailto:${(contacts[l.id] || {}).ownerEmail}`} className="font-semibold text-forest underline underline-offset-2" dir="ltr">{(contacts[l.id] || {}).ownerEmail}</a> : "·"}</dd>
                         <dt className="font-semibold text-soil/80">{t("ct_location")}</dt>
                         <dd className="break-words">{[l.village, dn(l.district || ""), l.province && l.province !== "PB" ? l.province : ""].filter(Boolean).join(", ")}</dd>
                         <dt className="font-semibold text-soil/80">{t("ct_model")}</dt>
@@ -9987,8 +10013,15 @@ function App() {
   const accounts = useAccounts();
   const session = accounts.session;
   // Renter's farm location (pin, GPS or district). Distances and transport are measured from it.
-  const [userLoc, setUserLocState] = useState(() => store.get("agrishare.userloc", null));
-  const setUserLoc = (loc) => { setUserLocState(loc); store.set("agrishare.userloc", loc); };
+  // The location filter lives only for this browser tab (sessionStorage); a new visit starts from the
+  // signed-in profile's district, never from an old "agrishare.userloc" left in localStorage.
+  const [userLoc, setUserLocState] = useState(() => {
+    try { localStorage.removeItem("agrishare.userloc"); } catch (e) { /* ignore */ }
+    try { const v = sessionStorage.getItem("agrishare.userloc"); if (v) return JSON.parse(v); } catch (e) { /* ignore */ }
+    const sess = store.get("agrishare.session", null);
+    return (sess && sess.location) || null;
+  });
+  const setUserLoc = (loc) => { setUserLocState(loc); try { if (loc) sessionStorage.setItem("agrishare.userloc", JSON.stringify(loc)); else sessionStorage.removeItem("agrishare.userloc"); } catch (e) { /* ignore */ } };
   useEffect(() => { if (!userLoc && session && session.location && locCountry(session.location) === (store.get("agrishare.country", "PK") || "PK")) setUserLoc(session.location); }, [session && session.email]); // eslint-disable-line
   const [auth, setAuth] = useState(null); // { tab, reason, then }
 
@@ -10091,7 +10124,7 @@ function App() {
   // Stored "mine" flags and email matches are never trusted; listings without ownerUid belong to no one here.
   const uid = session && session.uid;
   const isMineListing = (l) => Boolean(uid && l.ownerUid && l.ownerUid === uid);
-  const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)).map((l) => ({ ...l, mine: isMineListing(l) })), [listings, uid]); // eslint-disable-line
+  const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)).map(({ ownerEmail, ownerPhone, ...l }) => ({ ...l, mine: isMineListing(l) })), [listings, uid]); // eslint-disable-line
   const myListings = useMemo(() => realListings.filter((l) => l.mine), [realListings]);
   // bookings that belong to MY machines (Owner Portal): matched by listing id or the booking's ownerUid
   const myListingIds = useMemo(() => new Set(myListings.map((l) => String(l.id))), [myListings]);
@@ -10119,6 +10152,24 @@ function App() {
     if (!auto) toast(t("zc_sent"), { title: t("zc_title") });
     return { saved: ok1, emailed: ok2 };
   };
+  const [contacts, setContacts] = useState({}); // listingId -> { ownerPhone, ownerEmail } (founder only)
+  useEffect(() => {
+    if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setContacts({}); return undefined; }
+    return watchCollection(COL.contacts, (list) => setContacts(Object.fromEntries(list.map((c) => [c.listingId || c.id, c]))), (e) => console.warn("[Agri-Share] Contacts listener:", e && e.code));
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
+  const migratedRef = useRef(false);
+  useEffect(() => {
+    // one-time clean-up by the founder: copy legacy ownerEmail/ownerPhone into listing_contacts and remove them from the public document
+    if (migratedRef.current || !accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) return;
+    const legacy = listings.filter((l) => !isSeedListing(l) && (l.ownerEmail || l.ownerPhone));
+    if (!legacy.length) return;
+    migratedRef.current = true;
+    legacy.forEach((l) => {
+      writeDoc(COL.contacts, l.id, { listingId: l.id, ownerUid: l.ownerUid || "", ownerName: l.ownerName || "", ownerPhone: l.ownerPhone || "", ownerEmail: l.ownerEmail || "", createdAt: l.submittedAt || Date.now(), migrated: true })
+        .then(() => setListings((ls) => ls.map((x) => (x.id === l.id ? (({ ownerEmail, ownerPhone, ...rest }) => rest)(x) : x))))
+        .catch((e) => console.warn("[Agri-Share] Contact migration failed for", l.id, e && e.code));
+    });
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, listings]); // eslint-disable-line
   const [leads, setLeads] = useState([]);
   useEffect(() => {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setLeads([]); return undefined; }
@@ -10132,9 +10183,12 @@ function App() {
   const saveDemand = (rec) => setDemand((list) => (list.some((d) => d.id === rec.id) ? list.map((d) => (d.id === rec.id ? { ...d, ...rec } : d)) : [...list, rec]));
   // Only admin-approved machines in switched-on pilot districts are visible to renters
   const publicListings = useMemo(() => marketListings
-    .map((l) => (l.mine ? l : (({ ownerEmail, ownerPhone, ...rest }) => rest)(l)))
     .filter((l) => (l.status || "approved") === "approved" && (l.country || "PK") === country && (country !== "PK" || settings.activeProvinces.includes(l.province || "PB")))
-    .map((l) => (userLoc && l.lat && locCountry(userLoc) === country ? { ...l, distance: Math.max(0.5, roadKm(userLoc, l)), fromPin: true } : l)),
+    .map((l) => {
+      if (!userLoc || !userLoc.lat || locCountry(userLoc) !== country) return l;
+      const km = kmToListing(userLoc, l);
+      return Number.isFinite(km) ? { ...l, distance: km, fromPin: true } : { ...l, distance: 9999, unknownPlace: true };
+    }),
   [marketListings, settings.activeProvinces, userLoc, country]);
   // Diesel: admin-set national rate in Pakistan, indicative local price elsewhere (stored in PKR)
   const dieselPrice = country === "PK" ? settings.dieselPrice : CUR.diesel / CUR.fx;
@@ -10182,8 +10236,13 @@ function App() {
   };
 
   const addListing = (f) => {
-    const l = { ...f, id: "U" + Date.now(), ownerId: "AS-" + Math.floor(2000 + Math.random() * 7000), ownerUid: session ? session.uid : null, rating: 5.0, available: true, status: "approved", isVerified: false, submittedAt: Date.now(), ownerEmail: session ? session.email : null };
+    const { ownerPhone: contactPhone, ownerEmail: _dropEmail, ...pub } = f;
+    const l = { ...pub, id: "U" + Date.now(), ownerId: "AS-" + Math.floor(2000 + Math.random() * 7000), ownerUid: session ? session.uid : null, rating: 5.0, available: true, status: "approved", isVerified: false, submittedAt: Date.now() };
     setListings((ls) => [...ls, l]);
+    // contact details are private: listing_contacts/{listingId} (owner + founder only)
+    const contact = { listingId: l.id, ownerUid: l.ownerUid, ownerName: l.ownerName || "", ownerPhone: contactPhone || "", ownerEmail: session ? session.email : "", createdAt: Date.now() };
+    setContacts((c) => ({ ...c, [l.id]: contact }));
+    writeDoc(COL.contacts, l.id, contact).catch((e) => console.warn("[Agri-Share] Owner contact not saved:", e && e.code));
     setFilters((fl) => ({ ...fl, radius: Math.max(fl.radius, Math.ceil(l.distance)) }));
     toast(t("toast_listed"));
     // cold start: tell the new owner about farmers already waiting for this machine in their district
@@ -10193,7 +10252,8 @@ function App() {
   const toggleListing = (id) => setListings((ls) => ls.map((l) => (l.id === id ? { ...l, available: !l.available } : l)));
   const removeListing = (id) => { setListings((ls) => ls.filter((l) => l.id !== id)); toast(t("toast_removed")); };
 
-  const pendingCount = ownerBookings.filter((b) => b.status === "sent").length;
+  const routedOpen = uid ? liveRequests.filter((r) => r.status === "open" && Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(uid) && !(r.offers || []).some((o) => o.uid === uid)).length : 0;
+  const pendingCount = ownerBookings.filter((b) => b.status === "sent").length + routedOpen;
   // red Admin badge: machines awaiting approval + open Apni Boli requests + waiting demand tickets
   const adminCount = accounts.isAdmin
     ? realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + liveRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
@@ -10226,7 +10286,7 @@ function App() {
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={liveRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={bookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} mandiPosts={mandiPosts} cloud={cloud} />}
+        {showTab === "admin" && <AdminPanel contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={liveRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} mandiPosts={mandiPosts} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}
