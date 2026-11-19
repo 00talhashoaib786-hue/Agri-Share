@@ -119,7 +119,7 @@ function buildRequest(model, { system, contents, voice, json }, minimal) {
   if (system) body.systemInstruction = { parts: [{ text: String(system) }] };
   if (minimal) {
     // only standard fields; JSON shape for voice turns is requested in the system instruction instead
-    body.generationConfig = { maxOutputTokens: voice ? 220 : 600, temperature: 0.4 };
+    body.generationConfig = { maxOutputTokens: 220, temperature: 0.4 };
   } else {
     body.generationConfig = {
       temperature: voice ? 0.6 : 0.45,

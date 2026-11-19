@@ -28,12 +28,15 @@ service cloud.firestore {
 
     match /machinery_listings/{id} {
       allow read: if true;
-      // owners submit listings as "pending"; only admins can approve or reject
-      allow create: if signedIn() && smallDoc() && (isAdmin() || request.resource.data.status == 'pending');
+      // new listings: the creator must be the owner (ownerUid) and the listing starts as "pending"
+      allow create: if signedIn() && smallDoc() && (isAdmin()
+        || (request.resource.data.ownerUid == request.auth.uid && request.resource.data.status == 'pending'));
+      // only the owner (by uid) or an admin may change a listing; owners can never approve their own
       allow update: if signedIn() && smallDoc() && (isAdmin()
-        || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'reviewedAt']));
-      allow delete: if isAdmin()
-        || (signedIn() && resource.data.get('ownerEmail', '') == request.auth.token.email);
+        || (resource.data.get('ownerUid', '') == request.auth.uid
+            && request.resource.data.get('ownerUid', '') == request.auth.uid
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'reviewedAt'])));
+      allow delete: if isAdmin() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid);
     }
 
     // admin_settings/pilot    diesel rate and active provinces (admins write)
