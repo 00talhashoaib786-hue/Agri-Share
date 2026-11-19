@@ -990,7 +990,15 @@ const T = {
     ow_offer_send: "Send offer",
     ow_offer_update: "Offer sent · update",
     ow_offer_sent: "Your offer was sent to the farmer.",
-    results_beyond: "No machines within {km} km · showing the {n} nearest"
+    results_beyond: "No machines within {km} km · showing the {n} nearest",
+    zc_emailed: "Your details have been emailed to our Agri-Share Consultant.",
+    zc_queued: "Your request is saved in our priority queue — tap Call or WhatsApp below to connect immediately.",
+    vo_op_included: "Included",
+    vo_op_agreed: "As agreed",
+    vo_pay_direct: "Cash / Direct on arrival",
+    ow_offer_sent_row: "Offer sent · {rate}/hr",
+    ow_offer_waiting: "Waiting for farmer",
+    ow_offer_accepted: "Accepted"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1725,7 +1733,15 @@ const T = {
     ow_offer_send: "آفر بھیجیں",
     ow_offer_update: "آفر بھیج دی · تبدیل کریں",
     ow_offer_sent: "آپ کی آفر کسان کو بھیج دی گئی۔",
-    results_beyond: "{km} کلومیٹر میں کوئی مشین نہیں · قریب ترین {n} دکھائی جا رہی ہیں"
+    results_beyond: "{km} کلومیٹر میں کوئی مشین نہیں · قریب ترین {n} دکھائی جا رہی ہیں",
+    zc_emailed: "آپ کی تفصیل ہمارے ایگری شیئر کنسلٹنٹ کو ای میل کر دی گئی ہے۔",
+    zc_queued: "آپ کی درخواست ہماری ترجیحی فہرست میں محفوظ ہے — فوراً رابطے کے لیے نیچے کال یا واٹس ایپ دبائیں۔",
+    vo_op_included: "شامل",
+    vo_op_agreed: "طے شدہ کے مطابق",
+    vo_pay_direct: "نقد / پہنچنے پر براہ راست",
+    ow_offer_sent_row: "آفر بھیجی · {rate} فی گھنٹہ",
+    ow_offer_waiting: "کسان کا انتظار",
+    ow_offer_accepted: "قبول ہو گئی"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2360,7 +2376,15 @@ const T = {
     ow_offer_update: "آفر گھل دتی · بدلو",
     ow_offer_sent: "تہاڈی آفر کسان نوں گھل دتی گئی۔",
     results_beyond: "{km} کلومیٹر وچ کوئی مشین نئیں · نیڑے دیاں {n} وکھائیاں جا رہیاں نیں",
-    ls_unverified: "لائیو · غیر تصدیق شدہ"
+    ls_unverified: "لائیو · غیر تصدیق شدہ",
+    zc_emailed: "تہاڈی تفصیل ساڈے ایگری شیئر کنسلٹنٹ نوں ای میل کر دتی گئی اے۔",
+    zc_queued: "تہاڈی درخواست ساڈی پہل والی لسٹ وچ محفوظ اے — فوراً رابطے لئی تھلے کال یا واٹس ایپ دباؤ۔",
+    vo_op_included: "شامل",
+    vo_op_agreed: "طے کیتے مطابق",
+    vo_pay_direct: "نقد / اپڑن تے سدھا",
+    ow_offer_sent_row: "آفر گھلی · {rate} فی گھنٹہ",
+    ow_offer_waiting: "کسان دی اڈیک",
+    ow_offer_accepted: "منظور ہو گئی"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2996,7 +3020,15 @@ const T = {
     ow_offer_update: "آڇ موڪلي وئي · بدلايو",
     ow_offer_sent: "توهان جي آڇ هاري کي موڪلي وئي۔",
     results_beyond: "{km} ڪلوميٽرن ۾ ڪا مشين ناهي · ويجهيون {n} ڏيکاريون پيون وڃن",
-    ls_unverified: "لائيو · غير تصديق ٿيل"
+    ls_unverified: "لائيو · غير تصديق ٿيل",
+    zc_emailed: "توهان جي تفصيل اسان جي ايگري شيئر ڪنسلٽنٽ کي اي ميل ڪئي وئي آهي۔",
+    zc_queued: "توهان جي درخواست اسان جي ترجيحي فهرست ۾ محفوظ آهي — فوري رابطي لاءِ هيٺ ڪال يا واٽس ايپ دٻايو۔",
+    vo_op_included: "شامل",
+    vo_op_agreed: "طئي ٿيل مطابق",
+    vo_pay_direct: "نقد / پهچڻ تي سڌو",
+    ow_offer_sent_row: "آڇ موڪلي · {rate} في ڪلاڪ",
+    ow_offer_waiting: "هاري جو انتظار",
+    ow_offer_accepted: "قبول ٿي"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3334,7 +3366,15 @@ const T = {
     ow_offer_update: "وړاندیز ولېږل شو · بدل یې کړئ",
     ow_offer_sent: "ستاسو وړاندیز بزګر ته ولېږل شو.",
     results_beyond: "په {km} کیلومترو کې ماشین نشته · {n} نږدې ښودل کېږي",
-    ls_unverified: "ژوندی · نه تایید شوی"
+    ls_unverified: "ژوندی · نه تایید شوی",
+    zc_emailed: "ستاسو معلومات زموږ د اګري شېئر مشاور ته برېښنالیک شول.",
+    zc_queued: "ستاسو غوښتنه زموږ په لومړیتوب لړ کې خوندي ده — سمدستي اړیکې لپاره لاندې زنګ یا واټس اپ کېکاږئ.",
+    vo_op_included: "شامل",
+    vo_op_agreed: "د موافقې سره سم",
+    vo_pay_direct: "نغدې / د رسېدو پر وخت مستقیم",
+    ow_offer_sent_row: "وړاندیز ولېږل شو · {rate} په ساعت",
+    ow_offer_waiting: "د بزګر انتظار",
+    ow_offer_accepted: "ومنل شو"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3662,7 +3702,15 @@ const T = {
     ow_offer_update: "آفر رَوان بوت · بدل کن",
     ow_offer_sent: "شمئے آفر کِشاورز ءَ رَوان بوت۔",
     results_beyond: "{km} کلومیٹر ءَ مشین نیست · {n} نزّیک پیش دارگ بنت",
-    ls_unverified: "زندگ · تصدیق نہ بوتگ"
+    ls_unverified: "زندگ · تصدیق نہ بوتگ",
+    zc_emailed: "شمئے سرجمی مئے ایگری شیئر کنسلٹنٹ ءَ ای میل کنگ بوت۔",
+    zc_queued: "شمئے درخواست مئے اوّلی لِسٹ ءَ محفوظ اِنت — زوتیں سیادی ءِ واستا جہلا کال یا واٹس ایپ ءَ بِجن۔",
+    vo_op_included: "شامل",
+    vo_op_agreed: "گپ جتگیں وڑا",
+    vo_pay_direct: "نغد / رسگ ءِ وھدا راست",
+    ow_offer_sent_row: "آفر رَوان بوت · {rate} ساعت ءَ",
+    ow_offer_waiting: "کِشاورز ءِ وداریگ",
+    ow_offer_accepted: "منّگ بوت"
   },
 };
 
@@ -4590,7 +4638,9 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
               </div>
             )}
             <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-              {[[t("vo_machine"), b.listingName], [t("vo_date"), fmtDate(b.date) + " · " + (q.hours || b.hours) + " h"], [t("owner"), b.ownerId], [t("vo_location"), dn ? dn(b.district || "") : b.district], [t("vo_renter"), b.renterName || "-"], [t("bk_pay"), t("pay_" + b.payment)]].map(([k, v]) => (
+              {[[t("vo_machine"), b.listingName], [t("vo_date"), fmtDate(b.date) + " · " + (q.hours || b.hours) + " h"], [t("owner"), b.ownerId], [t("vo_location"), dn ? dn(b.district || "") : b.district], [t("vo_renter"), b.renterName || "-"],
+                [t("bk_op"), b.operator === true ? t("vo_op_included") : t("vo_op_agreed")],
+                [t("bk_pay"), b.payment && b.payment !== "direct" && T.en["pay_" + b.payment] ? t("pay_" + b.payment) : t("vo_pay_direct")]].map(([k, v]) => (
                 <div key={k} className="min-w-0"><dt className="text-[11px] font-semibold uppercase tracking-wide text-soil/80">{k}</dt><dd className="truncate font-bold text-soil" dir="auto">{v}</dd></div>
               ))}
             </dl>
@@ -5149,7 +5199,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
       </section>
     );
   }
-  const mine = bookings.filter((b) => b.channel === "ussd" || !b.renterEmail || b.renterEmail === session.email);
+  const mine = bookings.filter((b) => b.channel === "ussd" || b.own);
   const sorted = [...mine].sort((a, b) => b.createdAt - a.createdAt);
   return (
     <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6" aria-labelledby="mb-h">
@@ -5379,7 +5429,7 @@ function EarningsEstimator({ t, listings, bookings }) {
   );
 }
 
-function PendingRequest({ b, t, updateBooking }) {
+function PendingRequest({ b, t, updateBooking, contact }) {
   const [countering, setCountering] = useState(false);
   const snap = b.listingSnap || { rate: b.quote.listedRate || b.quote.rate, operator: "included", transport: "optional", distance: 0 };
   const listedTr = transportFee(snap.distance);
@@ -5397,6 +5447,7 @@ function PendingRequest({ b, t, updateBooking }) {
         <div className="min-w-0">
           <p className="font-bold text-forest">{b.listingName}</p>
           <p className="text-xs text-soil/80"><span dir="ltr" className="font-mono">{b.id}</span> · {fmtDate(b.date)} · {b.quote.hours}h · {b.renterName} {b.channel === "ussd" ? "· USSD" : ""}</p>
+          {contact && contact.renterPhone && <div className="mt-1"><ContactButtons t={t} phone={contact.renterPhone} name={b.renterName} /></div>}
           <p className="mt-1 text-xs text-soil/80">{t("bk_op")}: {b.operator ? t("included_word") : t("not_added")} · {t("bk_tr")}: {b.transport ? t("included_word") : t("not_added")} · <Fuel className="inline h-3 w-3" aria-hidden="true" /> {t("dry_rent")}</p>
         </div>
         <p className="font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.quote.subtotal)}</p>
@@ -5428,11 +5479,13 @@ function PendingRequest({ b, t, updateBooking }) {
   );
 }
 
-function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast }) {
+function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast }) {
   const [sub, setSub] = useState(initialSub || "requests");
   useEffect(() => { if (initialSub) setSub(initialSub); }, [initialSub]);
   const pending = bookings.filter((b) => b.status === "sent").sort((a, b) => a.createdAt - b.createdAt);
   const responded = bookings.filter((b) => b.status !== "sent").sort((a, b) => b.createdAt - a.createdAt).slice(0, 8);
+  // Apni Boli offers this owner sent (shown in Responded with the request's current state)
+  const myOffers = session && session.uid ? liveRequests.map((r) => ({ r, o: (r.offers || []).find((x) => x.uid === session.uid) })).filter((x) => x.o).sort((a, b) => (b.o.at || 0) - (a.o.at || 0)).slice(0, 8) : [];
   const subs = [
     { key: "requests", label: t("ow_requests"), icon: ClipboardList, badge: pending.length },
     { key: "list", label: t("ow_list"), icon: Plus },
@@ -5464,14 +5517,24 @@ function OwnerPortal({ t, dn, lang, listings, bookings, addListing, toggleListin
             <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><Hourglass className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_pending")} ({pending.length})</h3>
             {pending.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_req")}</p> : (
               <ul className="space-y-3">
-                {pending.map((b) => <PendingRequest key={b.id} b={b} t={t} updateBooking={updateBooking} />)}
+                {pending.map((b) => <PendingRequest key={b.id} b={b} t={t} updateBooking={updateBooking} contact={bookingContacts[b.id]} />)}
               </ul>
             )}
           </div>
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><CircleCheck className="h-4 w-4 text-leafink" aria-hidden="true" />{t("ow_history")}</h3>
-            {responded.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_history")}</p> : (
-              <ul className="divide-y divide-soil/10">
+            {myOffers.length > 0 && (
+              <ul className="mb-3 space-y-1.5">
+                {myOffers.map(({ r, o }) => (
+                  <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-gold/10 px-3 py-2 text-sm">
+                    <span className="min-w-0"><span className="block truncate font-semibold text-soil">{t("ow_offer_sent_row").replace("{rate}", pkr(o.rate))} · {t("one_" + r.category)}</span><span className="text-xs text-soil/80" dir="ltr">{r.id} · {fmtDate(r.date)}</span></span>
+                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${r.acceptedOwnerUid === session.uid ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{r.acceptedOwnerUid === session.uid ? t("ow_offer_accepted") : r.status === "open" ? t("ow_offer_waiting") : t("rq_" + r.status)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {responded.length === 0 ? (myOffers.length ? null : <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_history")}</p>) : (
+            <ul className="divide-y divide-soil/10">
                 {responded.map((b) => (
                   <li key={b.id} className="flex items-center justify-between gap-2 py-2.5 text-sm">
                     <span className="min-w-0"><span className="block truncate font-semibold text-soil">{b.listingName}</span><span className="text-xs text-soil/80" dir="ltr">{b.id} · {fmtDate(b.date)}</span></span>
@@ -6136,7 +6199,7 @@ function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK,
   const convo = history.map((m) => `${m.role === "user" ? "Farmer" : "Helper"}: ${m.text}`).join("\n");
   const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec}, about ${fmtLocal(m.min)} to ${fmtLocal(m.max)}/hr)`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
   const persona = `You are "Agri-Share Kisan Advisor": a warm, respectful, intelligent Pakistani agricultural advisor for Agri-Share, a peer-to-peer agricultural machinery rental and crop marketplace (tagline "Sharing Resources, Growing Together"). Speak like a trusted elder brother or sister from the village who also knows the business: practical, kind, never condescending. Understand natural accents, slang, typos and mixed Urdu / Punjabi / English (for example "mujhay kiraya zyada lag raha ha kam kaisay krun" means "the rent feels too high, how can I reduce it"), and answer the real need behind the question.
-LANGUAGE RULE: always reply in the exact language and script the farmer used. Urdu script in, Urdu script out; Roman Urdu in, Roman Urdu out; English in, English out; Punjabi in Shahmukhi, Sindhi, Pashto and Balochi in their Perso-Arabic scripts. If unclear, use the app language (${langName}). Never write Hindi / Devanagari.
+LANGUAGE RULE: always reply in the exact language and script the farmer used. SCRIPT PURITY: write ONLY in plain Latin letters (English / Roman Urdu) or ONLY in Urdu Nastaliq / Perso-Arabic script; never mix in Devanagari, Bengali, Gurmukhi, Malayalam or any other Indic characters. Do not use markdown symbols such as ** or #. Urdu script in, Urdu script out; Roman Urdu in, Roman Urdu out; English in, English out; Punjabi in Shahmukhi, Sindhi, Pashto and Balochi in their Perso-Arabic scripts. If unclear, use the app language (${langName}). Never write Hindi / Devanagari.
 CURRENT RATE CARD (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; quote these when asked about rent, rates or prices, give the hourly range first):
 ${rateCardText()}
 Platform fee: 6% standard, 4% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
@@ -6343,6 +6406,12 @@ function devaToUrdu(text) {
   }
   return out;
 }
+// AI replies: drop letters from scripts we never use (Bengali..Malayalam, e.g. "Aസ്സalam") and stray markdown symbols
+const cleanAiText = (txt) => String(txt || "")
+  .replace(/[\u0980-\u0DFF]+/g, "")
+  .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+  .replace(/^\s*[*-]\s+/gm, "• ")
+  .replace(/\s{2,}/g, (m) => (m.includes("\n") ? m : " "));
 const fixScript = (text, lang) => (lang !== "en" && DEVANAGARI_RE.test(String(text || "")) ? devaToUrdu(text).replace(/\?/g, "؟") : String(text || ""));
 const TTS_PREF = { en: ["en"], ur: ["ur"], pa: ["pa", "ur"], sd: ["sd", "ur"], ps: ["ps", "ur"], bal: ["ur"] };
 // Browser voice picking: exact language first, then Urdu (ur-PK, ur-IN). When no Urdu voice is installed
@@ -6379,6 +6448,12 @@ function VoiceWaves({ active, tone }) {
       ))}
     </div>
   );
+}
+
+// "**word**" -> <strong>word</strong>; any leftover asterisks are removed
+function renderBold(text) {
+  const parts = String(text || "").split(/\*\*([^*]+)\*\*/g);
+  return parts.map((p, i) => (i % 2 ? <strong key={i}>{p}</strong> : p.replace(/\*+/g, "")));
 }
 
 function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = "en" }) {
@@ -6476,7 +6551,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
       while (turns.length && turns[0].role !== "user") turns.shift();
       const contents = turns.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] }));
       const r = await askGemini({ system: buildSystem(listings, session, dieselPrice, lang, !!viaVoice), contents, voice: !!viaVoice });
-      if (r.text) { answered = fixScript(r.text, lang); setBot(answered, { pending: false, source: "gemini" }); setAi({ status: "live", reason: "" }); }
+      if (r.text) { answered = fixScript(cleanAiText(r.text), lang); setBot(answered, { pending: false, source: "gemini" }); setAi({ status: "live", reason: "" }); }
       else {
         fallbackWhy = r.error || "unknown error";
         console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy);
@@ -7032,7 +7107,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.role === "user" ? "rounded-ee-md bg-forest text-ivory" : "rounded-es-md bg-white text-soil ring-1 ring-soil/10"}`}
                   dir={/[؀-ۿ]/.test(m.text) ? "rtl" : "ltr"}>
-                  {m.pending && !m.text ? <span className="inline-flex items-center gap-1 text-soil/80"><span className="animate-pulse">●</span>{t("kh_thinking")}</span> : m.id === 0 ? t("kh_hello") : m.text}
+                  {m.pending && !m.text ? <span className="inline-flex items-center gap-1 text-soil/80"><span className="animate-pulse">●</span>{t("kh_thinking")}</span> : m.id === 0 ? t("kh_hello") : renderBold(m.text)}
                   {m.source === "rules" && <span className="mt-1 block text-[10px] text-soil/80" dir="auto">{t(m.fallback ? "ai_fallback" : "kh_offline")}</span>}
                   {m.role === "assistant" && m.text && !m.pending && (synth || ttsRef.current) && (
                     <button type="button" onClick={() => replay(m.text)} className="mt-1 inline-flex items-center gap-1 rounded-full bg-forest/5 px-2 py-0.5 text-[11px] font-bold text-forest hover:bg-forest/10" aria-label={t("vc_replay")}>
@@ -7255,8 +7330,10 @@ const consultantWaText = (lang, machine, district) => (lang === "en"
   : `السلام علیکم ایگری شیئر، مجھے ${district || "اپنے ضلع"} میں ${machine || "مشین"} چاہیے۔ 100 کلومیٹر میں کوئی مالک آن لائن نہیں۔ براہ کرم میرے لیے انتظام کریں۔`);
 
 function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent }) {
+  // autoSent: false | { emailed: boolean } once the lead was filed automatically
   const [state, setState] = useState(autoSent ? "sent" : "idle"); // idle | sending | sent
-  useEffect(() => { if (autoSent) setState("sent"); }, [autoSent]);
+  const [emailed, setEmailed] = useState(!!(autoSent && autoSent.emailed));
+  useEffect(() => { if (autoSent) { setState("sent"); setEmailed(!!autoSent.emailed); } }, [autoSent]);
   const cat = request.category && request.category !== "all" ? request.category : "tractor";
   const district = request.district || (request.loc && request.loc.district) || "";
   const machineName = (RATE_NAMES[lang === "en" ? "en" : "ur"] || RATE_NAMES.en)[cat] || cat;
@@ -7264,7 +7341,7 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
   const mail = `mailto:${CONSULTANT.email}?subject=${encodeURIComponent(`Agri-Share: ${RATE_NAMES.en[cat] || cat} needed in ${district || "my district"}`)}&body=${encodeURIComponent(consultantWaText(lang, machineName, district))}`;
   const send = () => requireAuth(async () => {
     setState("sending");
-    try { await onSendLead({ category: cat, district, village: request.village || "", hours: request.hours, rate: request.rate, requestId: request.id }); setState("sent"); }
+    try { const r = await onSendLead({ category: cat, district, village: request.village || "", hours: request.hours, rate: request.rate, requestId: request.id }); setEmailed(!!(r && r.emailed)); setState("sent"); }
     catch (e) { setState("idle"); }
   });
   const Line = ({ num, primary }) => (
@@ -7286,7 +7363,7 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
         <a href={mail} className="mt-1 inline-flex items-center gap-1.5 break-all rounded-lg bg-ivory px-3 py-2 text-xs font-bold text-forest ring-1 ring-soil/15"><Mail className="h-4 w-4 shrink-0" aria-hidden="true" /><span dir="ltr">{CONSULTANT.email}</span></a>
       </div>
       {state === "sent" ? (
-        <p className="mt-3 flex items-start gap-2 rounded-xl bg-leaf/15 p-3 text-sm font-semibold text-forest" role="status"><CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t(autoSent ? "zc_auto_sent" : "zc_sent")}</p>
+        <p className="mt-3 flex items-start gap-2 rounded-xl bg-leaf/15 p-3 text-sm font-semibold text-forest" role="status"><CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t(emailed ? "zc_emailed" : "zc_queued")}</p>
       ) : (
         <button type="button" onClick={send} disabled={state === "sending"} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-4 py-3 text-sm font-extrabold text-soil shadow disabled:opacity-60">
           <Send className="h-4 w-4" aria-hidden="true" />{state === "sending" ? t("zc_sending") : t("zc_send")}
@@ -7316,16 +7393,25 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
     category, model: request.model || "", district, province: request.province || (request.loc && request.loc.province) || "",
     village: request.village || "", lat: request.loc ? request.loc.lat : null, lng: request.loc ? request.loc.lng : null,
     hours, date: request.date || addDaysISO(1), rate, rentType: request.rentType || "dry", requestId: request.id || null,
-    renterName: session ? session.name : "", renterEmail: session ? session.email : null,
-    renterPhone: type === "agent_dispatch" ? phone.replace(/[\s-]/g, "") : (session && session.phone) || "",
+    renterName: session ? session.name : "", renterUid: session ? session.uid : null,
     discountPct: type === "notify" ? PRIORITY_DISCOUNT_PCT : 0,
   });
+  // email / phone for the ticket live in demand_contacts/{demandId} (renter, assigned owner, founder)
+  const saveDemandContact = (rec, phoneNo) => {
+    if (!session) return;
+    writeDoc(COL.demandContacts, rec.id, { demandId: rec.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: phoneNo || session.phone || "", assignedOwnerUid: "", createdAt: Date.now() })
+      .catch((e) => console.warn("[Agri-Share] Demand contact not saved:", e && e.code));
+  };
   const sendAgent = () => {
     const digits = phone.replace(/[\s-+]/g, "");
     if (!/^\d{10,13}$/.test(digits)) { setPhoneErr(t("err_phone")); return; }
-    requireAuth(() => { const r = record("agent_dispatch"); saveDemand(r); setDoneB(r); toast(t("zs_b_done").replace("{id}", r.id).replace("{phone}", r.renterPhone), { title: t("zs_b") }); });
+    requireAuth(() => {
+      const r = record("agent_dispatch"); const phoneNo = phone.replace(/[\s-]/g, "");
+      saveDemand(r); saveDemandContact(r, phoneNo); setDoneB({ ...r, renterPhone: phoneNo });
+      toast(t("zs_b_done").replace("{id}", r.id).replace("{phone}", phoneNo), { title: t("zs_b") });
+    });
   };
-  const notify = () => requireAuth(() => { const r = record("notify"); saveDemand(r); setDoneC(r); toast(t("zs_c_done").replace("{id}", r.id).replace("{district}", dn(district)), { title: t("zs_c") }); });
+  const notify = () => requireAuth(() => { const r = record("notify"); saveDemand(r); saveDemandContact(r); setDoneC(r); toast(t("zs_c_done").replace("{id}", r.id).replace("{district}", dn(district)), { title: t("zs_c") }); });
 
   return (
     <div className="space-y-3">
@@ -7588,7 +7674,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
       const realWithin100 = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.distance <= 100).length;
       if (!demoMode && realWithin100 === 0 && sendLead) {
         sendLead({ category: r.category, district: r.loc && r.loc.district, village: r.village, hours: r.hours, rate: r.rate, requestId: r.id }, true)
-          .then(() => setAutoLeadFor(r.id)).catch(() => {});
+          .then((res) => setAutoLeadFor({ id: r.id, emailed: !!(res && res.emailed) })).catch(() => {});
       }
       toast(near ? t(near === 1 ? "toast_broadcast_one" : "toast_broadcast").replace("{n}", near) : t("toast_broadcast0"), { type: "info", title: t("toast_broadcast_t") });
     });
@@ -7635,7 +7721,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
     const q = qFor(o);
     const listing = { id: "live-" + o.key, name: o.owner.machine, country: CUR.id, category: req.category, district: village.district, ownerId: o.owner.ownerId, ownerUid: o.owner.ownerUid || null, rate: o.rate, operator: "included", transport: "optional", distance: o.owner.distance };
     const id = createBooking(listing, {
-      date: req.date, hours: q.hours, operator: true, transport: q.transport > 0, payment: lrPayLater ? "paylater" : "easypaisa", smallholder: !!req.smallholder,
+      date: req.date, hours: q.hours, operator: null, transport: q.transport > 0, payment: lrPayLater ? "paylater" : "direct", // nothing pre-selected for the farmer smallholder: !!req.smallholder,
       financing: lrPayLater ? (() => { const adv = Math.round(q.platformTotal * ADVANCE_SHARE); const d = new Date(req.date + "T00:00:00"); d.setDate(d.getDate() + 120); return { partner: lrPartner, advance: adv, balance: q.platformTotal - adv, dueDate: d.toISOString().slice(0, 10), status: "pending" }; })() : null,
       renterName: session ? session.name : "Farmer", renterPhone: session ? session.phone : "",
       quote: { hours: q.hours, rate: o.rate, listedRate: o.owner.ask, base: q.base, operator: 0, transport: q.transport, subtotal: q.billable, commission: q.commission, commissionRate: q.commissionRate, total: q.platformTotal, fuel: q.fuel, rentType: req.rentType, tier: q.tier },
@@ -7859,8 +7945,8 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
               <div className="min-w-0">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("lr_offers")}</p>
                 {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("lr_idle_offers")}</p>}
-                {!demoMode && reqLoc && realIn100 === 0 && sendLead && (
-                  <div className="mb-3"><ConsultantCard t={t} lang={lang} request={{ ...(req || f), district: village.district, loc: reqLoc }} onSendLead={sendLead} requireAuth={requireAuth} autoSent={!!req && autoLeadFor === req.id} /></div>
+                {!demoMode && reqLoc && realIn100 === 0 && offersInTier.length === 0 && sendLead && (
+                  <div className="mb-3"><ConsultantCard t={t} lang={lang} request={{ ...(req || f), district: village.district, loc: reqLoc }} onSendLead={sendLead} requireAuth={requireAuth} autoSent={req && autoLeadFor && autoLeadFor.id === req.id ? autoLeadFor : false} /></div>
                 )}
                 {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/80"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
                 {noMatch && (!demoMode || scanTier === 3) && (
@@ -8069,7 +8155,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
   useEffect(() => () => clearTimers(), []);
   useEffect(() => { if (!post) setF((s) => ({ ...s, rate: CROPS[s.crop].bench })); }, [f.crop]); // eslint-disable-line
 
-  const mine = (b) => !session || !b.renterEmail || b.renterEmail === session.email;
+  const mine = (b) => !!b.own;
   const pendingCredit = bookings.filter((b) => mine(b) && b.financing && b.financing.status !== "settled" && !["cancelled", "declined"].includes(b.status))
     .sort((a, b) => (a.financing.dueDate || "").localeCompare(b.financing.dueDate || ""));
   const creditTotal = pendingCredit.reduce((s, b) => s + b.financing.balance, 0);
@@ -8640,7 +8726,7 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
@@ -8960,7 +9046,7 @@ function AdminConsole({ reqContacts = {}, contacts = {}, leads = [], markLeadArr
                       <td className="px-4 py-3">{d.village || dn(d.district)}</td>
                       <td className="px-4 py-3 text-xs" dir="ltr">{fmtDate(d.date)} · {d.hours}h</td>
                       <td className="px-4 py-3 font-semibold" dir="ltr">{pkr(d.rate)}/hr</td>
-                      <td className="px-4 py-3 text-xs"><span className="block font-semibold">{d.renterName || "·"}</span>{d.renterEmail ? <span className="block break-all" dir="ltr">{d.renterEmail}</span> : null}<ContactButtons t={t} phone={d.renterPhone || prof(d.renterEmail).phone} name={d.renterName} /></td>
+                      <td className="px-4 py-3 text-xs"><span className="block font-semibold">{d.renterName || "·"}</span>{(demandContacts[d.id] || {}).renterEmail ? <span className="block break-all" dir="ltr">{(demandContacts[d.id] || {}).renterEmail}</span> : null}<ContactButtons t={t} phone={(demandContacts[d.id] || {}).renterPhone || prof((demandContacts[d.id] || {}).renterEmail).phone} name={d.renterName} /></td>
                       <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${d.status === "matched" ? "bg-leaf/15 text-forest" : d.status === "waiting" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("dm_" + d.status)}</span></td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1.5">
@@ -9039,20 +9125,21 @@ function AdminConsole({ reqContacts = {}, contacts = {}, leads = [], markLeadArr
             {sortedBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
               <ul className="divide-y divide-soil/10">
                 {sortedBookings.map((b) => {
-                  const p0 = prof(b.renterEmail);
+                  const bc = bookingContacts[b.id] || {};
+                  const p0 = prof(bc.renterEmail);
                   return (
                     <li key={b.id} className={`grid gap-2 p-4 text-sm md:grid-cols-[1.2fr_1fr_auto] md:items-center ${b.status === "sent" ? "bg-gold/5" : ""}`}>
                       <div className="min-w-0">
                         <p className="flex flex-wrap items-center gap-2"><span className="font-mono text-xs" dir="ltr">{b.id}</span><StatusPill status={b.status} t={t} /><span className="rounded-full bg-ivory px-2 py-0.5 text-[11px] font-bold ring-1 ring-soil/15">{channelLabel(b.channel)}</span><span className="text-xs text-soil/80" dir="ltr">{fmtStamp(b.createdAt)}</span></p>
                         <p className="mt-1 break-words font-bold text-forest">{t("ct_farmer")}: {b.renterName || p0.name || "·"}</p>
-                        <p className="break-all text-xs text-soil/80" dir="ltr">{b.renterEmail || ""}</p>
+                        <p className="break-all text-xs text-soil/80" dir="ltr">{bc.renterEmail || ""}</p>
                       </div>
                       <div className="min-w-0 text-xs text-soil">
                         <p><span className="font-semibold text-soil/80">{t("ct_model")}:</span> <span dir="ltr">{b.listingName}</span> ({t("one_" + b.category)})</p>
                         <p><span className="font-semibold text-soil/80">{t("ct_location")}:</span> {dn(b.district || "") || "·"}</p>
                         <p><span className="font-semibold text-soil/80">{t("ct_rate")}:</span> <b className="text-forest" dir="ltr">{pkr(b.quote.rate || 0)}/hr</b> · {b.hours}h · <span dir="ltr">{fmtDate(b.date)}</span> · <span dir="ltr">{pkr(b.quote.total || 0)}</span></p>
                       </div>
-                      <div><ContactButtons t={t} phone={b.renterPhone || p0.phone} name={b.renterName || p0.name} /></div>
+                      <div><ContactButtons t={t} phone={bc.renterPhone || p0.phone} name={b.renterName || bc.renterName || p0.name} /></div>
                     </li>
                   );
                 })}
@@ -9112,6 +9199,7 @@ function useAccounts() {
   const [cloudOwner, setCloudOwner] = useState(false); // owner of the page when hosted in Claude (Members tab only)
   const [fbUser, setFbUser] = useState(null); // { uid, email, emailVerified } of the Firebase user
   const [teamEmails, setTeamEmails] = useState([]);
+  const isFounderEarly = mode === "firebase" && !!fbUser && fbUser.email === normEmail(FOUNDER_EMAIL) && !!fbUser.emailVerified;
   const [members, setMembers] = useState([]);
   const [membersState, setMembersState] = useState("idle"); // idle | loading | ready | slow | error
   const ref = useRef({ db: null, user: null, uid: null, canWrite: true });
@@ -9177,10 +9265,17 @@ function useAccounts() {
       return undefined;
     }
     if (mode === "firebase") {
-      // Firestore "users" profiles (rules let signed-in members read them) plus accounts kept only on this browser
+      // Firestore "users" profiles: rules let each member read only their OWN profile; the founder reads all.
       setMembers(localMembers());
       if (!fbUid) { setMembersState("ready"); return undefined; }
       setMembersState("loading");
+      if (!isFounderEarly) {
+        return watchDoc(COL.users, fbUid, (d, meta) => {
+          const own = d ? [{ ...d, id: fbUid, source: "firebase" }] : [];
+          setMembers([...own, ...localMembers().filter((m) => !own.some((o) => o.email === m.email))]);
+          if (!meta.fromCache) setMembersState("ready");
+        }, () => setMembersState("ready"));
+      }
       return watchCollection(COL.users, (list, meta) => {
         const cloudList = list.map((d) => ({ ...d, source: "firebase" }));
         const emails = new Set(cloudList.map((m) => m.email));
@@ -9200,7 +9295,7 @@ function useAccounts() {
       () => { clearTimeout(timer); setMembersState("error"); }
     );
     return () => { clearTimeout(timer); unsub(); };
-  }, [mode, cloudOwner, fbUid]);
+  }, [mode, cloudOwner, fbUid, isFounderEarly]); // eslint-disable-line
 
   // Team admin emails the founder has authorised (admin_settings/team)
   useEffect(() => {
@@ -10135,6 +10230,10 @@ function App() {
   const isMineListing = (l) => Boolean(uid && l.ownerUid && l.ownerUid === uid);
   const realListings = useMemo(() => listings.filter((l) => !isSeedListing(l)).map(({ ownerEmail, ownerPhone, ...l }) => ({ ...l, mine: isMineListing(l) })), [listings, uid]); // eslint-disable-line
   const myListings = useMemo(() => realListings.filter((l) => l.mine), [realListings]);
+  // bookings and demand tickets as the app shows them: renter email/phone removed, "own" decided by uid (legacy: email)
+  const isOwnRec = (r, legacyEmail) => Boolean(session && (r.renterUid ? r.renterUid === session.uid : legacyEmail && legacyEmail === session.email));
+  const shownBookings = useMemo(() => bookings.map(({ renterEmail, renterPhone, ...b }) => ({ ...b, own: isOwnRec(b, renterEmail) })), [bookings, uid, session && session.email]); // eslint-disable-line
+  const shownDemand = useMemo(() => demand.map(({ renterEmail, renterPhone, ...d }) => ({ ...d, own: isOwnRec(d, renterEmail) })), [demand, uid, session && session.email]); // eslint-disable-line
   // requests as the app shows them: renter email/phone removed for everyone; "own" decided by uid (legacy: email)
   const shownRequests = useMemo(() => liveRequests.map(({ renterEmail, renterPhone, ...r }) => ({
     ...r, own: Boolean(session && (r.renterUid ? r.renterUid === session.uid : renterEmail && renterEmail === session.email)),
@@ -10142,7 +10241,7 @@ function App() {
   // bookings that belong to MY machines (Owner Portal): matched by listing id or the booking's ownerUid
   const myListingIds = useMemo(() => new Set(myListings.map((l) => String(l.id))), [myListings]);
   const isMyOwnerBooking = (b) => Boolean(uid && ((b.ownerUid && b.ownerUid === uid) || myListingIds.has(String(b.listingId)) || myListingIds.has(String(b.listingId || "").replace(/^live-lst-/, ""))));
-  const ownerBookings = useMemo(() => bookings.filter(isMyOwnerBooking), [bookings, myListingIds, uid]); // eslint-disable-line
+  const ownerBookings = useMemo(() => shownBookings.filter(isMyOwnerBooking), [shownBookings, myListingIds, uid]); // eslint-disable-line
   const marketListings = useMemo(() => (demoMode ? [...realListings, ...SEED_LISTINGS.filter((x) => !realListings.some((l) => l.id === x.id))] : realListings), [realListings, demoMode]);
   const setDemoMode = (on) => { setDemoModeState(on); store.set("agrishare.demoMode", on); toast(t(on ? "toast_mode_demo" : "toast_mode_live"), { type: "info" }); };
   // Unmatched farmer lead: saved to Firestore (founder-only reads) and emailed to the consultant
@@ -10162,7 +10261,7 @@ function App() {
       .then((r) => r.json()).then((j) => !!(j && j.sent)).catch(() => false);
     const [ok1, ok2] = await Promise.all([saved, emailed]);
     if (!ok1 && !ok2) console.warn("[Agri-Share] Lead kept on this device only (Firestore and email unavailable)");
-    if (!auto) toast(t("zc_sent"), { title: t("zc_title") });
+    if (!auto) toast(t(ok2 ? "zc_emailed" : "zc_queued"), { title: t("zc_title"), type: ok2 ? "success" : "info" });
     return { saved: ok1, emailed: ok2 };
   };
   const [contacts, setContacts] = useState({}); // listingId -> { ownerPhone, ownerEmail } (founder only)
@@ -10175,25 +10274,62 @@ function App() {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setReqContacts({}); return undefined; }
     return watchCollection(COL.reqContacts, (list) => setReqContacts(Object.fromEntries(list.map((c) => [c.requestId || c.id, c]))), (e) => console.warn("[Agri-Share] Request contacts listener:", e && e.code));
   }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
-  const reqMigratedRef = useRef(false), listingCleanRef = useRef(false);
+  // booking contacts: the founder reads all; an owner reads the ones for their own machines
+  const [bookingContacts, setBookingContacts] = useState({});
+  useEffect(() => {
+    if (!uid) { setBookingContacts({}); return undefined; }
+    const founder = accounts.isFounder && accounts.fbUser && accounts.fbUser.emailVerified;
+    return watchCollection(COL.bookingContacts, (list) => setBookingContacts(Object.fromEntries(list.map((c) => [c.bookingId || c.id, c]))),
+      (e) => console.warn("[Agri-Share] Booking contacts listener:", e && e.code), founder ? null : [["ownerUid", "==", uid]]);
+  }, [uid, accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
+  const [demandContacts, setDemandContacts] = useState({}); // founder only
+  useEffect(() => {
+    if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setDemandContacts({}); return undefined; }
+    return watchCollection(COL.demandContacts, (list) => setDemandContacts(Object.fromEntries(list.map((c) => [c.demandId || c.id, c]))), (e) => console.warn("[Agri-Share] Demand contacts listener:", e && e.code));
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
+  const cleanTried = useRef(new Set()); // ids attempted in this session (retried after a reload if they failed)
   useEffect(() => {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) return;
     // requests: move legacy renterEmail / renterPhone into request_contacts and remove them from the shared document
-    if (!reqMigratedRef.current) {
-      const legacy = liveRequests.filter((r) => r.renterEmail || r.renterPhone);
+    {
+      const legacy = liveRequests.filter((r) => (r.renterEmail || r.renterPhone) && !cleanTried.current.has("rq:" + r.id));
       if (legacy.length) {
-        reqMigratedRef.current = true;
+        legacy.forEach((r) => cleanTried.current.add("rq:" + r.id));
+        console.info(`[Agri-Share] Founder clean-up: moving renter contacts off ${legacy.length} request(s): ${legacy.map((r) => r.id).join(", ")}`);
         legacy.forEach((r) => writeDoc(COL.reqContacts, r.id, { requestId: r.id, renterUid: r.renterUid || "", renterName: r.renterName || "", renterEmail: r.renterEmail || "", renterPhone: r.renterPhone || "", createdAt: r.createdAt || Date.now(), migrated: true })
           .then(() => setLiveRequests((ls) => ls.map((x) => (x.id === r.id ? (({ renterEmail, renterPhone, ...rest }) => rest)(x) : x))))
           .catch((e) => console.warn("[Agri-Share] Request contact migration failed for", r.id, e && e.code)));
       }
     }
+    // bookings: move legacy renterEmail / renterPhone into booking_contacts
+    {
+      const legacy = bookings.filter((b) => (b.renterEmail || b.renterPhone) && !cleanTried.current.has("bk:" + b.id));
+      if (legacy.length) {
+        legacy.forEach((b) => cleanTried.current.add("bk:" + b.id));
+        console.info(`[Agri-Share] Founder clean-up: moving renter contacts off ${legacy.length} booking(s): ${legacy.map((b) => b.id).join(", ")}`);
+        legacy.forEach((b) => writeDoc(COL.bookingContacts, b.id, { bookingId: b.id, renterUid: b.renterUid || "", ownerUid: b.ownerUid || "", renterName: b.renterName || "", renterEmail: b.renterEmail || "", renterPhone: b.renterPhone || "", createdAt: b.createdAt || Date.now(), migrated: true })
+          .then(() => setBookings((bs) => bs.map((x) => (x.id === b.id ? (({ renterEmail, renterPhone, ...rest }) => rest)(x) : x))))
+          .catch((e) => console.warn("[Agri-Share] Booking contact migration failed for", b.id, e && e.code)));
+      }
+    }
+    // demand tickets: move legacy renterEmail / renterPhone into demand_contacts
+    {
+      const legacy = demand.filter((d) => (d.renterEmail || d.renterPhone) && !cleanTried.current.has("dm:" + d.id));
+      if (legacy.length) {
+        legacy.forEach((d) => cleanTried.current.add("dm:" + d.id));
+        console.info(`[Agri-Share] Founder clean-up: moving renter contacts off ${legacy.length} demand ticket(s): ${legacy.map((d) => d.id).join(", ")}`);
+        legacy.forEach((d) => writeDoc(COL.demandContacts, d.id, { demandId: d.id, renterUid: d.renterUid || "", renterName: d.renterName || "", renterEmail: d.renterEmail || "", renterPhone: d.renterPhone || "", assignedOwnerUid: d.assignedOwnerUid || "", createdAt: d.createdAt || Date.now(), migrated: true })
+          .then(() => setDemand((ds) => ds.map((x) => (x.id === d.id ? (({ renterEmail, renterPhone, ...rest }) => rest)(x) : x))))
+          .catch((e) => console.warn("[Agri-Share] Demand contact migration failed for", d.id, e && e.code)));
+      }
+    }
     // listings: drop the legacy "mine" field and give status-less real listings an explicit status,
     // so the "approved only" read rule and queries can see them
-    if (!listingCleanRef.current) {
-      const stale = listings.filter((l) => Object.prototype.hasOwnProperty.call(l, "mine") || (!l.status && !isSeedListing(l)));
+    {
+      const stale = listings.filter((l) => (Object.prototype.hasOwnProperty.call(l, "mine") || (!l.status && !isSeedListing(l))) && !cleanTried.current.has("ls:" + l.id));
       if (stale.length) {
-        listingCleanRef.current = true;
+        stale.forEach((l) => cleanTried.current.add("ls:" + l.id));
+        console.info(`[Agri-Share] Founder clean-up: removing legacy "mine" / adding status on ${stale.length} listing(s): ${stale.map((l) => l.id).join(", ")}`);
         setListings((ls) => ls.map((l) => {
           if (!stale.some((x) => x.id === l.id)) return l;
           const { mine: _legacyMine, ...rest } = l;
@@ -10201,7 +10337,7 @@ function App() {
         }));
       }
     }
-  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, liveRequests, listings]); // eslint-disable-line
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, liveRequests, listings, bookings, demand]); // eslint-disable-line
   const migratedRef = useRef(false);
   useEffect(() => {
     // one-time clean-up by the founder: copy legacy ownerEmail/ownerPhone into listing_contacts and remove them from the public document
@@ -10264,12 +10400,18 @@ function App() {
     const b = {
       id, listingId: listing.id, listingName: listing.name, category: listing.category, district: listing.district, ownerId: listing.ownerId, ownerUid: listing.ownerUid || null,
       date: details.date, hours: details.quote.hours, operator: details.operator, transport: details.transport, quote: details.quote, payment: details.payment,
-      renterName: details.renterName, renterPhone: details.renterPhone, channel: details.channel || "app", status: details.status || "sent", createdAt: now, history: [{ status: details.status || "sent", at: now }],
-      renterEmail: details.channel === "ussd" ? null : session ? session.email : null, offer: details.offer || null,
+      renterName: details.renterName, renterUid: session ? session.uid : null, channel: details.channel || "app", status: details.status || "sent", createdAt: now, history: [{ status: details.status || "sent", at: now }],
+      offer: details.offer || null,
       smallholder: !!details.smallholder, financing: details.financing || null,
       listingSnap: { rate: listing.rate, operator: listing.operator, transport: listing.transport, distance: listing.distance },
     };
     setBookings((bs) => [...bs, b]);
+    // renter email / phone are private: booking_contacts/{bookingId} (renter, the machine's owner, founder)
+    const renterEmail = details.channel === "ussd" ? "" : session ? session.email || "" : "";
+    if (session && (renterEmail || details.renterPhone)) {
+      writeDoc(COL.bookingContacts, id, { bookingId: id, renterUid: session.uid, ownerUid: listing.ownerUid || "", renterName: details.renterName || "", renterEmail, renterPhone: details.renterPhone || "", createdAt: now })
+        .catch((e) => console.warn("[Agri-Share] Booking contact not saved:", e && e.code));
+    }
     const sync = cloud.overall === "live" || cloud.overall === "partial" ? t("toast_synced") : t("toast_local");
     if (!silent) toast((details.offer ? t("toast_offer") : t("toast_booked")) + " " + sync, { title: t(details.offer ? "toast_offer_t" : "toast_booked_t"), action: { label: t("act_view_voucher"), run: () => setVoucherId(id) } });
     return id;
@@ -10304,12 +10446,12 @@ function App() {
     ? realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + shownRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
     : 0;
   const mine = (email) => !session || !email || email === session.email;
-  const myBookings = [...bookings].filter((b) => b.channel === "ussd" || mine(b.renterEmail)).sort((a, b) => b.createdAt - a.createdAt);
+  const myBookings = shownBookings.filter((b) => b.channel === "ussd" || b.own).sort((a, b) => b.createdAt - a.createdAt);
   const myRequests = shownRequests.filter((r) => r.own).sort((a, b) => b.createdAt - a.createdAt);
   const myDeals = [...mandiPosts].filter((p) => mine(p.sellerEmail)).sort((a, b) => b.createdAt - a.createdAt);
   const activityCount = myBookings.filter((b) => ["sent", "countered", "confirmed"].includes(b.status)).length + myRequests.filter((r) => r.status === "open").length + myDeals.filter((p) => p.status === "open").length;
   const voucherBooking = voucherId ? bookings.find((b) => b.id === voucherId) : null;
-  const activeCount = bookings.filter((b) => ["sent", "countered", "confirmed", "completed"].includes(b.status) && (!session || b.channel === "ussd" || !b.renterEmail || b.renterEmail === session.email)).length;
+  const activeCount = shownBookings.filter((b) => ["sent", "countered", "confirmed", "completed"].includes(b.status) && session && (b.channel === "ussd" || b.own)).length;
   const showTab = tab === "members" && !accounts.cloudOwner ? "marketplace" : tab;
 
   return (
@@ -10326,12 +10468,12 @@ function App() {
               demoMode={demoMode} fallbackProps={{ t, dn, lang, session, requireAuth, saveDemand, toast, dieselPrice, onSendLead: sendLead }} />
           </>
         )}
-        {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={bookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={demand} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
+        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
-        {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={bookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={demand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={bookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={mandiPosts} cloud={cloud} />}
+        {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={mandiPosts} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
+        {showTab === "admin" && <AdminPanel bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={mandiPosts} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}

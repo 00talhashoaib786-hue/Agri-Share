@@ -59,9 +59,21 @@ service cloud.firestore {
         || (!(id in ['security', 'team']) && isAdmin()));
     }
 
+    // renter email / phone never go on this shared document (see booking_contacts)
     match /bookings/{id} {
       allow read, delete: if signedIn();
-      allow create, update: if signedIn() && smallDoc();
+      allow create: if signedIn() && smallDoc() && !request.resource.data.keys().hasAny(['renterEmail', 'renterPhone']);
+      allow update: if signedIn() && smallDoc()
+        && (isFounder() || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['renterEmail', 'renterPhone']));
+    }
+    // Renter contact for a booking: the renter, the machine's owner (ownerUid) and the founder
+    match /booking_contacts/{bookingId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.renterUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && (resource.data.renterUid == request.auth.uid
+        || resource.data.get('ownerUid', '') == request.auth.uid));
+      allow update: if signedIn() && smallDoc() && (isFounder()
+        || (resource.data.renterUid == request.auth.uid && request.resource.data.renterUid == request.auth.uid));
+      allow delete: if isFounder();
     }
     // renter email / phone never go on this shared document (see request_contacts)
     match /indrive_requests/{id} {
@@ -86,10 +98,23 @@ service cloud.firestore {
       allow create, update: if signedIn() && smallDoc();
     }
     // Zero-supply fallback: farmer requests saved while no owner was available (contain phone numbers)
+    // renter email / phone never go on this shared document (see demand_contacts)
     match /pending_demand_requests/{id} {
       allow read: if signedIn();
       allow delete: if isAdmin();
-      allow create, update: if signedIn() && smallDoc();
+      allow create: if signedIn() && smallDoc() && !request.resource.data.keys().hasAny(['renterEmail', 'renterPhone']);
+      allow update: if signedIn() && smallDoc()
+        && (isFounder() || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['renterEmail', 'renterPhone']));
+    }
+    // Renter contact for a waiting-demand ticket: the renter, the owner assigned to it, and the founder
+    match /demand_contacts/{demandId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.renterUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && (resource.data.renterUid == request.auth.uid
+        || resource.data.get('assignedOwnerUid', '') == request.auth.uid));
+      allow update: if signedIn() && smallDoc() && (isFounder()
+        || (resource.data.renterUid == request.auth.uid && request.resource.data.renterUid == request.auth.uid
+            && request.resource.data.get('assignedOwnerUid', '') == resource.data.get('assignedOwnerUid', '')));
+      allow delete: if isFounder();
     }
     // Private owner contact for a listing (phone, email): only that owner and the founder
     match /listing_contacts/{listingId} {
@@ -101,9 +126,10 @@ service cloud.firestore {
       allow create: if signedIn() && smallDoc() && request.resource.data.uid == request.auth.uid;
       allow read, update, delete: if isFounder();
     }
+    // Profiles hold email and phone: each member reads only their own; the founder reads all
     match /users/{uid} {
-      allow read: if signedIn();
-      allow create, update: if signedIn() && request.auth.uid == uid && smallDoc();
+      allow read: if (signedIn() && request.auth.uid == uid) || isFounder();
+      allow create, update: if ((signedIn() && request.auth.uid == uid) || isFounder()) && smallDoc();
       allow delete: if false;
     }
   }

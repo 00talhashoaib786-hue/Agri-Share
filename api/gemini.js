@@ -10,7 +10,7 @@
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
   POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
     Model chain: GEMINI_MODEL (default gemini-3.5-flash-lite) -> gemini-3.5-flash -> gemini-flash-latest (4 s per attempt).
-    Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 250, temperature: 0.4 }.
+    Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 380, temperature: 0.4 }.
     on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
     json: true returns structured JSON text: { "heard": "...", "reply": "..." }
@@ -102,7 +102,7 @@ async function handle(req, res) {
     const isLast = i === models.length - 1;
     const opts = { system, contents, voice, json };
     let r = await callGemini(key, m, opts, isLast ? remaining : Math.min(PER_MODEL_MS, remaining));
-    // a thinking model used the whole 250-token budget on thoughts (empty reply): one quick retry with thinking off
+    // a thinking model used the whole token budget on thoughts (empty reply): one quick retry with thinking off
     if (r.emptyMaxTokens) r = await callGemini(key, m, opts, Math.min(PER_MODEL_MS, DEADLINE_MS - (Date.now() - startedAt)), true);
     if (r.ok) return res.status(200).json({ ok: true, text: r.text, model: m, ...(tried.length ? { fallbackFrom: tried } : {}) });
     tried.push(`${m}: ${r.status}`);
@@ -117,10 +117,10 @@ async function handle(req, res) {
 // One clean standard payload for every model: no thinkingConfig / responseSchema (they caused 400s and slow 504s).
 // For voice turns the JSON shape {heard, reply} is requested in the system instruction instead.
 function buildRequest(model, { system, contents }, recovery) {
-  const body = { contents, generationConfig: { maxOutputTokens: 250, temperature: 0.4 } };
+  const body = { contents, generationConfig: { maxOutputTokens: 380, temperature: 0.4 } };
   if (system) body.systemInstruction = { parts: [{ text: String(system) }] };
   // recovery only: a "thinking" model spent the whole budget thinking and returned no text
-  if (recovery) body.generationConfig = { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } };
+  if (recovery) body.generationConfig = { maxOutputTokens: 500, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } };
   return body;
 }
 

@@ -87,6 +87,8 @@ export const COL = {
   leads: "unmatched_farmer_leads",
   contacts: "listing_contacts",
   reqContacts: "request_contacts",
+  bookingContacts: "booking_contacts",
+  demandContacts: "demand_contacts",
 };
 
 let app = null, auth = null;
