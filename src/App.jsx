@@ -931,7 +931,9 @@ const T = {
     vc_mic_ready: "Mic ready — speak now",
     vc_sending: "Sending voice…",
     vc_advisor: "Advisor",
-    vc_audio_fail: "Your voice couldn't reach the AI advisor. Switching to the browser's speech recognition — tap to speak again."
+    vc_audio_fail: "Your voice couldn't reach the AI advisor. Switching to the browser's speech recognition — tap to speak again.",
+    ai_retry: "Reconnecting AI…",
+    vc_audio_retry: "Audio upload failed — retrying"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1617,7 +1619,9 @@ const T = {
     vc_mic_ready: "مائیک تیار ہے — اب بولیں",
     vc_sending: "آواز بھیج رہا ہوں…",
     vc_advisor: "مشیر",
-    vc_audio_fail: "آپ کی آواز اے آئی مشیر تک نہیں پہنچ سکی۔ براؤزر کی آواز پہچان پر جا رہے ہیں — دوبارہ بولنے کے لیے دبائیں۔"
+    vc_audio_fail: "آپ کی آواز اے آئی مشیر تک نہیں پہنچ سکی۔ براؤزر کی آواز پہچان پر جا رہے ہیں — دوبارہ بولنے کے لیے دبائیں۔",
+    ai_retry: "اے آئی دوبارہ جڑ رہا ہے…",
+    vc_audio_retry: "آواز اپ لوڈ نہیں ہوئی — دوبارہ کوشش ہو رہی ہے"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2212,7 +2216,9 @@ const T = {
     vc_mic_ready: "مائیک تیار اے — ہُݨ بولو",
     vc_sending: "آواز گھل رہیا واں…",
     vc_advisor: "صلاح کار",
-    vc_audio_fail: "تہاڈی آواز اے آئی صلاح کار تک نئیں اپڑی۔ براؤزر دی آواز پچھان تے جا رہے آں — دوبارہ بولن لئی دباؤ۔"
+    vc_audio_fail: "تہاڈی آواز اے آئی صلاح کار تک نئیں اپڑی۔ براؤزر دی آواز پچھان تے جا رہے آں — دوبارہ بولن لئی دباؤ۔",
+    ai_retry: "اے آئی فیر جُڑ رہیا اے…",
+    vc_audio_retry: "آواز اپ لوڈ نئیں ہوئی — فیر کوشش ہو رہی اے"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2808,7 +2814,9 @@ const T = {
     vc_mic_ready: "مائيڪ تيار آهي — هاڻي ڳالهايو",
     vc_sending: "آواز موڪلي رهيو آهيان…",
     vc_advisor: "صلاحڪار",
-    vc_audio_fail: "توهان جو آواز اي آءِ صلاحڪار تائين نه پهتو۔ برائوزر جي آواز سڃاڻپ تي وڃي رهيا آهيون — ٻيهر ڳالهائڻ لاءِ دٻايو۔"
+    vc_audio_fail: "توهان جو آواز اي آءِ صلاحڪار تائين نه پهتو۔ برائوزر جي آواز سڃاڻپ تي وڃي رهيا آهيون — ٻيهر ڳالهائڻ لاءِ دٻايو۔",
+    ai_retry: "اي آءِ ٻيهر ڳنڍجي رهيو آهي…",
+    vc_audio_retry: "آواز اپ لوڊ نه ٿيو — ٻيهر ڪوشش ٿي رهي آهي"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3106,7 +3114,9 @@ const T = {
     vc_mic_ready: "مایک چمتو دی — اوس خبرې وکړئ",
     vc_sending: "غږ لېږم…",
     vc_advisor: "سلاکار",
-    vc_audio_fail: "ستاسو غږ AI سلاکار ته ونه رسېد. د براوزر غږ پېژندنې ته ځو — بیا د خبرو لپاره کېکاږئ."
+    vc_audio_fail: "ستاسو غږ AI سلاکار ته ونه رسېد. د براوزر غږ پېژندنې ته ځو — بیا د خبرو لپاره کېکاږئ.",
+    ai_retry: "AI بیا نښلي…",
+    vc_audio_retry: "غږ پورته نه شو — بیا هڅه کېږي"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3394,7 +3404,9 @@ const T = {
     vc_mic_ready: "مائیک تیار اِنت — اَنّوں گپ جن",
     vc_sending: "توار ءَ رَوان دئیگ اِیں…",
     vc_advisor: "سلاہ کار",
-    vc_audio_fail: "شمئے توار AI سلاہ کار ءَ نہ رست۔ براؤزر ءِ توار پجّار ءَ رئوگ اِیں — پدا گپ جنگ ءِ واستا بِجن۔"
+    vc_audio_fail: "شمئے توار AI سلاہ کار ءَ نہ رست۔ براؤزر ءِ توار پجّار ءَ رئوگ اِیں — پدا گپ جنگ ءِ واستا بِجن۔",
+    ai_retry: "AI پدا گنڈگ بوگ اِنت…",
+    vc_audio_retry: "توار اپ لوڈ نہ بوت — پدا کوشست بوگ اِنت"
   },
 };
 
@@ -5515,7 +5527,9 @@ const RATE_TPL = {
   bal: { head: "اَنّوگیں ساعت ءِ کرایہ (ڈیزل جتا):", item: (n, lo, hi) => `• ${n}: ${lo} تا ${hi} ساعت ءَ`, tip: "سلاہ: شما وتی بولی ءَ وتی نرخ ءَ هم گوشت کن ات، نزّیکیں واہند آفر رَوان دئینت۔",
         one: (n, lo, hi) => `${n} ءِ کرایہ اَنّوں نزّیک ${lo} تا ${hi} ساعت ءَ اِنت، ڈیزل جتا۔`, many: (l) => `اَنّوں ساعت ءِ کرایہ: ${l}۔ ڈیزل جتا اِنت۔`, part: (n, lo, hi) => `${n} ${lo} تا ${hi}`, tipV: "شما وتی بولی ءَ وتی نرخ ءَ هم گوشت کن ات۔" },
 };
-const RATE_RE = /\brates?\b|\brent\b|\brental|price|kiraya|kiraye|kiraaya|kiraa|kitne|kitna|kharcha|kharch|qeemat|keemat|کرایہ|کرائے|کرایا|ریٹ|قیمت|خرچ|کتنے|کتنا|کتنی|مسواڙ|اگهه|بیه|کرایه|نرخ|किराया|रेट/i;
+// specific rate words; "how much" words (kitna / کتنا) only count when a machine is named
+const RATE_RE = /\brates?\b|\brent\b|\brental|price|kiraya|kiraye|kiraaya|kiraa|qeemat|keemat|کرایہ|کرائے|کرایا|ریٹ|قیمت|مسواڙ|اگهه|کرایه|نرخ|किराया|रेट/i;
+const HOW_MUCH_RE = /kitne|kitna|kitni|kharcha|kharch|کتنے|کتنا|کتنی|خرچ|ڪيترو|څومره|چنچو/i;
 function rateAnswer(lang, cat, voice) {
   const tpl = RATE_TPL[lang] || RATE_TPL.en;
   const names = RATE_NAMES[lang] || RATE_NAMES.en;
@@ -5621,8 +5635,8 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   const askingTime = /waqt|time|kitni der|der lag|کتنا وقت|کتنی دیر|وقت/i.test(text);
   const aboutFees = /commission|کمیشن|\bfee|فیس/i.test(text);
   const dieselOnly = /diesel|fuel|ڈیزل|ایندھن/i.test(text) && !rateCat;
-  const negotiating = /kam kar|kam kaise|kum kar|کم کیسے|کم کر|negotiat|bargain|discount|sasta|سستا|رعایت|mehnga|مہنگا|too high/i.test(text);
-  if (RATE_RE.test(text) && !askingTime && !aboutFees && !dieselOnly && !negotiating) return rateAnswer(lang, rateCat, !!opts.voice);
+  const negotiating = /kam kar|kam kai?s|kam ke?s|kum kar|kam ho|zya?ada lag|ziada lag|zya?ada h[ae]i?\b|bohat zya?ada|bahut zya?ada|zya?da|کم کیسے|کم کر|کم ہو|زیادہ لگ|زیادہ ہے|بہت زیادہ|negotiat|bargain|discount|sasta|سستا|رعایت|mehe?n?ga|مہنگا|too (high|much)/i.test(text);
+  if ((RATE_RE.test(text) || (HOW_MUCH_RE.test(text) && rateCat)) && !askingTime && !aboutFees && !dieselOnly && !negotiating) return rateAnswer(lang, rateCat, !!opts.voice);
   if (has(/pay later|baad me|baad mein|bad mein|30 ?%|70 ?%|advance|udhaar|udhar|qarz|loan|credit|ztbl|ادھار|قرض|بعد میں|پیشگی|pay after|after harvest|پور|قرض|اڌار|زرّ/i)) {
     return LX("paylater", {
       en: "Harvest Now, Pay Later: in the booking form choose that payment option. You pay only 30% now; the other 70% is lent by a third-party microfinance partner (proposed: JazzCash Credit, EasyPaisa or ZTBL) and is due after harvest (60 to 180 days). The partner carries the repayment risk, not Agri-Share. Easiest repayment: sell your crop on Agri-Market and the 70% is deducted automatically before your profit is paid out.",
@@ -5672,7 +5686,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
       ro: "Sign in ke liye: upar \"Sign in\" dabayein, registered email aur password likhein aur Sign in dabayein. Kamyab hone par aap ka naam upar nazar aayega. Bahar nikalne ke liye usi menu se Sign out chunein.",
     });
   }
-  if (has(/offer|negotiat|bargain|discount|cheap|expensive|too high|reduce|kam kar|kam kaise|zyada hai|ziada hai|zada hai|kum kar|mehnga|mehenga|mehanga|sasta|رعایت|مہنگا|سستا|کم کر|کم کیسے|کم ہو|پیشکش|قیمت|گران اِنت|ګرانه|مهانگو|قيمت|بیه|کمه کړم|گهٽ ڪيئن/i)) {
+  if (has(/offer|negotiat|bargain|discount|cheap|expensive|too high|reduce|kam kar|kam kai?s|kam ke?s|zya?ada lag|ziada lag|زیادہ لگ|kam kaise|zyada hai|ziada hai|zada hai|kum kar|mehnga|mehenga|mehanga|sasta|رعایت|مہنگا|سستا|کم کر|کم کیسے|کم ہو|پیشکش|قیمت|گران اِنت|ګرانه|مهانگو|قيمت|بیه|کمه کړم|گهٽ ڪيئن/i)) {
     return LX("offer", {
       en: "Think a rate is too high? You can suggest your own price:\n1. Press \"Request Booking\" on a machine.\n2. Turn on \"Suggest your own price\".\n3. Enter your hourly offer (at least 60% of the listed rate) and, if you add transport, your transport offer.\n4. Add a note, e.g. \"I live 2 km away\", and send.\nThe owner can accept, send a counter-offer or decline. You will see it in My Bookings. Transport is already distance based (PKR 100/km, min 500), so nearby farmers pay less.",
       ur: "کرایہ زیادہ لگتا ہے؟ آپ اپنی قیمت تجویز کر سکتے ہیں:\n1. مشین پر \"بکنگ کی درخواست\" دبائیں۔\n2. \"اپنی قیمت تجویز کریں\" آن کریں۔\n3. فی گھنٹہ پیشکش (کم از کم درج ریٹ کا 60%) اور ٹرانسپورٹ کی پیشکش لکھیں۔\n4. پیغام لکھیں، مثلاً \"میں 2 کلومیٹر دور ہوں\"، اور بھیج دیں۔\nمالک قبول، جوابی پیشکش یا انکار کر سکتا ہے، جو میری بکنگز میں نظر آئے گا۔ ٹرانسپورٹ پہلے ہی فاصلے کے حساب سے ہے (100 روپے فی کلومیٹر، کم از کم 500)۔",
@@ -5869,30 +5883,48 @@ const VITE_ENV = (typeof import.meta !== "undefined" && import.meta.env) || {};
 // The built-in rule engine answers only when neither is configured or the request actually fails.
 const GEMINI_KEY = VITE_ENV.VITE_GEMINI_API_KEY || "";
 const GEMINI_MODEL = VITE_ENV.VITE_GEMINI_MODEL || "gemini-2.5-flash";
-let geminiProxy = "unknown"; // unknown | on | off
-async function probeGemini() {
-  if (geminiProxy !== "unknown") return geminiProxy === "on" || !!GEMINI_KEY;
+// unknown: not confirmed yet (a timeout or network blip never turns Gemini off)
+// on: /api/gemini answered and a key is set; none: server says no key; missing: no /api route (e.g. `npm run dev`)
+// "none" / "missing" are re-checked every 60 s, so adding a key or redeploying recovers without a reload.
+let geminiProxy = "unknown";
+let geminiCheckedAt = 0;
+async function probeGemini(force) {
+  const fresh = Date.now() - geminiCheckedAt < 60000;
+  if (!force && (geminiProxy === "on" || ((geminiProxy === "none" || geminiProxy === "missing") && fresh))) return geminiProxy === "on" || !!GEMINI_KEY;
   try {
-    const r = await withTimeout(fetch("/api/gemini", { method: "GET", headers: { Accept: "application/json" } }), 4000, null);
-    const ct = r && r.headers && r.headers.get("content-type");
-    const j = r && r.ok && ct && ct.includes("json") ? await r.json() : null;
-    geminiProxy = j && j.configured ? "on" : "off";
-  } catch (e) { geminiProxy = "off"; }
-  return geminiProxy === "on" || !!GEMINI_KEY;
+    const r = await withTimeout(fetch("/api/gemini", { method: "GET", headers: { Accept: "application/json" } }), 8000, null);
+    if (r) {
+      const ct = (r.headers && r.headers.get("content-type")) || "";
+      const j = r.ok && ct.includes("json") ? await r.json().catch(() => null) : null;
+      geminiProxy = j ? (j.configured ? "on" : "none") : r.status === 404 || !ct.includes("json") ? "missing" : "unknown";
+      geminiCheckedAt = Date.now();
+    }
+  } catch (e) { /* network blip: stay "unknown" and try again next time */ }
+  return geminiProxy === "on" || geminiProxy === "unknown" || !!GEMINI_KEY;
 }
+const geminiPossible = () => !!GEMINI_KEY || geminiProxy === "on" || geminiProxy === "unknown";
+
 // contents: [{ role: "user" | "model", parts: [{ text }] }]. Returns { text } or { error } (never throws).
 async function askGemini({ system, contents, voice, json }) {
-  const timed = (p) => withTimeout(p, 25000, "__timeout__");
-  if (await probeGemini() && geminiProxy === "on") {
+  const timed = (p) => withTimeout(p, 30000, "__timeout__");
+  // not confirmed yet: send straight away and let the health check finish in the background
+  if (geminiProxy === "unknown") probeGemini(); else await probeGemini();
+  // try the server proxy on every turn unless it is confirmed absent or keyless
+  if (geminiProxy === "on" || geminiProxy === "unknown") {
     try {
       const r = await timed(fetch("/api/gemini", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ system, contents, voice: !!voice, json: !!json }) }));
-      if (r === "__timeout__") return { error: "Gemini proxy timed out after 25 s" };
-      const j = await r.json().catch(() => ({}));
-      if (r.ok && j.text) return { text: j.text, via: "proxy" };
-      if (!GEMINI_KEY) return { error: j.error || `Gemini proxy HTTP ${r.status}` };
-    } catch (e) { if (!GEMINI_KEY) return { error: `Gemini proxy unreachable: ${e && e.message}` }; }
+      if (r === "__timeout__") { if (!GEMINI_KEY) return { error: "AI advisor timed out (30 s)", transient: true }; }
+      else {
+        const ct = (r.headers && r.headers.get("content-type")) || "";
+        const j = ct.includes("json") ? await r.json().catch(() => ({})) : {};
+        if (r.ok && j.text) { geminiProxy = "on"; return { text: j.text, via: "proxy" }; }
+        if (r.status === 404 || !ct.includes("json")) { geminiProxy = "missing"; geminiCheckedAt = Date.now(); }
+        else if (r.status === 503 && /not set/i.test(j.error || "")) { geminiProxy = "none"; geminiCheckedAt = Date.now(); }
+        if (!GEMINI_KEY) return { error: geminiProxy === "missing" ? "No /api/gemini route here (run on Vercel, or set VITE_GEMINI_API_KEY in .env.local)" : j.error || `AI advisor HTTP ${r.status}`, transient: r.status >= 500 || r.status === 429 };
+      }
+    } catch (e) { if (!GEMINI_KEY) return { error: `AI advisor unreachable: ${e && e.message ? e.message : e}`, transient: true }; }
   }
-  if (!GEMINI_KEY) return { error: "No Gemini API key configured (set GEMINI_API_KEY in Vercel or VITE_GEMINI_API_KEY in .env.local)" };
+  if (!GEMINI_KEY) return { error: geminiProxy === "missing" ? "No /api/gemini route here (run on Vercel, or set VITE_GEMINI_API_KEY in .env.local)" : "No Gemini API key configured (set GEMINI_API_KEY in Vercel)" };
   try {
     const r = await timed(fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`, {
       method: "POST",
@@ -5907,13 +5939,13 @@ async function askGemini({ system, contents, voice, json }) {
         },
       }),
     }));
-    if (r === "__timeout__") return { error: "Gemini timed out after 25 s" };
+    if (r === "__timeout__") return { error: "Gemini timed out (30 s)", transient: true };
     const data = await r.json().catch(() => ({}));
     if (!r.ok) return { error: (data.error && data.error.message) || `Gemini HTTP ${r.status}` };
     const cand = data.candidates && data.candidates[0];
     const text = ((cand && cand.content && cand.content.parts) || []).map((x) => x.text || "").join("").trim();
     return text ? { text, via: "direct" } : { error: `Gemini returned no text (${(cand && cand.finishReason) || (data.promptFeedback && data.promptFeedback.blockReason) || "no candidates"})` };
-  } catch (e) { return { error: `Gemini unreachable: ${e && e.message ? e.message : e}` }; }
+  } catch (e) { return { error: `Gemini unreachable: ${e && e.message ? e.message : e}`, transient: true }; }
 }
 
 /* Voice capture for Gemini: MediaRecorder records the turn (WebM/Opus in Chrome, MP4/AAC in Safari),
@@ -6058,6 +6090,7 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
   const turnRef = useRef(0);            // bumps on every new turn or interruption; stale replies are dropped
   // Gemini audio mode: record the farmer's voice and let Gemini hear it directly (no browser speech recognition)
   const audioModeRef = useRef(false);
+  const audioFailsRef = useRef(0);      // consecutive failed voice turns (one browser-recognition turn after 2, then audio again)
   const streamRef = useRef(null), actxRef = useRef(null), mrRef = useRef(null), rafRef = useRef(0);
   const [level, setLevel] = useState(0);
   const SR = typeof window !== "undefined" ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
@@ -6073,10 +6106,11 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
         }
       } catch (e) { /* not available */ }
       try { if (alive && window.claude && typeof window.claude.complete === "function") { setMode("claude"); return; } } catch (e) { /* ignore */ }
-      const ok = await probeGemini();
+      await probeGemini(true);
       if (!alive) return;
-      if (ok) { setMode((m) => (m === "claude" ? m : "gemini")); setAi({ status: "live", reason: "" }); }
-      else setAi({ status: "offline", reason: "No Gemini API key configured" });
+      if (geminiProxy === "on" || GEMINI_KEY) { setMode((m) => (m === "claude" ? m : "gemini")); setAi({ status: "live", reason: "" }); }
+      else if (geminiProxy === "unknown") setAi({ status: "retry", reason: "AI advisor not reachable yet, will retry on your next message" });
+      else setAi({ status: "offline", reason: geminiProxy === "missing" ? "No /api/gemini route (local dev without VITE_GEMINI_API_KEY)" : "GEMINI_API_KEY is not set on the server" });
     })();
     (async () => {
       try {
@@ -6114,13 +6148,13 @@ function KisanHelper({ t, listings, open, setOpen, session, dieselPrice, lang = 
     let answered = "";
     let fallbackWhy = "";
     // 1. Gemini answers every message when configured (full conversation + system instruction)
-    if (geminiProxy === "on" || GEMINI_KEY || geminiProxy === "unknown") {
+    if (geminiPossible()) {
       const turns = history.filter((m) => m.text && !m.pending).slice(-16);
       while (turns.length && turns[0].role !== "user") turns.shift();
       const contents = turns.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] }));
       const r = await askGemini({ system: buildSystem(listings, session, dieselPrice, lang, !!viaVoice), contents, voice: !!viaVoice });
       if (r.text) { answered = fixScript(r.text, lang); setBot(answered, { pending: false, source: "gemini" }); setAi({ status: "live", reason: "" }); }
-      else { fallbackWhy = r.error || "unknown error"; console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy); setAi({ status: "offline", reason: fallbackWhy }); }
+      else { fallbackWhy = r.error || "unknown error"; console.warn("[Agri-Share] Kisan Advisor fell back from Gemini:", fallbackWhy); setAi({ status: r.transient ? "retry" : "offline", reason: fallbackWhy }); }
     }
     try {
       if (answered) { /* Gemini answered */ }
@@ -6163,9 +6197,9 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     const r = await askGemini({ system, contents, voice: true, json: true });
     if (!r.text) {
       setMessages((m) => m.filter((x) => x.id !== userId && x.id !== botId));
-      setAi({ status: "offline", reason: r.error || "voice request failed" });
+      setAi({ status: r.transient ? "retry" : "offline", reason: r.error || "voice request failed" });
       console.warn("[Agri-Share] Voice message could not be answered by Gemini:", r.error);
-      return { error: r.error || "failed" };
+      return { error: r.error || "failed", transient: !!r.transient };
     }
     let heard = "", reply = "";
     try { const j = JSON.parse(r.text); heard = String(j.heard || ""); reply = String(j.reply || ""); } catch (e) { reply = r.text; }
@@ -6325,7 +6359,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
         if (now - lastUi > 70) { lastUi = now; setLevel(Math.min(1, rms * 6)); }
         if (spokeMs >= 250 && now - lastLoud > 1300) return finish("silence");      // 1.3 s pause after speaking
         if (spokeMs < 250 && now - t0 > 9000) return finish("nospeech");           // nobody spoke
-        if (now - t0 > 45000) return finish("max");                                 // safety cap
+        if (now - t0 > 15000) return finish("max");                                 // 15 s cap keeps uploads ~640 KB
         rafRef.current = requestAnimationFrame(tick);
       };
       mr.start(250);
@@ -6347,14 +6381,24 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     try { clip = await voiceClipForGemini(blob, actxRef.current); } catch (e) { clip = null; }
     if (!callRef.current || turn !== turnRef.current) return;
     setPhase("thinking");
-    const r = clip ? await sendVoice(clip) : { error: "could not read the recording" };
+    let r = clip ? await sendVoice(clip) : { error: "could not read the recording" };
+    // a mobile network blip: resend the same clip once before giving up on this turn
+    if (r.error && clip && callRef.current && turn === turnRef.current) {
+      setVoiceNote(t("vc_audio_retry"));
+      await new Promise((res) => setTimeout(res, 900));
+      if (!callRef.current || turn !== turnRef.current) return;
+      r = await sendVoice(clip);
+    }
     if (!callRef.current || turn !== turnRef.current) return;
     if (r.error) {
-      // Gemini audio failed: switch this call to the browser's speech recognition and let the farmer retry
-      audioModeRef.current = false; releaseMic();
-      setVoiceNote(t("vc_audio_fail")); setPhase("tap");
+      // keep Gemini audio for the next turns; after 2 failures in a row use the browser's recognition for ONE turn
+      audioFailsRef.current += 1;
+      setVoiceNote(`${t("vc_audio_retry")} · ${r.error}`);
+      setPhase("tap");
       return;
     }
+    audioFailsRef.current = 0;
+    setVoiceNote("");
     silentRef.current = 0;
     setHeard(r.heard); setReply(r.reply); setPhase("speaking");
     const roman = lang !== "en" && !hasNativeVoice() && r.heard ? toSpoken(ruleAnswer(r.heard, listings, dieselPrice, lang, "ro", { voice: true })) : "";
@@ -6366,7 +6410,8 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
   // fromGesture: true when called straight from a click (Claude dictation requires it)
   const listen = (fromGesture) => {
     if (!callRef.current) return;
-    if (audioModeRef.current) { recordTurn(); return; }
+    if (audioModeRef.current && audioFailsRef.current < 2) { recordTurn(); return; }
+    if (audioModeRef.current) audioFailsRef.current = 0; // this one turn uses browser recognition, the next tries Gemini audio again
     setVoiceErr(""); setHeard(""); bufRef.current = "";
     const d = dictRef.current;
     if (d) {
@@ -6484,7 +6529,8 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
     callRef.current = true; silentRef.current = 0;
     unlockTTS();
     // Gemini hears the real audio when it is connected; otherwise the browser's speech recognition is used
-    audioModeRef.current = canRecordVoice() && ai.status === "live" && (geminiProxy === "on" || !!GEMINI_KEY);
+    audioModeRef.current = canRecordVoice() && geminiPossible();
+    audioFailsRef.current = 0;
     if (audioModeRef.current && !actxRef.current) { try { const AC = window.AudioContext || window.webkitAudioContext; actxRef.current = new AC(); } catch (e) { audioModeRef.current = false; } }
     try { listen(true); } catch (e) { setVoiceErr(t("vc_mic_blocked")); setPhase("tap"); } // must run inside the click for Claude dictation
     // tell the farmer early when the browser has already blocked the microphone
@@ -6540,7 +6586,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
   useEffect(() => () => { callRef.current = false; stopAudio(); releaseMic(); }, []); // eslint-disable-line
   const voiceEngine = engines.dict ? "claude" : SR ? "browser" : "none";
   useEffect(() => { if (voiceOpen && voiceEngine === "none" && !demoRef.current) { setVoiceErr(t("vc_unsupported")); setPhase("tap"); } }, [voiceOpen, voiceEngine]); // eslint-disable-line
-  const phaseLabel = { idle: t("vc_ready"), listening: audioModeRef.current ? t("vc_mic_ready") : t("vc_listening"), sending: t("vc_sending"), thinking: t("vc_thinking"), speaking: t("vc_speaking"), tap: t("vc_tap"), demo: t("vc_demo") }[phase] || "";
+  const phaseLabel = { idle: t("vc_ready"), listening: mrRef.current ? t("vc_mic_ready") : t("vc_listening"), sending: t("vc_sending"), thinking: t("vc_thinking"), speaking: t("vc_speaking"), tap: t("vc_tap"), demo: t("vc_demo") }[phase] || "";
 
   const chips = HELPER_CHIPS[lang] || HELPER_CHIPS.en;
 
@@ -6561,12 +6607,15 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
               <p className="flex items-center gap-1.5 text-[11px] text-ivory/80" role="status" title={ai.reason || undefined}>
                 {mode === "claude" ? <Sparkles className="h-3 w-3 text-gold" aria-hidden="true" /> : (
                   <span className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 font-bold ${ai.status === "live" ? "bg-leaf/25 text-ivory" : ai.status === "checking" ? "bg-ivory/10" : "bg-ivory/15"}`}>
-                    <span className={`h-1.5 w-1.5 rounded-full ${ai.status === "live" ? "animate-pulse bg-leaf" : ai.status === "checking" ? "bg-ivory/60" : "bg-gold"}`} aria-hidden="true" />
-                    {ai.status === "live" ? t("ai_live") : ai.status === "checking" ? "…" : t("ai_offline")}
+                    <span className={`h-1.5 w-1.5 rounded-full ${ai.status === "live" ? "animate-pulse bg-leaf" : ai.status === "checking" ? "bg-ivory/60" : ai.status === "retry" ? "animate-pulse bg-gold" : "bg-red-400"}`} aria-hidden="true" />
+                    {ai.status === "live" ? t("ai_live") : ai.status === "checking" ? "…" : ai.status === "retry" ? t("ai_retry") : t("ai_offline")}
                   </span>
                 )}
                 {mode === "claude" ? t("kh_ai") : null}
               </p>
+              {ai.status !== "live" && ai.status !== "checking" && ai.reason && mode !== "claude" && (
+                <p className="mt-0.5 truncate text-[10px] text-ivory/80" dir="ltr" title={ai.reason}>{ai.reason}</p>
+              )}
             </div>
             <button onClick={() => setOpen(false)} className="rounded-lg p-1.5 hover:bg-ivory/10" aria-label={t("close")}><X className="h-5 w-5" /></button>
           </div>
@@ -6598,7 +6647,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
                     <span className={`absolute inset-3 rounded-full ring-4 ${phase === "listening" ? "ring-leaf/60" : phase === "speaking" ? "ring-gold/60" : "ring-ivory/15"}`} aria-hidden="true" />
                     {phase === "speaking" ? <Volume2 className="h-16 w-16 text-gold" aria-hidden="true" /> : phase === "thinking" ? <Sparkles className="h-16 w-16 animate-pulse text-gold" aria-hidden="true" /> : <Mic className={`h-16 w-16 ${phase === "listening" ? "text-ivory" : "text-ivory/80"}`} aria-hidden="true" />}
                   </button>
-                  <div className="scale-125 drop-shadow-[0_0_12px_rgba(237,192,74,0.45)]">{phase === "listening" && audioModeRef.current ? <LevelBars level={level} /> : <VoiceWaves active={phase === "listening" || phase === "speaking" || phase === "thinking" || phase === "sending"} tone={phase === "speaking" ? "speak" : phase === "thinking" || phase === "sending" ? "think" : "listen"} />}</div>
+                  <div className="scale-125 drop-shadow-[0_0_12px_rgba(237,192,74,0.45)]">{phase === "listening" && mrRef.current ? <LevelBars level={level} /> : <VoiceWaves active={phase === "listening" || phase === "speaking" || phase === "thinking" || phase === "sending"} tone={phase === "speaking" ? "speak" : phase === "thinking" || phase === "sending" ? "think" : "listen"} />}</div>
                   <p className="font-display text-2xl font-extrabold" aria-live="assertive" data-phase={phase}>{phaseLabel}</p>
                   {phase === "listening" && <button type="button" onClick={stopListening} className="rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25">{t("vc_done_speaking")}</button>}
                   {(phase === "speaking" || phase === "thinking" || phase === "sending") && <button type="button" onClick={interrupt} className="inline-flex items-center gap-2 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_interrupt")}</button>}
