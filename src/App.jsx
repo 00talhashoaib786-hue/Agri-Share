@@ -887,7 +887,7 @@ const T = {
     crop_cotton: "Cotton",
     am_qty: "Quantity (maunds)",
     am_grade: "Quality",
-    am_grade_a: "Grade A (clean, dry)",
+    am_grade_a: "Grade A",
     am_grade_b: "Grade B",
     am_rate: "Your expected rate (PKR per maund)",
     am_bench_src: "Market guide: about {r} per maund (from recent Punjab market reports).",
@@ -1062,7 +1062,7 @@ const T = {
     ld_request: "Request lease",
     ld_start: "Start date",
     ld_send_req: "Send lease request",
-    ld_req_sent: "Lease request sent to the land owner.",
+    ld_req_sent: "Lease request sent to the landowner. You will see their reply under My land deals.",
     ld_boli_title: "Zameen Ki Boli: post the land you need",
     ld_boli_sub: "Land owners in your district will send you offers.",
     ld_budget: "Your budget (PKR / acre / month)",
@@ -1109,7 +1109,7 @@ const T = {
     ag_print: "Print",
     ag_close: "Close",
     gv_title: "Agri-Share Government & Institutional Partnership Portal",
-    gv_sub: "Coming soon, in partnership with the Government of Pakistan and the Provincial Agriculture Departments.",
+    gv_sub: "Coming soon: a planned institutional partnership with the Government of Pakistan and the Provincial Agriculture Departments.",
     gv_p1_t: "Interest-free & subsidized Kisan loans",
     gv_p1_s: "Verified through your digital farm and lease history on Agri-Share.",
     gv_p2_t: "Legal protection & e-stamp registration for thaika agreements",
@@ -1137,6 +1137,9 @@ const T = {
     arc_k_land_bk: "Land lease request",
     arc_k_land_rq: "Land demand",
     zc_msg_land: "No online land is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually find suitable land for you from our offline network of landowners!",
+    ld_month_one: "1 month",
+    ld_months_n: "{n} months",
+    ld_req_sent_t: "Lease request sent",
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1632,7 +1635,7 @@ const T = {
     crop_cotton: "کپاس",
     am_qty: "مقدار (من)",
     am_grade: "معیار",
-    am_grade_a: "درجہ A (صاف، خشک)",
+    am_grade_a: "درجہ A",
     am_grade_b: "درجہ B",
     am_rate: "آپ کی متوقع قیمت (روپے فی من)",
     am_bench_src: "مارکیٹ رہنمائی: تقریباً {r} فی من (حالیہ پنجاب منڈی رپورٹس سے)۔",
@@ -1941,7 +1944,7 @@ const T = {
     ld_request: "ٹھیکے کی درخواست",
     ld_start: "شروع کی تاریخ",
     ld_send_req: "ٹھیکے کی درخواست بھیجیں",
-    ld_req_sent: "ٹھیکے کی درخواست زمین کے مالک کو بھیج دی گئی۔",
+    ld_req_sent: "ٹھیکے کی درخواست زمین کے مالک کو بھیج دی گئی۔ ان کا جواب \"میرے زمین کے معاملات\" میں نظر آئے گا۔",
     ld_boli_title: "زمین کی بولی: اپنی ضرورت کی زمین پوسٹ کریں",
     ld_boli_sub: "آپ کے ضلع کے زمین مالکان آپ کو آفرز بھیجیں گے۔",
     ld_budget: "آپ کا بجٹ (روپے / ایکڑ / مہینہ)",
@@ -1988,7 +1991,7 @@ const T = {
     ag_print: "پرنٹ",
     ag_close: "بند کریں",
     gv_title: "ایگری شیئر سرکاری و ادارہ جاتی شراکت پورٹل",
-    gv_sub: "جلد آ رہا ہے، حکومت پاکستان اور صوبائی محکمہ زراعت کے اشتراک سے۔",
+    gv_sub: "جلد آ رہا ہے: حکومت پاکستان اور صوبائی محکمہ زراعت کے ساتھ مجوزہ ادارہ جاتی شراکت۔",
     gv_p1_t: "بلا سود اور رعایتی کسان قرضے",
     gv_p1_s: "ایگری شیئر پر آپ کی ڈیجیٹل کھیتی اور ٹھیکے کی تاریخ سے تصدیق۔",
     gv_p2_t: "ٹھیکہ ناموں کا قانونی تحفظ اور ای اسٹامپ رجسٹریشن",
@@ -2016,6 +2019,9 @@ const T = {
     arc_k_land_bk: "زمین ٹھیکے کی درخواست",
     arc_k_land_rq: "زمین کی طلب",
     zc_msg_land: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن زمین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن زمین مالکان کے نیٹ ورک سے آپ کے لیے خود موزوں زمین تلاش کریں گے!",
+    ld_month_one: "1 مہینہ",
+    ld_months_n: "{n} مہینے",
+    ld_req_sent_t: "درخواست بھیج دی گئی",
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2511,7 +2517,7 @@ const T = {
     crop_cotton: "کپاہ",
     am_qty: "مقدار (من)",
     am_grade: "معیار",
-    am_grade_a: "درجہ A (صاف، سکی)",
+    am_grade_a: "درجہ A",
     am_grade_b: "درجہ B",
     am_rate: "تہاڈی متوقع قیمت (روپے فی من)",
     am_bench_src: "منڈی رہنمائی: لگ بھگ {r} فی من (تازہ پنجاب منڈی رپورٹاں توں)۔",
@@ -2720,7 +2726,7 @@ const T = {
     ld_request: "ٹھیکے دی درخواست",
     ld_start: "شروع دی تاریخ",
     ld_send_req: "ٹھیکے دی درخواست گھلو",
-    ld_req_sent: "ٹھیکے دی درخواست زمین دے مالک نوں گھل دتی گئی۔",
+    ld_req_sent: "ٹھیکے دی درخواست زمین دے مالک نوں گھل دتی گئی۔ اوہناں دا جواب \"میرے زمین دے معاملے\" وچ دسے گا۔",
     ld_boli_title: "زمین دی بولی: اپنی لوڑ دی زمین پاؤ",
     ld_boli_sub: "تہاڈے ضلعے دے زمین مالک تہانوں آفراں گھلن گے۔",
     ld_budget: "تہاڈا بجٹ (روپے / ایکڑ / مہینہ)",
@@ -2767,7 +2773,7 @@ const T = {
     ag_print: "پرنٹ",
     ag_close: "بند کرو",
     gv_title: "ایگری شیئر سرکاری تے ادارہ جاتی شراکت پورٹل",
-    gv_sub: "چھیتی آ رہیا اے، حکومت پاکستان تے صوبائی محکمہ زراعت دے نال۔",
+    gv_sub: "چھیتی آ رہیا اے: حکومت پاکستان تے صوبائی محکمہ زراعت نال تجویز کیتی ادارہ جاتی شراکت۔",
     gv_p1_t: "بلا سود تے رعایتی کسان قرضے",
     gv_p1_s: "ایگری شیئر تے تہاڈی ڈیجیٹل واہی تے ٹھیکے دی تاریخ نال تصدیق۔",
     gv_p2_t: "ٹھیکہ نامیاں دا قانونی تحفظ تے ای اسٹامپ رجسٹریشن",
@@ -2795,6 +2801,9 @@ const T = {
     arc_k_land_bk: "زمین ٹھیکے دی درخواست",
     arc_k_land_rq: "زمین دی منگ",
     zc_msg_land: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن زمین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن زمین مالکاں دے نیٹ ورک توں تہاڈے لئی آپ چنگی زمین لبھاں گے!",
+    ld_month_one: "1 مہینہ",
+    ld_months_n: "{n} مہینے",
+    ld_req_sent_t: "درخواست گھل دتی گئی",
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -3290,7 +3299,7 @@ const T = {
     crop_cotton: "ڪپهه",
     am_qty: "مقدار (مڻ)",
     am_grade: "معيار",
-    am_grade_a: "درجو A (صاف، سڪل)",
+    am_grade_a: "درجو A",
     am_grade_b: "درجو B",
     am_rate: "توهان جي متوقع قيمت (رپيا في مڻ)",
     am_bench_src: "مارڪيٽ رهنمائي: لڳ ڀڳ {r} في مڻ (تازين پنجاب منڊي رپورٽن مان)۔",
@@ -3500,7 +3509,7 @@ const T = {
     ld_request: "ٺيڪي جي درخواست",
     ld_start: "شروعات جي تاريخ",
     ld_send_req: "ٺيڪي جي درخواست موڪليو",
-    ld_req_sent: "ٺيڪي جي درخواست زمين جي مالڪ کي موڪلي وئي۔",
+    ld_req_sent: "ٺيڪي جي درخواست زمين جي مالڪ کي موڪلي وئي۔ سندن جواب \"منهنجا زمين جا معاملا\" ۾ ڏسندا۔",
     ld_boli_title: "زمين جي ٻولي: پنهنجي ضرورت جي زمين پوسٽ ڪريو",
     ld_boli_sub: "توهان جي ضلعي جا زمين مالڪ توهان کي آڇون موڪليندا۔",
     ld_budget: "توهان جي بجيٽ (رپيا / ايڪڙ / مهينو)",
@@ -3547,7 +3556,7 @@ const T = {
     ag_print: "پرنٽ",
     ag_close: "بند ڪريو",
     gv_title: "ايگري شيئر سرڪاري ۽ ادارتي ڀائيواري پورٽل",
-    gv_sub: "جلد اچي رهيو آهي، حڪومت پاڪستان ۽ صوبائي زراعت کاتي جي ڀائيواري سان۔",
+    gv_sub: "جلد اچي رهيو آهي: حڪومت پاڪستان ۽ صوبائي زراعت کاتي سان رٿيل ادارتي ڀائيواري۔",
     gv_p1_t: "بنا وياج ۽ رعايتي هاري قرض",
     gv_p1_s: "ايگري شيئر تي توهان جي ڊجيٽل پوک ۽ ٺيڪي جي تاريخ ذريعي تصديق۔",
     gv_p2_t: "ٺيڪي ناما جو قانوني تحفظ ۽ اي اسٽامپ رجسٽريشن",
@@ -3575,6 +3584,9 @@ const T = {
     arc_k_land_bk: "زمين ٺيڪي جي درخواست",
     arc_k_land_rq: "زمين جي طلب",
     zc_msg_land: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن زمين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن زمين مالڪن جي نيٽ ورڪ مان توهان لاءِ پاڻ مناسب زمين ڳولينداسين!",
+    ld_month_one: "1 مهينو",
+    ld_months_n: "{n} مهينا",
+    ld_req_sent_t: "درخواست موڪلي وئي",
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3761,7 +3773,7 @@ const T = {
     crop_cotton: "پنبه",
     am_qty: "مقدار (من)",
     am_grade: "کیفیت",
-    am_grade_a: "درجه A (پاک، وچ)",
+    am_grade_a: "درجه A",
     am_grade_b: "درجه B",
     am_rate: "ستاسو تمه‌لرونکې بیه (روپۍ فی من)",
     am_bench_src: "د بازار لارښود: شاوخوا {r} فی من (د پنجاب د وروستیو راپورونو له مخې).",
@@ -3982,7 +3994,7 @@ const T = {
     ld_request: "د اجارې غوښتنه",
     ld_start: "د پیل نېټه",
     ld_send_req: "د اجارې غوښتنه ولېږئ",
-    ld_req_sent: "د اجارې غوښتنه د ځمکې مالک ته ولېږل شوه.",
+    ld_req_sent: "د اجارې غوښتنه د ځمکې مالک ته ولېږل شوه. د هغه ځواب به په \"زما د ځمکې معاملې\" کې ووینئ.",
     ld_boli_title: "د ځمکې بولي: د اړتیا ځمکه ثبت کړئ",
     ld_boli_sub: "ستاسو د ولسوالۍ د ځمکې مالکان به تاسو ته وړاندیزونه ولېږي.",
     ld_budget: "ستاسو بودیجه (روپۍ / ایکړ / میاشت)",
@@ -4030,7 +4042,7 @@ const T = {
     ag_print: "چاپ",
     ag_close: "بندول",
     gv_title: "د اګري شېئر د حکومت او ادارو د همکارۍ پورټل",
-    gv_sub: "ژر راځي، د پاکستان حکومت او ولایتي کرنې ریاستونو په ګډون.",
+    gv_sub: "ژر راځي: د پاکستان حکومت او ولایتي کرنې ریاستونو سره پلان شوې اداري همکاري.",
     gv_p1_t: "بې سوده او سبسایډي لرونکي بزګر پورونه",
     gv_p1_s: "په اګري شېئر کې ستاسو د ډیجیټل کرنې او اجارې تاریخ له لارې تایید.",
     gv_p2_t: "د اجارې تړونونو قانوني ساتنه او اې سټامپ ثبت",
@@ -4058,6 +4070,9 @@ const T = {
     arc_k_land_bk: "د ځمکې د اجارې غوښتنه",
     arc_k_land_rq: "د ځمکې غوښتنه",
     zc_msg_land: "اوس ستاسو د 15 نه تر 40 کیلومترو په ساحه کې هېڅ آنلاین ځمکه نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به د ځمکې د مالکانو له خپلې آفلاین شبکې ستاسو لپاره مناسبه ځمکه ومومو!",
+    ld_month_one: "1 میاشت",
+    ld_months_n: "{n} میاشتې",
+    ld_req_sent_t: "غوښتنه ولېږل شوه",
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -4232,7 +4247,7 @@ const T = {
     crop_cotton: "کپاس",
     am_qty: "کچ (من)",
     am_grade: "جوانی",
-    am_grade_a: "درجہ A (پاک، ہشک)",
+    am_grade_a: "درجہ A",
     am_grade_b: "درجہ B",
     am_rate: "شمئے امیتیں بہا (کلدار فی من)",
     am_bench_src: "بازار ءِ راہشونی: نزّیکا {r} فی من (پنجاب ءِ نوکیں رپوٹانی سرا)۔",
@@ -4455,7 +4470,7 @@ const T = {
     ld_request: "ٹھیکہ ءِ درخواست",
     ld_start: "بُنگیج ءِ تاریخ",
     ld_send_req: "ٹھیکہ ءِ درخواست ءَ رَوان دئے",
-    ld_req_sent: "ٹھیکہ ءِ درخواست زمین ءِ واہند ءَ رَوان بوت۔",
+    ld_req_sent: "ٹھیکہ ءِ درخواست زمین ءِ واہند ءَ رَوان بوت۔ آئی ءِ پسّو \"منی زمین ءِ معاملہ\" ءَ گندئے۔",
     ld_boli_title: "زمین ءِ بولی: وتی لوٹ ءِ زمین ءَ پیش کن",
     ld_boli_sub: "شمئے ضلع ءِ زمین ءِ واہند شمارا آفر رَوان دئینت۔",
     ld_budget: "شمئے بجٹ (کلدار / ایکڑ / ماہ)",
@@ -4503,7 +4518,7 @@ const T = {
     ag_print: "پرنٹ",
     ag_close: "بند کن",
     gv_title: "ایگری شیئر ءِ سرکاری و اِدارہ ئی شراکت ءِ پورٹل",
-    gv_sub: "زوت کئیت، حکومت پاکستان و صوبائی محکمہ زراعت ءِ ہمراہی ءَ۔",
+    gv_sub: "زوت کئیت: حکومت پاکستان و صوبائی محکمہ زراعت ءِ گوں پلان کتگیں اِدارہ ئی شراکت۔",
     gv_p1_t: "بے سود و رعایتی کِشاورز ءِ وام",
     gv_p1_s: "ایگری شیئر ءَ شمئے ڈیجیٹل کِشار و ٹھیکہ ءِ تاریخ ءِ سرا تصدیق۔",
     gv_p2_t: "ٹھیکہ نامہانی قانونی پہریز و ای اسٹامپ رجسٹریشن",
@@ -4531,6 +4546,9 @@ const T = {
     arc_k_land_bk: "زمین ءِ ٹھیکہ ءِ درخواست",
     arc_k_land_rq: "زمین ءِ لوٹ",
     zc_msg_land: "اَنّوں شمئے 15 تا 40 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن زمین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی زمین ءِ واہندانی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت جوانیں زمین شوہاز کنیں!",
+    ld_month_one: "1 ماہ",
+    ld_months_n: "{n} ماہ",
+    ld_req_sent_t: "درخواست رَوان بوت",
   },
 };
 
@@ -8295,7 +8313,10 @@ const CONSULTANT = {
   secondary: { label: "0370-0318574", tel: "+923700318574", wa: "923700318574" },
   email: "00talhashoaib786@gmail.com",
 };
-const consultantWaText = (lang, machine, district) => (lang === "en"
+const consultantWaText = (lang, machine, district, land) => (land ? (lang === "en"
+  ? `Assalam-o-Alaikum Agri-Share, I need agricultural land on thaika in ${district || "my district"}. No land is listed online within 40 km. Please find suitable land for me.`
+  : `السلام علیکم ایگری شیئر، مجھے ${district || "اپنے ضلع"} میں زرعی زمین ٹھیکے پر چاہیے۔ 40 کلومیٹر میں کوئی زمین آن لائن نہیں۔ براہ کرم میرے لیے موزوں زمین تلاش کریں۔`)
+  : lang === "en"
   ? `Assalam-o-Alaikum Agri-Share, I need a ${machine || "machine"} in ${district || "my district"}. No owner is online within 40 km. Please arrange one for me.`
   : `السلام علیکم ایگری شیئر، مجھے ${district || "اپنے ضلع"} میں ${machine || "مشین"} چاہیے۔ 40 کلومیٹر میں کوئی مالک آن لائن نہیں۔ براہ کرم میرے لیے انتظام کریں۔`);
 
@@ -8307,8 +8328,8 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
   const cat = request.category && request.category !== "all" ? request.category : "tractor";
   const district = request.district || (request.loc && request.loc.district) || "";
   const machineName = (RATE_NAMES[lang === "en" ? "en" : "ur"] || RATE_NAMES.en)[cat] || cat;
-  const wa = (num) => `https://wa.me/${num}?text=${encodeURIComponent(consultantWaText(lang, machineName, district))}`;
-  const mail = `mailto:${CONSULTANT.email}?subject=${encodeURIComponent(`Agri-Share: ${RATE_NAMES.en[cat] || cat} needed in ${district || "my district"}`)}&body=${encodeURIComponent(consultantWaText(lang, machineName, district))}`;
+  const wa = (num) => `https://wa.me/${num}?text=${encodeURIComponent(consultantWaText(lang, machineName, district, cat === "land"))}`;
+  const mail = `mailto:${CONSULTANT.email}?subject=${encodeURIComponent(cat === "land" ? `Agri-Share: agricultural land needed in ${district || "my district"}` : `Agri-Share: ${RATE_NAMES.en[cat] || cat} needed in ${district || "my district"}`)}&body=${encodeURIComponent(consultantWaText(lang, machineName, district, cat === "land"))}`;
   const send = () => requireAuth(async () => {
     setState("sending");
     try { const r = await onSendLead({ category: cat, district, village: request.village || "", hours: request.hours, rate: request.rate, requestId: request.id }); setEmailed(!!(r && r.emailed)); setState("sent"); }
@@ -8324,7 +8345,7 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
     </div>
   );
   return (
-    <div className="rounded-2xl border-2 border-forest bg-white p-4 shadow-md" role="region" aria-labelledby="zc-h">
+    <div className="mb-20 rounded-2xl border-2 border-forest bg-white p-4 shadow-md sm:mb-0" role="region" aria-labelledby="zc-h">
       <p id="zc-h" className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><Headphones className="h-5 w-5 text-gold" aria-hidden="true" />{t("zc_title")}</p>
       <p className="mt-1.5 text-sm leading-relaxed text-soil">{t(request.category === "land" ? "zc_msg_land" : "zc_msg")}</p>
       <div className="mt-3 space-y-2">
@@ -9052,6 +9073,10 @@ const addMonthsISO = (iso, m) => { const d = new Date((iso || todayISO()) + "T00
 /* Land lease commission: a flat 4.5% one-time facilitation fee,
    charged once on the total lease value, whatever the lease length. */
 const LAND_COMMISSION_PCT = 4.5;
+const monthsLabel = (t, n) => t(Number(n) === 1 ? "ld_month_one" : "ld_months_n").replace("{n}", Number(n) || 0);
+// listing location without repeating its title (older listings saved the title as the village)
+const landPlace = (l, dn) => uniqPlaces(l.village && l.village !== l.title ? l.village : "", l.tehsil, dn ? dn(l.district || "") : l.district) || (dn ? dn(l.district || "") : l.district) || "";
+
 function landCommission(total) {
   const pct = LAND_COMMISSION_PCT;
   return { pct, amount: Math.round(((Number(total) || 0) * pct) / 100) };
@@ -9084,7 +9109,17 @@ function EcoBenefitCard({ t, active }) {
 
 // Printable bilingual stamp-paper agreement (uses the voucher print styles)
 function LandAgreementModal({ t, b, dn, onClose }) {
-  const comm = landCommission(b.total);
+  // both parties' private phone numbers: readable by either party once the lease is accepted (rules: land_contacts / land_request_contacts)
+  const [phones, setPhones] = useState({ owner: "", tenant: "" });
+  useEffect(() => {
+    let alive = true;
+    const get = (p, k, f) => p.then((d) => { if (alive && d && d[f]) setPhones((s) => ({ ...s, [k]: d[f] })); }).catch(() => {});
+    if (b.listingId) get(readDoc(COL.landContacts, b.listingId), "owner", "ownerPhone");
+    get(readDoc(COL.landReqContacts, b.requestId || b.id), "tenant", "renterPhone");
+    return () => { alive = false; };
+  }, [b.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const place = (d) => (d ? (dn ? dn(d) : d) : "____________");
+  const clauses = ["ag_clause1", "ag_clause2", "ag_clause3"];
   const print = () => {
     document.body.classList.add("print-voucher");
     const done = () => { document.body.classList.remove("print-voucher"); window.removeEventListener("afterprint", done); };
@@ -9097,13 +9132,13 @@ function LandAgreementModal({ t, b, dn, onClose }) {
     <div id="voucher-root" className="fixed inset-0 z-[85] flex items-end justify-center bg-soil/50 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
       <div className="sheet-in max-h-[94vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="ag-h">
         <div className="voucher-card p-6 text-soil">
-          <div className="mb-4 flex h-28 items-center justify-center rounded-xl border-2 border-dashed border-soil/40 text-center text-xs font-semibold text-soil/70">{t("ag_stamp")}<br /><span lang="ur" dir="rtl">اشٹام پیپر / E-Stamp Paper</span></div>
+          <div className="mb-5 flex min-h-[7.5rem] flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-soil/40 px-4 py-5 text-center text-xs font-semibold leading-relaxed text-soil/70"><span>{t("ag_stamp")}</span><span lang="ur" dir="rtl" className="text-sm leading-[2]">اشٹام پیپر یہاں لگائیں</span><span dir="ltr">E-Stamp Paper</span></div>
           <h2 id="ag-h" className="text-center font-display text-xl font-extrabold text-forest">{t("ag_title")}</h2>
           <p className="text-center text-lg font-bold text-forest" lang="ur" dir="rtl">اقرار نامہ ٹھیکہ اراضی</p>
           <p className="mt-1 text-center text-xs text-soil/80" dir="ltr">{b.id} · {t("ag_date")}: {fmtDate(b.acceptedAt ? new Date(b.acceptedAt).toISOString().slice(0, 10) : todayISO())}</p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-xl bg-ivory p-3"><p className="text-xs font-bold uppercase text-soil/80">{t("ag_first")} <span lang="ur">/ فریق اول</span></p><p className="mt-1 font-bold">{b.ownerName || "________________"}</p><p className="mt-2 text-xs text-soil/80">{t("ag_cnic")}: ____________________</p></div>
-            <div className="rounded-xl bg-ivory p-3"><p className="text-xs font-bold uppercase text-soil/80">{t("ag_second")} <span lang="ur">/ فریق ثانی</span></p><p className="mt-1 font-bold">{b.tenantName || "________________"}</p><p className="mt-2 text-xs text-soil/80">{t("ag_cnic")}: ____________________</p></div>
+            <div className="rounded-xl bg-ivory p-3"><p className="text-xs font-bold uppercase text-soil/80">{t("ag_first")} <span lang="ur">/ فریق اول</span></p><p className="mt-1 font-bold">{b.ownerName || "________________"}</p><p className="mt-2 text-xs text-soil/80">{t("ld_district")}: {place(b.ownerDistrict || b.district)}</p><p className="text-xs text-soil/80">{t("au_phone")}: <span dir="ltr">{phones.owner || "____________"}</span></p><p className="text-xs text-soil/80">{t("ag_cnic")}: ____________________</p></div>
+            <div className="rounded-xl bg-ivory p-3"><p className="text-xs font-bold uppercase text-soil/80">{t("ag_second")} <span lang="ur">/ فریق ثانی</span></p><p className="mt-1 font-bold">{b.tenantName || "________________"}</p><p className="mt-2 text-xs text-soil/80">{t("ld_district")}: {place(b.tenantDistrict)}</p><p className="text-xs text-soil/80">{t("au_phone")}: <span dir="ltr">{phones.tenant || "____________"}</span></p><p className="text-xs text-soil/80">{t("ag_cnic")}: ____________________</p></div>
           </div>
           <div className="mt-4">
             <p className="mb-1 text-sm font-bold text-forest">{t("ag_land")}</p>
@@ -9111,15 +9146,20 @@ function LandAgreementModal({ t, b, dn, onClose }) {
             <Row k={t("ld_area")} v={`${Number(b.acres || 0).toFixed(2)} ${t("ld_acres")}`} />
             <Row k={t("ld_water")} v={t("w_" + (b.water || "canal"))} />
             <Row k={t("ld_soil")} v={t("s_" + (b.soil || "loam"))} />
-            <Row k={t("ag_period")} v={`${fmtDate(b.startDate)} → ${fmtDate(b.endDate)} (${b.months})`} />
+            <Row k={t("ag_period")} v={`${fmtDate(b.startDate)} → ${fmtDate(b.endDate)} (${monthsLabel(t, b.months)})`} />
             <Row k={t("ag_amount")} v={pkr(b.total)} />
             <Row k={t("ld_payment")} v={t("p_" + (b.payment || "advance"))} />
           </div>
-          <ol className="mt-4 list-decimal space-y-1 ps-5 text-sm leading-relaxed">
-            <li>{t("ag_clause1")}</li><li>{t("ag_clause2")}</li><li>{t("ag_clause3")}</li>
+          {/* clauses in English and Urdu side by side (Urdu always printed for the stamp-paper record) */}
+          <ol className="mt-4 space-y-2 text-sm">
+            {clauses.map((k, i) => (
+              <li key={k} className="grid gap-2 rounded-lg border border-soil/10 p-2.5 sm:grid-cols-2">
+                <p className="leading-relaxed" dir="ltr" lang="en"><b>{i + 1}.</b> {T.en[k]}</p>
+                <p className="leading-[2]" dir="rtl" lang="ur"><b>{i + 1}۔</b> {T.ur[k]}</p>
+              </li>
+            ))}
           </ol>
           <div className="mt-4"><CommissionCard t={t} total={b.total} /></div>
-          <p className="mt-1 text-[11px] text-soil/70" dir="ltr">{t("cm_total")}: {pkr(comm.amount)}</p>
           <div className="mt-6 flex gap-4"><Sign label={`${t("ag_first")} · ${t("ag_sign")}`} /><Sign label={`${t("ag_second")} · ${t("ag_sign")}`} /></div>
           <div className="mt-4 flex gap-4"><Sign label={`${t("ag_witness1")} / گواہ نمبر 1`} /><Sign label={`${t("ag_witness2")} / گواہ نمبر 2`} /></div>
         </div>
@@ -9201,25 +9241,27 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
     .filter((l) => fl.water === "any" || l.water === fl.water)
     .filter((l) => !(Number(fl.budget) > 0) || l.rateType === "total" || Number(l.rate) <= Number(fl.budget))
     .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (a.km ?? 9999) - (b.km ?? 9999));
-  const inRange = fl.loc && fl.loc.lat ? withKm.filter((l) => !l.mine && l.km != null && l.km <= MATCH_RADIUS_KM).length : null;
 
   // ---------- lease request on a listing ----------
   const [reqFor, setReqFor] = useState(null);
   const [reqStart, setReqStart] = useState(addDaysISO(7));
   const [reqMonths, setReqMonths] = useState(6);
+  const [reqSent, setReqSent] = useState({});
   const sendLeaseRequest = (l) => requireAuth(() => {
     const months = Number(reqMonths) || Number(l.months) || 1;
     const b = {
       id: "LB-" + Date.now().toString(36).toUpperCase(), listingId: l.id, requestId: null, status: "pending", createdAt: Date.now(),
       ownerUid: l.ownerUid, ownerName: l.ownerName || "", tenantUid: session.uid, tenantName: session.name || "",
-      village: l.village || l.title || "", tehsil: l.tehsil || "", district: l.district || "", acres: landAcres(l), water: l.water, soil: l.soil,
+      village: (l.village && l.village !== l.title ? l.village : "") || l.district || "", tehsil: l.tehsil || "", district: l.district || "", acres: landAcres(l), water: l.water, soil: l.soil,
+      ownerDistrict: l.ownerDistrict || l.district || "", tenantDistrict: (session.location && session.location.district) || "",
       months, startDate: reqStart, endDate: addMonthsISO(reqStart, months), total: landTotal(l, months), payment: l.payment || "advance", country: CUR.id,
     };
     saveLandBooking(b);
     // tenant contact is private; the land owner is the counterparty who may read it
     writeDoc(COL.landReqContacts, b.id, { requestId: b.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: l.ownerUid || "", createdAt: Date.now() }).catch((e) => console.warn("[Agri-Share] Land contact not saved:", e && e.code));
     setReqFor(null);
-    toast(t("ld_req_sent"), { title: t("nav_land") });
+    setReqSent((s) => ({ ...s, [l.id]: b.id }));
+    toast(t("ld_req_sent"), { title: t("ld_req_sent_t"), ms: 6000 });
   });
 
   // ---------- Zameen Ki Boli (land demand) ----------
@@ -9245,6 +9287,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
       id: "LB-" + Date.now().toString(36).toUpperCase(), listingId: o.listingId || null, requestId: r.id, status: "accepted", createdAt: Date.now(), acceptedAt: Date.now(),
       ownerUid: o.uid, ownerName: o.ownerName || "", tenantUid: session.uid, tenantName: session.name || "",
       village: r.village || "", tehsil: "", district: r.district || "", acres: r.acres, water: r.water === "any" ? (o.water || "canal") : r.water, soil: o.soil || "loam",
+      ownerDistrict: o.district || r.district || "", tenantDistrict: (r.loc && r.loc.district) || r.district || "",
       months, startDate: addDaysISO(7), endDate: addMonthsISO(addDaysISO(7), months), total, payment: "advance", country: CUR.id,
     };
     saveLandBooking(b);
@@ -9266,7 +9309,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
     const rate = Math.round(Number(offerRates[r.id]) || 0);
     if (rate < 100) return;
     const listing = myListings.find((l) => normDistrict(l.district) === normDistrict(r.district)) || myListings[0];
-    const offer = { uid, ownerName: session.name || "", listingId: listing ? listing.id : null, rate, water: listing ? listing.water : "", soil: listing ? listing.soil : "", at: Date.now() };
+    const offer = { uid, ownerName: session.name || "", district: (listing && listing.district) || (session.location && session.location.district) || "", listingId: listing ? listing.id : null, rate, water: listing ? listing.water : "", soil: listing ? listing.soil : "", at: Date.now() };
     saveLandRequest({ id: r.id, offers: [...(r.offers || []).filter((o) => o.uid !== uid), offer] });
     toast(t("ld_offer_sent"), { title: t("ld_tab_boli") });
   };
@@ -9297,7 +9340,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   const statusPill = (s) => <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${s === "accepted" ? "bg-leaf/15 text-forest" : s === "declined" ? "bg-red-100 text-red-800" : "bg-gold/25 text-soil"}`}>{t(s === "accepted" ? "ld_accepted" : s === "declined" ? "ld_declined" : "ld_pending")}</span>;
 
   return (
-    <section className={`mx-auto max-w-7xl px-4 py-8 sm:px-6 ${rtl ? "leading-[2]" : ""}`} aria-labelledby="ld-h">
+    <section className={`mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 sm:pb-8 ${rtl ? "leading-[2]" : ""}`} aria-labelledby="ld-h">
       <div className="mb-5 overflow-hidden rounded-3xl bg-forest p-6 text-ivory md:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold"><Sprout className="h-3.5 w-3.5 text-gold" aria-hidden="true" />{t("nav_land")}</p>
         <h2 id="ld-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("ld_title")}</h2>
@@ -9323,7 +9366,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             <Field label={t("ld_filter_budget")} htmlFor="ldf-b"><MoneyInput id="ldf-b" min={0} step="500" value={fl.budget} onChange={(v) => setFl((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
           </aside>
           <div className="min-w-0 space-y-3">
-            {inRange === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
+            {results.length === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
             <p className="text-sm font-semibold text-soil/80" aria-live="polite">{t(results.length === 1 ? "ld_results_one" : "ld_results").replace("{n}", results.length)}</p>
             {results.length === 0 ? <p className="rounded-2xl border border-dashed border-soil/25 bg-white p-8 text-center text-sm text-soil/80">{t("ld_none")}</p> : (
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -9336,7 +9379,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${l.isVerified ? "bg-leaf/15 text-forest" : "bg-gold/25 text-soil"}`}>{t(l.isVerified ? "ls_verified" : "ls_unverified")}</span>
                       </span>
                     </div>
-                    <p className="text-xs text-soil/80">{uniqPlaces(l.village, l.tehsil, dn(l.district || ""))}{l.km != null ? <span dir="ltr"> · {Math.round(l.km)} km</span> : null}</p>
+                    <p className="text-xs text-soil/80">{landPlace(l, dn)}{l.km != null ? <span dir="ltr"> · {Math.round(l.km)} km</span> : null}</p>
                     <div className="mt-2 flex flex-wrap gap-1.5 text-[11px] font-semibold">
                       <span className="rounded-full bg-ivory px-2 py-0.5 ring-1 ring-soil/10" dir="ltr">{landAcres(l).toFixed(1)} <span dir="auto">{t("ld_acres")}</span></span>
                       <span className="rounded-full bg-leaf/10 px-2 py-0.5 text-forest ring-1 ring-leaf/30"><Droplets className="me-1 inline h-3 w-3" aria-hidden="true" />{t("w_" + l.water)}</span>
@@ -9344,12 +9387,13 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                       <span className="rounded-full bg-ivory px-2 py-0.5 ring-1 ring-soil/10">{t("r_" + l.road)}</span>
                     </div>
                     <p className="mt-2 font-display text-lg font-extrabold text-forest" dir="ltr">{l.rateType === "total" ? pkr(l.rate) : <>{pkr(l.rate)}<span className="text-xs font-semibold text-soil/80"> {t("ld_per_acre_month")}</span></>}</p>
-                    <p className="text-xs text-soil/80">{l.months} · {t("p_" + (l.payment || "advance"))}</p>
+                    <p className="text-xs text-soil/80">{monthsLabel(t, l.months)} · {t("p_" + (l.payment || "advance"))}</p>
+                    {!l.mine && reqSent[l.id] && reqFor !== l.id && <p className="mt-3 flex items-start gap-1.5 rounded-xl bg-leaf/15 p-2.5 text-xs font-semibold text-forest" role="status"><CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ld_req_sent")}</p>}
                     {!l.mine && (reqFor === l.id ? (
                       <div className="mt-3 space-y-2 rounded-xl bg-ivory p-3">
                         <div className="grid grid-cols-2 items-end gap-2">
                           <Field label={t("ld_start")} htmlFor={`lds-${l.id}`}><input id={`lds-${l.id}`} type="date" min={todayISO()} value={reqStart} onChange={(e) => setReqStart(e.target.value)} className={inputCls + " text-sm"} /></Field>
-                          <Field label={t("ld_months")} htmlFor={`ldm-${l.id}`}><select id={`ldm-${l.id}`} value={reqMonths} onChange={(e) => setReqMonths(Number(e.target.value))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{m}</option>)}</select></Field>
+                          <Field label={t("ld_months")} htmlFor={`ldm-${l.id}`}><select id={`ldm-${l.id}`} value={reqMonths} onChange={(e) => setReqMonths(Number(e.target.value))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{monthsLabel(t, m)}</option>)}</select></Field>
                         </div>
                         <p className="text-sm" dir="ltr"><span dir="auto">{t("ld_total_value")}</span>: <b>{pkr(landTotal(l, reqMonths))}</b></p>
                         <CommissionCard t={t} total={landTotal(l, reqMonths)} />
@@ -9367,7 +9411,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
       {sub === "list" && <LandForm t={t} lang={lang} session={session} onCreate={(f) => requireAuth(() => {
         const id = "LL-" + Date.now().toString(36).toUpperCase();
         const { ownerPhone, loc, areaInput, ...rest } = f;
-        const l = { ...rest, areaInput: Number(areaInput), id, ownerUid: session.uid, ownerName: session.name || "", village: f.title || (loc && loc.village) || "", district: loc.district || "", province: loc.province || "", lat: loc.lat, lng: loc.lng, country: loc.country || CUR.id, status: "approved", isVerified: false, available: true, boostFee: f.featured ? Math.round(LAND_BOOST_PER_ACRE * f.acres) : 0, createdAt: Date.now() };
+        const l = { ...rest, areaInput: Number(areaInput), id, ownerUid: session.uid, ownerName: session.name || "", village: (loc && loc.village) || "", ownerDistrict: (session.location && session.location.district) || loc.district || "", district: loc.district || "", province: loc.province || "", lat: loc.lat, lng: loc.lng, country: loc.country || CUR.id, status: "approved", isVerified: false, available: true, boostFee: f.featured ? Math.round(LAND_BOOST_PER_ACRE * f.acres) : 0, createdAt: Date.now() };
         setLandListings((ls) => [...ls, l]);
         writeDoc(COL.landContacts, id, { listingId: id, ownerUid: session.uid, ownerName: session.name || "", ownerPhone: String(ownerPhone || "").replace(/[\s-]/g, ""), ownerEmail: session.email || "", acceptedUids: [], createdAt: Date.now() }).catch((e) => console.warn("[Agri-Share] Land owner contact not saved:", e && e.code));
         toast(t("ld_listed"), { title: t("nav_land") });
@@ -9382,7 +9426,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             <LocationField t={t} lang={lang} id="ldb-loc" label={t("ld_district")} value={bf.loc} placeholder={t("loc_placeholder")} error={boliErr || undefined} onChange={(loc) => { if (loc) { setBoliErr(""); setBf((s) => ({ ...s, loc })); } }} />
             <div className="grid grid-cols-2 items-end gap-2">
               <Field label={t("ld_acres")} htmlFor="ldb-a"><input id="ldb-a" type="number" min="0.5" step="0.5" value={bf.acres} onChange={(e) => setBf((s) => ({ ...s, acres: e.target.value }))} className={inputCls} dir="ltr" /></Field>
-              <Field label={t("ld_months")} htmlFor="ldb-m"><select id="ldb-m" value={bf.months} onChange={(e) => setBf((s) => ({ ...s, months: Number(e.target.value) }))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{m}</option>)}</select></Field>
+              <Field label={t("ld_months")} htmlFor="ldb-m"><select id="ldb-m" value={bf.months} onChange={(e) => setBf((s) => ({ ...s, months: Number(e.target.value) }))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{monthsLabel(t, m)}</option>)}</select></Field>
             </div>
             <Field label={t("ld_water")} htmlFor="ldb-w"><select id="ldb-w" value={bf.water} onChange={(e) => setBf((s) => ({ ...s, water: e.target.value }))} className={inputCls + " pe-7 text-sm"}><option value="any">{t("w_any")}</option>{LAND_WATER.map((w) => <option key={w} value={w}>{t("w_" + w)}</option>)}</select></Field>
             <Field label={t("ld_budget")} htmlFor="ldb-b"><MoneyInput id="ldb-b" min={100} step="500" value={bf.budget} onChange={(v) => setBf((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
@@ -9395,7 +9439,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                 {openDemand.map((r) => (
                   <li key={r.id} className="rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
                     <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(r.village, dn(r.district || ""))}</p>{archive && <ClearBtn t={t} onClick={() => clearKeys("lr:" + r.id)} />}</div>
-                    <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · {r.months} · {pkr(r.budget)} <span dir="auto">{t("ld_per_acre_month")}</span> · <span dir="auto">{t(r.water === "any" ? "w_any" : "w_" + r.water)}</span></p>
+                    <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · <span dir="auto">{monthsLabel(t, r.months)}</span> · {pkr(r.budget)} <span dir="auto">{t("ld_per_acre_month")}</span> · <span dir="auto">{t(r.water === "any" ? "w_any" : "w_" + r.water)}</span></p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <label className="sr-only" htmlFor={`ldo-${r.id}`}>{t("ld_offer_rate")}</label>
                       <MoneyInput id={`ldo-${r.id}`} min={100} step="100" value={offerRates[r.id] || r.budget} onChange={(v) => setOfferRates((s) => ({ ...s, [r.id]: v }))} className={inputCls + " max-w-[9rem] py-1.5"} />
@@ -9417,7 +9461,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             {myDemand.filter((r) => r.status === "open").map((r) => (
               <div key={r.id} className="rounded-xl bg-gold/10 p-3 text-sm ring-1 ring-gold/40">
                 <p className="font-bold text-forest">{t("ld_tab_boli")} · {uniqPlaces(r.village, dn(r.district || ""))}</p>
-                <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · {r.months} · {pkr(r.budget)}</p>
+                <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · <span dir="auto">{monthsLabel(t, r.months)}</span> · {pkr(r.budget)}</p>
                 <p className="mt-2 text-xs font-bold text-soil/80">{t("ld_offers")}</p>
                 {(r.offers || []).length === 0 ? <p className="text-xs text-soil/80">{t("ld_no_offers")}</p> : (r.offers || []).map((o) => (
                   <div key={o.uid} className="mt-1 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-white px-2 py-1.5">
@@ -9430,7 +9474,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             {myLeases.length === 0 && myDemand.filter((r) => r.status === "open").length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : myLeases.map((b) => (
               <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
                 <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(b.village, dn(b.district || ""))}</p><span className="flex shrink-0 items-center gap-1.5">{statusPill(b.status)}{archive && <ClearBtn t={t} onClick={() => clearKeys("lb:" + b.id)} />}</span></div>
-                <p className="text-xs text-soil/80" dir="ltr">{b.id} · {Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} · {pkr(b.total)}</p>
+                <p className="text-xs text-soil/80" dir="ltr">{b.id} · {Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} (<span dir="auto">{monthsLabel(t, b.months)}</span>) · {pkr(b.total)}</p>
                 {b.status === "accepted" && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     <button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button>
@@ -9446,7 +9490,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             {incoming.length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : incoming.map((b) => (
               <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
                 <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{b.tenantName || "-"} · {uniqPlaces(b.village, dn(b.district || ""))}</p><span className="flex shrink-0 items-center gap-1.5">{statusPill(b.status)}{archive && <ClearBtn t={t} onClick={() => clearKeys("lb:" + b.id)} />}</span></div>
-                <p className="text-xs text-soil/80" dir="ltr">{Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} · {pkr(b.total)}</p>
+                <p className="text-xs text-soil/80" dir="ltr">{Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} (<span dir="auto">{monthsLabel(t, b.months)}</span>) · {pkr(b.total)}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {b.status === "pending" && <><button type="button" onClick={() => decide(b, "accepted")} className="rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory">{t("ld_accept_req")}</button><button type="button" onClick={() => decide(b, "declined")} className="rounded-lg border border-red-300 px-2.5 py-1.5 text-xs font-bold text-red-800">{t("ld_decline")}</button></>}
                   {b.status === "accepted" && <><button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button><button type="button" onClick={() => showContact(b)} className="rounded-lg border border-forest/30 px-2.5 py-1.5 text-xs font-bold text-forest">{t("ld_contact")}</button></>}
@@ -9473,7 +9517,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
 function GovtPortal({ t }) {
   const pillars = [[HandCoins, "gv_p1_t", "gv_p1_s"], [ShieldCheck, "gv_p2_t", "gv_p2_s"], [Sprout, "gv_p3_t", "gv_p3_s"]];
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6" aria-labelledby="gv-h">
+    <section className="mx-auto max-w-5xl px-4 pb-24 pt-8 sm:px-6 sm:pb-8" aria-labelledby="gv-h">
       <div className="overflow-hidden rounded-3xl bg-forest p-6 text-ivory md:p-10">
         <span className="inline-flex items-center gap-2 rounded-full bg-gold px-3 py-1 text-xs font-extrabold text-soil">{t("soon")}</span>
         <h2 id="gv-h" className="mt-4 font-display text-2xl font-extrabold sm:text-3xl">{t("gv_title")}</h2>
@@ -9713,7 +9757,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
             <div className="grid grid-cols-2 items-end gap-3">
               <Field label={t("am_qty")} htmlFor="am-q" error={errs.qty}><input id="am-q" type="number" min="1" value={f.qty} onChange={(e) => { set("qty", e.target.value); setErrs((x) => ({ ...x, qty: undefined })); }} className={inputCls} dir="ltr" aria-invalid={!!errs.qty} /></Field>
               <Field label={t("am_grade")} htmlFor="am-g">
-                <select id="am-g" value={f.grade} onChange={(e) => set("grade", e.target.value)} className={inputCls + " pe-7 text-sm"}><option value="A">{t("am_grade_a")}</option><option value="B">{t("am_grade_b")}</option></select>
+                <select id="am-g" value={f.grade} onChange={(e) => set("grade", e.target.value)} className={inputCls + " !ps-2 pe-6 text-xs min-[400px]:text-sm"}><option value="A">{t("am_grade_a")}</option><option value="B">{t("am_grade_b")}</option></select>
               </Field>
             </div>
             <LocationField t={t} lang={lang} id="am-loc" label={t("lr_village")} value={f.loc} placeholder={t("loc_placeholder")} error={errs.loc} onChange={(loc) => { if (loc) { setErrs((x) => ({ ...x, loc: undefined })); setF((s0) => ({ ...s0, loc, village: locLabel(loc) })); } }} />
