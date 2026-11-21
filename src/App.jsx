@@ -883,7 +883,7 @@ const T = {
     crop_rice: "Rice",
     crop_maize: "Maize",
     crop_cotton: "Cotton",
-    am_qty: "Quantity (maunds, 40 kg each)",
+    am_qty: "Quantity (maunds)",
     am_grade: "Quality",
     am_grade_a: "Grade A (clean, dry)",
     am_grade_b: "Grade B",
@@ -1492,7 +1492,7 @@ const T = {
     crop_rice: "چاول",
     crop_maize: "مکئی",
     crop_cotton: "کپاس",
-    am_qty: "مقدار (من، 40 کلو)",
+    am_qty: "مقدار (من)",
     am_grade: "معیار",
     am_grade_a: "درجہ A (صاف، خشک)",
     am_grade_b: "درجہ B",
@@ -2235,7 +2235,7 @@ const T = {
     crop_rice: "چول",
     crop_maize: "مکئی",
     crop_cotton: "کپاہ",
-    am_qty: "مقدار (من، 40 کلو)",
+    am_qty: "مقدار (من)",
     am_grade: "معیار",
     am_grade_a: "درجہ A (صاف، سکی)",
     am_grade_b: "درجہ B",
@@ -2878,7 +2878,7 @@ const T = {
     crop_rice: "چانور",
     crop_maize: "مڪئي",
     crop_cotton: "ڪپهه",
-    am_qty: "مقدار (مڻ، 40 ڪلو)",
+    am_qty: "مقدار (مڻ)",
     am_grade: "معيار",
     am_grade_a: "درجو A (صاف، سڪل)",
     am_grade_b: "درجو B",
@@ -3213,7 +3213,7 @@ const T = {
     crop_rice: "وريجې",
     crop_maize: "جوار",
     crop_cotton: "پنبه",
-    am_qty: "مقدار (من، 40 کیلو)",
+    am_qty: "مقدار (من)",
     am_grade: "کیفیت",
     am_grade_a: "درجه A (پاک، وچ)",
     am_grade_b: "درجه B",
@@ -3547,7 +3547,7 @@ const T = {
     crop_rice: "برنج",
     crop_maize: "جُوار",
     crop_cotton: "کپاس",
-    am_qty: "کچ (من، 40 کلو)",
+    am_qty: "کچ (من)",
     am_grade: "جوانی",
     am_grade_a: "درجہ A (پاک، ہشک)",
     am_grade_b: "درجہ B",
@@ -3922,7 +3922,16 @@ function kmToListing(loc, l) {
 }
 const nearestDistrict = (lat, lng) => PK_DISTRICTS.reduce((best, d) => { const km = haversineKm({ lat, lng }, d); return !best || km < best.km ? { ...d, km } : best; }, null);
 const provName = (lang, code) => (PROVINCE_NAMES[lang] || PROVINCE_NAMES.en)[code] || PROVINCE_NAMES.en[code] || code || "";
-const locLabel = (loc) => (loc ? [loc.village, loc.district].filter(Boolean).join(", ") : "");
+// "Multan, Multan" -> "Multan": drop parts that repeat (case / spacing / "Tehsil" ignored)
+const uniqPlaces = (...parts) => {
+  const seen = new Set();
+  return parts.flatMap((p) => String(p || "").split(",")).map((x) => x.trim()).filter((x) => {
+    const k = x.toLowerCase().replace(/\b(tehsil|district|zila|city)\b/g, "").replace(/\s+/g, " ").trim();
+    if (!x || !k || seen.has(k)) return false;
+    seen.add(k); return true;
+  }).join(", ");
+};
+const locLabel = (loc) => (loc ? uniqPlaces(loc.village, loc.district) : "");
 const regionsFor = (cc) => (cc === "PK" || !COUNTRIES[cc] ? PK_DISTRICTS : COUNTRIES[cc].regions);
 const provincesFor = (cc) => (cc === "PK" ? PROVINCES : [...new Set(regionsFor(cc).map((r) => r.province))]);
 const nearestIn = (cc, lat, lng) => regionsFor(cc).reduce((best, d) => { const km = haversineKm({ lat, lng }, d); return !best || km < best.km ? { ...d, km } : best; }, null);
@@ -7345,10 +7354,12 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
     catch (e) { setState("idle"); }
   });
   const Line = ({ num, primary }) => (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="min-w-[7.5rem] font-mono text-sm font-bold text-forest" dir="ltr">{num.label}</span>
-      <a href={`tel:${num.tel}`} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-4 w-4" aria-hidden="true" />{t("zc_call")}</a>
-      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-4 w-4" aria-hidden="true" />{t("zc_wa")}</a>
+    <div className="flex items-center justify-between gap-2">
+      <span className="min-w-0 truncate font-mono text-xs font-bold text-forest min-[400px]:text-sm" dir="ltr">{num.label}</span>
+      <span className="flex shrink-0 items-center gap-1.5">
+      <a href={`tel:${num.tel}`} className={`inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_call")}</a>
+      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_wa")}</a>
+      </span>
     </div>
   );
   return (
@@ -7433,9 +7444,14 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
             {estimates.map(({ km, q }) => (
               <div key={km} className="rounded-lg bg-ivory p-2 ring-1 ring-soil/10">
                 <p className="font-bold text-forest">{t("zs_km").replace("{km}", km)}</p>
-                <p className="flex justify-between gap-1"><span>{t("zs_transport")}</span><span className="tabular-nums">{pkr(q.transport)}</span></p>
-                <p className="flex justify-between gap-1"><span>{t("zs_fuel")}</span><span className="tabular-nums">{q.fuel ? pkr(q.fuel) : "·"}</span></p>
-                <p className="mt-0.5 flex justify-between gap-1 border-t border-soil/15 pt-0.5 font-extrabold text-forest"><span>{t("zs_total")}</span><span className="tabular-nums">{pkr(q.grand)}</span></p>
+                <p className="mt-1 text-[11px] leading-tight text-soil/80">{t("zs_transport")}</p>
+                <p className="text-xs font-semibold tabular-nums text-soil">{pkr(q.transport)}</p>
+                <p className="mt-1 text-[11px] leading-tight text-soil/80">{t("zs_fuel")}</p>
+                <p className="text-xs font-semibold tabular-nums text-soil">{q.fuel ? pkr(q.fuel) : "·"}</p>
+                <div className="mt-1 border-t border-soil/15 pt-1">
+                  <p className="text-[11px] font-bold leading-tight text-forest">{t("zs_total")}</p>
+                  <p className="text-xs font-extrabold tabular-nums text-forest">{pkr(q.grand)}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -8271,10 +8287,10 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                 ))}
               </div>
             </fieldset>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 items-end gap-3">
               <Field label={t("am_qty")} htmlFor="am-q" error={errs.qty}><input id="am-q" type="number" min="1" value={f.qty} onChange={(e) => { set("qty", e.target.value); setErrs((x) => ({ ...x, qty: undefined })); }} className={inputCls} dir="ltr" aria-invalid={!!errs.qty} /></Field>
               <Field label={t("am_grade")} htmlFor="am-g">
-                <select id="am-g" value={f.grade} onChange={(e) => set("grade", e.target.value)} className={inputCls}><option value="A">{t("am_grade_a")}</option><option value="B">{t("am_grade_b")}</option></select>
+                <select id="am-g" value={f.grade} onChange={(e) => set("grade", e.target.value)} className={inputCls + " pe-7 text-sm"}><option value="A">{t("am_grade_a")}</option><option value="B">{t("am_grade_b")}</option></select>
               </Field>
             </div>
             <LocationField t={t} lang={lang} id="am-loc" label={t("lr_village")} value={f.loc} placeholder={t("loc_placeholder")} error={errs.loc} onChange={(loc) => { if (loc) { setErrs((x) => ({ ...x, loc: undefined })); setF((s0) => ({ ...s0, loc, village: locLabel(loc) })); } }} />
@@ -8428,14 +8444,14 @@ const waDigits = (raw) => {
 };
 const fmtStamp = (ms) => (ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "·");
 
-function ContactButtons({ t, phone, name }) {
+function ContactButtons({ t, phone, name, hideNumber }) {
   const wa = waDigits(phone);
   if (!phone || !wa) return <span className="text-xs font-semibold text-soil/80">{t("ct_none")}</span>;
   return (
-    <span className="inline-flex flex-wrap items-center gap-1.5">
-      <span className="font-mono text-xs font-semibold text-soil" dir="ltr">{phone}</span>
-      <a href={`tel:+${wa}`} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2 py-1 text-[11px] font-bold text-ivory" aria-label={`${t("ct_call")} ${name || phone}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_call")}</a>
-      <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg bg-[#1E7A45] px-2 py-1 text-[11px] font-bold text-white" aria-label={`${t("ct_wa")} ${name || phone}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_wa")}</a>
+    <span className="inline-flex flex-wrap items-center gap-2">
+      {!hideNumber && <span className="font-mono text-xs font-semibold text-soil" dir="ltr">{phone}</span>}
+      <a href={`tel:+${wa}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory" aria-label={`${t("ct_call")} ${name || phone}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_call")}</a>
+      <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 whitespace-nowrap rounded-lg bg-[#1E7A45] px-2.5 py-1.5 text-xs font-bold text-white" aria-label={`${t("ct_wa")} ${name || phone}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_wa")}</a>
     </span>
   );
 }
@@ -8821,15 +8837,16 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="break-words font-bold text-forest">{x.farmerName || "·"} <span className="font-normal text-soil/80" dir="ltr">· {fmtStamp(x.createdAt)}</span></p>
-                      <p className="text-xs text-soil"><b>{t("ct_needed")}:</b> {x.category ? t("one_" + x.category) : x.machineType} · <b>{t("ct_location")}:</b> {[x.village, x.district].filter(Boolean).join(", ") || "·"}</p>
+                      <p className="text-xs text-soil"><b>{t("ct_needed")}:</b> {x.category ? t("one_" + x.category) : x.machineType} · <b>{t("ct_location")}:</b> {uniqPlaces(x.village, x.district) || "·"}</p>
                       <p className="text-xs text-soil" dir="ltr">{x.hours ? `${x.hours}h` : ""}{x.offeredRate ? ` · ${pkr(x.offeredRate)}/hr` : ""}{x.auto ? " · auto" : ""}</p>
                       {x.farmerEmail && <a href={`mailto:${x.farmerEmail}`} className="break-all text-xs font-semibold text-forest underline" dir="ltr">{x.farmerEmail}</a>}
                     </div>
                     <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${x.status === "new" ? "bg-red-600 text-white" : "bg-leaf/15 text-forest"}`}>{t(x.status === "new" ? "ad_lead_new" : "ad_lead_arranged")}</span>
                   </div>
-                  <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                    <ContactButtons t={t} phone={x.farmerPhone} name={x.farmerName} />
-                    {x.status === "new" && <button type="button" onClick={() => markLeadArranged(x)} className="rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("ad_lead_mark")}</button>}
+                  {x.farmerPhone && <p className="mt-1 font-mono text-xs font-semibold text-soil" dir="ltr">{x.farmerPhone}</p>}
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <ContactButtons t={t} phone={x.farmerPhone} name={x.farmerName} hideNumber />
+                    {x.status === "new" && <button type="button" onClick={() => markLeadArranged(x)} className="inline-flex items-center gap-1 rounded-lg border border-forest/30 bg-white px-2.5 py-1.5 text-xs font-bold text-forest"><CircleCheck className="h-3.5 w-3.5" aria-hidden="true" />{t("ad_lead_mark")}</button>}
                   </div>
                 </li>
               ))}
