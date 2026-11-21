@@ -1,5 +1,5 @@
 /*
-  Agri-Share: instant email alert for an unmatched farmer lead (no machine within 25-100 km).
+  Agri-Share: instant email alert for an unmatched farmer lead (no machine or land owner within 40 km).
   Vercel Serverless Function. Always answers JSON and never fails just because email isn't set up yet.
 
   Vercel > Project > Settings > Environment Variables (any ONE of these enables email):
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
     if (throttled(ip)) return res.status(429).json({ ok: false, error: "Too many alerts, please wait a few minutes" });
 
     const to = process.env.LEAD_ALERT_EMAIL || FOUNDER_EMAIL;
-    const subject = `Unmatched farmer lead: ${lead.machineType || "machine"} in ${lead.district || "unknown district"} (no owner within ${lead.radiusChecked || "100"} km)`;
+    const subject = `Unmatched farmer lead: ${lead.machineType || "machine"} in ${lead.district || "unknown district"} (no owner within ${lead.radiusChecked || "40"} km)`;
     const rows = [
       ["Farmer", lead.farmerName], ["Phone", lead.farmerPhone], ["Email", lead.farmerEmail],
       ["District", lead.district], ["Village", lead.village], ["Machine needed", lead.machineType],
@@ -91,7 +91,7 @@ export default async function handler(req, res) {
     ].filter(([, v]) => v);
     const text = `No registered machine was available for this farmer.\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nCall: ${lead.farmerPhone || "-"}  WhatsApp: ${waLink(lead.farmerPhone) || "-"}\nAlso saved in the Admin Panel under "Urgent Unmatched Farmer Leads".`;
     const html = `<h2 style="font-family:sans-serif;color:#145A32">Urgent: unmatched farmer lead</h2>
-<p style="font-family:sans-serif">No registered machine was available within ${esc(lead.radiusChecked || "100")} km. Please arrange one from the offline network.</p>
+<p style="font-family:sans-serif">No registered machine was available within ${esc(lead.radiusChecked || "40")} km. Please arrange one from the offline network.</p>
 <table style="font-family:sans-serif;border-collapse:collapse">${rows.map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#5C3A21"><b>${esc(k)}</b></td><td style="padding:4px 0">${esc(v)}</td></tr>`).join("")}</table>
 ${lead.farmerPhone ? `<p style="font-family:sans-serif"><a href="tel:${esc(lead.farmerPhone)}">Call farmer</a>${waLink(lead.farmerPhone) ? ` &middot; <a href="${waLink(lead.farmerPhone)}">WhatsApp farmer</a>` : ""}</p>` : ""}`;
 

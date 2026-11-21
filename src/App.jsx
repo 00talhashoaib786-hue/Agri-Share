@@ -34,6 +34,7 @@ import {
   Delete, PhoneCall, PhoneOff, CircleCheck, Hourglass, Ban, BadgeCheck, SlidersHorizontal,
   RotateCcw, Fan, Minus, GraduationCap, HandCoins, Signal, Battery, Eye, EyeOff, Handshake,
   Coins, ArrowRight, Megaphone, LogIn, LogOut, UserPlus, KeyRound, Mail, Lock, UserCircle2, Copy, MessageSquareText, Tag, Repeat, Database, Radar, Gauge, Siren, TriangleAlert, Route, Zap, LocateFixed, Crosshair, Mic, MicOff, Volume2, VolumeX, AudioLines, PlayCircle, Drone, Ruler, Shovel, Globe, Droplets, Camera, Activity, Headphones, Percent, Printer, Download, Ticket, Inbox, Menu,
+  Archive as ArchiveIcon, History as HistoryIcon,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -50,7 +51,8 @@ const ADVANCE_SHARE = 0.3; // Harvest Now, Pay Later: 30% advance, 70% after har
 const CREDIT_PARTNERS = ["JazzCash Credit", "EasyPaisa", "ZTBL"]; // proposed partners only, no agreement exists
 const pctLabel = (r) => Math.round(r * 100) + "%";
 const DEFAULT_RADIUS = 15; // proposed in-app search boundary
-const MAX_RADIUS = 25; // upper end of 15 to 25 km catchment
+const MAX_RADIUS = 40; // marketplace slider maximum
+const MATCH_RADIUS_KM = 40; // max automatic matching radius (machinery + land); 0 owners inside it -> consultant escalation
 const DISTRICTS = ["Lahore Rural", "Kasur", "Sheikhupura", "Okara", "Faisalabad", "Sahiwal"];
 const CATEGORIES = ["tractor", "thresher", "harvester", "leveler", "planter", "drone", "implement"];
 
@@ -447,10 +449,10 @@ const T = {
     toast_mode_demo: "Sample demo data loaded on this device.",
     zs_title: "Agri-Share Assisted Fulfillment & Partner Network",
     zs_sub: "No registered owner is online near {place} for a {machine} yet. We will still get your field covered. Pick one:",
-    zs_a: "Expand search radius to 100 km",
+    zs_a: "Expand search radius to 40 km",
     zs_a_d: "Broadcast your request to verified owners in neighbouring tehsils and districts. Transport and fuel are shown up front:",
-    zs_a_btn: "Broadcast to 100 km",
-    zs_a_done: "Already searching up to 100 km.",
+    zs_a_btn: "Broadcast to 40 km",
+    zs_a_done: "Already searching up to 40 km.",
     zs_km: "{km} km away",
     zs_transport: "Transport",
     zs_fuel: "Diesel",
@@ -634,13 +636,13 @@ const T = {
     lr_fuel_dry: "Your own diesel (dry rent, paid at pump)",
     lr_fuel_est: "Diesel use is estimated at {l} L per working hour at the current market price.",
     lr_tier1: "Tier 1: Village zone",
-    lr_tier1_r: "1 to 5 km",
+    lr_tier1_r: "1 to 15 km",
     lr_tier1_t: "Free or low local transport (PKR 0 to 500)",
     lr_tier2: "Tier 2: Pilot catchment",
     lr_tier2_r: "15 to 25 km",
     lr_tier2_t: "Medium-distance transport, PKR 60/km each way",
     lr_tier3: "Tier 3: Regional backup",
-    lr_tier3_r: "up to 100 km",
+    lr_tier3_r: "up to 40 km",
     lr_tier3_t: "Emergency peak-harvest cover, long-distance transport",
     toast_lr_booked: "Booking confirmed with {owner}.",
     mb_via_live: "Booked via Apni Boli (Name Your Price)",
@@ -659,7 +661,7 @@ const T = {
     filters: "Filters", f_category: "Machine category", cat_all: "All", cat_tractor: "Tractors", cat_thresher: "Threshers", cat_harvester: "Harvesters",
     one_tractor: "Tractor", one_thresher: "Thresher", one_harvester: "Harvester",
     f_district: "Punjab district", all_districts: "All districts", f_radius: "Search radius", f_search: "Search machine or village",
-    km: "km", radius_note: "Default 15 km in-app boundary, up to 25 km catchment",
+    km: "km", radius_note: "Default 15 km in-app boundary, up to 40 km catchment",
     results: "{n} machines found", no_results: "No machines match these filters. Try widening the search radius or choosing all districts.", reset: "Reset filters",
     per_hour: "/hr", rate_label: "Hourly rate", distance: "away", dry_rent: "Dry rent: fuel/diesel excluded",
     op_included: "Operator (driver) included in rate", op_optional: "Operator (driver) optional: +PKR 500/hr", op_none: "No operator: bring your own driver",
@@ -821,7 +823,7 @@ const T = {
     ad_col_value: "Value",
     ad_col_comm: "Commission",
     ad_diesel: "National diesel rate (PKR/L)",
-    ad_diesel_sub: "Feeds the fuel estimator in Post a Request (all 3 tiers, including 100 km) and the farmer helper, across the whole app.",
+    ad_diesel_sub: "Feeds the fuel estimator in Post a Request (all 3 tiers, including 40 km) and the farmer helper, across the whole app.",
     ad_save: "Save",
     ad_updated: "Last updated",
     ad_diesel_preview: "Example: harvester for 4 h uses about {l} L = {v} of diesel.",
@@ -965,7 +967,7 @@ const T = {
     am_waiting_buyers: "Waiting for verified mill & mandi buyer offers",
     am_waiting_buyers_sub: "Your crop post is live. Verified flour mills, rice mills and mandi buyers will send offers here; we'll notify you.",
     zc_title: "Agri-Share Direct Consultant Support",
-    zc_msg: "No online machine is available within your 25–100 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually arrange a machine for you from our offline network!",
+    zc_msg: "No online machine is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually arrange a machine for you from our offline network!",
     zc_primary: "Primary consultant",
     zc_secondary: "Second number",
     zc_call: "Call",
@@ -973,8 +975,8 @@ const T = {
     zc_send: "Send My Details to Consultant Now",
     zc_sending: "Sending…",
     zc_sent: "Your details have reached our consultant. We will call you soon to arrange a machine.",
-    zc_auto_sent: "No machine within 100 km, so we have already sent your request to our consultant. Expect a call soon.",
-    ad_leads_title: "Urgent Unmatched Farmer Leads (No Machine Within 25–100 km)",
+    zc_auto_sent: "No machine within 40 km, so we have already sent your request to our consultant. Expect a call soon.",
+    ad_leads_title: "Urgent Unmatched Farmer Leads (No Machine Within 15–40 km)",
     ad_leads_none: "No unmatched farmers right now.",
     ad_lead_new: "New",
     ad_lead_arranged: "Arranged",
@@ -1114,6 +1116,27 @@ const T = {
     gv_p2_s: "Register land lease agreements digitally for legal safety.",
     gv_p3_t: "Direct government subsidy, seed & fertilizer support",
     gv_p3_s: "Subsidies delivered straight to verified farmers.",
+    arc_clear: "Clear",
+    arc_clear_all: "Clear all read",
+    arc_clear_hint: "Clear moves an item to History. Nothing is deleted.",
+    arc_history: "History",
+    arc_sub: "Cleared, completed and declined requests stay here permanently. Restore puts a cleared item back in the active list.",
+    arc_restore: "Restore",
+    arc_cleared: "Cleared",
+    arc_cleared_n: "{n} moved to History",
+    arc_restored: "Restored to the active list.",
+    arc_none: "Nothing in History yet.",
+    arc_none_read: "Nothing to clear: everything here still needs your reply.",
+    arc_f_all: "All",
+    arc_f_cleared: "Cleared",
+    arc_f_closed: "Completed / declined",
+    arc_k_booking: "Booking",
+    arc_k_request: "Apni Boli request",
+    arc_k_demand: "District request",
+    arc_k_lead: "Farmer lead",
+    arc_k_land_bk: "Land lease request",
+    arc_k_land_rq: "Land demand",
+    zc_msg_land: "No online land is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually find suitable land for you from our offline network of landowners!",
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1366,13 +1389,13 @@ const T = {
     lr_fuel_dry: "آپ کا اپنا ڈیزل (ڈرائی رینٹ، پمپ پر)",
     lr_fuel_est: "ڈیزل کا اندازہ: فی گھنٹہ {l} لیٹر، موجودہ مارکیٹ قیمت پر۔",
     lr_tier1: "درجہ 1: گاؤں کا علاقہ",
-    lr_tier1_r: "1 سے 5 کلومیٹر",
+    lr_tier1_r: "1 سے 15 کلومیٹر",
     lr_tier1_t: "مفت یا کم مقامی ٹرانسپورٹ (0 سے 500 روپے)",
     lr_tier2: "درجہ 2: پائلٹ علاقہ",
     lr_tier2_r: "15 سے 25 کلومیٹر",
     lr_tier2_t: "درمیانی ٹرانسپورٹ، 60 روپے فی کلومیٹر ہر طرف",
     lr_tier3: "درجہ 3: علاقائی بیک اپ",
-    lr_tier3_r: "100 کلومیٹر تک",
+    lr_tier3_r: "40 کلومیٹر تک",
     lr_tier3_t: "کٹائی کے رش میں ہنگامی سہولت، لمبی ٹرانسپورٹ",
     toast_lr_booked: "{owner} کے ساتھ بکنگ کنفرم۔",
     mb_via_live: "اپنی بولی سے بکنگ",
@@ -1390,7 +1413,7 @@ const T = {
     filters: "فلٹر", f_category: "مشین کی قسم", cat_all: "سب", cat_tractor: "ٹریکٹر", cat_thresher: "تھریشر", cat_harvester: "ہارویسٹر",
     one_tractor: "ٹریکٹر", one_thresher: "تھریشر", one_harvester: "ہارویسٹر",
     f_district: "پنجاب کا ضلع", all_districts: "تمام اضلاع", f_radius: "تلاش کا دائرہ", f_search: "مشین یا گاؤں تلاش کریں",
-    km: "کلومیٹر", radius_note: "ڈیفالٹ 15 کلومیٹر، زیادہ سے زیادہ 25 کلومیٹر",
+    km: "کلومیٹر", radius_note: "ڈیفالٹ 15 کلومیٹر، زیادہ سے زیادہ 40 کلومیٹر",
     results: "{n} مشینیں ملیں", no_results: "ان فلٹرز سے کوئی مشین نہیں ملی۔ تلاش کا دائرہ بڑھائیں یا تمام اضلاع چنیں۔", reset: "فلٹر ری سیٹ کریں",
     per_hour: "/گھنٹہ", rate_label: "فی گھنٹہ ریٹ", distance: "دور", dry_rent: "ڈرائی رینٹ: ڈیزل شامل نہیں",
     op_included: "آپریٹر (ڈرائیور) کرائے میں شامل", op_optional: "آپریٹر (ڈرائیور) اختیاری: +500 روپے/گھنٹہ", op_none: "آپریٹر نہیں: اپنا ڈرائیور لائیں",
@@ -1545,7 +1568,7 @@ const T = {
     ad_col_value: "مالیت",
     ad_col_comm: "کمیشن",
     ad_diesel: "قومی ڈیزل ریٹ (روپے فی لیٹر)",
-    ad_diesel_sub: "یہ ریٹ پوری ایپ میں درخواست پوسٹ کریں (تینوں درجے، 100 کلومیٹر سمیت) اور کسان ہیلپر میں استعمال ہوتا ہے۔",
+    ad_diesel_sub: "یہ ریٹ پوری ایپ میں درخواست پوسٹ کریں (تینوں درجے، 40 کلومیٹر سمیت) اور کسان ہیلپر میں استعمال ہوتا ہے۔",
     ad_save: "محفوظ کریں",
     ad_updated: "آخری تبدیلی",
     ad_diesel_preview: "مثال: ہارویسٹر 4 گھنٹے میں تقریباً {l} لیٹر = {v} کا ڈیزل۔",
@@ -1658,10 +1681,10 @@ const T = {
     mode_sub: "عام صارفین ہمیشہ لائیو موڈ دیکھتے ہیں۔ نمونہ ڈیٹا صرف اس ڈیوائس پر آن ہوتا ہے۔",
     zs_title: "ایگری شیئر معاون سروس اور پارٹنر نیٹ ورک",
     zs_sub: "{place} کے قریب ابھی {machine} کا کوئی رجسٹرڈ مالک آن لائن نہیں۔ پھر بھی آپ کا کام ہو جائے گا۔ ایک راستہ چنیں:",
-    zs_a: "تلاش کا دائرہ 100 کلومیٹر تک بڑھائیں",
+    zs_a: "تلاش کا دائرہ 40 کلومیٹر تک بڑھائیں",
     zs_a_d: "اپنی درخواست قریبی تحصیلوں اور اضلاع کے تصدیق شدہ مالکان تک بھیجیں۔ ٹرانسپورٹ اور ڈیزل کا خرچ پہلے ہی دکھایا گیا ہے:",
-    zs_a_btn: "100 کلومیٹر تک بھیجیں",
-    zs_a_done: "تلاش پہلے ہی 100 کلومیٹر تک ہو رہی ہے۔",
+    zs_a_btn: "40 کلومیٹر تک بھیجیں",
+    zs_a_done: "تلاش پہلے ہی 40 کلومیٹر تک ہو رہی ہے۔",
     zs_km: "{km} کلومیٹر دور",
     zs_transport: "ٹرانسپورٹ",
     zs_fuel: "ڈیزل",
@@ -1823,7 +1846,7 @@ const T = {
     am_waiting_buyers: "تصدیق شدہ ملز اور منڈی خریداروں کی آفرز کا انتظار ہے",
     am_waiting_buyers_sub: "آپ کی فصل کی پوسٹ لائیو ہے۔ تصدیق شدہ آٹا ملز، رائس ملز اور منڈی خریدار یہاں آفرز بھیجیں گے؛ ہم آپ کو اطلاع دیں گے۔",
     zc_title: "ایگری شیئر براہ راست کنسلٹنٹ سپورٹ",
-    zc_msg: "اس وقت آپ کے 25 سے 100 کلومیٹر کے دائرے میں کوئی آن لائن مشین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن نیٹ ورک سے آپ کے لیے خود مشین کا انتظام کریں گے!",
+    zc_msg: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن مشین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن نیٹ ورک سے آپ کے لیے خود مشین کا انتظام کریں گے!",
     zc_primary: "مرکزی کنسلٹنٹ",
     zc_secondary: "دوسرا نمبر",
     zc_call: "کال",
@@ -1831,8 +1854,8 @@ const T = {
     zc_send: "میری تفصیل ابھی کنسلٹنٹ کو بھیجیں",
     zc_sending: "بھیجا جا رہا ہے…",
     zc_sent: "آپ کی تفصیل ہمارے کنسلٹنٹ تک پہنچ گئی۔ مشین کے انتظام کے لیے ہم جلد آپ کو کال کریں گے۔",
-    zc_auto_sent: "100 کلومیٹر میں کوئی مشین نہیں، اس لیے ہم نے آپ کی درخواست کنسلٹنٹ کو بھیج دی ہے۔ جلد کال آئے گی۔",
-    ad_leads_title: "فوری: بغیر مشین کے کسان (25 سے 100 کلومیٹر میں کوئی مشین نہیں)",
+    zc_auto_sent: "40 کلومیٹر میں کوئی مشین نہیں، اس لیے ہم نے آپ کی درخواست کنسلٹنٹ کو بھیج دی ہے۔ جلد کال آئے گی۔",
+    ad_leads_title: "فوری: بغیر مشین کے کسان (15 سے 40 کلومیٹر میں کوئی مشین نہیں)",
     ad_leads_none: "ابھی کوئی ایسا کسان نہیں۔",
     ad_lead_new: "نیا",
     ad_lead_arranged: "انتظام ہو گیا",
@@ -1972,6 +1995,27 @@ const T = {
     gv_p2_s: "قانونی تحفظ کے لیے ٹھیکہ نامے ڈیجیٹل طور پر رجسٹر کریں۔",
     gv_p3_t: "براہ راست سرکاری سبسڈی، بیج اور کھاد کی مدد",
     gv_p3_s: "سبسڈی براہ راست تصدیق شدہ کسانوں تک۔",
+    arc_clear: "ہٹائیں",
+    arc_clear_all: "پڑھے ہوئے سب ہٹائیں",
+    arc_clear_hint: "ہٹانے سے آئٹم ہسٹری میں چلا جاتا ہے۔ کچھ بھی ڈیلیٹ نہیں ہوتا۔",
+    arc_history: "ہسٹری",
+    arc_sub: "ہٹائی گئی، مکمل اور مسترد درخواستیں یہاں ہمیشہ محفوظ رہتی ہیں۔ بحال کرنے سے آئٹم دوبارہ فعال فہرست میں آ جاتا ہے۔",
+    arc_restore: "بحال کریں",
+    arc_cleared: "ہٹایا گیا",
+    arc_cleared_n: "{n} ہسٹری میں منتقل",
+    arc_restored: "فعال فہرست میں بحال کر دیا گیا۔",
+    arc_none: "ہسٹری میں ابھی کچھ نہیں۔",
+    arc_none_read: "ہٹانے کو کچھ نہیں: یہاں ہر چیز کو ابھی آپ کے جواب کی ضرورت ہے۔",
+    arc_f_all: "سب",
+    arc_f_cleared: "ہٹائے گئے",
+    arc_f_closed: "مکمل / مسترد",
+    arc_k_booking: "بکنگ",
+    arc_k_request: "اپنی بولی درخواست",
+    arc_k_demand: "ضلعی درخواست",
+    arc_k_lead: "کسان کی لیڈ",
+    arc_k_land_bk: "زمین ٹھیکے کی درخواست",
+    arc_k_land_rq: "زمین کی طلب",
+    zc_msg_land: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن زمین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن زمین مالکان کے نیٹ ورک سے آپ کے لیے خود موزوں زمین تلاش کریں گے!",
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2224,13 +2268,13 @@ const T = {
     lr_fuel_dry: "تہاڈا اپنا ڈیزل (ڈرائی رینٹ، پمپ تے)",
     lr_fuel_est: "ڈیزل دا اندازہ: فی گھنٹہ {l} لیٹر، اج دی منڈی قیمت تے۔",
     lr_tier1: "درجہ 1: پنڈ دا علاقہ",
-    lr_tier1_r: "1 توں 5 کلومیٹر",
+    lr_tier1_r: "1 توں 15 کلومیٹر",
     lr_tier1_t: "مفت یا گھٹ مقامی ٹرانسپورٹ (0 توں 500 روپے)",
     lr_tier2: "درجہ 2: پائلٹ علاقہ",
     lr_tier2_r: "15 توں 25 کلومیٹر",
     lr_tier2_t: "درمیانی ٹرانسپورٹ، 60 روپے فی کلومیٹر ہر پاسے",
     lr_tier3: "درجہ 3: علاقائی بیک اپ",
-    lr_tier3_r: "100 کلومیٹر تک",
+    lr_tier3_r: "40 کلومیٹر تک",
     lr_tier3_t: "وڈھی دے رش وچ ہنگامی سہولت، لمی ٹرانسپورٹ",
     toast_lr_booked: "{owner} نال بکنگ پکی۔",
     mb_via_live: "اپنی بولی راہیں بکنگ",
@@ -2248,7 +2292,7 @@ const T = {
     filters: "فلٹر", f_category: "مشین دی قسم", cat_all: "ساریاں", cat_tractor: "ٹریکٹر", cat_thresher: "تھریشر", cat_harvester: "ہارویسٹر",
     one_tractor: "ٹریکٹر", one_thresher: "تھریشر", one_harvester: "ہارویسٹر",
     f_district: "پنجاب دا ضلع", all_districts: "سارے ضلعے", f_radius: "تلاش دا گھیرا", f_search: "مشین یا پنڈ لبھو",
-    km: "کلومیٹر", radius_note: "ڈیفالٹ 15 کلومیٹر، ودھ توں ودھ 25 کلومیٹر",
+    km: "کلومیٹر", radius_note: "ڈیفالٹ 15 کلومیٹر، ودھ توں ودھ 40 کلومیٹر",
     results: "{n} مشیناں لبھیاں", no_results: "ایہناں فلٹراں نال کوئی مشین نئیں لبھی۔ گھیرا ودھاؤ یا سارے ضلعے چنو۔", reset: "فلٹر ری سیٹ کرو",
     per_hour: "/گھنٹہ", rate_label: "فی گھنٹہ ریٹ", distance: "دور", dry_rent: "ڈرائی رینٹ: ڈیزل شامل نئیں",
     op_included: "آپریٹر (ڈرائیور) کرائے وچ شامل", op_optional: "آپریٹر (ڈرائیور) مرضی دا: +500 روپے/گھنٹہ", op_none: "آپریٹر نئیں: اپنا ڈرائیور لیاؤ",
@@ -2403,7 +2447,7 @@ const T = {
     ad_col_value: "رقم",
     ad_col_comm: "کمیشن",
     ad_diesel: "قومی ڈیزل ریٹ (روپے فی لیٹر)",
-    ad_diesel_sub: "ایہہ ریٹ ساری ایپ وچ درخواست پاؤ (تنے درجے، 100 کلومیٹر سمیت) تے کسان ہیلپر وچ ورتیا جاندا اے۔",
+    ad_diesel_sub: "ایہہ ریٹ ساری ایپ وچ درخواست پاؤ (تنے درجے، 40 کلومیٹر سمیت) تے کسان ہیلپر وچ ورتیا جاندا اے۔",
     ad_save: "محفوظ کرو",
     ad_updated: "آخری تبدیلی",
     ad_diesel_preview: "مثال: ہارویسٹر 4 گھنٹے وچ لگ بھگ {l} لیٹر = {v} دا ڈیزل۔",
@@ -2514,10 +2558,10 @@ const T = {
     ab_tag: "اپنا کرایہ دسو، نیڑے دے مالک آفر گھلن گے",
     zs_title: "ایگری شیئر مددگار سروس تے پارٹنر نیٹ ورک",
     zs_sub: "{place} دے نیڑے ہلے {machine} دا کوئی رجسٹر مالک آن لائن نئیں۔ فیر وی تہاڈا کم ہو جاوے گا۔ اک رستہ چنو:",
-    zs_a: "لبھن دا گھیرا 100 کلومیٹر تک ودھاؤ",
+    zs_a: "لبھن دا گھیرا 40 کلومیٹر تک ودھاؤ",
     zs_a_d: "اپنی درخواست نیڑے دیاں تحصیلاں تے ضلعیاں دے تصدیق شدہ مالکاں تک گھلو۔ ٹرانسپورٹ تے ڈیزل دا خرچہ پہلاں ای وکھایا گیا اے:",
-    zs_a_btn: "100 کلومیٹر تک گھلو",
-    zs_a_done: "لبھائی پہلاں ای 100 کلومیٹر تک ہو رہی اے۔",
+    zs_a_btn: "40 کلومیٹر تک گھلو",
+    zs_a_done: "لبھائی پہلاں ای 40 کلومیٹر تک ہو رہی اے۔",
     zs_km: "{km} کلومیٹر دور",
     zs_transport: "ٹرانسپورٹ",
     zs_fuel: "ڈیزل",
@@ -2590,7 +2634,7 @@ const T = {
     am_waiting_buyers: "تصدیق شدہ ملاں تے منڈی خریداراں دیاں آفراں دی اڈیک اے",
     am_waiting_buyers_sub: "تہاڈی فصل دی پوسٹ لائیو اے۔ تصدیق شدہ آٹا ملاں، رائس ملاں تے منڈی خریدار ایتھے آفراں گھلن گے؛ اسیں تہانوں دساں گے۔",
     zc_title: "ایگری شیئر سدھی کنسلٹنٹ مدد",
-    zc_msg: "ایس ویلے تہاڈے 25 توں 100 کلومیٹر دے گھیرے وچ کوئی آن لائن مشین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن نیٹ ورک توں تہاڈے لئی آپ مشین دا بندوبست کراں گے!",
+    zc_msg: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن مشین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن نیٹ ورک توں تہاڈے لئی آپ مشین دا بندوبست کراں گے!",
     zc_primary: "وڈا کنسلٹنٹ",
     zc_secondary: "دوجا نمبر",
     zc_call: "کال",
@@ -2598,7 +2642,7 @@ const T = {
     zc_send: "میری تفصیل ہُݨے کنسلٹنٹ نوں گھلو",
     zc_sending: "گھلی جا رہی اے…",
     zc_sent: "تہاڈی تفصیل ساڈے کنسلٹنٹ تک اپڑ گئی۔ مشین دے بندوبست لئی اسیں چھیتی کال کراں گے۔",
-    zc_auto_sent: "100 کلومیٹر وچ کوئی مشین نئیں، ایس لئی اسیں تہاڈی درخواست کنسلٹنٹ نوں گھل دتی اے۔ چھیتی کال آوے گی۔",
+    zc_auto_sent: "40 کلومیٹر وچ کوئی مشین نئیں، ایس لئی اسیں تہاڈی درخواست کنسلٹنٹ نوں گھل دتی اے۔ چھیتی کال آوے گی۔",
     lr_owner_offer: "مالک دی آفر",
     ow_open_requests: "تہاڈے نیڑے کھلیاں اپنی بولی درخواستاں",
     ow_offer_rate: "تہاڈی فی گھنٹہ آفر",
@@ -2730,6 +2774,27 @@ const T = {
     gv_p2_s: "قانونی تحفظ لئی ٹھیکہ نامے ڈیجیٹل طور تے رجسٹر کرو۔",
     gv_p3_t: "سدھی سرکاری سبسڈی، بیج تے کھاد دی مدد",
     gv_p3_s: "سبسڈی سدھی تصدیق شدہ کساناں تک۔",
+    arc_clear: "ہٹاؤ",
+    arc_clear_all: "پڑھے ہوئے سارے ہٹاؤ",
+    arc_clear_hint: "ہٹان نال آئٹم ہسٹری وچ چلا جاندا اے۔ کجھ وی ڈیلیٹ نئیں ہوندا۔",
+    arc_history: "ہسٹری",
+    arc_sub: "ہٹائیاں، مکمل تے رد ہوئیاں درخواستاں ایتھے ہمیشہ محفوظ رہندیاں نیں۔ بحال کرن نال آئٹم مڑ چالو لسٹ وچ آ جاندا اے۔",
+    arc_restore: "بحال کرو",
+    arc_cleared: "ہٹایا گیا",
+    arc_cleared_n: "{n} ہسٹری وچ گئے",
+    arc_restored: "چالو لسٹ وچ بحال کر دتا۔",
+    arc_none: "ہسٹری وچ ہلے کجھ نئیں۔",
+    arc_none_read: "ہٹان لئی کجھ نئیں: ایتھے ہر شے نوں ہلے تہاڈے جواب دی لوڑ اے۔",
+    arc_f_all: "سارے",
+    arc_f_cleared: "ہٹائے گئے",
+    arc_f_closed: "مکمل / رد",
+    arc_k_booking: "بکنگ",
+    arc_k_request: "اپنی بولی درخواست",
+    arc_k_demand: "ضلعے دی درخواست",
+    arc_k_lead: "کسان دی لیڈ",
+    arc_k_land_bk: "زمین ٹھیکے دی درخواست",
+    arc_k_land_rq: "زمین دی منگ",
+    zc_msg_land: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن زمین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن زمین مالکاں دے نیٹ ورک توں تہاڈے لئی آپ چنگی زمین لبھاں گے!",
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2982,13 +3047,13 @@ const T = {
     lr_fuel_dry: "توهان جو پنهنجو ڊيزل (ڊرائي رينٽ، پمپ تي)",
     lr_fuel_est: "ڊيزل جو اندازو: في ڪلاڪ {l} ليٽر، موجوده مارڪيٽ قيمت تي۔",
     lr_tier1: "درجو 1: ڳوٺ جو علائقو",
-    lr_tier1_r: "1 کان 5 ڪلوميٽر",
+    lr_tier1_r: "1 کان 15 ڪلوميٽر",
     lr_tier1_t: "مفت يا گهٽ مقامي ٽرانسپورٽ (0 کان 500 رپيا)",
     lr_tier2: "درجو 2: پائلٽ علائقو",
     lr_tier2_r: "15 کان 25 ڪلوميٽر",
     lr_tier2_t: "وچولي ٽرانسپورٽ، 60 رپيا في ڪلوميٽر هر پاسي",
     lr_tier3: "درجو 3: علائقائي بيڪ اپ",
-    lr_tier3_r: "100 ڪلوميٽر تائين",
+    lr_tier3_r: "40 ڪلوميٽر تائين",
     lr_tier3_t: "لابارو رش ۾ هنگامي سهولت، ڊگهي ٽرانسپورٽ",
     toast_lr_booked: "{owner} سان بڪنگ پڪي۔",
     mb_via_live: "پنهنجي ٻولي ذريعي بڪنگ",
@@ -3006,7 +3071,7 @@ const T = {
     filters: "فلٽر", f_category: "مشين جو قسم", cat_all: "سڀ", cat_tractor: "ٽريڪٽر", cat_thresher: "ٿريشر", cat_harvester: "هارويسٽر",
     one_tractor: "ٽريڪٽر", one_thresher: "ٿريشر", one_harvester: "هارويسٽر",
     f_district: "پنجاب جو ضلعو", all_districts: "سڀ ضلعا", f_radius: "ڳولا جو دائرو", f_search: "مشين يا ڳوٺ ڳوليو",
-    km: "ڪلوميٽر", radius_note: "ڊيفالٽ 15 ڪلوميٽر، وڌ ۾ وڌ 25 ڪلوميٽر",
+    km: "ڪلوميٽر", radius_note: "ڊيفالٽ 15 ڪلوميٽر، وڌ ۾ وڌ 40 ڪلوميٽر",
     results: "{n} مشينون مليون", no_results: "انهن فلٽرن سان ڪا مشين نه ملي۔ دائرو وڌايو يا سڀ ضلعا چونڊيو۔", reset: "فلٽر ري سيٽ ڪريو",
     per_hour: "/ڪلاڪ", rate_label: "في ڪلاڪ اگهه", distance: "پري", dry_rent: "ڊرائي رينٽ: ڊيزل شامل ناهي",
     op_included: "آپريٽر (ڊرائيور) ڪرائي ۾ شامل", op_optional: "آپريٽر (ڊرائيور) اختياري: +500 رپيا/ڪلاڪ", op_none: "آپريٽر ناهي: پنهنجو ڊرائيور آڻيو",
@@ -3161,7 +3226,7 @@ const T = {
     ad_col_value: "رقم",
     ad_col_comm: "ڪميشن",
     ad_diesel: "قومي ڊيزل اگهه (رپيا في ليٽر)",
-    ad_diesel_sub: "هي اگهه سڄي ايپ ۾ درخواست موڪليو (ٽيئي درجا، 100 ڪلوميٽر سميت) ۽ هاري هيلپر ۾ استعمال ٿئي ٿو۔",
+    ad_diesel_sub: "هي اگهه سڄي ايپ ۾ درخواست موڪليو (ٽيئي درجا، 40 ڪلوميٽر سميت) ۽ هاري هيلپر ۾ استعمال ٿئي ٿو۔",
     ad_save: "محفوظ ڪريو",
     ad_updated: "آخري تبديلي",
     ad_diesel_preview: "مثال: هارويسٽر 4 ڪلاڪن ۾ لڳ ڀڳ {l} ليٽر = {v} جو ڊيزل۔",
@@ -3273,10 +3338,10 @@ const T = {
     ab_tag: "پنهنجو مسواڙ ٻڌايو، ويجهڙا مالڪ آڇون موڪليندا",
     zs_title: "ايگري شيئر مددگار سروس ۽ پارٽنر نيٽ ورڪ",
     zs_sub: "{place} جي ويجهو اڃا {machine} جو ڪو رجسٽر مالڪ آن لائن ناهي۔ تڏهن به توهان جو ڪم ٿيندو۔ هڪ رستو چونڊيو:",
-    zs_a: "ڳولا جو دائرو 100 ڪلوميٽر تائين وڌايو",
+    zs_a: "ڳولا جو دائرو 40 ڪلوميٽر تائين وڌايو",
     zs_a_d: "پنهنجي درخواست ويجهن تعلقن ۽ ضلعن جي تصديق ٿيل مالڪن تائين موڪليو۔ ٽرانسپورٽ ۽ ڊيزل جو خرچ اڳ ۾ ڏيکاريل آهي:",
-    zs_a_btn: "100 ڪلوميٽر تائين موڪليو",
-    zs_a_done: "ڳولا اڳ ۾ ئي 100 ڪلوميٽر تائين ٿي رهي آهي۔",
+    zs_a_btn: "40 ڪلوميٽر تائين موڪليو",
+    zs_a_done: "ڳولا اڳ ۾ ئي 40 ڪلوميٽر تائين ٿي رهي آهي۔",
     zs_km: "{km} ڪلوميٽر پري",
     zs_transport: "ٽرانسپورٽ",
     zs_fuel: "ڊيزل",
@@ -3349,7 +3414,7 @@ const T = {
     am_waiting_buyers: "تصديق ٿيل ملن ۽ منڊي خريدارن جي آڇن جو انتظار آهي",
     am_waiting_buyers_sub: "توهان جي فصل جي پوسٽ لائيو آهي۔ تصديق ٿيل اٽي جون ملون، چانورن جون ملون ۽ منڊي خريدار هتي آڇون موڪليندا؛ اسان توهان کي ٻڌائينداسين۔",
     zc_title: "ايگري شيئر سڌي ڪنسلٽنٽ مدد",
-    zc_msg: "هن وقت توهان جي 25 کان 100 ڪلوميٽرن جي دائري ۾ ڪا آن لائن مشين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن نيٽ ورڪ مان توهان لاءِ پاڻ مشين جو بندوبست ڪنداسين!",
+    zc_msg: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن مشين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن نيٽ ورڪ مان توهان لاءِ پاڻ مشين جو بندوبست ڪنداسين!",
     zc_primary: "مکيه ڪنسلٽنٽ",
     zc_secondary: "ٻيو نمبر",
     zc_call: "ڪال",
@@ -3357,7 +3422,7 @@ const T = {
     zc_send: "منهنجي تفصيل هاڻي ڪنسلٽنٽ کي موڪليو",
     zc_sending: "موڪلي پئي وڃي…",
     zc_sent: "توهان جي تفصيل اسان جي ڪنسلٽنٽ تائين پهچي وئي۔ مشين جي بندوبست لاءِ جلد ڪال ڪنداسين۔",
-    zc_auto_sent: "100 ڪلوميٽرن ۾ ڪا مشين ناهي، تنهنڪري اسان توهان جي درخواست ڪنسلٽنٽ کي موڪلي ڇڏي آهي۔ جلد ڪال ايندي۔",
+    zc_auto_sent: "40 ڪلوميٽرن ۾ ڪا مشين ناهي، تنهنڪري اسان توهان جي درخواست ڪنسلٽنٽ کي موڪلي ڇڏي آهي۔ جلد ڪال ايندي۔",
     lr_owner_offer: "مالڪ جي آڇ",
     ow_open_requests: "توهان جي ويجهو کليل پنهنجي ٻولي درخواستون",
     ow_offer_rate: "توهان جي في ڪلاڪ آڇ",
@@ -3489,6 +3554,27 @@ const T = {
     gv_p2_s: "قانوني تحفظ لاءِ ٺيڪي ناما ڊجيٽل طور رجسٽر ڪريو۔",
     gv_p3_t: "سڌي سرڪاري سبسڊي، ٻج ۽ ڀاڻ جي مدد",
     gv_p3_s: "سبسڊي سڌو تصديق ٿيل هارين تائين۔",
+    arc_clear: "هٽايو",
+    arc_clear_all: "پڙهيل سڀ هٽايو",
+    arc_clear_hint: "هٽائڻ سان شيءِ تاريخ ۾ هلي ويندي آهي۔ ڪجهه به ڊليٽ نٿو ٿئي۔",
+    arc_history: "تاريخ",
+    arc_sub: "هٽايل، مڪمل ۽ رد ٿيل درخواستون هتي هميشه محفوظ رهن ٿيون۔ بحال ڪرڻ سان شيءِ ٻيهر فعال لسٽ ۾ اچي ويندي آهي۔",
+    arc_restore: "بحال ڪريو",
+    arc_cleared: "هٽايل",
+    arc_cleared_n: "{n} تاريخ ۾ منتقل",
+    arc_restored: "فعال لسٽ ۾ بحال ڪيو ويو۔",
+    arc_none: "تاريخ ۾ اڃا ڪجهه ناهي۔",
+    arc_none_read: "هٽائڻ لاءِ ڪجهه ناهي: هتي هر شيءِ کي اڃا توهان جي جواب جي ضرورت آهي۔",
+    arc_f_all: "سڀ",
+    arc_f_cleared: "هٽايل",
+    arc_f_closed: "مڪمل / رد",
+    arc_k_booking: "بڪنگ",
+    arc_k_request: "پنهنجي ٻولي درخواست",
+    arc_k_demand: "ضلعي درخواست",
+    arc_k_lead: "هاريءَ جي ليڊ",
+    arc_k_land_bk: "زمين ٺيڪي جي درخواست",
+    arc_k_land_rq: "زمين جي طلب",
+    zc_msg_land: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن زمين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن زمين مالڪن جي نيٽ ورڪ مان توهان لاءِ پاڻ مناسب زمين ڳولينداسين!",
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3550,7 +3636,7 @@ const T = {
     f_radius: "د لټون ساحه",
     f_search: "ماشین یا کلی ولټوئ",
     km: "کیلومتره",
-    radius_note: "په ډیفالټ 15 کیلومتره، تر 25 کیلومترو پورې",
+    radius_note: "په ډیفالټ 15 کیلومتره، تر 40 کیلومترو پورې",
     results: "{n} ماشینونه وموندل شول",
     no_results: "د دې فلټرونو سره هېڅ ماشین ونه موندل شو. د لټون ساحه زیاته کړئ یا ټولې ضلعې وټاکئ.",
     reset: "فلټرونه بیا تنظیم کړئ",
@@ -3810,7 +3896,7 @@ const T = {
     am_waiting_buyers: "د تایید شویو ملونو او منډۍ پېرودونکو وړاندیزونو ته انتظار",
     am_waiting_buyers_sub: "ستاسو د فصل پوسټ ژوندی دی. تایید شوي د اوړو ملونه، د وريجو ملونه او د منډۍ پېرودونکي به دلته وړاندیزونه ولېږي؛ موږ به تاسو خبر کړو.",
     zc_title: "د اګري شېئر مستقیم مشاور ملاتړ",
-    zc_msg: "اوس ستاسو د 25 نه تر 100 کیلومترو په ساحه کې هېڅ آنلاین ماشین نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به له خپلې آفلاین شبکې ستاسو لپاره ماشین برابر کړو!",
+    zc_msg: "اوس ستاسو د 15 نه تر 40 کیلومترو په ساحه کې هېڅ آنلاین ماشین نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به له خپلې آفلاین شبکې ستاسو لپاره ماشین برابر کړو!",
     zc_primary: "اصلي مشاور",
     zc_secondary: "دوهمه شمېره",
     zc_call: "زنګ",
@@ -3818,7 +3904,7 @@ const T = {
     zc_send: "زما معلومات همدا اوس مشاور ته ولېږئ",
     zc_sending: "لېږل کېږي…",
     zc_sent: "ستاسو معلومات زموږ مشاور ته ورسېدل. د ماشین د برابرولو لپاره به ژر زنګ ووهو.",
-    zc_auto_sent: "په 100 کیلومترو کې ماشین نشته، نو موږ ستاسو غوښتنه مشاور ته لېږلې ده. ژر به زنګ درشي.",
+    zc_auto_sent: "په 40 کیلومترو کې ماشین نشته، نو موږ ستاسو غوښتنه مشاور ته لېږلې ده. ژر به زنګ درشي.",
     lr_owner_offer: "د مالک وړاندیز",
     ow_open_requests: "ستاسو سره نږدې پرانیستې خپله بولي غوښتنې",
     ow_offer_rate: "ستاسو د ساعت وړاندیز",
@@ -3951,6 +4037,27 @@ const T = {
     gv_p2_s: "د قانوني خوندیتوب لپاره د اجارې تړونونه ډیجیټل ثبت کړئ.",
     gv_p3_t: "مستقیم حکومتي سبسایډي، تخم او سرې",
     gv_p3_s: "سبسایډي مستقیم تایید شویو بزګرانو ته.",
+    arc_clear: "لرې کول",
+    arc_clear_all: "ټول لوستل شوي لرې کړئ",
+    arc_clear_hint: "لرې کول توکی تاریخچې ته وړي. هېڅ نه ړنګېږي.",
+    arc_history: "تاریخچه",
+    arc_sub: "لرې شوې، بشپړې او رد شوې غوښتنې دلته تل خوندي پاتې کېږي. بیا راګرځول توکی بېرته فعال لېست ته راوړي.",
+    arc_restore: "بیا راګرځول",
+    arc_cleared: "لرې شوی",
+    arc_cleared_n: "{n} تاریخچې ته ولېږدول شول",
+    arc_restored: "فعال لېست ته بېرته راوګرځول شو.",
+    arc_none: "تاریخچه لا خالي ده.",
+    arc_none_read: "د لرې کولو لپاره څه نشته: دلته هر څه لا ستاسو ځواب ته اړتیا لري.",
+    arc_f_all: "ټول",
+    arc_f_cleared: "لرې شوي",
+    arc_f_closed: "بشپړ / رد",
+    arc_k_booking: "بکنګ",
+    arc_k_request: "اپني بولي غوښتنه",
+    arc_k_demand: "د ولسوالۍ غوښتنه",
+    arc_k_lead: "د بزګر لیډ",
+    arc_k_land_bk: "د ځمکې د اجارې غوښتنه",
+    arc_k_land_rq: "د ځمکې غوښتنه",
+    zc_msg_land: "اوس ستاسو د 15 نه تر 40 کیلومترو په ساحه کې هېڅ آنلاین ځمکه نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به د ځمکې د مالکانو له خپلې آفلاین شبکې ستاسو لپاره مناسبه ځمکه ومومو!",
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -4000,7 +4107,7 @@ const T = {
     f_radius: "شوہاز ءِ دائرہ",
     f_search: "مشین یا میتگ شوہاز کن",
     km: "کلومیٹر",
-    radius_note: "ڈیفالٹ 15 کلومیٹر، گیشتر 25 کلومیٹر",
+    radius_note: "ڈیفالٹ 15 کلومیٹر، گیشتر 40 کلومیٹر",
     results: "{n} مشین در کپت",
     no_results: "اے فلٹرانی سرا ہچ مشین در نہ کپت۔ شوہاز ءِ دائرہ ءَ مزن کن یا سجّہیں ضلعاں گچین کن۔",
     reset: "فلٹراں نوک کن",
@@ -4262,7 +4369,7 @@ const T = {
     am_waiting_buyers: "تصدیق کتگیں مِل و منڈی ءِ گِروکانی آفرانی وداریگ اِنت",
     am_waiting_buyers_sub: "شمئے کِشت ءِ پوسٹ زندگ اِنت۔ تصدیق کتگیں آرت ءِ مِل، برنج ءِ مِل و منڈی ءِ گِروک ادا آفر رَوان دئینت؛ ما شمارا سہی کنیں۔",
     zc_title: "ایگری شیئر ءِ راستیں کنسلٹنٹ کُمک",
-    zc_msg: "اَنّوں شمئے 25 تا 100 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن مشین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت مشین ءِ بندوبست کنیں!",
+    zc_msg: "اَنّوں شمئے 15 تا 40 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن مشین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت مشین ءِ بندوبست کنیں!",
     zc_primary: "مزنیں کنسلٹنٹ",
     zc_secondary: "دومی نمبر",
     zc_call: "کال",
@@ -4270,7 +4377,7 @@ const T = {
     zc_send: "منی سرجمی ءَ اَنّوں کنسلٹنٹ ءَ رَوان دئے",
     zc_sending: "رَوان بوگ اِنت…",
     zc_sent: "شمئے سرجمی مئے کنسلٹنٹ ءَ رست۔ مشین ءِ بندوبست ءِ واستا ما زوت کال کنیں۔",
-    zc_auto_sent: "100 کلومیٹر ءَ مشین نیست، پمیشکا ما شمئے درخواست کنسلٹنٹ ءَ رَوان دات۔ زوت کال کئیت۔",
+    zc_auto_sent: "40 کلومیٹر ءَ مشین نیست، پمیشکا ما شمئے درخواست کنسلٹنٹ ءَ رَوان دات۔ زوت کال کئیت۔",
     lr_owner_offer: "واہند ءِ آفر",
     ow_open_requests: "شمئے نزّیک پچ اِتگیں وتی بولی درخواست",
     ow_offer_rate: "شمئے ساعت ءِ آفر",
@@ -4403,6 +4510,27 @@ const T = {
     gv_p2_s: "قانونی پہریز ءِ واستا ٹھیکہ نامہاں ڈیجیٹل رجسٹر کن۔",
     gv_p3_t: "راستیں سرکاری سبسڈی، تُخم و کھاد ءِ کُمک",
     gv_p3_s: "سبسڈی راست تصدیق کتگیں کِشاورزاں رسیت۔",
+    arc_clear: "دور کن",
+    arc_clear_all: "وانتگیں سجّہیں دور کن",
+    arc_clear_hint: "دور کنگ ءَ آئٹم ہسٹری ءَ رئوت۔ ہچ چیز ڈیلیٹ نہ بیت۔",
+    arc_history: "ہسٹری",
+    arc_sub: "دور کتگیں، سرجمیں و نہ منّتگیں درخواست ادا ہمیشہ پہریز بنت۔ پدا آرگ ءَ آئٹم پدا زندگیں لِسٹ ءَ کئیت۔",
+    arc_restore: "پدا بیار",
+    arc_cleared: "دور کتگ",
+    arc_cleared_n: "{n} ہسٹری ءَ شت",
+    arc_restored: "زندگیں لِسٹ ءَ پدا آرگ بوت۔",
+    arc_none: "ہسٹری ءَ انگت ہچ نیست۔",
+    arc_none_read: "دور کنگ ءِ واستا ہچ نیست: ادا ہر چیز ءَ انگت شمئے پسّو ءِ لوٹ اِنت۔",
+    arc_f_all: "سجّہیں",
+    arc_f_cleared: "دور کتگیں",
+    arc_f_closed: "سرجم / نہ منّگ بوتگ",
+    arc_k_booking: "بکنگ",
+    arc_k_request: "وتی بولی ءِ درخواست",
+    arc_k_demand: "ضلع ءِ درخواست",
+    arc_k_lead: "کِشاورز ءِ لیڈ",
+    arc_k_land_bk: "زمین ءِ ٹھیکہ ءِ درخواست",
+    arc_k_land_rq: "زمین ءِ لوٹ",
+    zc_msg_land: "اَنّوں شمئے 15 تا 40 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن زمین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی زمین ءِ واہندانی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت جوانیں زمین شوہاز کنیں!",
   },
 };
 
@@ -5528,9 +5656,9 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
   // when nothing is inside the radius, still show the closest machines (with their real distance)
   const nearestBeyond = useMemo(() => (userLoc ? listings.filter((l) => l.available && !l.unknownPlace && (category === "all" || l.category === category) && l.distance > radius).sort((a, b) => a.distance - b.distance).slice(0, 3) : []), [listings, userLoc, category, radius]);
   const pct = ((radius - 1) / (MAX_RADIUS - 1)) * 100;
-  // the consultant card shows when no REAL, approved, available machine of this type is within 100 km
-  const realWithin100 = useMemo(() => (userLoc && userLoc.lat ? listings.filter((l) => !isSeedListing(l) && l.available && (l.status || "approved") === "approved" && (category === "all" || l.category === category) && kmToListing(userLoc, l) <= 100).length : null), [listings, userLoc, category]);
-  const showConsultant = !!(fallbackProps && fallbackProps.onSendLead && !demoMode && (realWithin100 === null ? results.length === 0 : realWithin100 === 0));
+  // the consultant card shows when no REAL, approved, available machine of this type is within 40 km
+  const realInRange = useMemo(() => (userLoc && userLoc.lat ? listings.filter((l) => !isSeedListing(l) && l.available && (l.status || "approved") === "approved" && (category === "all" || l.category === category) && kmToListing(userLoc, l) <= MATCH_RADIUS_KM).length : null), [listings, userLoc, category]);
+  const showConsultant = !!(fallbackProps && fallbackProps.onSendLead && !demoMode && (realInRange === null ? results.length === 0 : realInRange === 0));
 
   return (
     <section id="market" className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="market-h">
@@ -5578,7 +5706,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
               </div>
               <input id="radius" type="range" min="1" max={MAX_RADIUS} step="1" value={radius} onChange={(e) => set({ radius: Number(e.target.value) })}
                 className="range w-full" style={{ "--pct": pct + "%" }} aria-valuetext={`${radius} km`} />
-              <div className="mt-1 flex justify-between text-[11px] text-soil/80" dir="ltr"><span>1</span><span>15</span><span>25 km</span></div>
+              <div className="mt-1 flex justify-between text-[11px] text-soil/80" dir="ltr"><span>1</span><span>15</span><span>40 km</span></div>
               <p className="mt-1 text-xs text-soil/80">{t("radius_note")}</p>
             </div>
             <button type="button" onClick={() => setFilters({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" })}
@@ -6136,7 +6264,119 @@ function EarningsEstimator({ t, listings, bookings }) {
   );
 }
 
-function PendingRequest({ b, t, updateBooking, contact }) {
+/* ------------------------------------------------------------------ */
+/* "Clear -> History" archive. Clearing never deletes data: it stores  */
+/* the item's key (e.g. "bk:AS-123") in a per-member list, kept in     */
+/* localStorage and synced to Firestore user_prefs/{uid} (newest wins). */
+/* Scopes: "owner" (Owner Portal + land deals) and "admin" (console).   */
+/* ------------------------------------------------------------------ */
+const ARCHIVE_MAX = 400;
+const ARCHIVE_EMPTY = { owner: [], admin: [], updatedAt: 0 };
+const archiveKey = (uid) => (uid ? `agrishare.archive.${uid}.v1` : null);
+const readArchive = (uid) => {
+  const k = archiveKey(uid);
+  if (!k) return ARCHIVE_EMPTY;
+  try { const v = JSON.parse(localStorage.getItem(k) || "null"); return v && typeof v === "object" ? { ...ARCHIVE_EMPTY, ...v } : ARCHIVE_EMPTY; } catch (e) { return ARCHIVE_EMPTY; }
+};
+function useArchive(uid) {
+  const [arc, setArc] = useState(() => readArchive(uid));
+  const ref = useRef(arc);
+  ref.current = arc;
+  useEffect(() => { const a = readArchive(uid); ref.current = a; setArc(a); }, [uid]);
+  // cloud copy: adopt it when it is newer than this device's copy (another device cleared or restored)
+  useEffect(() => {
+    if (!uid || !FIREBASE_ENABLED) return undefined;
+    return watchDoc(COL.prefs, uid, (d) => {
+      if (!d || !((d.updatedAt || 0) > (ref.current.updatedAt || 0))) return;
+      const next = { owner: Array.isArray(d.owner) ? d.owner : [], admin: Array.isArray(d.admin) ? d.admin : [], updatedAt: d.updatedAt };
+      ref.current = next; setArc(next);
+      try { localStorage.setItem(archiveKey(uid), JSON.stringify(next)); } catch (e) { /* storage blocked */ }
+    }, () => { /* offline: the local copy keeps working */ });
+  }, [uid]);
+  const commit = (scope, list) => {
+    const next = { ...ref.current, [scope]: [...new Set(list)].slice(-ARCHIVE_MAX), updatedAt: Date.now() };
+    ref.current = next; setArc(next);
+    if (uid) try { localStorage.setItem(archiveKey(uid), JSON.stringify(next)); } catch (e) { /* storage blocked */ }
+    if (uid && FIREBASE_ENABLED) writeDoc(COL.prefs, uid, { owner: next.owner, admin: next.admin, updatedAt: next.updatedAt })
+      .catch((e) => console.warn("[Agri-Share] History sync deferred:", e && e.code));
+  };
+  return useMemo(() => ({
+    has: (scope, key) => (arc[scope] || []).includes(key),
+    set: (scope) => new Set(arc[scope] || []),
+    clear: (scope, keys) => { const have = new Set(ref.current[scope] || []); const add = [...new Set((Array.isArray(keys) ? keys : [keys]).filter((k) => k && !have.has(k)))]; if (add.length) commit(scope, [...have, ...add]); return add.length; },
+    restore: (scope, key) => commit(scope, (ref.current[scope] || []).filter((k) => k !== key)),
+  }), [arc, uid]); // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+function ClearBtn({ t, onClick, className = "" }) {
+  return (
+    <button type="button" onClick={onClick} className={`inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold text-soil/80 ring-1 ring-soil/15 hover:bg-ivory hover:text-forest ${className}`} title={t("arc_clear_hint")}>
+      <ArchiveIcon className="h-3.5 w-3.5" aria-hidden="true" />{t("arc_clear")}
+    </button>
+  );
+}
+function ClearAllBtn({ t, onClick, count }) {
+  return (
+    <button type="button" onClick={onClick} disabled={!count} className="inline-flex items-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-xs font-bold text-forest ring-1 ring-forest/25 hover:bg-ivory disabled:opacity-50">
+      <ArchiveIcon className="h-3.5 w-3.5" aria-hidden="true" />{t("arc_clear_all")}{count ? <span className="rounded-full bg-ivory px-1.5 text-[11px] text-soil ring-1 ring-soil/15">{count}</span> : null}
+    </button>
+  );
+}
+/* History list: items = [{ key, kind, title, sub, status, statusLabel, at, cleared }] */
+function HistoryList({ t, items, onRestore }) {
+  const [filter, setFilter] = useState("all");
+  const shown = items.filter((x) => filter === "all" || (filter === "cleared" ? x.cleared : !x.cleared)).sort((a, b) => (b.at || 0) - (a.at || 0));
+  return (
+    <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="min-w-0">
+          <h3 className="flex items-center gap-2 font-bold text-forest"><HistoryIcon className="h-4 w-4 text-gold" aria-hidden="true" />{t("arc_history")} ({items.length})</h3>
+          <p className="mt-0.5 text-xs text-soil/80">{t("arc_sub")}</p>
+        </div>
+        <div className="flex gap-1.5" role="group" aria-label={t("arc_history")}>
+          {["all", "cleared", "closed"].map((f) => (
+            <button key={f} type="button" aria-pressed={filter === f} onClick={() => setFilter(f)} className={`rounded-lg px-2.5 py-1 text-xs font-bold ring-1 ${filter === f ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15"}`}>{t("arc_f_" + f)}</button>
+          ))}
+        </div>
+      </div>
+      {shown.length === 0 ? <p className="mt-3 rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("arc_none")}</p> : (
+        <ul className="mt-3 divide-y divide-soil/10">
+          {shown.map((x) => (
+            <li key={x.key} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-2.5 text-sm">
+              <span className="min-w-0 flex-1 basis-48">
+                <span className="block text-[11px] font-bold uppercase tracking-wide text-soil/70">{t("arc_k_" + x.kind)}</span>
+                <span className="block break-words font-semibold text-soil">{x.title}</span>
+                <span className="block break-words text-xs text-soil/80">{x.sub}</span>
+              </span>
+              <span className="ms-auto flex shrink-0 items-center gap-1.5">
+                {x.statusLabel && <span className="rounded-full bg-soil/10 px-2 py-0.5 text-[11px] font-bold text-soil/80">{x.statusLabel}</span>}
+                {x.cleared && <span className="rounded-full bg-ivory px-2 py-0.5 text-[11px] font-bold text-soil/70 ring-1 ring-soil/15">{t("arc_cleared")}</span>}
+                {x.cleared && <button type="button" onClick={() => onRestore(x.key)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1 text-xs font-bold text-ivory"><RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />{t("arc_restore")}</button>}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const BOOKING_CLOSED = ["completed", "feedback", "declined", "cancelled"];
+const bookingHistItem = (t, b, cleared) => ({ key: "bk:" + b.id, kind: "booking", title: b.listingName, sub: [b.id, fmtDate(b.date), b.renterName].filter(Boolean).join(" · "), statusLabel: t("st_" + b.status), at: b.updatedAt || b.createdAt || 0, cleared });
+const requestHistItem = (t, dn, r, cleared) => ({ key: "rq:" + r.id, kind: "request", title: `${t("one_" + r.category)} · ${r.village || dn((r.loc && r.loc.district) || "")}`, sub: [r.id, fmtDate(r.date), `${pkr(r.rate)}/hr`].join(" · "), statusLabel: t("rq_" + r.status), at: r.createdAt || 0, cleared });
+const demandHistItem = (t, dn, d, cleared) => ({ key: "dm:" + d.id, kind: "demand", title: `${t("one_" + d.category)} · ${d.village || dn(d.district || "")}`, sub: [d.id, fmtDate(d.date), `${pkr(d.rate)}/hr`].join(" · "), statusLabel: t("dm_" + d.status), at: d.updatedAt || d.createdAt || 0, cleared });
+// land deals for one member (as owner or tenant): cleared items + declined leases
+function landHistItems(t, dn, uid, landBookings, landRequests, cl) {
+  const out = [];
+  (landBookings || []).filter((b) => uid && (b.ownerUid === uid || b.tenantUid === uid)).forEach((b) => {
+    const c = cl.has("lb:" + b.id);
+    if (c || b.status === "declined") out.push({ key: "lb:" + b.id, kind: "land_bk", title: uniqPlaces(b.village, dn(b.district || "")) || b.id, sub: [b.id, `${fmtDate(b.startDate)} → ${fmtDate(b.endDate)}`, pkr(b.total)].join(" · "), statusLabel: t(b.status === "accepted" ? "ld_accepted" : b.status === "declined" ? "ld_declined" : "ld_pending"), at: b.acceptedAt || b.createdAt || 0, cleared: c });
+  });
+  (landRequests || []).filter((r) => cl.has("lr:" + r.id)).forEach((r) => out.push({ key: "lr:" + r.id, kind: "land_rq", title: uniqPlaces(r.village, dn(r.district || "")) || r.id, sub: `${r.acres} ${t("ld_acres")} · ${pkr(r.budget)} ${t("ld_per_acre_month")}`, statusLabel: "", at: r.createdAt || 0, cleared: true }));
+  return out;
+}
+
+function PendingRequest({ b, t, updateBooking, contact, onClear }) {
   const [countering, setCountering] = useState(false);
   const snap = b.listingSnap || { rate: b.quote.listedRate || b.quote.rate, operator: "included", transport: "optional", distance: 0 };
   const listedTr = transportFee(snap.distance);
@@ -6157,7 +6397,7 @@ function PendingRequest({ b, t, updateBooking, contact }) {
           {contact && contact.renterPhone && <div className="mt-1"><ContactButtons t={t} phone={contact.renterPhone} name={b.renterName} /></div>}
           <p className="mt-1 text-xs text-soil/80">{t("bk_op")}: {b.operator ? t("included_word") : t("not_added")} · {t("bk_tr")}: {b.transport ? t("included_word") : t("not_added")} · <Fuel className="inline h-3 w-3" aria-hidden="true" /> {t("dry_rent")}</p>
         </div>
-        <p className="font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.quote.subtotal)}</p>
+        <div className="flex items-center gap-2"><p className="font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.quote.subtotal)}</p>{onClear && <ClearBtn t={t} onClick={onClear} />}</div>
       </div>
       {b.offer && (
         <div className="mt-2 rounded-lg bg-white/70 p-2 text-xs text-soil ring-1 ring-gold/40">
@@ -6186,17 +6426,38 @@ function PendingRequest({ b, t, updateBooking, contact }) {
   );
 }
 
-function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast }) {
+function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast, archive, landBookings = [], landRequests = [] }) {
   const [sub, setSub] = useState(initialSub || "requests");
   useEffect(() => { if (initialSub) setSub(initialSub); }, [initialSub]);
-  const pending = bookings.filter((b) => b.status === "sent").sort((a, b) => a.createdAt - b.createdAt);
-  const responded = bookings.filter((b) => b.status !== "sent").sort((a, b) => b.createdAt - a.createdAt).slice(0, 8);
+  // Clear -> History: cleared items leave the active lists but are never deleted
+  const cl = archive ? archive.set("owner") : new Set();
+  const isCl = (k) => cl.has(k);
+  const clearKeys = (keys) => { const n = archive ? archive.clear("owner", keys) : 0; toast(n ? t("arc_cleared_n").replace("{n}", n) : t("arc_none_read")); };
+  const restore = (k) => { if (archive) archive.restore("owner", k); toast(t("arc_restored")); };
+  const pending = bookings.filter((b) => b.status === "sent" && !isCl("bk:" + b.id)).sort((a, b) => a.createdAt - b.createdAt);
+  const responded = bookings.filter((b) => b.status !== "sent" && !isCl("bk:" + b.id)).sort((a, b) => b.createdAt - a.createdAt).slice(0, 8);
   // Apni Boli offers this owner sent (shown in Responded with the request's current state)
-  const myOffers = session && session.uid ? liveRequests.map((r) => ({ r, o: (r.offers || []).find((x) => x.uid === session.uid) })).filter((x) => x.o).sort((a, b) => (b.o.at || 0) - (a.o.at || 0)).slice(0, 8) : [];
+  const offersAll = session && session.uid ? liveRequests.map((r) => ({ r, o: (r.offers || []).find((x) => x.uid === session.uid) })).filter((x) => x.o).sort((a, b) => (b.o.at || 0) - (a.o.at || 0)) : [];
+  const myOffers = offersAll.filter(({ r }) => !isCl("rq:" + r.id)).slice(0, 8);
+  // "read" = nothing left for this owner to do: answered bookings, requests already offered on, district demand notices
+  const readKeys = [
+    ...responded.map((b) => "bk:" + b.id),
+    ...offersAll.filter(({ r }) => !isCl("rq:" + r.id)).map(({ r }) => "rq:" + r.id),
+    ...demand.filter((d) => d.status === "waiting" && (d.country || "PK") === CUR.id && !isCl("dm:" + d.id)).map((d) => "dm:" + d.id),
+  ];
+  const uid = session && session.uid;
+  const histItems = [
+    ...bookings.filter((b) => isCl("bk:" + b.id) || BOOKING_CLOSED.includes(b.status)).map((b) => bookingHistItem(t, b, isCl("bk:" + b.id))),
+    ...offersAll.filter(({ r }) => isCl("rq:" + r.id) || r.status !== "open").map(({ r }) => requestHistItem(t, dn, r, isCl("rq:" + r.id))),
+    ...liveRequests.filter((r) => isCl("rq:" + r.id) && !offersAll.some((x) => x.r.id === r.id)).map((r) => requestHistItem(t, dn, r, true)),
+    ...demand.filter((d) => isCl("dm:" + d.id)).map((d) => demandHistItem(t, dn, d, true)),
+    ...landHistItems(t, dn, uid, landBookings, landRequests, cl),
+  ];
   const subs = [
     { key: "requests", label: t("ow_requests"), icon: ClipboardList, badge: pending.length },
     { key: "list", label: t("ow_list"), icon: Plus },
     { key: "earnings", label: t("ow_earn"), icon: Calculator },
+    { key: "history", label: t("arc_history"), icon: HistoryIcon },
   ];
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="ow-h">
@@ -6217,14 +6478,16 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
       <span className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-l from-ivory to-transparent sm:hidden rtl:bg-gradient-to-r" aria-hidden="true" />
       </div>
 
-      {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} requests={liveRequests} myListings={listings} saveRequest={saveRequest} toast={toast} />}
+      {sub === "requests" && archive && <div className="mb-3 flex flex-wrap items-center justify-end gap-2"><span className="me-auto text-xs text-soil/80">{t("arc_clear_hint")}</span><ClearAllBtn t={t} count={readKeys.length} onClick={() => clearKeys(readKeys)} /></div>}
+      {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} requests={liveRequests} myListings={listings} saveRequest={saveRequest} toast={toast} isCleared={isCl} onClear={archive ? clearKeys : null} />}
+      {sub === "history" && <HistoryList t={t} items={histItems} onRestore={restore} />}
       {sub === "requests" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <h3 className="mb-3 flex items-center gap-2 font-bold text-forest"><Hourglass className="h-4 w-4 text-gold" aria-hidden="true" />{t("ow_pending")} ({pending.length})</h3>
             {pending.length === 0 ? <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_req")}</p> : (
               <ul className="space-y-3">
-                {pending.map((b) => <PendingRequest key={b.id} b={b} t={t} updateBooking={updateBooking} contact={bookingContacts[b.id]} />)}
+                {pending.map((b) => <PendingRequest key={b.id} b={b} t={t} updateBooking={updateBooking} contact={bookingContacts[b.id]} onClear={archive ? () => clearKeys("bk:" + b.id) : null} />)}
               </ul>
             )}
           </div>
@@ -6235,7 +6498,7 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
                 {myOffers.map(({ r, o }) => (
                   <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-gold/10 px-3 py-2 text-sm">
                     <span className="min-w-0"><span className="block truncate font-semibold text-soil">{t("ow_offer_sent_row").replace("{rate}", pkr(o.rate))} · {t("one_" + r.category)}</span><span className="text-xs text-soil/80" dir="ltr">{r.id} · {fmtDate(r.date)}</span></span>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${r.acceptedOwnerUid === session.uid ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{r.acceptedOwnerUid === session.uid ? t("ow_offer_accepted") : r.status === "open" ? t("ow_offer_waiting") : t("rq_" + r.status)}</span>
+                    <span className="flex shrink-0 items-center gap-1.5"><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${r.acceptedOwnerUid === session.uid ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{r.acceptedOwnerUid === session.uid ? t("ow_offer_accepted") : r.status === "open" ? t("ow_offer_waiting") : t("rq_" + r.status)}</span>{archive && <ClearBtn t={t} onClick={() => clearKeys("rq:" + r.id)} />}</span>
                   </li>
                 ))}
               </ul>
@@ -6245,7 +6508,7 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
                 {responded.map((b) => (
                   <li key={b.id} className="flex items-center justify-between gap-2 py-2.5 text-sm">
                     <span className="min-w-0"><span className="block truncate font-semibold text-soil">{b.listingName}</span><span className="text-xs text-soil/80" dir="ltr">{b.id} · {fmtDate(b.date)}</span></span>
-                    <StatusPill status={b.status} t={t} />
+                    <span className="flex shrink-0 items-center gap-1.5"><StatusPill status={b.status} t={t} />{archive && <ClearBtn t={t} onClick={() => clearKeys("bk:" + b.id)} />}</span>
                   </li>
                 ))}
               </ul>
@@ -6735,11 +6998,11 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
       ro: "Smartphone nahi? Kisi bhi saade phone se toll-free helpline 0800-24741 par call karein. Punjabi ya Urdu awaaz rehnumai karegi: machine ke liye 1, fasal bechne ke liye 2, agent ke liye 0. Booking ki tasdeeq SMS par aayegi.",
     });
   }
-  if (has(/apni boli|\bboli\b|name your price|اپنی بولی|بولی|پنهنجي ٻولي|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
+  if (has(/apni boli|\bboli\b|name your price|اپنی بولی|بولی|پنهنجي ٻولي|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|40 ?km|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
     return steps({
-      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 5 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 100 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
-      ur: `اپنی بولی (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. فی گھنٹہ اپنی پیشکش لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 5 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 100 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
-      ro: `Apni Boli (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Ghante ka apna rate likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 5 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 100 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
+      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Enter the rate you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 15 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 40 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
+      ur: `اپنی بولی (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. فی گھنٹہ اپنی پیشکش لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 15 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 40 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
+      ro: `Apni Boli (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Ghante ka apna rate likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 15 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 40 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
     });
   }
   if (has(/forgot|reset|password bhool|bhool gay|پاس ?ورڈ|password/i)) {
@@ -6800,9 +7063,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/^(?!.*\d).*(how (do|can|to) (i )?(book|rent)|booking kaise|book kaise|kiraye par kaise|rent kaise|بکنگ کیسے|کیسے بک)/i)) {
     return steps({
-      en: "To book a machine:\n1. In Marketplace, pick a category and district and set the search radius (15 km default, up to 25 km).\n2. Press \"Request Booking\" on a machine (sign in if asked).\n3. Choose date and hours, add operator or transport if needed, and check the full price breakdown.\n4. Optional: turn on \"Suggest your own price\".\n5. Tick the dry-rent terms, pick a payment option and send. Track it in My Bookings.",
-      ur: "مشین بک کرنے کا طریقہ:\n1. مارکیٹ میں قسم، ضلع اور تلاش کا دائرہ چنیں (15 سے 25 کلومیٹر)۔\n2. مشین پر \"بکنگ کی درخواست\" دبائیں (ضرورت ہو تو سائن ان کریں)۔\n3. تاریخ اور گھنٹے چنیں، آپریٹر یا ٹرانسپورٹ شامل کریں اور مکمل قیمت دیکھیں۔\n4. چاہیں تو \"اپنی قیمت تجویز کریں\" آن کریں۔\n5. ڈرائی رینٹ کی شرط مانیں، ادائیگی چنیں اور بھیج دیں۔ میری بکنگز میں دیکھیں۔",
-      ro: "Machine book karne ka tareeqa:\n1. Marketplace mein category, district aur search radius chunein (15 se 25 km).\n2. Machine par \"Request Booking\" dabayein (zaroorat ho to sign in karein).\n3. Date aur ghante chunein, operator ya transport add karein aur poori qeemat dekhein.\n4. Chahein to \"Suggest your own price\" on karein.\n5. Dry-rent shart maanein, payment chunein aur bhej dein. My Bookings mein track karein.",
+      en: "To book a machine:\n1. In Marketplace, pick a category and district and set the search radius (15 km default, up to 40 km).\n2. Press \"Request Booking\" on a machine (sign in if asked).\n3. Choose date and hours, add operator or transport if needed, and check the full price breakdown.\n4. Optional: turn on \"Suggest your own price\".\n5. Tick the dry-rent terms, pick a payment option and send. Track it in My Bookings.",
+      ur: "مشین بک کرنے کا طریقہ:\n1. مارکیٹ میں قسم، ضلع اور تلاش کا دائرہ چنیں (15 سے 40 کلومیٹر)۔\n2. مشین پر \"بکنگ کی درخواست\" دبائیں (ضرورت ہو تو سائن ان کریں)۔\n3. تاریخ اور گھنٹے چنیں، آپریٹر یا ٹرانسپورٹ شامل کریں اور مکمل قیمت دیکھیں۔\n4. چاہیں تو \"اپنی قیمت تجویز کریں\" آن کریں۔\n5. ڈرائی رینٹ کی شرط مانیں، ادائیگی چنیں اور بھیج دیں۔ میری بکنگز میں دیکھیں۔",
+      ro: "Machine book karne ka tareeqa:\n1. Marketplace mein category, district aur search radius chunein (15 se 40 km).\n2. Machine par \"Request Booking\" dabayein (zaroorat ho to sign in karein).\n3. Date aur ghante chunein, operator ya transport add karein aur poori qeemat dekhein.\n4. Chahein to \"Suggest your own price\" on karein.\n5. Dry-rent shart maanein, payment chunein aur bhej dein. My Bookings mein track karein.",
     });
   }
   if (has(/language|zaban|zubaan|urdu|punjabi|sindhi|زبان|اردو|پنجابی/i)) {
@@ -6912,7 +7175,7 @@ ${rateCardText()}
 Platform fee: 6% standard, 4% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
   const base = `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}${persona}
 Rules of the platform:
-- Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 25 km catchment; Apni Boli requests search up to 100 km.
+- Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 40 km catchment; Apni Boli requests search up to 40 km.
 - Dry rent: hourly rate EXCLUDES diesel/fuel; renter supplies fuel. Overtime and late-return terms agreed with owner before confirmation.
 - Operator terms = who drives the machine: "included" (owner's driver, already in rate), "optional" (+PKR 500/hr for the owner's driver), "none" (renter brings own driver).
 - Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform commission 6% standard (5 to 7% range), 4% subsidised for smallholders under 5 acres, added to the subtotal.
@@ -6924,9 +7187,9 @@ How to use the website (guide users step by step when they ask):
 - Sign up: top-right "Sign up" > full name, email, mobile 03XXXXXXXXX, district, role (Farmer/Renter, Machinery Owner, Agri-Agent), password 6+ chars twice, accept privacy note > "Create account". Booking or listing without an account opens sign up automatically.
 - Sign in: top-right "Sign in" > email + password. Forgot password: "Forgot password?" in the sign-in box > email + new password twice.
 - Sign out: click your name/initials at top right > Sign out.
-- Book: Marketplace > filters (category, district, radius 15 km default up to 25 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
+- Book: Marketplace > filters (category, district, radius 15 km default up to 40 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
 - List a machine: Owner Portal > "List Available Machinery" > name, category, hourly rate, district, village, distance, operator and transport terms > "Add to marketplace". Earnings Estimator in Owner Portal.
-- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 5 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 100 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
+- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
 - Commission: 6% standard (5 to 7% range); smallholders under 5 acres tick a box for a subsidised 4%.
 - Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
 - Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live on the farmer's price. Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
@@ -7859,13 +8122,13 @@ const VILLAGES = [
   { name: "Chichawatni", district: "Sahiwal" }, { name: "Harappa", district: "Sahiwal" },
 ];
 const TIERS = [
-  { n: 1, max: 5, ring: 62, key: "lr_tier1", range: "lr_tier1_r", note: "lr_tier1_t", repKm: 3 },
+  { n: 1, max: 15, ring: 62, key: "lr_tier1", range: "lr_tier1_r", note: "lr_tier1_t", repKm: 8 },
   { n: 2, max: 25, ring: 118, key: "lr_tier2", range: "lr_tier2_r", note: "lr_tier2_t", repKm: 20 },
-  { n: 3, max: 100, ring: 168, key: "lr_tier3", range: "lr_tier3_r", note: "lr_tier3_t", repKm: 80 },
+  { n: 3, max: 40, ring: 168, key: "lr_tier3", range: "lr_tier3_r", note: "lr_tier3_t", repKm: 35 },
 ];
-const tierOf = (km) => (km <= 5 ? 1 : km <= 25 ? 2 : 3);
+const tierOf = (km) => (km <= 15 ? 1 : km <= 25 ? 2 : 3);
 const round50 = (n) => Math.round(n / 50) * 50;
-const kmToPx = (km) => (km <= 5 ? (km / 5) * 62 : km <= 25 ? 62 + ((km - 5) / 20) * 56 : 118 + ((Math.min(km, 100) - 25) / 75) * 50);
+const kmToPx = (km) => (km <= 15 ? (km / 15) * 62 : km <= 25 ? 62 + ((km - 15) / 10) * 56 : 118 + ((Math.min(km, MATCH_RADIUS_KM) - 25) / (MATCH_RADIUS_KM - 25)) * 50);
 const OWNER_NAMES = ["Ch. Ghulam Rasool", "Malik Asif Iqbal", "Rana Shahbaz", "Mian Arshad", "Sardar Khalid", "Haji Bashir Ahmad", "Ch. Nadeem Akhtar", "Rao Imran", "Mehr Sajjad", "Jutt Farooq", "Malik Zubair", "Syed Anwar Shah", "Ch. Tahir Mehmood", "Bhatti Saleem", "Raja Waqas", "Gondal Javed"];
 const MODELS = {
   tractor: ["Massey Ferguson 260", "Fiat NH 480", "Massey Ferguson 375", "New Holland Dabung 85"],
@@ -7892,7 +8155,7 @@ function buildOwnerPool(villageName, category, listings, model, demo = true) {
   const models = catModels.length ? catModels : MODELS[category] || [category];
   const baseAsk = askFor(category, BASE_ASK[category] || 2000);
   const pool = [];
-  const spec = [[1, 2, 1.2, 4.8], [2, 3, 15, 24.5], [3, 3, 34, 97]];
+  const spec = [[1, 2, 2, 13], [2, 3, 16, 24.5], [3, 3, 27, 39.5]];
   let k = 0;
   if (demo) spec.forEach(([tier, count, lo, hi]) => {
     for (let i = 0; i < count; i++) {
@@ -8012,7 +8275,7 @@ function ModeBadge({ t, demo }) {
 
 /* ------------------------------------------------------------------ */
 /* Zero-supply fallback: what we offer when 0 registered owners are    */
-/* available. A: widen to 100 km with cost estimates. B: Agri-Agent    */
+/* available. A: widen to 40 km with cost estimates. B: Agri-Agent    */
 /* ground team dispatch. C: save demand (pending_demand_requests) so   */
 /* the first owner who registers in that district sees waiting farmers.*/
 /* ------------------------------------------------------------------ */
@@ -8026,15 +8289,15 @@ const ZsCard = ({ letter, icon: Icon, title, children, tone }) => (
   </div>
 );
 
-// Agri-Share consultants (founder) for farmers with no machine within 25-100 km
+// Agri-Share consultants (founder) for farmers with no machine within 15-40 km
 const CONSULTANT = {
   primary: { label: "0322-4729249", tel: "+923224729249", wa: "923224729249" },
   secondary: { label: "0370-0318574", tel: "+923700318574", wa: "923700318574" },
   email: "00talhashoaib786@gmail.com",
 };
 const consultantWaText = (lang, machine, district) => (lang === "en"
-  ? `Assalam-o-Alaikum Agri-Share, I need a ${machine || "machine"} in ${district || "my district"}. No owner is online within 100 km. Please arrange one for me.`
-  : `السلام علیکم ایگری شیئر، مجھے ${district || "اپنے ضلع"} میں ${machine || "مشین"} چاہیے۔ 100 کلومیٹر میں کوئی مالک آن لائن نہیں۔ براہ کرم میرے لیے انتظام کریں۔`);
+  ? `Assalam-o-Alaikum Agri-Share, I need a ${machine || "machine"} in ${district || "my district"}. No owner is online within 40 km. Please arrange one for me.`
+  : `السلام علیکم ایگری شیئر، مجھے ${district || "اپنے ضلع"} میں ${machine || "مشین"} چاہیے۔ 40 کلومیٹر میں کوئی مالک آن لائن نہیں۔ براہ کرم میرے لیے انتظام کریں۔`);
 
 function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent }) {
   // autoSent: false | { emailed: boolean } once the lead was filed automatically
@@ -8063,7 +8326,7 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
   return (
     <div className="rounded-2xl border-2 border-forest bg-white p-4 shadow-md" role="region" aria-labelledby="zc-h">
       <p id="zc-h" className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><Headphones className="h-5 w-5 text-gold" aria-hidden="true" />{t("zc_title")}</p>
-      <p className="mt-1.5 text-sm leading-relaxed text-soil">{t("zc_msg")}</p>
+      <p className="mt-1.5 text-sm leading-relaxed text-soil">{t(request.category === "land" ? "zc_msg_land" : "zc_msg")}</p>
       <div className="mt-3 space-y-2">
         <p className="text-[11px] font-bold uppercase tracking-wide text-soil/80">{t("zc_primary")}</p>
         <Line num={CONSULTANT.primary} primary />
@@ -8094,7 +8357,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
   const district = request.district || (request.loc && request.loc.district) || "";
   const place = request.village || (district ? dn(district) : t("lr_you"));
   const machine = t("one_" + category);
-  const estimates = [25, 50, 100].map((km) => ({ km, q: liveQuote({ rate, hours, km, category, rentType: request.rentType || "dry", dieselPrice }) }));
+  const estimates = [15, 25, 40].map((km) => ({ km, q: liveQuote({ rate, hours, km, category, rentType: request.rentType || "dry", dieselPrice }) }));
 
   const record = (type) => ({
     id: (type === "agent_dispatch" ? "AD-" : "PD-") + Math.floor(10000 + Math.random() * 89999),
@@ -8186,7 +8449,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
 }
 
 // One open Apni Boli request, answered by an owner with a real offer (saved on the request document)
-function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast }) {
+function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast, onClear }) {
   const mineForCat = myListings.find((l) => l.category === r.category && (l.status || "approved") === "approved") || myListings.find((l) => l.category === r.category);
   const existing = (r.offers || []).find((o) => o.uid === session.uid);
   const [rate, setRate] = useState(existing ? existing.rate : mineForCat ? mineForCat.rate : r.rate);
@@ -8208,7 +8471,7 @@ function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast }) {
           <span className="block break-words font-bold text-forest"><CategoryIcon category={r.category} className="me-1 inline h-4 w-4" />{t("one_" + r.category)} · {r.village || dn(r.loc && r.loc.district)}</span>
           <span className="block text-xs text-soil/80" dir="ltr">{r.renterName || ""} · {fmtDate(r.date)} · {r.hours}h · {t("ct_offered")} {pkr(r.rate)}/hr{km != null ? ` · ${km} km` : ""}</span>
         </span>
-        <span className="shrink-0 rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("ab_name").split(" (")[0]}</span>
+        <span className="flex shrink-0 items-center gap-1.5"><span className="rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("ab_name").split(" (")[0]}</span>{onClear && <ClearBtn t={t} onClick={onClear} />}</span>
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <label className="sr-only" htmlFor={`ofr-${r.id}`}>{t("ow_offer_rate")}</label>
@@ -8220,17 +8483,17 @@ function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast }) {
   );
 }
 
-function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListings = [], saveRequest, toast }) {
+function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListings = [], saveRequest, toast, isCleared = () => false, onClear }) {
   // owner's districts: profile district + every district they list machines in (normalised: "Tehsil Kasur" = "Kasur, Punjab" = "kasur")
   const myDistricts = new Set([session && session.location && session.location.district, ...myListings.map((l) => l.district)].map(normDistrict).filter(Boolean));
   const inMyDistrict = (d) => myDistricts.size > 0 && myDistricts.has(normDistrict(d));
-  const waiting = demand.filter((d) => d.status === "waiting" && (d.country || "PK") === CUR.id).sort((a, b) => b.createdAt - a.createdAt);
+  const waiting = demand.filter((d) => d.status === "waiting" && (d.country || "PK") === CUR.id && !isCleared("dm:" + d.id)).sort((a, b) => b.createdAt - a.createdAt);
   const local = waiting.filter((d) => inMyDistrict(d.district));
   const shown = (local.length ? local : waiting).slice(0, 6);
   const reqDistrict = (r) => (r.loc && r.loc.district) || String(r.village || "").split(",").slice(-1)[0];
   // requests routed to my machines first, then open requests in my district
   const routedToMe = (r) => Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(session.uid);
-  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && !r.own && (routedToMe(r) || inMyDistrict(reqDistrict(r))))
+  const openReqs = session && session.uid ? requests.filter((r) => r.status === "open" && (r.country || "PK") === CUR.id && !r.own && !isCleared("rq:" + r.id) && (routedToMe(r) || inMyDistrict(reqDistrict(r))))
     .sort((a, b) => (routedToMe(b) - routedToMe(a)) || b.createdAt - a.createdAt).slice(0, 10) : [];
   return (
     <div className="mb-5 rounded-2xl border border-gold/60 bg-gold/10 p-4">
@@ -8240,7 +8503,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
         <>
           <p className="mt-3 text-[11px] font-bold uppercase tracking-wide text-soil/80">{t("ow_open_requests")}</p>
           <ul className="mt-1.5 grid gap-2 md:grid-cols-2">
-            {openReqs.map((r) => <OwnerOfferRow key={r.id} t={t} dn={dn} r={r} session={session} myListings={myListings} saveRequest={saveRequest} toast={toast} />)}
+            {openReqs.map((r) => <OwnerOfferRow key={r.id} t={t} dn={dn} r={r} session={session} myListings={myListings} saveRequest={saveRequest} toast={toast} onClear={onClear ? () => onClear("rq:" + r.id) : null} />)}
           </ul>
         </>
       )}
@@ -8252,7 +8515,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
                 <span className="block truncate font-bold text-forest"><CategoryIcon category={d.category} className="me-1 inline h-4 w-4" />{t("one_" + d.category)} · {d.village || dn(d.district)}</span>
                 <span className="block truncate text-xs text-soil/80" dir="ltr">{d.id} · {fmtDate(d.date)} · {d.hours}h · {pkr(d.rate)}/hr</span>
               </span>
-              <span className="shrink-0 rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("dm_" + d.type)}</span>
+              <span className="flex shrink-0 items-center gap-1.5"><span className="rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("dm_" + d.type)}</span>{onClear && <ClearBtn t={t} onClick={() => onClear("dm:" + d.id)} />}</span>
             </li>
           ))}
         </ul>
@@ -8303,8 +8566,8 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
   const reqLocKey = reqLoc ? `${reqLoc.lat},${reqLoc.lng}` : "";
   const nearListings = useMemo(() => geoListings(reqLoc), [listings, reqLocKey, demoMode]); // eslint-disable-line
   const pool = useMemo(() => buildOwnerPool((req || f).village, (req || f).category, nearListings, (req || f).model, demoMode), [req, f.village, f.category, f.model, nearListings, country, demoMode]);
-  // real registered owners of this machine within 100 km (the consultant card shows only when there are none)
-  const realIn100 = useMemo(() => pool.filter((o) => o.registered && !o.seed && o.distance <= 100).length, [pool]);
+  // real registered owners of this machine within 40 km (the consultant card shows only when there are none)
+  const realInRange = useMemo(() => pool.filter((o) => o.registered && !o.seed && o.distance <= MATCH_RADIUS_KM).length, [pool]);
   const typical = useMemo(() => {
     const near = pool.filter((o) => o.tier <= 2);
     return round50(near.reduce((s, o) => s + o.ask, 0) / Math.max(1, near.length));
@@ -8375,8 +8638,8 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
       // renter email / phone go to the private request_contacts/{requestId} (renter, accepted owner, founder)
       if (session) writeDoc(COL.reqContacts, r.id, { requestId: r.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", createdAt: Date.now() })
         .catch((e) => console.warn("[Agri-Share] Request contact not saved:", e && e.code));
-      // attach every REAL owner whose machine matches within 100 km, so the request lands in their Owner Portal
-      const matched = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.registered && o.ownerUid && o.distance <= 100);
+      // attach every REAL owner whose machine matches within 40 km, so the request lands in their Owner Portal
+      const matched = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.registered && o.ownerUid && o.distance <= MATCH_RADIUS_KM);
       r.matchedOwnerUids = [...new Set(matched.map((o) => o.ownerUid))];
       r.matchedListingIds = matched.map((o) => String(o.key).replace(/^lst-/, ""));
       saveRequest(r);
@@ -8384,9 +8647,9 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
       statusRef.current = {};
       setTimeout(() => scan(1, r, true), 0);
       const near = buildOwnerPool(r.village, r.category, geoListings(r.loc), r.model, demoMode).filter((o) => o.tier === 1).length;
-      // no REAL owner of this machine within 100 km: alert the Agri-Share consultant straight away
-      const realWithin100 = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.distance <= 100).length;
-      if (!demoMode && realWithin100 === 0 && sendLead) {
+      // no REAL owner of this machine within 40 km: alert the Agri-Share consultant straight away
+      const realInRange = buildOwnerPool(r.village, r.category, geoListings(r.loc).filter((l) => !isSeedListing(l)), r.model, false).filter((o) => o.distance <= MATCH_RADIUS_KM).length;
+      if (!demoMode && realInRange === 0 && sendLead) {
         sendLead({ category: r.category, district: r.loc && r.loc.district, village: r.village, hours: r.hours, rate: r.rate, requestId: r.id }, true)
           .then((res) => setAutoLeadFor({ id: r.id, emailed: !!(res && res.emailed) })).catch(() => {});
       }
@@ -8659,7 +8922,7 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
               <div className="min-w-0">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("lr_offers")}</p>
                 {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("lr_idle_offers")}</p>}
-                {!demoMode && reqLoc && realIn100 === 0 && offersInTier.length === 0 && sendLead && (
+                {!demoMode && reqLoc && realInRange === 0 && offersInTier.length === 0 && sendLead && (
                   <div className="mb-3"><ConsultantCard t={t} lang={lang} request={{ ...(req || f), district: village.district, loc: reqLoc }} onSendLead={sendLead} requireAuth={requireAuth} autoSent={req && autoLeadFor && autoLeadFor.id === req.id ? autoLeadFor : false} /></div>
                 )}
                 {req && offersInTier.length === 0 && scanning && <p className="flex items-center gap-2 rounded-xl bg-ivory p-4 text-sm text-soil/80"><Hourglass className="h-4 w-4 animate-pulse text-gold" aria-hidden="true" />{t("lr_waiting")}</p>}
@@ -8920,7 +9183,7 @@ function LandForm({ t, lang, session, onCreate }) {
   );
 }
 
-function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landListings, landRequests, landBookings, setLandListings, saveLandRequest, saveLandBooking, sendLead, ecoActive }) {
+function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landListings, landRequests, landBookings, setLandListings, saveLandRequest, saveLandBooking, sendLead, ecoActive, archive }) {
   const [sub, setSub] = useState("find");
   const [agreement, setAgreement] = useState(null);
   const [contactShown, setContactShown] = useState({});
@@ -8928,7 +9191,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   const rtl = (LANGS.find((l) => l.code === lang) || {}).dir === "rtl";
 
   // ---------- search ----------
-  const [fl, setFl] = useState({ loc: userLoc || (session && session.location) || null, radius: 100, minAcres: 0, water: "any", budget: 0 });
+  const [fl, setFl] = useState({ loc: userLoc || (session && session.location) || null, radius: MATCH_RADIUS_KM, minAcres: 0, water: "any", budget: 0 });
   const withKm = useMemo(() => landListings
     .filter((l) => (l.status || "approved") === "approved")
     .map((l) => ({ ...l, km: fl.loc && fl.loc.lat ? kmToListing(fl.loc, l) : null })), [landListings, fl.loc]);
@@ -8938,7 +9201,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
     .filter((l) => fl.water === "any" || l.water === fl.water)
     .filter((l) => !(Number(fl.budget) > 0) || l.rateType === "total" || Number(l.rate) <= Number(fl.budget))
     .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (a.km ?? 9999) - (b.km ?? 9999));
-  const within100 = fl.loc && fl.loc.lat ? withKm.filter((l) => !l.mine && l.km != null && l.km <= 100).length : null;
+  const inRange = fl.loc && fl.loc.lat ? withKm.filter((l) => !l.mine && l.km != null && l.km <= MATCH_RADIUS_KM).length : null;
 
   // ---------- lease request on a listing ----------
   const [reqFor, setReqFor] = useState(null);
@@ -8966,7 +9229,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
     e.preventDefault();
     if (!bf.loc) { setBoliErr(t("loc_err")); return; }
     requireAuth(() => {
-      const near = landListings.filter((l) => (l.status || "approved") === "approved" && kmToListing(bf.loc, l) <= 100);
+      const near = landListings.filter((l) => (l.status || "approved") === "approved" && kmToListing(bf.loc, l) <= MATCH_RADIUS_KM);
       const r = { id: "LR-" + Date.now().toString(36).toUpperCase(), renterUid: session.uid, renterName: session.name || "", village: locLabel(bf.loc), district: bf.loc.district || "", loc: bf.loc, acres: Number(bf.acres) || 1, water: bf.water, months: Number(bf.months) || 1, budget: Number(bf.budget) || 0, status: "open", createdAt: Date.now(), country: CUR.id, matchedOwnerUids: [...new Set(near.map((l) => l.ownerUid).filter(Boolean))], offers: [] };
       saveLandRequest(r);
       writeDoc(COL.landReqContacts, r.id, { requestId: r.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: "", createdAt: Date.now() }).catch((e2) => console.warn("[Agri-Share] Land demand contact not saved:", e2 && e2.code));
@@ -8993,7 +9256,11 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   // ---------- owner side ----------
   const myListings = landListings.filter((l) => l.mine);
   const myDistricts = new Set([session && session.location && session.location.district, ...myListings.map((l) => l.district)].map(normDistrict).filter(Boolean));
-  const openDemand = uid ? landRequests.filter((r) => r.status === "open" && r.renterUid !== uid && (myDistricts.has(normDistrict(r.district)) || (r.matchedOwnerUids || []).includes(uid))) : [];
+  // Clear -> History (shared with the Owner Portal archive)
+  const cl = archive ? archive.set("owner") : new Set();
+  const clearKeys = (keys) => { const n = archive ? archive.clear("owner", keys) : 0; toast(n ? t("arc_cleared_n").replace("{n}", n) : t("arc_none_read")); };
+  const restoreKey = (k) => { if (archive) archive.restore("owner", k); toast(t("arc_restored")); };
+  const openDemand = uid ? landRequests.filter((r) => r.status === "open" && r.renterUid !== uid && !cl.has("lr:" + r.id) && (myDistricts.has(normDistrict(r.district)) || (r.matchedOwnerUids || []).includes(uid))) : [];
   const [offerRates, setOfferRates] = useState({});
   const sendOffer = (r) => {
     const rate = Math.round(Number(offerRates[r.id]) || 0);
@@ -9003,8 +9270,11 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
     saveLandRequest({ id: r.id, offers: [...(r.offers || []).filter((o) => o.uid !== uid), offer] });
     toast(t("ld_offer_sent"), { title: t("ld_tab_boli") });
   };
-  const incoming = landBookings.filter((b) => uid && b.ownerUid === uid);
-  const myLeases = landBookings.filter((b) => uid && b.tenantUid === uid);
+  const incoming = landBookings.filter((b) => uid && b.ownerUid === uid && !cl.has("lb:" + b.id));
+  const myLeases = landBookings.filter((b) => uid && b.tenantUid === uid && !cl.has("lb:" + b.id));
+  const offeredKeys = openDemand.filter((r) => (r.offers || []).some((o) => o.uid === uid)).map((r) => "lr:" + r.id);
+  const answeredKeys = [...incoming, ...myLeases].filter((b) => b.status !== "pending").map((b) => "lb:" + b.id);
+  const landHist = landHistItems(t, dn, uid, landBookings, landRequests, cl);
   const myDemand = landRequests.filter((r) => uid && r.renterUid === uid);
   const decide = (b, status) => saveLandBooking({ id: b.id, status, ...(status === "accepted" ? { acceptedAt: Date.now() } : {}) });
   // owner: once a lease is accepted, let that tenant read the owner's private contact
@@ -9047,13 +9317,13 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
         <div className="grid gap-5 lg:grid-cols-[300px_1fr]">
           <aside className="h-fit space-y-3 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <LocationField t={t} lang={lang} id="ldf-loc" label={t("ld_district")} value={fl.loc} placeholder={t("ld_myloc_hint")} onChange={(loc) => loc && setFl((s) => ({ ...s, loc }))} />
-            <Field label={t("ld_filter_radius")} htmlFor="ldf-r"><select id="ldf-r" value={fl.radius} onChange={(e) => setFl((s) => ({ ...s, radius: Number(e.target.value) }))} className={inputCls + " pe-7 text-sm"}>{[25, 50, 100].map((r) => <option key={r} value={r}>{r} km</option>)}</select></Field>
+            <Field label={t("ld_filter_radius")} htmlFor="ldf-r"><select id="ldf-r" value={fl.radius} onChange={(e) => setFl((s) => ({ ...s, radius: Number(e.target.value) }))} className={inputCls + " pe-7 text-sm"}>{[15, 25, MATCH_RADIUS_KM].map((r) => <option key={r} value={r}>{r} km</option>)}</select></Field>
             <Field label={t("ld_filter_acres")} htmlFor="ldf-a"><input id="ldf-a" type="number" min="0" value={fl.minAcres} onChange={(e) => setFl((s) => ({ ...s, minAcres: e.target.value }))} className={inputCls} dir="ltr" /></Field>
             <Field label={t("ld_water")} htmlFor="ldf-w"><select id="ldf-w" value={fl.water} onChange={(e) => setFl((s) => ({ ...s, water: e.target.value }))} className={inputCls + " pe-7 text-sm"}><option value="any">{t("w_any")}</option>{LAND_WATER.map((w) => <option key={w} value={w}>{t("w_" + w)}</option>)}</select></Field>
             <Field label={t("ld_filter_budget")} htmlFor="ldf-b"><MoneyInput id="ldf-b" min={0} step="500" value={fl.budget} onChange={(v) => setFl((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
           </aside>
           <div className="min-w-0 space-y-3">
-            {within100 === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
+            {inRange === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
             <p className="text-sm font-semibold text-soil/80" aria-live="polite">{t(results.length === 1 ? "ld_results_one" : "ld_results").replace("{n}", results.length)}</p>
             {results.length === 0 ? <p className="rounded-2xl border border-dashed border-soil/25 bg-white p-8 text-center text-sm text-soil/80">{t("ld_none")}</p> : (
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -9119,12 +9389,12 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><Megaphone className="h-4 w-4" aria-hidden="true" />{t("ld_boli_post")}</button>
           </form>
           <div className="space-y-3 rounded-2xl border border-gold/50 bg-gold/10 p-4">
-            <h3 className="font-bold text-forest">{t("ld_open_demand")}</h3>
+            <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-bold text-forest">{t("ld_open_demand")}</h3>{archive && <ClearAllBtn t={t} count={offeredKeys.length} onClick={() => clearKeys(offeredKeys)} />}</div>
             {openDemand.length === 0 ? <p className="text-sm text-soil/80">{t("ld_no_offers")}</p> : (
               <ul className="space-y-2">
                 {openDemand.map((r) => (
                   <li key={r.id} className="rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
-                    <p className="font-bold text-forest">{uniqPlaces(r.village, dn(r.district || ""))}</p>
+                    <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(r.village, dn(r.district || ""))}</p>{archive && <ClearBtn t={t} onClick={() => clearKeys("lr:" + r.id)} />}</div>
                     <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · {r.months} · {pkr(r.budget)} <span dir="auto">{t("ld_per_acre_month")}</span> · <span dir="auto">{t(r.water === "any" ? "w_any" : "w_" + r.water)}</span></p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <label className="sr-only" htmlFor={`ldo-${r.id}`}>{t("ld_offer_rate")}</label>
@@ -9139,6 +9409,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
         </div>
       )}
 
+      {sub === "mine" && archive && <div className="mb-3 flex justify-end"><ClearAllBtn t={t} count={answeredKeys.length} onClick={() => clearKeys(answeredKeys)} /></div>}
       {sub === "mine" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="space-y-3 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
@@ -9158,7 +9429,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             ))}
             {myLeases.length === 0 && myDemand.filter((r) => r.status === "open").length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : myLeases.map((b) => (
               <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
-                <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(b.village, dn(b.district || ""))}</p>{statusPill(b.status)}</div>
+                <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(b.village, dn(b.district || ""))}</p><span className="flex shrink-0 items-center gap-1.5">{statusPill(b.status)}{archive && <ClearBtn t={t} onClick={() => clearKeys("lb:" + b.id)} />}</span></div>
                 <p className="text-xs text-soil/80" dir="ltr">{b.id} · {Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} · {pkr(b.total)}</p>
                 {b.status === "accepted" && (
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -9174,7 +9445,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             <h3 className="font-bold text-forest">{t("ld_incoming")}</h3>
             {incoming.length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : incoming.map((b) => (
               <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
-                <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{b.tenantName || "-"} · {uniqPlaces(b.village, dn(b.district || ""))}</p>{statusPill(b.status)}</div>
+                <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{b.tenantName || "-"} · {uniqPlaces(b.village, dn(b.district || ""))}</p><span className="flex shrink-0 items-center gap-1.5">{statusPill(b.status)}{archive && <ClearBtn t={t} onClick={() => clearKeys("lb:" + b.id)} />}</span></div>
                 <p className="text-xs text-soil/80" dir="ltr">{Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} · {pkr(b.total)}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {b.status === "pending" && <><button type="button" onClick={() => decide(b, "accepted")} className="rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory">{t("ld_accept_req")}</button><button type="button" onClick={() => decide(b, "declined")} className="rounded-lg border border-red-300 px-2.5 py-1.5 text-xs font-bold text-red-800">{t("ld_decline")}</button></>}
@@ -9193,6 +9464,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
           </div>
         </div>
       )}
+      {sub === "mine" && archive && <div className="mt-5"><HistoryList t={t} items={landHist} onRestore={restoreKey} /></div>}
       {agreement && <LandAgreementModal t={t} b={agreement} dn={dn} onClose={() => setAgreement(null)} />}
     </section>
   );
@@ -9898,13 +10170,24 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ archive, bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
   const [confirmReset, setConfirmReset] = useState(false);
   useEffect(() => { setDiesel(settings.dieselPrice); }, [settings.dieselPrice]);
   const lock = onLock;
+  // Clear -> History for the console (founder's own archive; nothing is deleted)
+  const cl = archive ? archive.set("admin") : new Set();
+  const isCl = (k) => cl.has(k);
+  const clearKeys = (keys) => { const n = archive ? archive.clear("admin", keys) : 0; toast(n ? t("arc_cleared_n").replace("{n}", n) : t("arc_none_read")); };
+  const restore = (k) => { if (archive) archive.restore("admin", k); toast(t("arc_restored")); };
+  const activeLeads = leads.filter((x) => !isCl("lead:" + x.id));
+  const activeReqs = liveRequests.filter((r) => !isCl("rq:" + r.id));
+  const activeDemand = demand.filter((d) => !isCl("dm:" + d.id));
+  const readLeadKeys = activeLeads.filter((x) => x.status !== "new").map((x) => "lead:" + x.id);
+  const readReqKeys = activeReqs.filter((r) => r.status !== "open").map((r) => "rq:" + r.id);
+  const readDemandKeys = activeDemand.filter((d) => d.status !== "waiting").map((d) => "dm:" + d.id);
 
   const bucket = (l) => ((l.status || "approved") === "rejected" ? "rejected" : !l.isVerified && (l.status === "pending" || l.ownerUid) ? "unverified" : "approved");
   const counts = { unverified: 0, approved: 0, rejected: 0 };
@@ -9926,7 +10209,16 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
     ...liveRequests.filter((r) => r.status === "open").map((r) => ({ id: "r" + r.id, at: r.createdAt || 0, kind: "request", sub: "live", title: `${t("one_" + r.category)} · ${pkr(r.rate)}/hr`, who: r.renterName || prof(r.renterEmail).name || "", where: r.village || "" })),
     ...demand.filter((d) => d.status === "waiting").map((d) => ({ id: "d" + d.id, at: d.createdAt || 0, kind: "demand", sub: "demand", title: `${t("one_" + d.category)} · ${t("dm_" + d.type)}`, who: d.renterName || "", where: d.village || dn(d.district || "") })),
     ...bookings.filter((b) => b.status === "sent").map((b) => ({ id: "b" + b.id, at: b.createdAt || 0, kind: "booking", sub: "live", title: b.listingName, who: b.renterName || "", where: dn(b.district || "") })),
-  ].sort((a, b) => b.at - a.at);
+  ].filter((a) => !isCl(({ request: "rq:", demand: "dm:", booking: "bk:" }[a.kind] || "-:") + a.id.slice(1))).sort((a, b) => b.at - a.at);
+  const activeBookings = sortedBookings.filter((b) => !isCl("bk:" + b.id));
+  const readBookingKeys = activeBookings.filter((b) => !["sent", "countered"].includes(b.status)).map((b) => "bk:" + b.id);
+  const leadHist = (x, cleared) => ({ key: "lead:" + x.id, kind: "lead", title: `${x.farmerName || "·"} · ${x.category ? t("one_" + x.category) : x.machineType || ""}`, sub: [uniqPlaces(x.village, x.district), x.farmerPhone, fmtStamp(x.createdAt)].filter(Boolean).join(" · "), statusLabel: t(x.status === "new" ? "ad_lead_new" : "ad_lead_arranged"), at: x.createdAt || 0, cleared });
+  const adminHist = [
+    ...(accounts.isFounder ? leads.filter((x) => isCl("lead:" + x.id) || x.status !== "new").map((x) => leadHist(x, isCl("lead:" + x.id))) : []),
+    ...liveRequests.filter((r) => isCl("rq:" + r.id) || r.status !== "open").map((r) => requestHistItem(t, dn, r, isCl("rq:" + r.id))),
+    ...bookings.filter((b) => isCl("bk:" + b.id) || BOOKING_CLOSED.includes(b.status)).map((b) => bookingHistItem(t, b, isCl("bk:" + b.id))),
+    ...demand.filter((d) => isCl("dm:" + d.id) || d.status === "matched").map((d) => demandHistItem(t, dn, d, isCl("dm:" + d.id))),
+  ];
 
   const copyLedger = async () => {
     const rows = [["Booking", "Date", "Machine", "Renter", "Channel", "Status", "Value PKR", "Commission PKR"], ...sortedBookings.map((b) => [b.id, b.date, b.listingName, b.renterName, channelLabel(b.channel), b.status, b.quote.total, b.quote.commission])];
@@ -9954,8 +10246,9 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
     { key: "verify", label: t("ad_verify"), icon: BadgeCheck, badge: counts.unverified },
     { key: "ledger", label: t("ad_ledger"), icon: Wallet },
     { key: "settings", label: t("ad_settings"), icon: SlidersHorizontal },
-    { key: "live", label: t("ad_live"), icon: Radar, badge: liveRequests.filter((r) => r.status === "open").length + bookings.filter((b) => b.status === "sent").length },
-    { key: "demand", label: t("ad_demand"), icon: Inbox, badge: demand.filter((d) => d.status === "waiting").length },
+    { key: "live", label: t("ad_live"), icon: Radar, badge: activeReqs.filter((r) => r.status === "open").length + activeBookings.filter((b) => b.status === "sent").length },
+    { key: "demand", label: t("ad_demand"), icon: Inbox, badge: activeDemand.filter((d) => d.status === "waiting").length },
+    { key: "history", label: t("arc_history"), icon: HistoryIcon },
     { key: "mandi", label: t("nav_mandi"), icon: Wheat },
     { key: "members", label: t("nav_members"), icon: Users },
     { key: "security", label: t("ads_tab"), icon: KeyRound },
@@ -9974,16 +10267,17 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
           {lock && <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
         </div>
       </div>
-      {/* Urgent unmatched farmer leads (no machine within 25-100 km) — founder only */}
+      {/* Urgent unmatched farmer leads (no machine within 15-40 km) — founder only */}
       {accounts.isFounder && (
         <div className={`mb-5 rounded-2xl p-4 ring-1 ${leads.some((x) => x.status === "new") ? "bg-red-50 ring-red-300" : "bg-white ring-soil/10"}`} aria-labelledby="ld-h">
           <h3 id="ld-h" className="flex flex-wrap items-center gap-2 font-bold text-red-800">
             <Siren className="h-5 w-5" aria-hidden="true" />{t("ad_leads_title")}
             {leads.filter((x) => x.status === "new").length > 0 && <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">{leads.filter((x) => x.status === "new").length}</span>}
           </h3>
-          {leads.length === 0 ? <p className="mt-2 text-sm text-soil/80">{t("ad_leads_none")}</p> : (
+          {archive && leads.length > 0 && <div className="mt-2 flex justify-end"><ClearAllBtn t={t} count={readLeadKeys.length} onClick={() => clearKeys(readLeadKeys)} /></div>}
+          {activeLeads.length === 0 ? <p className="mt-2 text-sm text-soil/80">{t("ad_leads_none")}</p> : (
             <ul className="mt-3 grid gap-2 lg:grid-cols-2">
-              {[...leads].sort((a, b) => (a.status === "new" ? 0 : 1) - (b.status === "new" ? 0 : 1) || (b.createdAt || 0) - (a.createdAt || 0)).map((x) => (
+              {[...activeLeads].sort((a, b) => (a.status === "new" ? 0 : 1) - (b.status === "new" ? 0 : 1) || (b.createdAt || 0) - (a.createdAt || 0)).map((x) => (
                 <li key={x.id} className={`rounded-xl bg-white p-3 text-sm ring-1 ${x.status === "new" ? "ring-red-200" : "ring-soil/10 opacity-80"}`}>
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="min-w-0">
@@ -9997,6 +10291,7 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
                   {x.farmerPhone && <p className="mt-1 font-mono text-xs font-semibold text-soil" dir="ltr">{x.farmerPhone}</p>}
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     <ContactButtons t={t} phone={x.farmerPhone} name={x.farmerName} hideNumber />
+                    {archive && <ClearBtn t={t} className="ms-auto" onClick={() => clearKeys("lead:" + x.id)} />}
                     {x.status === "new" && <button type="button" onClick={() => markLeadArranged(x)} className="inline-flex items-center gap-1 rounded-lg border border-forest/30 bg-white px-2.5 py-1.5 text-xs font-bold text-forest"><CircleCheck className="h-3.5 w-3.5" aria-hidden="true" />{t("ad_lead_mark")}</button>}
                   </div>
                 </li>
@@ -10202,16 +10497,18 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
         </div>
       )}
 
+      {sub === "history" && <HistoryList t={t} items={adminHist} onRestore={restore} />}
+      {sub === "demand" && archive && <div className="mb-3 flex justify-end"><ClearAllBtn t={t} count={readDemandKeys.length} onClick={() => clearKeys(readDemandKeys)} /></div>}
       {sub === "demand" && (
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-          {demand.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_demand_none")}</p> : (
+          {activeDemand.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_demand_none")}</p> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[860px] text-sm">
                 <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
                   <tr>{["ID", t("ad_demand"), t("lr_machine"), t("lr_village"), t("lr_date"), t("ad_req_rate"), t("ad_col_renter"), t("ad_col_status"), ""].map((h, i) => <th key={i} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-soil/10">
-                  {[...demand].sort((a, b) => b.createdAt - a.createdAt).map((d) => (
+                  {[...activeDemand].sort((a, b) => b.createdAt - a.createdAt).map((d) => (
                     <tr key={d.id}>
                       <td className="px-4 py-3 font-mono text-xs" dir="ltr">{d.id}</td>
                       <td className="px-4 py-3 text-xs font-semibold">{t("dm_" + d.type)}{d.discountPct ? ` · ${d.discountPct}%` : ""}</td>
@@ -10225,6 +10522,7 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
                         <div className="flex gap-1.5">
                           {d.status === "waiting" && <button type="button" onClick={() => saveDemand({ id: d.id, status: "contacted", updatedAt: Date.now() })} className="rounded-lg border border-soil/20 px-2 py-1 text-xs font-bold text-soil">{t("ad_demand_contacted")}</button>}
                           {d.status !== "matched" && <button type="button" onClick={() => saveDemand({ id: d.id, status: "matched", updatedAt: Date.now() })} className="rounded-lg bg-forest px-2 py-1 text-xs font-bold text-ivory">{t("ad_demand_matched")}</button>}
+                          {archive && <ClearBtn t={t} onClick={() => clearKeys("dm:" + d.id)} />}
                         </div>
                       </td>
                     </tr>
@@ -10268,10 +10566,10 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
       {sub === "live" && (
         <div className="space-y-5">
           <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-            <h3 className="flex items-center gap-2 border-b border-soil/10 p-4 font-bold text-forest"><Radar className="h-4 w-4" aria-hidden="true" />{t("ad_live_req")} ({liveRequests.length})</h3>
-            {liveRequests.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-soil/10 p-4"><h3 className="flex items-center gap-2 font-bold text-forest"><Radar className="h-4 w-4" aria-hidden="true" />{t("ad_live_req")} ({activeReqs.length})</h3>{archive && <ClearAllBtn t={t} count={readReqKeys.length} onClick={() => clearKeys(readReqKeys)} />}</div>
+            {activeReqs.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
               <ul className="divide-y divide-soil/10">
-                {[...liveRequests].sort((x, y) => (y.createdAt || 0) - (x.createdAt || 0)).map((r) => {
+                {[...activeReqs].sort((x, y) => (y.createdAt || 0) - (x.createdAt || 0)).map((r) => {
                   const rc = reqContacts[r.id] || {};
                   const p0 = prof(rc.renterEmail);
                   return (
@@ -10286,7 +10584,7 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
                         <p><span className="font-semibold text-soil/80">{t("ct_location")}:</span> {r.village || "·"}{r.loc && r.loc.district ? `, ${dn(r.loc.district)}` : ""}</p>
                         <p><span className="font-semibold text-soil/80">{t("ct_offered")}:</span> <b className="text-forest" dir="ltr">{pkr(r.rate)}/hr</b>{r.agreedRate ? <span dir="ltr"> → {pkr(r.agreedRate)}</span> : null} · {r.hours}h · <span dir="ltr">{fmtDate(r.date)}</span> · {r.rentType === "wet" ? t("lr_wet") : t("lr_dry")} · T{r.tierReached || 1}</p>
                       </div>
-                      <div><ContactButtons t={t} phone={rc.renterPhone || p0.phone} name={r.renterName || rc.renterName || p0.name} /></div>
+                      <div className="flex flex-wrap items-center gap-2"><ContactButtons t={t} phone={rc.renterPhone || p0.phone} name={r.renterName || rc.renterName || p0.name} />{archive && <ClearBtn t={t} onClick={() => clearKeys("rq:" + r.id)} />}</div>
                     </li>
                   );
                 })}
@@ -10294,10 +10592,10 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
             )}
           </div>
           <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-            <h3 className="flex items-center gap-2 border-b border-soil/10 p-4 font-bold text-forest"><ClipboardList className="h-4 w-4" aria-hidden="true" />{t("ad_live_bk")} ({bookings.length})</h3>
-            {sortedBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-soil/10 p-4"><h3 className="flex items-center gap-2 font-bold text-forest"><ClipboardList className="h-4 w-4" aria-hidden="true" />{t("ad_live_bk")} ({activeBookings.length})</h3>{archive && <ClearAllBtn t={t} count={readBookingKeys.length} onClick={() => clearKeys(readBookingKeys)} />}</div>
+            {activeBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
               <ul className="divide-y divide-soil/10">
-                {sortedBookings.map((b) => {
+                {activeBookings.map((b) => {
                   const bc = bookingContacts[b.id] || {};
                   const p0 = prof(bc.renterEmail);
                   return (
@@ -10312,7 +10610,7 @@ function AdminConsole({ bookingContacts = {}, demandContacts = {}, reqContacts =
                         <p><span className="font-semibold text-soil/80">{t("ct_location")}:</span> {dn(b.district || "") || "·"}</p>
                         <p><span className="font-semibold text-soil/80">{t("ct_rate")}:</span> <b className="text-forest" dir="ltr">{pkr(b.quote.rate || 0)}/hr</b> · {b.hours}h · <span dir="ltr">{fmtDate(b.date)}</span> · <span dir="ltr">{pkr(b.quote.total || 0)}</span></p>
                       </div>
-                      <div><ContactButtons t={t} phone={bc.renterPhone || p0.phone} name={b.renterName || bc.renterName || p0.name} /></div>
+                      <div className="flex flex-wrap items-center gap-2"><ContactButtons t={t} phone={bc.renterPhone || p0.phone} name={b.renterName || bc.renterName || p0.name} />{archive && <ClearBtn t={t} onClick={() => clearKeys("bk:" + b.id)} />}</div>
                     </li>
                   );
                 })}
@@ -11296,6 +11594,7 @@ function App() {
   const [helperOpen, setHelperOpen] = useState(false);
   const accounts = useAccounts();
   const session = accounts.session;
+  const archive = useArchive(session && session.uid); // Clear -> History (per member, synced to user_prefs)
   // Renter's farm location (pin, GPS or district). Distances and transport are measured from it.
   // The location filter lives only for this browser tab (sessionStorage); a new visit starts from the
   // signed-in profile's district, never from an old "agrishare.userloc" left in localStorage.
@@ -11437,7 +11736,7 @@ function App() {
       farmerName: session.name || "", farmerPhone: session.phone || "", farmerEmail: session.email || "",
       district: info.district || (session.location && session.location.district) || "", village: info.village || "",
       machineType: RATE_NAMES.en[info.category] || info.category || "", category: info.category || "",
-      hours: Number(info.hours) || null, offeredRate: Number(info.rate) || null, radiusChecked: 100, requestId: info.requestId || null, country: CUR.id,
+      hours: Number(info.hours) || null, offeredRate: Number(info.rate) || null, radiusChecked: MATCH_RADIUS_KM, requestId: info.requestId || null, country: CUR.id,
     };
     try { const mine = store.get("agrishare.leads.mine", []); store.set("agrishare.leads.mine", [...mine, lead].slice(-20)); } catch (e) { /* ignore */ }
     const saved = writeDoc(COL.leads, lead.id, lead).then(() => true).catch((e) => { console.warn("[Agri-Share] Lead not saved to Firestore:", e && e.code); return false; });
@@ -11671,13 +11970,13 @@ function App() {
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "owner-portal" && <OwnerPortal archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
+        {showTab === "admin" && <AdminPanel archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
-        {showTab === "land" && <LandLease t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBooking} sendLead={sendLead} ecoActive={ecoActive} />}
+        {showTab === "land" && <LandLease archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBooking} sendLead={sendLead} ecoActive={ecoActive} />}
         {showTab === "govt" && <GovtPortal t={t} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}

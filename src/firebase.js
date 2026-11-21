@@ -95,6 +95,7 @@ export const COL = {
   landBookings: "land_bookings",
   landContacts: "land_contacts",
   landReqContacts: "land_request_contacts",
+  prefs: "user_prefs", // per-member private settings (e.g. the Clear -> History archive)
 };
 
 let app = null, auth = null;
