@@ -871,7 +871,7 @@ const T = {
     kp_try: "Try keypad booking",
     nav_mandi: "Agri-Market",
     am_title: "Agri-Market: Sell Your Harvest",
-    am_sub: "Post your crop and your price. Registered flour mills, rice mills and bulk buyers bid live on it. Pick the best offer.",
+    am_sub: "Name your price for your crop. Buyers and mills are being onboarded. Post your crop now to get priority offers.",
     am_credit: "Your pending machinery credit (70%)",
     am_credit_n: "bookings on Harvest Now, Pay Later",
     am_closed_loop: "Closed-Loop Settlement",
@@ -1195,7 +1195,8 @@ const T = {
     mb_sample_badge: "Sample",
     mb_sample_s: "Every booking gets a voucher with a booking ID, full price breakdown, live status and the owner's contact once confirmed. Sign in to see yours.",
     kh_mic_label: "Bol kar poochein",
-    ft_support: "Consultant support"
+    ft_support: "Consultant support",
+    zs_sub_any: "No registered owner is online in your area for a {machine} yet. We will still get your field covered. Pick one:"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1675,7 +1676,7 @@ const T = {
     kp_try: "کی پیڈ بکنگ آزمائیں",
     nav_mandi: "ایگری منڈی",
     am_title: "ایگری منڈی: اپنی فصل بیچیں",
-    am_sub: "اپنی فصل اور قیمت پوسٹ کریں۔ رجسٹرڈ آٹا ملز، رائس ملز اور بڑے خریدار آپ کی قیمت پر لائیو بولی لگاتے ہیں۔ بہترین پیشکش چنیں۔",
+    am_sub: "اپنی فصل کی قیمت خود بتائیں۔ خریدار اور ملیں شامل کی جا رہی ہیں۔ ترجیحی آفرز کے لیے ابھی اپنی فصل پوسٹ کریں۔",
     am_credit: "آپ کا باقی مشینری قرض (70%)",
     am_credit_n: "بکنگز ابھی کٹائی، بعد میں ادائیگی پر",
     am_closed_loop: "کلوزڈ لوپ ادائیگی",
@@ -2133,7 +2134,8 @@ const T = {
     mb_sample_badge: "نمونہ",
     mb_sample_s: "ہر بکنگ پر واؤچر ملتا ہے: بکنگ آئی ڈی، قیمت کی مکمل تفصیل، لائیو اسٹیٹس اور تصدیق کے بعد مالک کا رابطہ۔ اپنی بکنگ دیکھنے کے لیے سائن ان کریں۔",
     kh_mic_label: "بول کر پوچھیں",
-    ft_support: "کنسلٹنٹ مدد"
+    ft_support: "کنسلٹنٹ مدد",
+    zs_sub_any: "آپ کے علاقے میں ابھی {machine} کا کوئی رجسٹرڈ مالک آن لائن نہیں۔ پھر بھی آپ کا کام ہو جائے گا۔ ایک راستہ چنیں:"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2613,7 +2615,7 @@ const T = {
     kp_try: "کی پیڈ بکنگ ورت کے ویکھو",
     nav_mandi: "ایگری منڈی",
     am_title: "ایگری منڈی: اپنی فصل ویچو",
-    am_sub: "اپنی فصل تے قیمت پاؤ۔ رجسٹر آٹا ملاں، رائس ملاں تے وڈے خریدار تہاڈی قیمت تے لائیو بولی لاندے نیں۔ سب توں چنگی پیشکش چنو۔",
+    am_sub: "اپنی فصل دی قیمت آپ دسو۔ خریدار تے ملاں شامل کیتیاں جا رہیاں نیں۔ پہل والیاں آفراں لئی ہنے اپنی فصل پوسٹ کرو۔",
     am_credit: "تہاڈا باقی مشینری قرض (70%)",
     am_credit_n: "بکنگاں ہن وڈھی، بعد وچ ادائیگی تے",
     am_closed_loop: "کلوزڈ لوپ ادائیگی",
@@ -2971,7 +2973,8 @@ const T = {
     mb_sample_badge: "نمونہ",
     mb_sample_s: "ہر بکنگ تے واؤچر ملدا اے: بکنگ آئی ڈی، قیمت دی پوری تفصیل، لائیو حال تے تصدیق توں بعد مالک دا رابطہ۔ اپنی بکنگ ویکھن لئی سائن ان کرو۔",
     kh_mic_label: "بول کے پچھو",
-    ft_support: "کنسلٹنٹ مدد"
+    ft_support: "کنسلٹنٹ مدد",
+    zs_sub_any: "تہاڈے علاقے وچ ہلے {machine} دا کوئی رجسٹر مالک آن لائن نئیں۔ فیر وی تہاڈا کم ہو جاوے گا۔ اک رستہ چنو:"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -3451,7 +3454,7 @@ const T = {
     kp_try: "ڪي پيڊ بڪنگ آزمايو",
     nav_mandi: "ايگري منڊي",
     am_title: "ايگري منڊي: پنهنجي فصل وڪڻو",
-    am_sub: "پنهنجي فصل ۽ قيمت موڪليو۔ رجسٽرڊ اٽي جون ملون، چانورن جون ملون ۽ وڏا خريدار توهان جي قيمت تي لائيو بولي ڏين ٿا۔ بهترين آڇ چونڊيو۔",
+    am_sub: "پنهنجي فصل جي قيمت پاڻ ٻڌايو۔ خريدار ۽ ملون شامل ڪيون پيون وڃن۔ ترجيحي آڇن لاءِ هاڻي پنهنجي فصل پوسٽ ڪريو۔",
     am_credit: "توهان جو باقي مشينري قرض (70%)",
     am_credit_n: "بڪنگون هاڻي لابارو، پوءِ ادائيگي تي",
     am_closed_loop: "ڪلوزڊ لوپ ادائيگي",
@@ -3810,7 +3813,8 @@ const T = {
     mb_sample_badge: "نمونو",
     mb_sample_s: "هر بڪنگ تي واؤچر ملي ٿو: بڪنگ آءِ ڊي، قيمت جي پوري تفصيل، لائيو حالت ۽ تصديق کان پوءِ مالڪ جو رابطو۔ پنهنجي بڪنگ ڏسڻ لاءِ سائن ان ڪريو۔",
     kh_mic_label: "ڳالهائي پڇو",
-    ft_support: "ڪنسلٽنٽ مدد"
+    ft_support: "ڪنسلٽنٽ مدد",
+    zs_sub_any: "توهان جي علائقي ۾ اڃا {machine} جو ڪو رجسٽر مالڪ آن لائن ناهي۔ تڏهن به توهان جو ڪم ٿيندو۔ هڪ رستو چونڊيو:"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3981,7 +3985,7 @@ const T = {
     kp_ivr_ur: "اردو IVR",
     nav_mandi: "اګري منډۍ",
     am_title: "اګري منډۍ: خپل فصل وپلورئ",
-    am_sub: "خپل فصل او بیه ثبت کړئ. ثبت شوي د اوړو ملونه، د وريجو ملونه او لوی پېرودونکي ستاسو پر بیه ژوندۍ داوطلبي کوي. غوره وړاندیز وټاکئ.",
+    am_sub: "د خپل فصل بیه پخپله ووایاست. پېرودونکي او ملونه ورزیاتېږي. د لومړیتوب وړاندیزونو لپاره همدا اوس خپل فصل ثبت کړئ.",
     am_credit: "ستاسو پاتې د ماشین پور (70%)",
     am_credit_n: "بکنګونه په اوس لو، وروسته تادیه",
     am_closed_loop: "تړلې کړۍ تصفیه",
@@ -4358,7 +4362,9 @@ const T = {
     mb_sample_badge: "بېلګه",
     mb_sample_s: "هره بکنګ واؤچر لري: د بکنګ پېژند، د قیمت بشپړ توضیح، ژوندی حالت او له تایید وروسته د مالک اړیکه. د خپلې بکنګ لیدو لپاره ننوځئ.",
     kh_mic_label: "په غږ وپوښتئ",
-    ft_support: "د مشاور مرسته"
+    ft_support: "د مشاور مرسته",
+    zs_sub: "د {place} سره نږدې لا د {machine} کوم ثبت شوی مالک آنلاین نه دی. بیا هم ستاسو کار به وشي. یوه لاره وټاکئ:",
+    zs_sub_any: "ستاسو په سیمه کې لا د {machine} کوم ثبت شوی مالک آنلاین نه دی. بیا هم ستاسو کار به وشي. یوه لاره وټاکئ:"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -4517,7 +4523,7 @@ const T = {
     kp_ivr_ur: "اردو IVR",
     nav_mandi: "ایگری منڈی",
     am_title: "ایگری منڈی: وتی کِشت ءَ بہا کن",
-    am_sub: "وتی کِشت و بہا ءَ دیم دئے۔ نبشتہ کتگیں آرت ءِ مِل، برنج ءِ مِل و مزنیں گِروک شمئے بہا ءِ سرا زندگیں بولی جن اَنت۔ گہتریں پیشکش ءَ گچین کن۔",
+    am_sub: "وتی کِشت ءِ بہا ءَ وت بگوش۔ گِروک و مِل ہوار کنگ بئیگ ءَ اَنت۔ اوّلی آفراں ءِ واستا انّوں وتی کِشت ءَ پوسٹ کن۔",
     am_credit: "شمئے پشت کپتگیں مشین ءِ وام (70%)",
     am_credit_n: "بکنگ انّوں رونگ، رند ءَ زرّ ءِ سرا",
     am_closed_loop: "بند حلقہ ءِ ہساب",
@@ -4896,7 +4902,9 @@ const T = {
     mb_sample_badge: "نمونہ",
     mb_sample_s: "ہر بکنگ ءَ واؤچرے رسیت: بکنگ ءِ آئی ڈی، بہا ءِ سجّھیں سرجمی، زندگیں حال و منّگ ءَ رند واھند ءِ سیادی۔ وتی بکنگ ءَ چارگ ءِ واستا سائن ان کن۔",
     kh_mic_label: "گپ جت ءَ جُست کن",
-    ft_support: "کنسلٹنٹ ءِ کمک"
+    ft_support: "کنسلٹنٹ ءِ کمک",
+    zs_sub: "{place} ءِ نزیک ءَ انگت {machine} ءِ ہچ نبشتہ کتگیں واھند آن لائن نہ اِنت۔ پدا ہم شمئے کار بیت۔ یک راہے گچین کن:",
+    zs_sub_any: "شمئے دمگ ءَ انگت {machine} ءِ ہچ نبشتہ کتگیں واھند آن لائن نہ اِنت۔ پدا ہم شمئے کار بیت۔ یک راہے گچین کن:"
   },
 };
 
@@ -6153,7 +6161,8 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
 
 /* "Popular machines in Punjab": shown when no live machine matches nearby, so the page is never empty.
    Typical Punjab hourly ranges (dry rent, operator usually included), not quotes. */
-const POPULAR_PK = [["tractor", 1800, 3500], ["harvester", 7000, 10000], ["leveler", 2200, 3000], ["thresher", 2000, 2800]];
+// ranges come from the same Pakistan catalog as the Apni Boli machine cards, so both always match
+const POPULAR_PK = ["tractor", "harvester", "leveler", "thresher"].map((c) => { const ms = COUNTRIES.PK.catalog.filter((m) => m.cat === c); return [c, Math.min(...ms.map((m) => m.min)), Math.max(...ms.map((m) => m.max))]; });
 const rangeText = (t, lo, hi) => t("pop_range").replace("{lo}", pkr(lo)).replace("{hi}", Math.round(toLocal(hi)).toLocaleString("en-PK"));
 function PopularMachines({ t, onRequest }) {
   return (
@@ -7302,6 +7311,7 @@ function AgentTab({ t, lang, listings, createBooking, updateBooking, setTab }) {
               <p>{t("ag_pilot")}</p>
               <p className="mt-2 text-xs font-semibold text-ivory/80">{t("ag_call")}</p>
               <a href={`tel:${CONSULTANT.primary.tel}`} className="mt-0.5 inline-flex min-h-[44px] items-center gap-1.5 font-mono text-lg font-extrabold text-gold underline-offset-4 hover:underline" dir="ltr"><Phone className="h-4 w-4" aria-hidden="true" />{CONSULTANT.primary.label}</a>
+              <a href={`tel:${CONSULTANT.secondary.tel}`} className="inline-flex min-h-[40px] items-center gap-1.5 font-mono text-base font-bold text-ivory/90 underline-offset-4 hover:underline" dir="ltr"><Phone className="h-4 w-4" aria-hidden="true" />{CONSULTANT.secondary.label}</a>
             </div>
           </div>
         </div>
@@ -7493,9 +7503,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/mandi|sell (my )?(crop|harvest|wheat|rice|maize|cotton)|fasal bech|bechni|bechna|bechun|flour mill|rice mill|buyer|khareedar|منڈی|فصل بیچ|گندم بیچ|خریدار|منډۍ|منڊي|وپلورم|وڪڻان|بہا کناں|بیچوں|بیچنی|بیچنا|ویچاں|ویچنی|ویچنا|sell/i)) {
     return LX("mandi", {
-      en: "Agri-Market (Sell Harvest tab):\n1. Choose crop (wheat, rice, maize, cotton), quantity in maunds, quality and village.\n2. Enter your expected rate per mann and your JazzCash or EasyPaisa number.\n3. Post: flour mills, rice mills and bulk buyers bid live (some above your rate, some counter lower).\n4. Accept the best bid and check the settlement: sale value minus any pending 70% machinery credit = net profit to your wallet (Closed-Loop Settlement).",
-      ur: "ایگری منڈی (فصل بیچیں ٹیب):\n1. فصل (گندم، چاول، مکئی، کپاس)، مقدار من میں، معیار اور گاؤں چنیں۔\n2. فی من متوقع قیمت اور جاز کیش یا ایزی پیسہ نمبر لکھیں۔\n3. پوسٹ کریں: آٹا ملز، رائس ملز اور بڑے خریدار لائیو بولی لگاتے ہیں۔\n4. بہترین بولی قبول کریں: فروخت کی رقم سے باقی 70% مشینری قرض کٹ کر خالص منافع آپ کے والٹ میں (کلوزڈ لوپ ادائیگی)۔",
-      ro: "Agri-Mandi (Sell Harvest tab):\n1. Fasal (gandum, chawal, makai, kapas), miqdar mann mein, quality aur gaon chunein.\n2. Fi mann expected rate aur JazzCash ya EasyPaisa number likhein.\n3. Post karein: flour mills, rice mills aur bulk buyers live boli lagate hain.\n4. Best boli accept karein: sale ki raqam se baqi 70% machinery qarz kat kar net munafa aap ke wallet mein (Closed-Loop Settlement).",
+      en: "Agri-Market (Sell Harvest tab):\n1. Choose crop (wheat, rice, maize, cotton), quantity in maunds, quality and village.\n2. Enter your expected rate per mann and your JazzCash or EasyPaisa number.\n3. Post: buyers and mills are being onboarded, so early posts get priority offers.\n4. Accept the best bid and check the settlement: sale value minus any pending 70% machinery credit = net profit to your wallet (Closed-Loop Settlement).",
+      ur: "ایگری منڈی (فصل بیچیں ٹیب):\n1. فصل (گندم، چاول، مکئی، کپاس)، مقدار من میں، معیار اور گاؤں چنیں۔\n2. فی من متوقع قیمت اور جاز کیش یا ایزی پیسہ نمبر لکھیں۔\n3. پوسٹ کریں: خریدار اور ملیں شامل کی جا رہی ہیں، پہلے پوسٹ کرنے والوں کو ترجیحی آفرز ملیں گی۔\n4. بہترین بولی قبول کریں: فروخت کی رقم سے باقی 70% مشینری قرض کٹ کر خالص منافع آپ کے والٹ میں (کلوزڈ لوپ ادائیگی)۔",
+      ro: "Agri-Mandi (Sell Harvest tab):\n1. Fasal (gandum, chawal, makai, kapas), miqdar mann mein, quality aur gaon chunein.\n2. Fi mann expected rate aur JazzCash ya EasyPaisa number likhein.\n3. Post karein: buyers aur mills shamil kiye ja rahe hain, pehle post karne walon ko priority offers milengi.\n4. Best boli accept karein: sale ki raqam se baqi 70% machinery qarz kat kar net munafa aap ke wallet mein (Closed-Loop Settlement).",
     });
   }
   if (has(/keypad|button phone|simple phone|sada phone|helpline|help line|0800|toll|ivr|call kar|ہیلپ لائن|سادہ فون|کال|basic phone|هيلپ لائن|هېلپ لاین|ساده ټیلیفون|سادي فون|سادگیں فون/i)) {
@@ -7699,7 +7709,7 @@ How to use the website (guide users step by step when they ask):
 - Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
 - Commission: 6% standard (5 to 7% range); smallholders under 5 acres tick a box for a subsidised 4%.
 - Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
-- Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live on the farmer's price. Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
+- Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Real buyers and mills are still being onboarded: say so honestly and never claim live bids from registered mills (simulated buyer bids appear only in the founder's Sample Demo Data mode). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
 - Keypad phones: call or WhatsApp the Agri-Share consultants on 0322-4729249 or 0370-0318574 (there is no toll-free helpline or 24/7 line; never mention 0800 numbers). A USSD short code is not allocated yet ("coming soon"): never give out a USSD code.
 - No smartphone: Agri-Agent & USSD tab shows the village shopkeeper model and the USSD booking flow.
 - Language menu at top right: English, Urdu, Punjabi, Sindhi, Pashto, Balochi.
@@ -8603,7 +8613,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
           <form onSubmit={(e) => { e.preventDefault(); send(); }} className={`items-center gap-2 border-t border-soil/10 bg-white p-2.5 ${voiceOpen ? "hidden" : "flex"}`}>
             <label htmlFor="kh-in" className="sr-only">{t("kh_placeholder")}</label>
             <input id="kh-in" ref={inputRef} dir="auto" value={input} onChange={(e) => setInput(e.target.value)} placeholder={t("kh_placeholder")} className={inputCls + " py-2"} />
-            <button type="button" onClick={() => (voiceOpen ? endCall() : startCall())} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center gap-1 rounded-xl px-2.5 text-xs font-extrabold ${voiceOpen ? "bg-red-600 text-white" : "bg-gold text-soil"}`} aria-label={voiceOpen ? t("vc_end") : t("kh_mic_label")} title={voiceOpen ? t("vc_end") : t("kh_mic_label")}>{voiceOpen ? <PhoneOff className="h-5 w-5" /> : <><Mic className="h-5 w-5" aria-hidden="true" /><span className="max-w-[6.5rem] truncate">{t("kh_mic_label")}</span></>}</button>
+            <button type="button" onClick={() => (voiceOpen ? endCall() : startCall())} className={`inline-flex min-h-[44px] shrink-0 items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold ${voiceOpen ? "min-w-[44px] bg-red-600 px-2.5 text-white" : "min-w-[165px] bg-gold px-4 text-soil"}`} aria-label={voiceOpen ? t("vc_end") : t("kh_mic_label")} title={voiceOpen ? t("vc_end") : t("kh_mic_label")}>{voiceOpen ? <PhoneOff className="h-5 w-5" /> : <><Mic className="h-5 w-5" aria-hidden="true" /><span className="whitespace-nowrap leading-[2]">{t("kh_mic_label")}</span></>}</button>
             <button type="submit" disabled={busy || !input.trim()} className="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl bg-forest text-ivory disabled:opacity-40" aria-label={t("kh_send")}><Send className="h-4 w-4 rtl:-scale-x-100" /></button>
           </form>
         </div>
@@ -8828,8 +8838,8 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
     <div className="flex items-center justify-between gap-2">
       <span className="min-w-0 truncate font-mono text-xs font-bold text-forest min-[400px]:text-sm" dir="ltr">{num.label}</span>
       <span className="flex shrink-0 items-center gap-1.5">
-      <a href={`tel:${num.tel}`} className={`inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_call")}</a>
-      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_wa")}</a>
+      <a href={`tel:${num.tel}`} className={`inline-flex min-h-[40px] items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_call")}</a>
+      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-[40px] items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_wa")}</a>
       </span>
     </div>
   );
@@ -8865,7 +8875,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
   const hours = Math.max(1, Number(request.hours) || 4);
   const rate = Number(request.rate) || askFor(category, BASE_ASK[category] || 2000);
   const district = request.district || (request.loc && request.loc.district) || "";
-  const place = request.village || (district ? dn(district) : t("lr_you"));
+  const place = request.village || (district ? dn(district) : "");
   const machine = t("one_" + category);
   const estimates = [15, 25, 40].map((km) => ({ km, q: liveQuote({ rate, hours, km, category, rentType: request.rentType || "dry", dieselPrice }) }));
 
@@ -8900,7 +8910,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
     {onSendLead && <ConsultantCard t={t} lang={lang} request={{ ...request, category: pickCategory ? cat : request.category }} onSendLead={onSendLead} requireAuth={requireAuth} autoSent={autoSent} />}
     <div className="animate-[slidein_.3s_ease-out] rounded-2xl border border-leaf/40 bg-gradient-to-br from-leaf/10 via-ivory to-gold/10 p-4" role="region" aria-labelledby="zs-h">
       <p id="zs-h" className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><Handshake className="h-5 w-5 text-gold" aria-hidden="true" />{t("zs_title")}</p>
-      <p className="mt-1 text-sm text-soil/80">{t("zs_sub").replace("{place}", place).replace("{machine}", machine)}</p>
+      <p className="mt-1 text-sm text-soil/80">{(place ? t("zs_sub").replace("{place}", place) : t("zs_sub_any")).replace("{machine}", machine)}</p>
       {pickCategory && (
         <label className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-soil">{t("zs_machine")}
           <select value={cat} onChange={(e) => setCat(e.target.value)} className="rounded-lg border border-soil/20 bg-white px-2 py-1 text-sm">
@@ -9036,7 +9046,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
 }
 
 // Typical rate farmers pay in Pakistan (shown instead of "PKR 0/hr" before nearby owners reply)
-const APNI_RANGE_PK = { tractor: [2200, 2800], harvester: [7000, 10000], leveler: [2200, 3000], thresher: [2000, 2800] };
+const APNI_RANGE_PK = { tractor: [2200, 2800] };
 const catRange = (cat) => {
   if (CUR.id === "PK" && APNI_RANGE_PK[cat]) return APNI_RANGE_PK[cat];
   const ms = CUR.catalog.filter((m) => m.cat === cat);
@@ -9342,7 +9352,7 @@ function LiveRequest({ initialCat = null, ecoActive = false, t, dn, lang, listin
       ) : (
       <div key="step2" className="grid animate-[slidein_.3s_ease-out] gap-6 lg:grid-cols-[360px_1fr]">
         {/* request form */}
-        <form ref={formRef} onSubmit={post} className="h-fit scroll-mt-24 space-y-4 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
+        <form ref={formRef} onSubmit={post} className="h-fit scroll-mt-24 space-y-4 rounded-2xl border border-soil/10 bg-white p-5 pb-36 shadow-sm sm:pb-5">
           <div className="overflow-hidden rounded-xl ring-1 ring-soil/10">
             <div className="relative">
               <MachinePhoto category={f.category} name={f.model || (CUR.catalog.find((m) => m.cat === f.category) || {}).name} className="h-28 w-full" alt={t("one_" + f.category)} />
