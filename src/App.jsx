@@ -202,9 +202,12 @@ const fmtLocal = (v, cur = CUR) => {
   return cur.symbol + Number(v).toLocaleString(cur.locale === "zh-CN" ? "en-US" : cur.locale, { minimumFractionDigits: dec, maximumFractionDigits: dec });
 };
 // transport tariffs in PKR for the current country
-const trKm = () => (CUR.id === "PK" ? TRANSPORT_PER_KM : CUR.transportKm / CUR.fx);
-const trMin = () => (CUR.id === "PK" ? TRANSPORT_MIN : CUR.transportMin / CUR.fx);
-const trLong = () => (CUR.id === "PK" ? 60 : CUR.longKm / CUR.fx);
+// Pakistan tariffs follow the live diesel price: 100 PKR/km, 500 PKR minimum and 60 PKR/km long haul were set
+// at the 360 PKR/L benchmark, and move with diesel (kept between 70% and 150% of that)
+const fuelFactor = () => (CUR.id === "PK" ? Math.min(1.5, Math.max(0.7, LIVE_DIESEL / DIESEL_BENCHMARK)) : 1);
+const trKm = () => (CUR.id === "PK" ? Math.round(TRANSPORT_PER_KM * fuelFactor()) : CUR.transportKm / CUR.fx);
+const trMin = () => (CUR.id === "PK" ? Math.round((TRANSPORT_MIN * fuelFactor()) / 50) * 50 : CUR.transportMin / CUR.fx);
+const trLong = () => (CUR.id === "PK" ? Math.round(LONG_TRANSPORT_PER_KM * fuelFactor()) : CUR.longKm / CUR.fx);
 
 // Sample listings outside Pakistan (rates stored in PKR, converted for display)
 const INTL_SEEDS = [
@@ -593,7 +596,7 @@ const T = {
     lr_wet: "Wet rent",
     lr_wet_d: "Owner provides diesel at market rate",
     lr_diesel: "Diesel benchmark (PKR/L)",
-    lr_diesel_note: "Market rate set by the Agri-Share team. Pakistan revises fuel prices frequently.",
+    lr_diesel_note: "Updated automatically twice a day from Pakistan's notified fuel prices. Transport estimates follow the diesel price.",
     lr_peak: "Peak harvest season",
     lr_peak_d: "Village and pilot-zone machines are busy, so the search must fall back to Tier 3.",
     lr_post: "Post request & scan owners",
@@ -1147,7 +1150,7 @@ const T = {
     loc_ask_s: "Share your GPS location or pick your district to see machines near you and the real transport cost.",
     loc_ask_ph: "Use GPS or choose district",
     pop_title: "Popular machines in Punjab",
-    pop_sub: "No live machine matches near you yet. These are typical Punjab rates. Tap Book / Request and nearby owners or our consultant will get back to you.",
+    pop_sub: "No live machine matches near you yet. Pick a machine, set your own rate and nearby owners or our consultant will get back to you.",
     pop_book: "Book / Request",
     pop_range: "{lo} to {hi}/hr",
     tb_help: "Need help?",
@@ -1196,7 +1199,23 @@ const T = {
     mb_sample_s: "Every booking gets a voucher with a booking ID, full price breakdown, live status and the owner's contact once confirmed. Sign in to see yours.",
     kh_mic_label: "Bol kar poochein",
     ft_support: "Consultant support",
-    zs_sub_any: "No registered owner is online in your area for a {machine} yet. We will still get your field covered. Pick one:"
+    zs_sub_any: "No registered owner is online in your area for a {machine} yet. We will still get your field covered. Pick one:",
+    fuel_pill: "Live Fuel Rates: Diesel PKR {diesel}/L · Petrol PKR {petrol}/L",
+    fuel_pill_set: "Fuel Rates: Diesel PKR {diesel}/L · Petrol PKR {petrol}/L",
+    pop_own_rate: "Set your own rate · Apni boli lagayein",
+    ad_fuel_t: "Override / Update Fuel Rates",
+    ad_fuel_sub: "Diesel and petrol prices update automatically twice a day. Set an override only if the automatic rate is wrong; it applies to every visitor until you switch back.",
+    ad_fuel_mode_override: "Manual override on",
+    ad_fuel_mode_auto: "Automatic daily rates",
+    ad_fuel_diesel: "Diesel (HSD), PKR per litre",
+    ad_fuel_petrol: "Petrol (Super), PKR per litre",
+    ad_fuel_save: "Save override",
+    ad_fuel_auto: "Switch back to automatic rates",
+    ad_fuel_founder_only: "Only the founder account can change fuel rates.",
+    ad_fuel_range: "Enter prices between PKR 150 and 600 per litre.",
+    ad_fuel_saved: "Fuel override saved: diesel {d}/L, petrol {p}/L.",
+    ad_fuel_err: "Could not save the fuel rates. Check your connection and that you are signed in as the founder.",
+    ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1406,7 +1425,7 @@ const T = {
     lr_wet: "ویٹ رینٹ",
     lr_wet_d: "ڈیزل مالک کا، مارکیٹ ریٹ پر",
     lr_diesel: "ڈیزل ریٹ (روپے فی لیٹر)",
-    lr_diesel_note: "ایگری شیئر ٹیم کا مقرر کردہ مارکیٹ ریٹ۔ پاکستان میں ڈیزل کی قیمت اکثر بدلتی ہے۔",
+    lr_diesel_note: "پاکستان کے اعلان شدہ ایندھن ریٹ سے دن میں دو بار خود بخود تازہ ہوتا ہے۔ ٹرانسپورٹ کا اندازہ ڈیزل کی قیمت کے ساتھ بدلتا ہے۔",
     lr_peak: "کٹائی کا مصروف موسم",
     lr_peak_d: "گاؤں اور پائلٹ علاقے کی مشینیں مصروف ہیں، اس لیے تلاش تیسرے درجے تک جائے گی۔",
     lr_post: "درخواست پوسٹ کریں اور مالکان تلاش کریں",
@@ -2086,7 +2105,7 @@ const T = {
     loc_ask_s: "قریبی مشینیں اور اصل ٹرانسپورٹ خرچ دیکھنے کے لیے اپنا جی پی ایس مقام دیں یا ضلع چنیں۔",
     loc_ask_ph: "جی پی ایس یا ضلع چنیں",
     pop_title: "پنجاب کی مقبول مشینیں",
-    pop_sub: "ابھی آپ کے قریب کوئی لائیو مشین نہیں ملی۔ یہ پنجاب کے عام ریٹ ہیں۔ بک / درخواست دبائیں، قریبی مالکان یا ہمارا کنسلٹنٹ آپ سے رابطہ کرے گا۔",
+    pop_sub: "ابھی آپ کے قریب کوئی لائیو مشین نہیں ملی۔ مشین چنیں، اپنا ریٹ خود بتائیں، قریبی مالکان یا ہمارا کنسلٹنٹ آپ سے رابطہ کرے گا۔",
     pop_book: "بک / درخواست",
     pop_range: "{lo} سے {hi} فی گھنٹہ",
     tb_help: "مدد چاہیے؟",
@@ -2135,7 +2154,23 @@ const T = {
     mb_sample_s: "ہر بکنگ پر واؤچر ملتا ہے: بکنگ آئی ڈی، قیمت کی مکمل تفصیل، لائیو اسٹیٹس اور تصدیق کے بعد مالک کا رابطہ۔ اپنی بکنگ دیکھنے کے لیے سائن ان کریں۔",
     kh_mic_label: "بول کر پوچھیں",
     ft_support: "کنسلٹنٹ مدد",
-    zs_sub_any: "آپ کے علاقے میں ابھی {machine} کا کوئی رجسٹرڈ مالک آن لائن نہیں۔ پھر بھی آپ کا کام ہو جائے گا۔ ایک راستہ چنیں:"
+    zs_sub_any: "آپ کے علاقے میں ابھی {machine} کا کوئی رجسٹرڈ مالک آن لائن نہیں۔ پھر بھی آپ کا کام ہو جائے گا۔ ایک راستہ چنیں:",
+    fuel_pill: "تازہ ایندھن ریٹ: ڈیزل {diesel} روپے فی لیٹر · پیٹرول {petrol} روپے فی لیٹر",
+    fuel_pill_set: "ایندھن ریٹ: ڈیزل {diesel} روپے فی لیٹر · پیٹرول {petrol} روپے فی لیٹر",
+    pop_own_rate: "اپنا ریٹ خود بتائیں · اپنی بولی لگائیں",
+    ad_fuel_t: "ایندھن ریٹ بدلیں / تازہ کریں",
+    ad_fuel_sub: "ڈیزل اور پیٹرول کے ریٹ دن میں دو بار خود بخود تازہ ہوتے ہیں۔ صرف غلط ریٹ کی صورت میں دستی ریٹ لگائیں؛ یہ واپس خودکار کرنے تک سب پر لاگو رہے گا۔",
+    ad_fuel_mode_override: "دستی ریٹ لاگو ہے",
+    ad_fuel_mode_auto: "خودکار روزانہ ریٹ",
+    ad_fuel_diesel: "ڈیزل (HSD)، روپے فی لیٹر",
+    ad_fuel_petrol: "پیٹرول (سپر)، روپے فی لیٹر",
+    ad_fuel_save: "دستی ریٹ محفوظ کریں",
+    ad_fuel_auto: "واپس خودکار ریٹ پر جائیں",
+    ad_fuel_founder_only: "ایندھن کے ریٹ صرف بانی کا اکاؤنٹ بدل سکتا ہے۔",
+    ad_fuel_range: "150 سے 600 روپے فی لیٹر کے درمیان ریٹ لکھیں۔",
+    ad_fuel_saved: "دستی ایندھن ریٹ محفوظ: ڈیزل {d} فی لیٹر، پیٹرول {p} فی لیٹر۔",
+    ad_fuel_err: "ایندھن ریٹ محفوظ نہیں ہو سکے۔ کنکشن چیک کریں اور یقینی بنائیں کہ آپ بانی کے اکاؤنٹ سے سائن ان ہیں۔",
+    ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2345,7 +2380,7 @@ const T = {
     lr_wet: "ویٹ رینٹ",
     lr_wet_d: "ڈیزل مالک دا، منڈی ریٹ تے",
     lr_diesel: "ڈیزل ریٹ (روپے فی لیٹر)",
-    lr_diesel_note: "ایگری شیئر ٹیم دا رکھیا منڈی ریٹ۔ پاکستان وچ ڈیزل دی قیمت اکثر بدلدی اے۔",
+    lr_diesel_note: "پاکستان دے اعلان کیتے تیل ریٹاں توں دن وچ دو واری آپے تازہ ہوندا اے۔ ٹرانسپورٹ دا اندازہ ڈیزل دی قیمت نال بدلدا اے۔",
     lr_peak: "کٹائی دا رجھیا موسم",
     lr_peak_d: "پنڈ تے پائلٹ علاقے دیاں مشیناں رجھیاں نیں، ایس لئی تلاش تیجے درجے تک جاوے گی۔",
     lr_post: "درخواست پاؤ تے مالک لبھو",
@@ -2925,7 +2960,7 @@ const T = {
     loc_ask_s: "نیڑے دیاں مشیناں تے اصل ٹرانسپورٹ خرچ ویکھن لئی اپنا جی پی ایس دیو یا ضلع چنو۔",
     loc_ask_ph: "جی پی ایس یا ضلع چنو",
     pop_title: "پنجاب دیاں مشہور مشیناں",
-    pop_sub: "ہلے تہاڈے نیڑے کوئی لائیو مشین نئیں لبھی۔ ایہہ پنجاب دے عام ریٹ نیں۔ بک / درخواست دباؤ، نیڑے دے مالک یا ساڈا کنسلٹنٹ تہاڈے نال رابطہ کرے گا۔",
+    pop_sub: "ہلے تہاڈے نیڑے کوئی لائیو مشین نئیں لبھی۔ مشین چنو، اپنا ریٹ آپ دسو، نیڑے دے مالک یا ساڈا کنسلٹنٹ تہاڈے نال رابطہ کرے گا۔",
     pop_book: "بک / درخواست",
     pop_range: "{lo} توں {hi} فی گھنٹہ",
     tb_help: "مدد چاہیدی اے؟",
@@ -2974,7 +3009,23 @@ const T = {
     mb_sample_s: "ہر بکنگ تے واؤچر ملدا اے: بکنگ آئی ڈی، قیمت دی پوری تفصیل، لائیو حال تے تصدیق توں بعد مالک دا رابطہ۔ اپنی بکنگ ویکھن لئی سائن ان کرو۔",
     kh_mic_label: "بول کے پچھو",
     ft_support: "کنسلٹنٹ مدد",
-    zs_sub_any: "تہاڈے علاقے وچ ہلے {machine} دا کوئی رجسٹر مالک آن لائن نئیں۔ فیر وی تہاڈا کم ہو جاوے گا۔ اک رستہ چنو:"
+    zs_sub_any: "تہاڈے علاقے وچ ہلے {machine} دا کوئی رجسٹر مالک آن لائن نئیں۔ فیر وی تہاڈا کم ہو جاوے گا۔ اک رستہ چنو:",
+    fuel_pill: "تازہ تیل ریٹ: ڈیزل {diesel} روپے فی لیٹر · پیٹرول {petrol} روپے فی لیٹر",
+    fuel_pill_set: "تیل ریٹ: ڈیزل {diesel} روپے فی لیٹر · پیٹرول {petrol} روپے فی لیٹر",
+    pop_own_rate: "اپنا ریٹ آپ دسو · اپنی بولی لاؤ",
+    ad_fuel_t: "تیل ریٹ بدلو / تازہ کرو",
+    ad_fuel_sub: "ڈیزل تے پیٹرول دے ریٹ دن وچ دو واری آپے تازہ ہوندے نیں۔ صرف غلط ریٹ ہووے تے ہتھ نال ریٹ لاؤ؛ ایہہ مڑ آٹو کرن تک سب تے لاگو رہوے گا۔",
+    ad_fuel_mode_override: "ہتھ والا ریٹ لاگو اے",
+    ad_fuel_mode_auto: "آٹو روزانہ ریٹ",
+    ad_fuel_diesel: "ڈیزل (HSD)، روپے فی لیٹر",
+    ad_fuel_petrol: "پیٹرول (سپر)، روپے فی لیٹر",
+    ad_fuel_save: "ہتھ والا ریٹ محفوظ کرو",
+    ad_fuel_auto: "مڑ آٹو ریٹ تے جاؤ",
+    ad_fuel_founder_only: "تیل دے ریٹ صرف بانی دا اکاؤنٹ بدل سکدا اے۔",
+    ad_fuel_range: "150 توں 600 روپے فی لیٹر وچکار ریٹ لکھو۔",
+    ad_fuel_saved: "ہتھ والا تیل ریٹ محفوظ: ڈیزل {d} فی لیٹر، پیٹرول {p} فی لیٹر۔",
+    ad_fuel_err: "تیل ریٹ محفوظ نئیں ہو سکے۔ کنکشن ویکھو تے پکا کرو کہ تسیں بانی دے اکاؤنٹ نال سائن ان او۔",
+    ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -3184,7 +3235,7 @@ const T = {
     lr_wet: "ويٽ رينٽ",
     lr_wet_d: "ڊيزل مالڪ جو، مارڪيٽ اگهه تي",
     lr_diesel: "ڊيزل اگهه (رپيا في ليٽر)",
-    lr_diesel_note: "ايگري شيئر ٽيم جو مقرر ڪيل مارڪيٽ اگهه۔ پاڪستان ۾ ڊيزل جي قيمت اڪثر بدلجي ٿي۔",
+    lr_diesel_note: "پاڪستان جي اعلان ڪيل تيل اگهن مان ڏينهن ۾ ٻه ڀيرا پاڻمرادو تازو ٿئي ٿو۔ ٽرانسپورٽ جو اندازو ڊيزل جي قيمت سان بدلجي ٿو۔",
     lr_peak: "لابارن جي مصروف مند",
     lr_peak_d: "ڳوٺ ۽ پائلٽ علائقي جون مشينون مصروف آهن، تنهن ڪري ڳولا ٽئين درجي تائين ويندي۔",
     lr_post: "درخواست موڪليو ۽ مالڪ ڳوليو",
@@ -3765,7 +3816,7 @@ const T = {
     loc_ask_s: "ويجهيون مشينون ۽ اصل ٽرانسپورٽ خرچ ڏسڻ لاءِ پنهنجو جي پي ايس ڏيو يا ضلعو چونڊيو۔",
     loc_ask_ph: "جي پي ايس يا ضلعو چونڊيو",
     pop_title: "پنجاب جون مشهور مشينون",
-    pop_sub: "اڃا توهان جي ويجهو ڪا لائيو مشين نه ملي۔ هي پنجاب جا عام اگهه آهن۔ بڪ / درخواست دٻايو، ويجها مالڪ يا اسان جو ڪنسلٽنٽ توهان سان رابطو ڪندو۔",
+    pop_sub: "اڃا توهان جي ويجهو ڪا لائيو مشين نه ملي۔ مشين چونڊيو، پنهنجو اگهه پاڻ ٻڌايو، ويجها مالڪ يا اسان جو ڪنسلٽنٽ توهان سان رابطو ڪندو۔",
     pop_book: "بڪ / درخواست",
     pop_range: "{lo} کان {hi} في ڪلاڪ",
     tb_help: "مدد گهرجي؟",
@@ -3814,7 +3865,23 @@ const T = {
     mb_sample_s: "هر بڪنگ تي واؤچر ملي ٿو: بڪنگ آءِ ڊي، قيمت جي پوري تفصيل، لائيو حالت ۽ تصديق کان پوءِ مالڪ جو رابطو۔ پنهنجي بڪنگ ڏسڻ لاءِ سائن ان ڪريو۔",
     kh_mic_label: "ڳالهائي پڇو",
     ft_support: "ڪنسلٽنٽ مدد",
-    zs_sub_any: "توهان جي علائقي ۾ اڃا {machine} جو ڪو رجسٽر مالڪ آن لائن ناهي۔ تڏهن به توهان جو ڪم ٿيندو۔ هڪ رستو چونڊيو:"
+    zs_sub_any: "توهان جي علائقي ۾ اڃا {machine} جو ڪو رجسٽر مالڪ آن لائن ناهي۔ تڏهن به توهان جو ڪم ٿيندو۔ هڪ رستو چونڊيو:",
+    fuel_pill: "تازا تيل اگهه: ڊيزل {diesel} رپيا في ليٽر · پيٽرول {petrol} رپيا في ليٽر",
+    fuel_pill_set: "تيل اگهه: ڊيزل {diesel} رپيا في ليٽر · پيٽرول {petrol} رپيا في ليٽر",
+    pop_own_rate: "پنهنجو اگهه پاڻ ٻڌايو · پنهنجي بولي لڳايو",
+    ad_fuel_t: "تيل اگهه مٽايو / تازا ڪريو",
+    ad_fuel_sub: "ڊيزل ۽ پيٽرول جا اگهه ڏينهن ۾ ٻه ڀيرا پاڻمرادو تازا ٿين ٿا۔ صرف غلط اگهه جي صورت ۾ هٿ سان اگهه لڳايو؛ اهو واپس خودڪار ڪرڻ تائين سڀني تي لاڳو رهندو۔",
+    ad_fuel_mode_override: "هٿ وارو اگهه لاڳو آهي",
+    ad_fuel_mode_auto: "خودڪار روزاني اگهه",
+    ad_fuel_diesel: "ڊيزل (HSD)، رپيا في ليٽر",
+    ad_fuel_petrol: "پيٽرول (سپر)، رپيا في ليٽر",
+    ad_fuel_save: "هٿ وارو اگهه محفوظ ڪريو",
+    ad_fuel_auto: "واپس خودڪار اگهه تي وڃو",
+    ad_fuel_founder_only: "تيل جا اگهه صرف باني جو کاتو مٽائي سگهي ٿو۔",
+    ad_fuel_range: "150 کان 600 رپيا في ليٽر جي وچ ۾ اگهه لکو۔",
+    ad_fuel_saved: "هٿ وارو تيل اگهه محفوظ: ڊيزل {d} في ليٽر، پيٽرول {p} في ليٽر۔",
+    ad_fuel_err: "تيل اگهه محفوظ نه ٿي سگهيا۔ ڪنيڪشن چيڪ ڪريو ۽ پڪ ڪريو ته توهان باني جي کاتي سان سائن ان آهيو۔",
+    ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -4314,7 +4381,7 @@ const T = {
     loc_ask_s: "د نږدې ماشینونو او د ټرانسپورټ د اصلي لګښت لیدو لپاره خپل GPS ځای ورکړئ یا ولسوالي وټاکئ.",
     loc_ask_ph: "GPS یا ولسوالي وټاکئ",
     pop_title: "په پنجاب کې مشهور ماشینونه",
-    pop_sub: "لا ستاسو نږدې کوم ژوندی ماشین ونه موندل شو. دا د پنجاب عام نرخونه دي. بکنګ / غوښتنه کېکاږئ، نږدې مالکان یا زموږ مشاور به درسره اړیکه ونیسي.",
+    pop_sub: "لا ستاسو نږدې کوم ژوندی ماشین ونه موندل شو. ماشین وټاکئ، خپل نرخ پخپله ووایاست، نږدې مالکان یا زموږ مشاور به درسره اړیکه ونیسي.",
     pop_book: "بکنګ / غوښتنه",
     pop_range: "{lo} تر {hi} په ساعت",
     tb_help: "مرسته غواړئ؟",
@@ -4364,7 +4431,24 @@ const T = {
     kh_mic_label: "په غږ وپوښتئ",
     ft_support: "د مشاور مرسته",
     zs_sub: "د {place} سره نږدې لا د {machine} کوم ثبت شوی مالک آنلاین نه دی. بیا هم ستاسو کار به وشي. یوه لاره وټاکئ:",
-    zs_sub_any: "ستاسو په سیمه کې لا د {machine} کوم ثبت شوی مالک آنلاین نه دی. بیا هم ستاسو کار به وشي. یوه لاره وټاکئ:"
+    zs_sub_any: "ستاسو په سیمه کې لا د {machine} کوم ثبت شوی مالک آنلاین نه دی. بیا هم ستاسو کار به وشي. یوه لاره وټاکئ:",
+    fuel_pill: "د تېلو تازه نرخونه: ډیزل {diesel} روپۍ په لیټر · پټرول {petrol} روپۍ په لیټر",
+    fuel_pill_set: "د تېلو نرخونه: ډیزل {diesel} روپۍ په لیټر · پټرول {petrol} روپۍ په لیټر",
+    lr_diesel_note: "د پاکستان له اعلان شویو نرخونو څخه په ورځ کې دوه ځله په خپله تازه کېږي. د ټرانسپورټ اټکل د ډیزلو له بیې سره بدلېږي.",
+    pop_own_rate: "خپل نرخ پخپله ووایاست · اپني بولي لګایئ",
+    ad_fuel_t: "د تېلو نرخونه بدل / تازه کړئ",
+    ad_fuel_sub: "د ډیزلو او پټرولو نرخونه په ورځ کې دوه ځله په خپله تازه کېږي. لاسي نرخ یوازې هغه وخت ولګوئ چې خودکار نرخ غلط وي؛ تر بېرته خودکار کولو پورې په ټولو پلي کېږي.",
+    ad_fuel_mode_override: "لاسي نرخ فعال دی",
+    ad_fuel_mode_auto: "خودکار ورځني نرخونه",
+    ad_fuel_diesel: "ډیزل (HSD)، روپۍ په لیټر",
+    ad_fuel_petrol: "پټرول (سوپر)، روپۍ په لیټر",
+    ad_fuel_save: "لاسي نرخ خوندي کړئ",
+    ad_fuel_auto: "بېرته خودکار نرخونو ته",
+    ad_fuel_founder_only: "د تېلو نرخونه یوازې د بنسټګر حساب بدلولی شي.",
+    ad_fuel_range: "په لیټر کې د 150 او 600 روپیو ترمنځ نرخ ولیکئ.",
+    ad_fuel_saved: "لاسي نرخ خوندي شو: ډیزل {d} په لیټر، پټرول {p} په لیټر.",
+    ad_fuel_err: "د تېلو نرخونه خوندي نشول. خپل اتصال وګورئ او ډاډ ترلاسه کړئ چې د بنسټګر په حساب ننوتي یاست.",
+    ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -4854,7 +4938,7 @@ const T = {
     loc_ask_s: "نزیکیں مشیناں و ٹرانسپورٹ ءِ راستیں خرچ ءَ چارگ ءِ واستا وتی GPS ءِ جاگہ بدئے یا ضلع گچین کن۔",
     loc_ask_ph: "GPS یا ضلع گچین کن",
     pop_title: "پنجاب ءِ نامداریں مشین",
-    pop_sub: "انگت شمئے نزیک ءَ ہچ زندگیں مشین نہ رستگ۔ اے پنجاب ءِ آدتیں نرخ اَنت۔ بک / درخواست ءَ جن، نزیکیں واھند یا مئے کنسلٹنٹ گوں شما سیادی کنت۔",
+    pop_sub: "انگت شمئے نزیک ءَ ہچ زندگیں مشین نہ رستگ۔ مشینے گچین کن، وتی نرخ ءَ وت بگوش، نزیکیں واھند یا مئے کنسلٹنٹ گوں شما سیادی کنت۔",
     pop_book: "بک / درخواست",
     pop_range: "{lo} تا {hi} ساعت ءَ",
     tb_help: "کمک لوٹئے؟",
@@ -4904,7 +4988,24 @@ const T = {
     kh_mic_label: "گپ جت ءَ جُست کن",
     ft_support: "کنسلٹنٹ ءِ کمک",
     zs_sub: "{place} ءِ نزیک ءَ انگت {machine} ءِ ہچ نبشتہ کتگیں واھند آن لائن نہ اِنت۔ پدا ہم شمئے کار بیت۔ یک راہے گچین کن:",
-    zs_sub_any: "شمئے دمگ ءَ انگت {machine} ءِ ہچ نبشتہ کتگیں واھند آن لائن نہ اِنت۔ پدا ہم شمئے کار بیت۔ یک راہے گچین کن:"
+    zs_sub_any: "شمئے دمگ ءَ انگت {machine} ءِ ہچ نبشتہ کتگیں واھند آن لائن نہ اِنت۔ پدا ہم شمئے کار بیت۔ یک راہے گچین کن:",
+    fuel_pill: "نوکیں تیل ءِ نرخ: ڈیزل {diesel} کلدار لیٹر ءَ · پیٹرول {petrol} کلدار لیٹر ءَ",
+    fuel_pill_set: "تیل ءِ نرخ: ڈیزل {diesel} کلدار لیٹر ءَ · پیٹرول {petrol} کلدار لیٹر ءَ",
+    lr_diesel_note: "پاکستان ءِ جار جتگیں نرخ ءَ چہ روچ ءَ دو بر وت نوک بیت۔ ٹرانسپورٹ ءِ اندازہ ڈیزل ءِ بہا ءِ گوں بدل بیت۔",
+    pop_own_rate: "وتی نرخ ءَ وت بگوش · وتی بولی ءَ جن",
+    ad_fuel_t: "تیل ءِ نرخ ءَ بدل / نوک کن",
+    ad_fuel_sub: "ڈیزل و پیٹرول ءِ نرخ روچ ءَ دو بر وت نوک بنت۔ دستی نرخ تهنا ہما وھدا بجن کہ وتی نرخ رد اِنت؛ اے تان پدا وتی کنگ ءَ سجّھیناں ءِ سرا لاگو بیت۔",
+    ad_fuel_mode_override: "دستی نرخ لاگو اِنت",
+    ad_fuel_mode_auto: "وتی روچیگیں نرخ",
+    ad_fuel_diesel: "ڈیزل (HSD)، کلدار لیٹر ءَ",
+    ad_fuel_petrol: "پیٹرول (سپر)، کلدار لیٹر ءَ",
+    ad_fuel_save: "دستی نرخ ءَ محفوظ کن",
+    ad_fuel_auto: "پدا وتی نرخ ءَ برو",
+    ad_fuel_founder_only: "تیل ءِ نرخ ءَ تهنا بُنیادکار ءِ اکاؤنٹ بدل کت کنت۔",
+    ad_fuel_range: "لیٹر ءَ 150 تا 600 کلدار ءِ نیام ءَ نرخ نبشتہ کن۔",
+    ad_fuel_saved: "دستی تیل ءِ نرخ محفوظ: ڈیزل {d} لیٹر ءَ، پیٹرول {p} لیٹر ءَ۔",
+    ad_fuel_err: "تیل ءِ نرخ محفوظ نہ بوتنت۔ وتی کنکشن ءَ بچار و دلجم بئے کہ شما بُنیادکار ءِ اکاؤنٹ ءَ سائن ان اِت۔",
+    ad_fuel_auto_on: "وتی روچیگیں تیل ءِ نرخ پدا روشن اَنت۔"
   },
 };
 
@@ -6037,7 +6138,7 @@ function ListingCard({ l, t, dn, lang, onBook }) {
   );
 }
 
-function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activeProvinces, userLoc, setUserLoc, onLive, country = "PK", setCountry, demoMode = false, fallbackProps }) {
+function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setFilters, activeProvinces, userLoc, setUserLoc, onLive, country = "PK", setCountry, demoMode = false, fallbackProps }) {
   // short skeleton while listings settle (first paint and country switch)
   const [ready, setReady] = useState(false);
   useEffect(() => { setReady(false); const id = setTimeout(() => setReady(true), 420); return () => clearTimeout(id); }, [country]);
@@ -6121,7 +6222,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
             {!userLoc && <p className="mb-2 mt-0.5 text-xs text-soil/80">{t("loc_ask_s")}</p>}
             <LocationField t={t} lang={lang} id="my-loc-m" label={userLoc ? t("loc_your") : null} value={userLoc} onChange={setUserLoc} allowClear placeholder={t("loc_ask_ph")} />
           </div>
-          <div className="mb-3 flex justify-end"><ModeBadge t={t} demo={demoMode} /></div>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><FuelPill t={t} fuel={fuel} /><span className="ms-auto"><ModeBadge t={t} demo={demoMode} /></span></div>
           {showConsultant && (
             <div className="mb-4"><ConsultantCard t={t} lang={lang} request={{ category: category === "all" ? "tractor" : category, district: userLoc ? userLoc.district : "", village: userLoc ? userLoc.village : "", loc: userLoc }} onSendLead={fallbackProps.onSendLead} requireAuth={fallbackProps.requireAuth} /></div>
           )}
@@ -6160,9 +6261,9 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
 }
 
 /* "Popular machines in Punjab": shown when no live machine matches nearby, so the page is never empty.
-   Typical Punjab hourly ranges (dry rent, operator usually included), not quotes. */
+   No fixed prices here: each card invites the farmer to name a rate in Apni Boli. */
 // ranges come from the same Pakistan catalog as the Apni Boli machine cards, so both always match
-const POPULAR_PK = ["tractor", "harvester", "leveler", "thresher"].map((c) => { const ms = COUNTRIES.PK.catalog.filter((m) => m.cat === c); return [c, Math.min(...ms.map((m) => m.min)), Math.max(...ms.map((m) => m.max))]; });
+const POPULAR_PK = ["tractor", "harvester", "leveler", "thresher"];
 const rangeText = (t, lo, hi) => t("pop_range").replace("{lo}", pkr(lo)).replace("{hi}", Math.round(toLocal(hi)).toLocaleString("en-PK"));
 function PopularMachines({ t, onRequest }) {
   return (
@@ -6170,20 +6271,19 @@ function PopularMachines({ t, onRequest }) {
       <p className="font-display text-lg font-extrabold text-forest">{t("pop_title")}</p>
       <p className="mb-3 text-xs text-soil/80">{t("pop_sub")}</p>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {POPULAR_PK.map(([c, lo, hi]) => (
+        {POPULAR_PK.map((c) => (
           <div key={c} className="flex flex-col overflow-hidden rounded-2xl border border-soil/10 bg-white shadow-sm">
             <div className="relative aspect-[4/3] min-h-[80px]">
               <MachinePhoto category={c} className="absolute inset-0 h-full w-full" alt={t("one_" + c)} width={400} height={300} />
               <span className="absolute start-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-bold text-forest shadow"><CategoryIcon category={c} className="h-3.5 w-3.5" />{t("one_" + c)}</span>
             </div>
             <div className="flex flex-1 flex-col gap-2 p-3">
-              <p className="font-display text-sm font-extrabold leading-snug text-forest" dir="ltr">{rangeText(t, lo, hi)}</p>
+              <p className="flex items-start gap-1.5 text-sm font-extrabold leading-snug text-forest"><Tag className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden="true" /><span>{t("pop_own_rate")}</span></p>
               <button type="button" onClick={() => onRequest(c)} className="mt-auto inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl bg-forest px-3 py-2 text-sm font-bold text-ivory hover:bg-[#0f4a28]"><Radar className="h-4 w-4" aria-hidden="true" />{t("pop_book")}</button>
             </div>
           </div>
         ))}
       </div>
-      <p className="mt-2 text-[11px] text-soil/80">{t("cat_rates_note")}</p>
     </div>
   );
 }
@@ -8628,7 +8728,24 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
 /* Owners are simulated (seeded per village + machine) and merged with */
 /* real marketplace listings, so the demo is repeatable.               */
 /* ------------------------------------------------------------------ */
-const DIESEL_BENCHMARK = 360; // PKR/L, national HSD price notified for 13 Nov 2026 (illustrative)
+const DIESEL_BENCHMARK = 360; // PKR/L, the diesel price the transport tariffs were set at (13 Nov 2026)
+// Live diesel price (PKR/L) for this render: founder override > /api/fuel-rates > admin pilot setting. Set by App.
+let LIVE_DIESEL = DIESEL_BENCHMARK;
+const validFuel = (n) => Number.isFinite(Number(n)) && Number(n) >= 150 && Number(n) <= 600;
+const fuelNum = (n) => Number(n).toLocaleString("en-PK", { maximumFractionDigits: 2 });
+function FuelPill({ t, fuel, className = "" }) {
+  if (!fuel || CUR.id !== "PK") return null;
+  const label = (fuel.mode === "live" ? t("fuel_pill") : t("fuel_pill_set")).replace("{diesel}", fuelNum(fuel.diesel)).replace("{petrol}", fuelNum(fuel.petrol));
+  const when = fuel.updatedAt ? (typeof fuel.updatedAt === "number" ? new Date(fuel.updatedAt).toISOString().slice(0, 10) : String(fuel.updatedAt).slice(0, 10)) : "";
+  return (
+    <p className={`inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-soil ring-1 ring-gold/40 ${className}`} title={fuel.source || ""}>
+      <Fuel className="h-3.5 w-3.5 shrink-0 text-soil" aria-hidden="true" />
+      {fuel.mode === "live" && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-leaf" aria-hidden="true" />}
+      <span dir="auto">{label}</span>
+      {when && <span className="font-semibold text-soil/70" dir="ltr">· {when}</span>}
+    </p>
+  );
+}
 const LONG_TRANSPORT_PER_KM = 60; // PKR per km, flatbed / towing, charged both ways
 const VILLAGES = [
   { name: "Raiwind", district: "Lahore Rural" }, { name: "Manga Mandi", district: "Lahore Rural" },
@@ -9054,7 +9171,7 @@ const catRange = (cat) => {
 };
 const startRateFor = (cat) => (CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))));
 
-function LiveRequest({ initialCat = null, ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
+function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
   const [autoLeadFor, setAutoLeadFor] = useState(null); // request id whose lead was sent automatically
   const startLoc = () => {
     const cand = userLoc || (session && session.location);
@@ -9406,6 +9523,7 @@ function LiveRequest({ initialCat = null, ecoActive = false, t, dn, lang, listin
             <div className="rounded-xl bg-ivory p-3 ring-1 ring-soil/10">
               <p className="flex items-center gap-2 text-sm font-bold text-soil"><Fuel className="h-4 w-4" aria-hidden="true" />{(CUR.id === "PK" ? t("lr_diesel_admin") : t("lr_diesel_intl")).replace("{v}", pkr(dieselPrice))}</p>
               <p className="mt-1 text-[11px] leading-snug text-soil/80">{CUR.id === "PK" ? t("lr_diesel_note") : t("lr_diesel_note_intl")}</p>
+              <FuelPill t={t} fuel={fuel} className="mt-2" />
             </div>
             <Toggle id="lr-peak" label={t("lr_peak")} sub={t("lr_peak_d")} checked={f.peak} onChange={(v) => set("peak", v)} />
             <Toggle id="lr-small" label={t("bk_smallholder")} sub={t("bk_smallholder_sub")} checked={f.smallholder} onChange={(v) => set("smallholder", v)} />
@@ -10166,31 +10284,28 @@ const MANDI_BUYERS = {
 };
 const round10 = (n) => Math.round(n / 10) * 10;
 const CROP_LOCAL = { wheat: "Gandum", rice: "Chawal", maize: "Makai", cotton: "Kapas" };
-// drawn crop tiles: no download needed, so they show at once even on a weak 3G signal
-function CropArt({ crop, className = "" }) {
-  const sky = { wheat: ["#f6d77a", "#e6b325"], rice: ["#cfe8a9", "#7fb547"], maize: ["#f9e3a1", "#d9a21b"], cotton: ["#dbe9f4", "#9cc3de"] }[crop] || ["#cfe8a9", "#67A834"];
-  const id = "crop-" + crop;
-  const stalks = Array.from({ length: 9 }, (_, i) => 20 + i * 35);
+// Real crop photos from Wikimedia Commons (freely licensed). If one cannot load (offline, renamed file),
+// a clean gradient tile with the crop's icon is shown instead.
+const CROP_PHOTOS = {
+  wheat: { file: "Wheat_close-up.JPG", tone: ["#f6d77a", "#c9961a"] },
+  rice: { file: "Rice_grains_(IRRI).jpg", tone: ["#cfe8a9", "#5f9a32"] },
+  maize: { file: "VegCorn.jpg", tone: ["#f9e3a1", "#d09312"] },
+  cotton: { file: "CottonPlant.JPG", tone: ["#eef3f7", "#9cb8c9"] },
+};
+function CropPhoto({ crop, alt = "", className = "" }) {
+  const info = CROP_PHOTOS[crop] || { tone: ["#cfe8a9", "#67A834"] };
+  const [failed, setFailed] = useState(!info.file);
+  const fallback = (
+    <span className={`relative flex items-center justify-center ${className}`} style={{ backgroundImage: `linear-gradient(135deg, ${info.tone[0]}, ${info.tone[1]})` }} role="img" aria-label={alt}>
+      <Wheat className="h-10 w-10 text-white/90 drop-shadow" aria-hidden="true" />
+    </span>
+  );
+  if (failed) return fallback;
   return (
-    <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" className={className} role="img" aria-hidden="true">
-      <defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={sky[0]} /><stop offset="1" stopColor={sky[1]} /></linearGradient></defs>
-      <rect width="320" height="200" fill={`url(#${id})`} />
-      <circle cx="268" cy="40" r="20" fill="#fff6d6" opacity="0.8" />
-      <path d="M0 150 Q80 135 160 148 T320 142 V200 H0Z" fill="#5C3A21" opacity="0.35" />
-      {crop === "cotton" && stalks.map((x, i) => (
-        <g key={i}><path d={`M${x} 200 L${x} ${120 + (i % 3) * 8}`} stroke="#3f6b2a" strokeWidth="3" />
-          <circle cx={x - 7} cy={118 + (i % 3) * 8} r="9" fill="#fff" /><circle cx={x + 6} cy={110 + (i % 3) * 8} r="10" fill="#fff" /><circle cx={x + 2} cy={124 + (i % 3) * 8} r="8" fill="#f5f5f0" /></g>
-      ))}
-      {crop === "maize" && stalks.map((x, i) => (
-        <g key={i}><path d={`M${x} 200 L${x} ${90 + (i % 3) * 10}`} stroke="#4c8a2b" strokeWidth="4" />
-          <path d={`M${x} ${140 + (i % 2) * 6} q-22 -10 -26 -30 q18 6 26 22`} fill="#67A834" />
-          <ellipse cx={x + 9} cy={128 + (i % 3) * 6} rx="6" ry="15" fill="#f4c430" stroke="#c9961a" /></g>
-      ))}
-      {(crop === "wheat" || crop === "rice") && stalks.map((x, i) => (
-        <g key={i}><path d={`M${x} 200 Q${x + 4} 150 ${x + (crop === "rice" ? 14 : 2)} ${100 + (i % 3) * 8}`} stroke={crop === "rice" ? "#4c8a2b" : "#b8860b"} strokeWidth="3" fill="none" />
-          {Array.from({ length: 5 }, (_, k) => <ellipse key={k} cx={x + (crop === "rice" ? 14 + k * 2 : 2)} cy={104 + (i % 3) * 8 + k * 9} rx="4.5" ry="7" fill={crop === "rice" ? "#d9c46a" : "#e6b325"} stroke={crop === "rice" ? "#a8933a" : "#a37410"} strokeWidth="1" transform={`rotate(${k % 2 ? 25 : -25} ${x + 2} ${104 + (i % 3) * 8 + k * 9})`} />)}</g>
-      ))}
-    </svg>
+    <span className={`relative block overflow-hidden ${className}`} style={{ backgroundImage: `linear-gradient(135deg, ${info.tone[0]}, ${info.tone[1]})` }}>
+      <img src={commonsUrl(info.file, 640)} alt={alt} title={`${alt} · Wikimedia Commons`} width={640} height={400} loading="lazy" decoding="async" referrerPolicy="no-referrer"
+        onError={() => setFailed(true)} className="absolute inset-0 h-full w-full object-cover" />
+    </span>
   );
 }
 
@@ -10310,7 +10425,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
           {Object.keys(CROPS).map((c) => (
             <button type="button" key={c} onClick={() => { if (!post) set("crop", c); }} aria-pressed={f.crop === c}
               className={`overflow-hidden rounded-2xl bg-white text-start shadow-sm ring-1 transition hover:-translate-y-0.5 hover:shadow-md ${f.crop === c ? "ring-2 ring-forest" : "ring-soil/10"}`}>
-              <CropArt crop={c} className="aspect-[16/10] w-full" />
+              <CropPhoto crop={c} alt={t("crop_" + c)} className="aspect-[16/10] w-full" />
               <span className="block p-3">
                 <span className="block text-sm font-extrabold text-forest">{t("crop_" + c)}{lang === "en" ? <span className="font-semibold text-soil/80"> / {CROP_LOCAL[c]}</span> : null}</span>
                 <span className="block font-display text-lg font-extrabold text-soil" dir="ltr">{pkr(CROPS[c].bench)}<span className="text-xs font-semibold text-soil/80"> {t("am_per_maund")}</span></span>
@@ -10805,7 +10920,7 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ archive, bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
   const [diesel, setDiesel] = useState(settings.dieselPrice);
@@ -10861,12 +10976,23 @@ function AdminConsole({ archive, bookingContacts = {}, demandContacts = {}, reqC
     try { await navigator.clipboard.writeText(csv); toast(t("mem_copied")); } catch (e) { toast("Copy is not allowed here."); }
   };
 
+  const [petrol, setPetrol] = useState(fuel && fuel.petrol ? fuel.petrol : 322);
+  useEffect(() => { if (fuel) { setDiesel(fuel.diesel); if (fuel.petrol) setPetrol(fuel.petrol); } }, [fuel && fuel.diesel, fuel && fuel.petrol]); // eslint-disable-line
+  const writeFuel = (override, d, p) => writeDoc(COL.appSettings, "fuel_rates", { override, diesel: d, petrol: p, updatedAt: Date.now(), updatedBy: (accounts.fbUser && accounts.fbUser.email) || "" });
   const saveDiesel = (e) => {
     e.preventDefault();
-    const v = Math.round(Number(diesel) * 100) / 100;
-    if (!(v >= 50 && v <= 2000)) return;
-    setSettings((s) => ({ ...s, dieselPrice: v, dieselUpdatedAt: Date.now() }));
-    toast(t("toast_diesel").replace("{v}", pkr(v)));
+    const d = Math.round(Number(diesel) * 100) / 100, p = Math.round(Number(petrol) * 100) / 100;
+    if (!validFuel(d) || !validFuel(p)) { toast(t("ad_fuel_range"), { type: "error" }); return; }
+    if (!accounts.isFounder) { toast(t("ad_fuel_founder_only"), { type: "error" }); return; }
+    writeFuel(true, d, p).then(() => {
+      setSettings((s) => ({ ...s, dieselPrice: d, dieselUpdatedAt: Date.now() })); // also the offline fallback
+      toast(t("ad_fuel_saved").replace("{d}", pkr(d)).replace("{p}", pkr(p)));
+    }).catch(() => toast(t("ad_fuel_err"), { type: "error" }));
+  };
+  const useAutoFuel = () => {
+    if (!accounts.isFounder) return;
+    const d = validFuel(diesel) ? Number(diesel) : 357, p = validFuel(petrol) ? Number(petrol) : 322;
+    writeFuel(false, d, p).then(() => toast(t("ad_fuel_auto_on"))).catch(() => toast(t("ad_fuel_err"), { type: "error" }));
   };
   const toggleProvince = (c) => {
     setSettings((s) => {
@@ -11089,15 +11215,24 @@ function AdminConsole({ archive, bookingContacts = {}, demandContacts = {}, reqC
       {sub === "settings" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <form onSubmit={saveDiesel} className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
-            <h3 className="flex items-center gap-2 font-bold text-forest"><Fuel className="h-4 w-4" aria-hidden="true" />{t("ad_diesel")}</h3>
-            <p className="mt-1 text-xs text-soil/80">{t("ad_diesel_sub")}</p>
-            <div className="mt-4 flex gap-2">
-              <label htmlFor="ad-diesel" className="sr-only">{t("ad_diesel")}</label>
-              <input id="ad-diesel" type="number" min="50" max="2000" step="0.01" value={diesel} onChange={(e) => setDiesel(e.target.value)} className={inputCls + " text-lg font-extrabold text-forest"} dir="ltr" />
-              <button type="submit" className="rounded-xl bg-forest px-5 text-sm font-bold text-ivory">{t("ad_save")}</button>
+            <h3 className="flex items-center gap-2 font-bold text-forest"><Fuel className="h-4 w-4" aria-hidden="true" />{t("ad_fuel_t")}</h3>
+            <p className="mt-1 text-xs text-soil/80">{t("ad_fuel_sub")}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <FuelPill t={t} fuel={fuel} />
+              <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${fuelOverride ? "bg-gold/30 text-soil" : "bg-leaf/15 text-forest"}`}>{t(fuelOverride ? "ad_fuel_mode_override" : "ad_fuel_mode_auto")}</span>
             </div>
-            <p className="mt-2 text-xs text-soil/80" dir="ltr">{t("ad_updated")}: {settings.dieselUpdatedAt ? new Date(settings.dieselUpdatedAt).toLocaleString("en-GB") : "13 Nov 2026 benchmark"}</p>
-            <p className="mt-3 rounded-xl bg-gold/15 p-3 text-sm font-semibold text-soil">{t("ad_diesel_preview").replace("{l}", previewLitres).replace("{v}", pkr(previewLitres * settings.dieselPrice))}</p>
+            <fieldset disabled={!accounts.isFounder} className="mt-4 grid grid-cols-2 gap-2 disabled:opacity-60">
+              <label className="text-xs font-bold text-soil" htmlFor="ad-diesel">{t("ad_fuel_diesel")}
+                <input id="ad-diesel" type="number" min="150" max="600" step="0.01" value={diesel} onChange={(e) => setDiesel(e.target.value)} className={inputCls + " mt-1 text-lg font-extrabold text-forest"} dir="ltr" />
+              </label>
+              <label className="text-xs font-bold text-soil" htmlFor="ad-petrol">{t("ad_fuel_petrol")}
+                <input id="ad-petrol" type="number" min="150" max="600" step="0.01" value={petrol} onChange={(e) => setPetrol(e.target.value)} className={inputCls + " mt-1 text-lg font-extrabold text-forest"} dir="ltr" />
+              </label>
+              <button type="submit" className="col-span-2 min-h-[44px] rounded-xl bg-forest px-5 text-sm font-bold text-ivory">{t("ad_fuel_save")}</button>
+              {fuelOverride && <button type="button" onClick={useAutoFuel} className="col-span-2 min-h-[44px] rounded-xl border border-forest/30 px-5 text-sm font-bold text-forest">{t("ad_fuel_auto")}</button>}
+            </fieldset>
+            {!accounts.isFounder && <p className="mt-2 text-xs font-semibold text-soil/80">{t("ad_fuel_founder_only")}</p>}
+            <p className="mt-3 rounded-xl bg-gold/15 p-3 text-sm font-semibold text-soil">{t("ad_diesel_preview").replace("{l}", previewLitres).replace("{v}", pkr(previewLitres * (fuel ? fuel.diesel : settings.dieselPrice)))}</p>
           </form>
           <div className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
             <h3 className="flex items-center gap-2 font-bold text-forest"><MapPin className="h-4 w-4" aria-hidden="true" />{t("ad_provinces")}</h3>
@@ -12483,6 +12618,19 @@ function App() {
   }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, listings]); // eslint-disable-line
   const [leads, setLeads] = useState([]);
   const [liveCat, setLiveCat] = useState(null);
+  // fuel prices: the founder's manual override (app_settings/fuel_rates) wins; otherwise the daily /api/fuel-rates
+  const [fuelOverride, setFuelOverride] = useState(null);
+  const [fuelLive, setFuelLive] = useState(null);
+  useEffect(() => watchDoc(COL.appSettings, "fuel_rates", (d) => setFuelOverride(d && d.override && validFuel(d.diesel) ? d : null), () => setFuelOverride(null)), []);
+  useEffect(() => {
+    if (fuelOverride) return undefined;
+    let alive = true;
+    fetch("/api/fuel-rates").then((r) => (r.ok ? r.json() : null)).then((j) => { if (alive && j && validFuel(j.diesel)) setFuelLive({ diesel: Number(j.diesel), petrol: validFuel(j.petrol) ? Number(j.petrol) : null, updatedAt: j.updatedAt, source: j.source, fallback: !!j.fallback }); })
+      .catch(() => { /* offline or local dev: the admin pilot rate stays in use */ });
+    return () => { alive = false; };
+  }, [!!fuelOverride]); // eslint-disable-line react-hooks/exhaustive-deps
+  const fuel = fuelOverride ? { diesel: Number(fuelOverride.diesel), petrol: Number(fuelOverride.petrol), updatedAt: fuelOverride.updatedAt, source: "Agri-Share", mode: "override" }
+    : fuelLive ? { ...fuelLive, mode: fuelLive.fallback ? "fallback" : "live" } : null;
   useEffect(() => { if (tab !== "live-request") setLiveCat(null); }, [tab]); // a picked "Popular machine" applies to one visit only
   useEffect(() => {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setLeads([]); return undefined; }
@@ -12510,7 +12658,8 @@ function App() {
     }),
   [marketListings, settings.activeProvinces, userLoc, country]);
   // Diesel: admin-set national rate in Pakistan, indicative local price elsewhere (stored in PKR)
-  const dieselPrice = country === "PK" ? settings.dieselPrice : CUR.diesel / CUR.fx;
+  const dieselPrice = country === "PK" ? (fuel ? fuel.diesel : settings.dieselPrice) : CUR.diesel / CUR.fx;
+  LIVE_DIESEL = country === "PK" ? Number(dieselPrice) || DIESEL_BENCHMARK : DIESEL_BENCHMARK; // read by the transport tariffs during this render
   const saveMandi = (patch) => setMandiPosts((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
   const settleFinancing = (ids, saleId) => {
     if (!ids.length) return;
@@ -12602,7 +12751,7 @@ function App() {
           <>
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} onLand={() => setTab("land")} />
             <TrustStrip t={t} />
-            <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
+            <Marketplace fuel={fuel} t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
               demoMode={demoMode} fallbackProps={{ t, dn, lang, session, requireAuth, saveDemand, toast, dieselPrice, onSendLead: sendLead }} />
             <KeypadBanner t={t} setTab={setTab} />
             <div className="h-20 lg:h-4" aria-hidden="true" />
@@ -12610,10 +12759,10 @@ function App() {
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
         {showTab === "owner-portal" && <OwnerPortal archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
-        {showTab === "live-request" && <LiveRequest key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
+        {showTab === "live-request" && <LiveRequest fuel={fuel} key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
+        {showTab === "admin" && <AdminPanel fuel={fuel} fuelOverride={fuelOverride} archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
         {showTab === "land" && <LandLease archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBooking} sendLead={sendLead} ecoActive={ecoActive} />}
         {showTab === "govt" && <GovtPortal t={t} />}

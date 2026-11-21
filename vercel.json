@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/gemini.js": { "maxDuration": 30 },
-    "api/notify-lead.js": { "maxDuration": 10 }
+    "api/notify-lead.js": { "maxDuration": 10 },
+    "api/fuel-rates.js": { "maxDuration": 20 }
   },
   "headers": [
     {
@@ -13,8 +14,12 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/api/((?!fuel-rates).*)",
       "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    },
+    {
+      "source": "/api/fuel-rates",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=43200, stale-while-revalidate=86400" }]
     }
   ],
   "rewrites": [

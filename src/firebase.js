@@ -96,6 +96,7 @@ export const COL = {
   landContacts: "land_contacts",
   landReqContacts: "land_request_contacts",
   prefs: "user_prefs", // per-member private settings (e.g. the Clear -> History archive)
+  appSettings: "app_settings", // public app-wide settings, e.g. app_settings/fuel_rates (founder writes)
 };
 
 let app = null, auth = null;

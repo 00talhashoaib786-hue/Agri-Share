@@ -47,6 +47,18 @@ service cloud.firestore {
       allow delete: if isAdmin() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid);
     }
 
+    // app_settings/fuel_rates  founder's manual fuel price override { override, diesel, petrol, updatedAt, updatedBy }
+    // Everyone may read it (the app needs the rate before sign-in); only the founder may change it.
+    match /app_settings/{id} {
+      allow read: if true;
+      allow create, update: if isFounder() && smallDoc()
+        && (id != 'fuel_rates' || (request.resource.data.get('diesel', 0) is number
+            && request.resource.data.get('diesel', 0) >= 150 && request.resource.data.get('diesel', 0) <= 600
+            && request.resource.data.get('petrol', 0) is number
+            && request.resource.data.get('petrol', 0) >= 150 && request.resource.data.get('petrol', 0) <= 600));
+      allow delete: if isFounder();
+    }
+
     // admin_settings/pilot    diesel rate and active provinces (admins write)
     // admin_settings/security admin password hash (admins read, founder writes)
     // admin_settings/team     authorised team admin emails (signed-in read, founder writes)
