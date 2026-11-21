@@ -9427,7 +9427,6 @@ function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn,
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {catalogCats(CUR.id).map((c) => {
               const ms = CUR.catalog.filter((m) => m.cat === c);
-              const lo = Math.min(...ms.map((m) => m.min)), hi = Math.max(...ms.map((m) => m.max));
               return (
                 <button type="button" key={c} onClick={() => chooseMachine(c)} data-cat={c}
                   className="group overflow-hidden rounded-2xl border border-soil/10 bg-white text-start shadow-sm ring-forest transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-forest/10 focus-visible:ring-2">
@@ -9442,10 +9441,7 @@ function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn,
                     <ul className="space-y-1 text-xs text-soil/80">
                       {ms.map((m) => <li key={m.name} className="flex justify-between gap-2" dir="ltr"><span className="truncate font-semibold">{m.name}</span><span className="shrink-0 text-soil/80">{m.spec.split(" · ")[0]}</span></li>)}
                     </ul>
-                    <div className="flex items-center justify-between gap-2 border-t border-soil/10 pt-2">
-                      <span className="text-[11px] font-semibold uppercase tracking-wide text-soil/80">{t("lr_est_rate")}</span>
-                      <span className="font-display text-base font-extrabold text-forest" dir="ltr">{fmtLocal(lo)} to {fmtLocal(hi)}<span className="text-xs font-semibold text-soil/80">/hr</span></span>
-                    </div>
+                    <p className="flex items-center gap-1.5 border-t border-soil/10 pt-2 text-sm font-bold leading-snug text-forest rtl:leading-[2]"><Tag className="h-4 w-4 shrink-0 text-gold" aria-hidden="true" />{t("pop_own_rate")}</p>
                     <span className="flex items-center justify-center gap-1.5 rounded-xl bg-forest px-3 py-2 text-sm font-bold text-ivory group-hover:bg-[#0f4a28]">{t("lr_select")}<ChevronRight className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" /></span>
                   </div>
                 </button>
@@ -9497,11 +9493,7 @@ function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn,
               <Field label={t("lr_hours")} htmlFor="lr-h2"><input id="lr-h2" type="number" min="1" max="16" value={f.hours} onChange={(e) => set("hours", e.target.value)} className={inputCls} dir="ltr" /></Field>
               <Field label={t("lr_date")} htmlFor="lr-d"><input id="lr-d" type="date" min={todayISO()} value={f.date} onChange={(e) => set("date", e.target.value)} className={inputCls} /></Field>
             </div>
-            <Field label={t("lr_rate")} htmlFor="lr-r" hint={(() => {
-              const rg = catRange(f.category);
-              const mkt = rg ? t("lr_rate_mkt").replace("{r}", rangeText(t, rg[0], rg[1])) : "";
-              return typical > 0 ? [t("lr_rate_hint").replace("{r}", pkr(typical)), mkt].filter(Boolean).join(" · ") : mkt;
-            })()}>
+            <Field label={t("lr_rate")} htmlFor="lr-r" hint={t("pop_own_rate")}>
               <div className="flex items-center gap-2">
                 <button type="button" onClick={() => set("rate", Math.max(fromLocal(CUR.nudge), (Number(f.rate) || 0) - fromLocal(CUR.nudge)))} className="rounded-xl border border-soil/20 bg-white p-2.5 text-forest" aria-label="Lower offer"><Minus className="h-4 w-4" /></button>
                 <MoneyInput id="lr-r" min={100} step="50" value={f.rate} onChange={(v) => set("rate", v)} className={inputCls + " text-center text-lg font-extrabold text-forest"} />
@@ -10287,14 +10279,15 @@ const CROP_LOCAL = { wheat: "Gandum", rice: "Chawal", maize: "Makai", cotton: "K
 // Real crop photos from Wikimedia Commons (freely licensed). If one cannot load (offline, renamed file),
 // a clean gradient tile with the crop's icon is shown instead.
 const CROP_PHOTOS = {
-  wheat: { file: "Wheat_close-up.JPG", tone: ["#f6d77a", "#c9961a"] },
-  rice: { file: "Rice_grains_(IRRI).jpg", tone: ["#cfe8a9", "#5f9a32"] },
-  maize: { file: "VegCorn.jpg", tone: ["#f9e3a1", "#d09312"] },
-  cotton: { file: "CottonPlant.JPG", tone: ["#eef3f7", "#9cb8c9"] },
+  wheat: { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Vehn%C3%A4pelto_6.jpg/640px-Vehn%C3%A4pelto_6.jpg", file: "Vehnäpelto_6.jpg", tone: ["#f6d77a", "#c9961a"] },
+  rice: { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Paddy_fields_in_Bangladesh.jpg/640px-Paddy_fields_in_Bangladesh.jpg", file: "Paddy_fields_in_Bangladesh.jpg", tone: ["#cfe8a9", "#5f9a32"] },
+  maize: { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Corn_field_in_August.jpg/640px-Corn_field_in_August.jpg", file: "Corn_field_in_August.jpg", tone: ["#f9e3a1", "#d09312"] },
+  cotton: { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Cotton_field_kv17.jpg/640px-Cotton_field_kv17.jpg", file: "Cotton_field_kv17.jpg", tone: ["#eef3f7", "#9cb8c9"] },
 };
 function CropPhoto({ crop, alt = "", className = "" }) {
   const info = CROP_PHOTOS[crop] || { tone: ["#cfe8a9", "#67A834"] };
-  const [failed, setFailed] = useState(!info.file);
+  const [step, setStep] = useState(info.src ? 0 : info.file ? 1 : 2); // 0 thumbnail, 1 Commons redirect, 2 gradient
+  const failed = step >= 2;
   const fallback = (
     <span className={`relative flex items-center justify-center ${className}`} style={{ backgroundImage: `linear-gradient(135deg, ${info.tone[0]}, ${info.tone[1]})` }} role="img" aria-label={alt}>
       <Wheat className="h-10 w-10 text-white/90 drop-shadow" aria-hidden="true" />
@@ -10303,8 +10296,8 @@ function CropPhoto({ crop, alt = "", className = "" }) {
   if (failed) return fallback;
   return (
     <span className={`relative block overflow-hidden ${className}`} style={{ backgroundImage: `linear-gradient(135deg, ${info.tone[0]}, ${info.tone[1]})` }}>
-      <img src={commonsUrl(info.file, 640)} alt={alt} title={`${alt} · Wikimedia Commons`} width={640} height={400} loading="lazy" decoding="async" referrerPolicy="no-referrer"
-        onError={() => setFailed(true)} className="absolute inset-0 h-full w-full object-cover" />
+      <img key={step} src={step === 0 ? info.src : commonsUrl(info.file, 640)} alt={alt} title={`${alt} · Wikimedia Commons`} width={640} height={400} loading="lazy" decoding="async" referrerPolicy="no-referrer"
+        onError={() => setStep((n) => (n === 0 && info.file ? 1 : 2))} className="absolute inset-0 h-full w-full object-cover" />
     </span>
   );
 }
