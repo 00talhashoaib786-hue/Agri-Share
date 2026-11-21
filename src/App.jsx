@@ -34,7 +34,7 @@ import {
   Delete, PhoneCall, PhoneOff, CircleCheck, Hourglass, Ban, BadgeCheck, SlidersHorizontal,
   RotateCcw, Fan, Minus, GraduationCap, HandCoins, Signal, Battery, Eye, EyeOff, Handshake,
   Coins, ArrowRight, Megaphone, LogIn, LogOut, UserPlus, KeyRound, Mail, Lock, UserCircle2, Copy, MessageSquareText, Tag, Repeat, Database, Radar, Gauge, Siren, TriangleAlert, Route, Zap, LocateFixed, Crosshair, Mic, MicOff, Volume2, VolumeX, AudioLines, PlayCircle, Drone, Ruler, Shovel, Globe, Droplets, Camera, Activity, Headphones, Percent, Printer, Download, Ticket, Inbox, Menu,
-  Video, Play, Upload, Landmark, Receipt, ExternalLink, Pencil,
+  Video, Play, Upload, Landmark, Receipt, ExternalLink, Pencil, ShoppingBag, Pointer, Compass,
   Archive as ArchiveIcon, History as HistoryIcon,
 } from "lucide-react";
 
@@ -282,6 +282,75 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    am_tab_sell: "Sell My Crop",
+    am_tab_buy: "Buy Crops (Live Harvests)",
+    am_tiles_t2: "Choose your crop",
+    am_tiles_note2: "Tap a crop to sell it. There are no fixed prices: you name your own rate.",
+    am_media_t: "Take / Upload Crop Photo & Video",
+    am_media_s: "Show buyers your grain quality: up to 3 photos and one short video (650 KB max) or a video link.",
+    am_take_photo: "Take photo",
+    am_upload_media: "Upload photo / video",
+    am_media_link: "Video link (YouTube / Google Drive), optional",
+    am_media_remove: "Remove",
+    am_media_max: "You can add up to 3 photos.",
+    am_media_view: "View photos & video",
+    am_media_title: "Crop photos & video",
+    am_media_loading: "Loading photos...",
+    am_media_none: "No photos or video were added for this crop.",
+    am_media_open_link: "Open video link",
+    am_buy_t: "Live harvests from farmers",
+    am_buy_s: "Mills and bulk buyers: browse crops posted by farmers, check photos and quality, and send your offer. The farmer's phone number is shared only after they accept your offer.",
+    am_buy_all: "All crops",
+    am_buy_none: "No live harvests match yet. New crop posts appear here as soon as farmers post them.",
+    am_buy_signin: "Sign in to browse live harvests and send offers.",
+    am_asking: "Asking rate",
+    am_lot_value: "Lot value",
+    am_offer: "Make an offer",
+    am_offer_t: "Your offer for {crop}",
+    am_offer_rate: "Your rate per maund (PKR)",
+    am_offer_qty: "Quantity (maunds)",
+    am_offer_org: "Mill / company name",
+    am_offer_type: "Buyer type",
+    am_offer_phone: "Your mobile number (shared with the farmer)",
+    am_offer_note: "Note (optional)",
+    am_offer_send: "Send offer",
+    am_offer_sent: "Offer sent. The farmer sees it right away.",
+    am_offer_err: "Your offer could not be sent. Please try again.",
+    am_offer_sent_badge: "Offer sent",
+    am_err_offer_rate: "Enter your rate per maund.",
+    am_err_offer_qty: "Quantity must be between 1 and {n} maunds.",
+    am_my_offers: "My offers",
+    am_of_pending: "Waiting for farmer",
+    am_of_accepted: "Accepted",
+    am_of_declined: "Declined",
+    am_of_withdrawn: "Withdrawn",
+    am_withdraw: "Withdraw",
+    am_seller_contact: "Farmer's contact",
+    am_contact_loading: "Loading contact...",
+    am_contact_err: "Contact is not available yet. Call our consultant for help.",
+    am_real_offer: "Registered buyer",
+    am_buyer_phone: "Buyer's mobile",
+    am_offers_n: "{n} offers",
+    am_view_offers: "View offers",
+    am_offer_save_err: "Could not update the offer. Please try again.",
+    tour_btn: "Guide / Tour",
+    tour_step: "Step {n} of {total}",
+    tour_next: "Next",
+    tour_back: "Back",
+    tour_skip: "Skip Tour",
+    tour_finish: "Finish",
+    tour_1_t: "All Services Hub & Marketplace",
+    tour_1_s: "Every Agri-Share service starts here: tap a tile to rent machines, lease land, sell crops and more.",
+    tour_2_t: "Post a Request / Apni Boli",
+    tour_2_s: "Tell nearby owners which machine you need and set your own rate; they accept or send a counter-offer.",
+    tour_3_t: "Zameen Thaika & Stamp Iqrarnama",
+    tour_3_s: "Lease farmland directly from owners and get a bilingual stamp-paper Iqrarnama once the deal is agreed.",
+    tour_4_t: "Agri-Market Buy & Sell Crops",
+    tour_4_s: "Farmers post their harvest with photos at their own rate, and mills and bulk buyers send offers.",
+    tour_5_t: "Owner Portal & Split-Bill Earnings",
+    tour_5_s: "List your machines, answer requests and see your net payout and commission clearly split on every bill.",
+    tour_6_t: "Kisan Helper AI Voice Advisor",
+    tour_6_s: "Ask anything by voice or text in your own language, any time.",
     ad_cp_edit: "Edit Account Details",
     ad_cp_cancel: "Cancel",
     ad_cp_saved_badge: "Saved account, shown on every bill",
@@ -1330,6 +1399,75 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    am_tab_sell: "اپنی فصل بیچیں",
+    am_tab_buy: "فصل خریدیں (تازہ پیداوار)",
+    am_tiles_t2: "اپنی فصل چنیں",
+    am_tiles_note2: "بیچنے کے لیے فصل پر ٹیپ کریں۔ کوئی مقررہ قیمت نہیں، ریٹ آپ خود لگاتے ہیں۔",
+    am_media_t: "فصل کی تصویر اور ویڈیو لیں / اپ لوڈ کریں",
+    am_media_s: "خریداروں کو اپنے دانے کا معیار دکھائیں: 3 تک تصاویر اور ایک مختصر ویڈیو (زیادہ سے زیادہ 650 KB) یا ویڈیو لنک۔",
+    am_take_photo: "تصویر کھینچیں",
+    am_upload_media: "تصویر / ویڈیو اپ لوڈ کریں",
+    am_media_link: "ویڈیو لنک (یوٹیوب / گوگل ڈرائیو)، اختیاری",
+    am_media_remove: "ہٹائیں",
+    am_media_max: "آپ زیادہ سے زیادہ 3 تصاویر لگا سکتے ہیں۔",
+    am_media_view: "تصاویر اور ویڈیو دیکھیں",
+    am_media_title: "فصل کی تصاویر اور ویڈیو",
+    am_media_loading: "تصاویر لوڈ ہو رہی ہیں...",
+    am_media_none: "اس فصل کے لیے کوئی تصویر یا ویڈیو نہیں لگائی گئی۔",
+    am_media_open_link: "ویڈیو لنک کھولیں",
+    am_buy_t: "کسانوں کی تازہ پیداوار",
+    am_buy_s: "ملز اور بڑے خریدار: کسانوں کی پوسٹ کردہ فصلیں دیکھیں، تصاویر اور معیار جانچیں اور اپنی پیشکش بھیجیں۔ کسان کا فون نمبر صرف پیشکش قبول ہونے کے بعد ملتا ہے۔",
+    am_buy_all: "تمام فصلیں",
+    am_buy_none: "ابھی کوئی تازہ پیداوار نہیں ملی۔ کسان جیسے ہی فصل پوسٹ کریں گے، یہاں نظر آئے گی۔",
+    am_buy_signin: "تازہ پیداوار دیکھنے اور پیشکش بھیجنے کے لیے سائن ان کریں۔",
+    am_asking: "مطلوبہ ریٹ",
+    am_lot_value: "کل مالیت",
+    am_offer: "پیشکش کریں",
+    am_offer_t: "{crop} کے لیے آپ کی پیشکش",
+    am_offer_rate: "فی من آپ کا ریٹ (روپے)",
+    am_offer_qty: "مقدار (من)",
+    am_offer_org: "مل / کمپنی کا نام",
+    am_offer_type: "خریدار کی قسم",
+    am_offer_phone: "آپ کا موبائل نمبر (کسان کو دکھایا جائے گا)",
+    am_offer_note: "نوٹ (اختیاری)",
+    am_offer_send: "پیشکش بھیجیں",
+    am_offer_sent: "پیشکش بھیج دی گئی۔ کسان اسے فوراً دیکھ لے گا۔",
+    am_offer_err: "آپ کی پیشکش نہیں بھیجی جا سکی۔ دوبارہ کوشش کریں۔",
+    am_offer_sent_badge: "پیشکش بھیج دی",
+    am_err_offer_rate: "فی من اپنا ریٹ لکھیں۔",
+    am_err_offer_qty: "مقدار 1 سے {n} من کے درمیان ہو۔",
+    am_my_offers: "میری پیشکشیں",
+    am_of_pending: "کسان کے جواب کا انتظار",
+    am_of_accepted: "قبول ہو گئی",
+    am_of_declined: "رد ہو گئی",
+    am_of_withdrawn: "واپس لے لی",
+    am_withdraw: "واپس لیں",
+    am_seller_contact: "کسان کا رابطہ",
+    am_contact_loading: "رابطہ لوڈ ہو رہا ہے...",
+    am_contact_err: "رابطہ ابھی دستیاب نہیں۔ مدد کے لیے ہمارے کنسلٹنٹ کو کال کریں۔",
+    am_real_offer: "رجسٹرڈ خریدار",
+    am_buyer_phone: "خریدار کا موبائل",
+    am_offers_n: "{n} پیشکشیں",
+    am_view_offers: "پیشکشیں دیکھیں",
+    am_offer_save_err: "پیشکش اپڈیٹ نہیں ہو سکی۔ دوبارہ کوشش کریں۔",
+    tour_btn: "رہنمائی / ٹور",
+    tour_step: "مرحلہ {n} از {total}",
+    tour_next: "اگلا",
+    tour_back: "پیچھے",
+    tour_skip: "ٹور چھوڑیں",
+    tour_finish: "مکمل",
+    tour_1_t: "تمام سروسز اور مارکیٹ پلیس",
+    tour_1_s: "ایگری شیئر کی ہر سروس یہیں سے شروع ہوتی ہے: مشین کرائے پر لینے، زمین ٹھیکے، فصل بیچنے اور مزید کے لیے کسی ٹائل پر ٹیپ کریں۔",
+    tour_2_t: "درخواست پوسٹ کریں / اپنی بولی",
+    tour_2_s: "قریبی مالکان کو بتائیں کون سی مشین چاہیے اور اپنا ریٹ خود لگائیں؛ وہ قبول کریں گے یا جوابی پیشکش بھیجیں گے۔",
+    tour_3_t: "زمین ٹھیکہ اور اسٹامپ اقرار نامہ",
+    tour_3_s: "زمین براہ راست مالکان سے ٹھیکے پر لیں اور معاملہ طے ہوتے ہی دو زبانوں میں اسٹامپ پیپر اقرار نامہ حاصل کریں۔",
+    tour_4_t: "ایگری مارکیٹ: فصل خریدیں اور بیچیں",
+    tour_4_s: "کسان اپنی پیداوار تصاویر کے ساتھ اپنے ریٹ پر پوسٹ کرتے ہیں اور ملز اور بڑے خریدار پیشکش بھیجتے ہیں۔",
+    tour_5_t: "اونر پورٹل اور بل کی تقسیم",
+    tour_5_s: "اپنی مشینیں درج کریں، درخواستوں کا جواب دیں اور ہر بل پر اپنی خالص آمدن اور کمیشن الگ الگ دیکھیں۔",
+    tour_6_t: "کسان ہیلپر: اے آئی آواز مشیر",
+    tour_6_s: "اپنی زبان میں بول کر یا لکھ کر کسی بھی وقت کچھ بھی پوچھیں۔",
     ad_cp_edit: "اکاؤنٹ تفصیلات تبدیل کریں",
     ad_cp_cancel: "منسوخ کریں",
     ad_cp_saved_badge: "محفوظ شدہ اکاؤنٹ، ہر بل پر دکھایا جاتا ہے",
@@ -2378,6 +2516,75 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    am_tab_sell: "اپنی فصل ویچو",
+    am_tab_buy: "فصل خریدو (تازہ پیداوار)",
+    am_tiles_t2: "اپنی فصل چنو",
+    am_tiles_note2: "ویچن لئی فصل تے ٹیپ کرو۔ کوئی پکی قیمت نئیں، ریٹ تسیں آپ لاندے او۔",
+    am_media_t: "فصل دی تصویر تے ویڈیو لوو / اپ لوڈ کرو",
+    am_media_s: "خریداراں نوں اپنے دانے دا معیار وکھاؤ: 3 تیک تصویراں تے اک نکی ویڈیو (ودھ توں ودھ 650 KB) یا ویڈیو لنک۔",
+    am_take_photo: "تصویر کھچو",
+    am_upload_media: "تصویر / ویڈیو اپ لوڈ کرو",
+    am_media_link: "ویڈیو لنک (یوٹیوب / گوگل ڈرائیو)، مرضی نال",
+    am_media_remove: "ہٹاؤ",
+    am_media_max: "تسیں ودھ توں ودھ 3 تصویراں لا سکدے او۔",
+    am_media_view: "تصویراں تے ویڈیو ویکھو",
+    am_media_title: "فصل دیاں تصویراں تے ویڈیو",
+    am_media_loading: "تصویراں لوڈ ہو رہیاں نیں...",
+    am_media_none: "ایس فصل لئی کوئی تصویر یا ویڈیو نئیں لائی گئی۔",
+    am_media_open_link: "ویڈیو لنک کھولو",
+    am_buy_t: "کساناں دی تازہ پیداوار",
+    am_buy_s: "ملاں تے وڈے خریدار: کساناں دیاں پوسٹ کیتیاں فصلاں ویکھو، تصویراں تے معیار جانچو تے اپنی پیشکش گھلو۔ کسان دا فون نمبر صرف پیشکش منن مگروں ملدا اے۔",
+    am_buy_all: "ساریاں فصلاں",
+    am_buy_none: "ہلے کوئی تازہ پیداوار نئیں لبھی۔ کسان جیویں ای فصل پوسٹ کرن گے، ایتھے دسے گی۔",
+    am_buy_signin: "تازہ پیداوار ویکھن تے پیشکش گھلن لئی سائن ان کرو۔",
+    am_asking: "منگیا ریٹ",
+    am_lot_value: "کل مالیت",
+    am_offer: "پیشکش کرو",
+    am_offer_t: "{crop} لئی تہاڈی پیشکش",
+    am_offer_rate: "فی من تہاڈا ریٹ (روپے)",
+    am_offer_qty: "مقدار (من)",
+    am_offer_org: "مل / کمپنی دا ناں",
+    am_offer_type: "خریدار دی قسم",
+    am_offer_phone: "تہاڈا موبائل نمبر (کسان نوں وکھایا جاوے گا)",
+    am_offer_note: "نوٹ (مرضی نال)",
+    am_offer_send: "پیشکش گھلو",
+    am_offer_sent: "پیشکش گھل دتی گئی۔ کسان اونوں فوراً ویکھ لوے گا۔",
+    am_offer_err: "تہاڈی پیشکش نئیں گھلی جا سکی۔ فیر کوشش کرو۔",
+    am_offer_sent_badge: "پیشکش گھل دتی",
+    am_err_offer_rate: "فی من اپنا ریٹ لکھو۔",
+    am_err_offer_qty: "مقدار 1 توں {n} من دے وچکار ہووے۔",
+    am_my_offers: "میریاں پیشکشاں",
+    am_of_pending: "کسان دے جواب دی اڈیک",
+    am_of_accepted: "من لئی گئی",
+    am_of_declined: "رد ہو گئی",
+    am_of_withdrawn: "واپس لے لئی",
+    am_withdraw: "واپس لوو",
+    am_seller_contact: "کسان دا رابطہ",
+    am_contact_loading: "رابطہ لوڈ ہو رہیا اے...",
+    am_contact_err: "رابطہ ہلے موجود نئیں۔ مدد لئی ساڈے کنسلٹنٹ نوں کال کرو۔",
+    am_real_offer: "رجسٹرڈ خریدار",
+    am_buyer_phone: "خریدار دا موبائل",
+    am_offers_n: "{n} پیشکشاں",
+    am_view_offers: "پیشکشاں ویکھو",
+    am_offer_save_err: "پیشکش اپڈیٹ نئیں ہو سکی۔ فیر کوشش کرو۔",
+    tour_btn: "رہنمائی / ٹور",
+    tour_step: "مرحلہ {n} وچوں {total}",
+    tour_next: "اگلا",
+    tour_back: "پچھے",
+    tour_skip: "ٹور چھڈو",
+    tour_finish: "مکمل",
+    tour_1_t: "ساریاں سروساں تے مارکیٹ پلیس",
+    tour_1_s: "ایگری شیئر دی ہر سروس ایتھوں شروع ہوندی اے: مشین کرائے تے لین، زمین ٹھیکے، فصل ویچن تے ہور لئی کسے ٹائل تے ٹیپ کرو۔",
+    tour_2_t: "درخواست پوسٹ کرو / اپنی بولی",
+    tour_2_s: "نیڑے دے مالکاں نوں دسو کیہڑی مشین چاہیدی اے تے اپنا ریٹ آپ لاؤ؛ اوہ منن گے یا جوابی پیشکش گھلن گے۔",
+    tour_3_t: "زمین ٹھیکہ تے اسٹامپ اقرار نامہ",
+    tour_3_s: "زمین سدھی مالکاں توں ٹھیکے تے لوو تے معاملہ طے ہوندیاں ای دو زباناں وچ اسٹامپ پیپر اقرار نامہ لوو۔",
+    tour_4_t: "ایگری مارکیٹ: فصل خریدو تے ویچو",
+    tour_4_s: "کسان اپنی پیداوار تصویراں نال اپنے ریٹ تے پوسٹ کردے نیں تے ملاں تے وڈے خریدار پیشکش گھلدے نیں۔",
+    tour_5_t: "اونر پورٹل تے بل دی ونڈ",
+    tour_5_s: "اپنیاں مشیناں لکھاؤ، درخواستاں دا جواب دیو تے ہر بل تے اپنی خالص کمائی تے کمیشن وکھو وکھ ویکھو۔",
+    tour_6_t: "کسان ہیلپر: اے آئی آواز مشیر",
+    tour_6_s: "اپنی زبان وچ بول کے یا لکھ کے کسے وی ویلے کجھ وی پچھو۔",
     ad_cp_edit: "کھاتے دیاں تفصیلاں بدلو",
     ad_cp_cancel: "رہن دیو",
     ad_cp_saved_badge: "سانبھیا ہویا کھاتہ، ہر بل تے دسیا جاندا اے",
@@ -3326,6 +3533,75 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    am_tab_sell: "پنهنجو فصل وڪڻو",
+    am_tab_buy: "فصل خريد ڪريو (تازي پيداوار)",
+    am_tiles_t2: "پنهنجو فصل چونڊيو",
+    am_tiles_note2: "وڪڻڻ لاءِ فصل تي ٽيپ ڪريو. ڪا مقرر قيمت ناهي، اگهه توهان پاڻ لڳايو ٿا.",
+    am_media_t: "فصل جي تصوير ۽ وڊيو ڪڍو / اپ لوڊ ڪريو",
+    am_media_s: "خريدارن کي پنهنجي داڻي جو معيار ڏيکاريو: 3 تائين تصويرون ۽ هڪ ننڍي وڊيو (وڌ ۾ وڌ 650 KB) يا وڊيو لنڪ.",
+    am_take_photo: "تصوير ڪڍو",
+    am_upload_media: "تصوير / وڊيو اپ لوڊ ڪريو",
+    am_media_link: "وڊيو لنڪ (يوٽيوب / گوگل ڊرائيو)، اختياري",
+    am_media_remove: "هٽايو",
+    am_media_max: "توهان وڌ ۾ وڌ 3 تصويرون لڳائي سگهو ٿا.",
+    am_media_view: "تصويرون ۽ وڊيو ڏسو",
+    am_media_title: "فصل جون تصويرون ۽ وڊيو",
+    am_media_loading: "تصويرون لوڊ ٿي رهيون آهن...",
+    am_media_none: "هن فصل لاءِ ڪا تصوير يا وڊيو نه لڳائي وئي.",
+    am_media_open_link: "وڊيو لنڪ کوليو",
+    am_buy_t: "هارين جي تازي پيداوار",
+    am_buy_s: "ملون ۽ وڏا خريدار: هارين جا پوسٽ ڪيل فصل ڏسو، تصويرون ۽ معيار جانچيو ۽ پنهنجي آڇ موڪليو. هاري جو فون نمبر صرف آڇ قبول ٿيڻ کانپوءِ ملي ٿو.",
+    am_buy_all: "سڀ فصل",
+    am_buy_none: "اڃا ڪا تازي پيداوار نه ملي. هاري جيئن ئي فصل پوسٽ ڪندا، هتي نظر ايندو.",
+    am_buy_signin: "تازي پيداوار ڏسڻ ۽ آڇ موڪلڻ لاءِ سائن ان ڪريو.",
+    am_asking: "گهربل اگهه",
+    am_lot_value: "ڪل قيمت",
+    am_offer: "آڇ ڪريو",
+    am_offer_t: "{crop} لاءِ توهان جي آڇ",
+    am_offer_rate: "في مڻ توهان جو اگهه (رپيا)",
+    am_offer_qty: "مقدار (مڻ)",
+    am_offer_org: "مل / ڪمپني جو نالو",
+    am_offer_type: "خريدار جو قسم",
+    am_offer_phone: "توهان جو موبائل نمبر (هاري کي ڏيکاريو ويندو)",
+    am_offer_note: "نوٽ (اختياري)",
+    am_offer_send: "آڇ موڪليو",
+    am_offer_sent: "آڇ موڪلي وئي. هاري ان کي فوراً ڏسندو.",
+    am_offer_err: "توهان جي آڇ موڪلي نه سگهي. ٻيهر ڪوشش ڪريو.",
+    am_offer_sent_badge: "آڇ موڪلي وئي",
+    am_err_offer_rate: "في مڻ پنهنجو اگهه لکو.",
+    am_err_offer_qty: "مقدار 1 کان {n} مڻ جي وچ ۾ هجي.",
+    am_my_offers: "منهنجون آڇون",
+    am_of_pending: "هاري جي جواب جو انتظار",
+    am_of_accepted: "قبول ٿي وئي",
+    am_of_declined: "رد ٿي وئي",
+    am_of_withdrawn: "واپس ورتي وئي",
+    am_withdraw: "واپس وٺو",
+    am_seller_contact: "هاري جو رابطو",
+    am_contact_loading: "رابطو لوڊ ٿي رهيو آهي...",
+    am_contact_err: "رابطو اڃا موجود ناهي. مدد لاءِ اسان جي صلاحڪار کي ڪال ڪريو.",
+    am_real_offer: "رجسٽرڊ خريدار",
+    am_buyer_phone: "خريدار جو موبائل",
+    am_offers_n: "{n} آڇون",
+    am_view_offers: "آڇون ڏسو",
+    am_offer_save_err: "آڇ اپڊيٽ نه ٿي سگهي. ٻيهر ڪوشش ڪريو.",
+    tour_btn: "رهنمائي / ٽور",
+    tour_step: "مرحلو {n} مان {total}",
+    tour_next: "اڳيون",
+    tour_back: "پوئتي",
+    tour_skip: "ٽور ڇڏيو",
+    tour_finish: "مڪمل",
+    tour_1_t: "سڀ سروسز ۽ مارڪيٽ پليس",
+    tour_1_s: "ايگري شيئر جي هر سروس هتان شروع ٿئي ٿي: مشين ڪرائي تي وٺڻ، زمين ٺيڪي، فصل وڪڻڻ ۽ وڌيڪ لاءِ ڪنهن ٽائل تي ٽيپ ڪريو.",
+    tour_2_t: "درخواست پوسٽ ڪريو / پنهنجي ٻولي",
+    tour_2_s: "ويجهن مالڪن کي ٻڌايو ڪهڙي مشين گهرجي ۽ پنهنجو اگهه پاڻ لڳايو؛ اهي قبول ڪندا يا جوابي آڇ موڪليندا.",
+    tour_3_t: "زمين ٺيڪو ۽ اسٽامپ اقرار نامو",
+    tour_3_s: "زمين سڌو مالڪن کان ٺيڪي تي وٺو ۽ معاملو طئي ٿيندي ئي ٻن ٻولين ۾ اسٽامپ پيپر اقرار نامو حاصل ڪريو.",
+    tour_4_t: "ايگري مارڪيٽ: فصل خريد ۽ وڪرو",
+    tour_4_s: "هاري پنهنجي پيداوار تصويرن سان پنهنجي اگهه تي پوسٽ ڪن ٿا ۽ ملون ۽ وڏا خريدار آڇون موڪلين ٿا.",
+    tour_5_t: "اونر پورٽل ۽ بل جي ورهاست",
+    tour_5_s: "پنهنجون مشينون لکرايو، درخواستن جو جواب ڏيو ۽ هر بل تي پنهنجي خالص ڪمائي ۽ ڪميشن الڳ الڳ ڏسو.",
+    tour_6_t: "ڪسان هيلپر: اي آءِ آواز صلاحڪار",
+    tour_6_s: "پنهنجي ٻولي ۾ ڳالهائي يا لکي ڪنهن به وقت ڪجهه به پڇو.",
     ad_cp_edit: "کاتي جا تفصيل بدلايو",
     ad_cp_cancel: "رد ڪريو",
     ad_cp_saved_badge: "محفوظ ٿيل کاتو، هر بل تي ڏيکاريو وڃي ٿو",
@@ -4275,6 +4551,75 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    am_tab_sell: "خپل فصل وپلورئ",
+    am_tab_buy: "فصلونه واخلئ (تازه حاصلات)",
+    am_tiles_t2: "خپل فصل وټاکئ",
+    am_tiles_note2: "د پلورلو لپاره پر فصل ټک وکړئ. ټاکلې بیه نشته، بیه تاسو پخپله ټاکئ.",
+    am_media_t: "د فصل انځور او ویډیو واخلئ / پورته کړئ",
+    am_media_s: "پېرودونکو ته د خپلې دانې کیفیت وښایئ: تر 3 پورې انځورونه او یوه لنډه ویډیو (تر 650 KB پورې) یا د ویډیو لینک.",
+    am_take_photo: "انځور واخلئ",
+    am_upload_media: "انځور / ویډیو پورته کړئ",
+    am_media_link: "د ویډیو لینک (یوټیوب / ګوګل ډرایو)، اختیاري",
+    am_media_remove: "لرې کړئ",
+    am_media_max: "تاسو تر 3 پورې انځورونه ورزیاتولی شئ.",
+    am_media_view: "انځورونه او ویډیو وګورئ",
+    am_media_title: "د فصل انځورونه او ویډیو",
+    am_media_loading: "انځورونه پورته کېږي...",
+    am_media_none: "د دې فصل لپاره هېڅ انځور یا ویډیو نه ده ورزیات شوې.",
+    am_media_open_link: "د ویډیو لینک پرانیزئ",
+    am_buy_t: "د بزګرانو تازه حاصلات",
+    am_buy_s: "فابریکې او لوی پېرودونکي: د بزګرانو پوسټ شوي فصلونه وګورئ، انځورونه او کیفیت وڅېړئ او خپل وړاندیز ولېږئ. د بزګر د تلیفون شمېره یوازې د وړاندیز له منلو وروسته درکول کېږي.",
+    am_buy_all: "ټول فصلونه",
+    am_buy_none: "لا هېڅ تازه حاصلات نشته. کله چې بزګران فصل پوسټ کړي، دلته به ښکاره شي.",
+    am_buy_signin: "د تازه حاصلاتو لیدو او وړاندیز لېږلو لپاره ننوځئ.",
+    am_asking: "غوښتل شوې بیه",
+    am_lot_value: "ټول ارزښت",
+    am_offer: "وړاندیز وکړئ",
+    am_offer_t: "د {crop} لپاره ستاسو وړاندیز",
+    am_offer_rate: "په یوه من ستاسو بیه (روپۍ)",
+    am_offer_qty: "مقدار (من)",
+    am_offer_org: "د فابریکې / شرکت نوم",
+    am_offer_type: "د پېرودونکي ډول",
+    am_offer_phone: "ستاسو د موبایل شمېره (بزګر ته ښودل کېږي)",
+    am_offer_note: "یادښت (اختیاري)",
+    am_offer_send: "وړاندیز ولېږئ",
+    am_offer_sent: "وړاندیز ولېږل شو. بزګر یې سمدستي ویني.",
+    am_offer_err: "ستاسو وړاندیز ونه لېږل شو. بیا هڅه وکړئ.",
+    am_offer_sent_badge: "وړاندیز ولېږل شو",
+    am_err_offer_rate: "په یوه من خپله بیه ولیکئ.",
+    am_err_offer_qty: "مقدار باید له 1 نه تر {n} منو پورې وي.",
+    am_my_offers: "زما وړاندیزونه",
+    am_of_pending: "د بزګر ځواب ته انتظار",
+    am_of_accepted: "ومنل شو",
+    am_of_declined: "رد شو",
+    am_of_withdrawn: "بېرته واخیستل شو",
+    am_withdraw: "بېرته یې واخلئ",
+    am_seller_contact: "د بزګر اړیکه",
+    am_contact_loading: "اړیکه پورته کېږي...",
+    am_contact_err: "اړیکه لا شتون نه لري. د مرستې لپاره زموږ سلاکار ته زنګ ووهئ.",
+    am_real_offer: "ثبت شوی پېرودونکی",
+    am_buyer_phone: "د پېرودونکي موبایل",
+    am_offers_n: "{n} وړاندیزونه",
+    am_view_offers: "وړاندیزونه وګورئ",
+    am_offer_save_err: "وړاندیز تازه نه شو. بیا هڅه وکړئ.",
+    tour_btn: "لارښود / ټور",
+    tour_step: "{total} مان {n} ګام",
+    tour_next: "بل",
+    tour_back: "شاته",
+    tour_skip: "ټور پرېږدئ",
+    tour_finish: "پای",
+    tour_1_t: "ټول خدمتونه او بازار",
+    tour_1_s: "د ایګري شیئر هر خدمت له همدې ځایه پیلېږي: د ماشین کرایې، ځمکې اجارې، فصل پلورلو او نورو لپاره پر یوه ټایل ټک وکړئ.",
+    tour_2_t: "غوښتنه پوسټ کړئ / اپني بولي",
+    tour_2_s: "نږدې مالکانو ته ووایاست کوم ماشین غواړئ او خپله بیه پخپله وټاکئ؛ هغوی یې مني یا مقابل وړاندیز لېږي.",
+    tour_3_t: "د ځمکې اجاره او سټامپ اقرار نامه",
+    tour_3_s: "ځمکه مستقیم له مالکانو په اجاره واخلئ او د معاملې له ټاکلو سره دوه ژبی سټامپ پېپر اقرار نامه ترلاسه کړئ.",
+    tour_4_t: "اګري مارکیټ: فصلونه واخلئ او وپلورئ",
+    tour_4_s: "بزګران خپل حاصلات د انځورونو سره په خپله بیه پوسټ کوي او فابریکې او لوی پېرودونکي وړاندیزونه لېږي.",
+    tour_5_t: "اونر پورټل او د بل وېش",
+    tour_5_s: "خپل ماشینونه ثبت کړئ، غوښتنو ته ځواب ورکړئ او په هر بل کې خپله خالص ګټه او کمیشن جلا جلا وګورئ.",
+    tour_6_t: "د بزګر مرستیال: د AI غږیز سلاکار",
+    tour_6_s: "په خپله ژبه په غږ یا لیکلو هر وخت هر څه وپوښتئ.",
     ad_cp_edit: "د حساب جزئیات بدل کړئ",
     ad_cp_cancel: "لغوه کړئ",
     ad_cp_saved_badge: "خوندي شوی حساب، په هر بل کې ښودل کېږي",
@@ -4937,6 +5282,75 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    am_tab_sell: "وتی کِشت ءَ بہا کن",
+    am_tab_buy: "کِشت بہا گر (نوکیں رونگ)",
+    am_tiles_t2: "وتی کِشت ءَ گچین کن",
+    am_tiles_note2: "بہا کنگ ءِ واستہ کِشت ءِ سرا ٹیپ کن۔ ہچ مقرریں بہا نیست، نرخ ءَ شما وت لگائیت۔",
+    am_media_t: "کِشت ءِ عکس و ویڈیو بگر / اپ لوڈ کن",
+    am_media_s: "بہا گراں ءَ وتی دانگ ءِ جوانی ءَ پیش دار: 3 عکس تان و یک کسانیں ویڈیو (گیشتر 650 KB) یا ویڈیو لنک۔",
+    am_take_photo: "عکس بکش",
+    am_upload_media: "عکس / ویڈیو اپ لوڈ کن",
+    am_media_link: "ویڈیو لنک (یوٹیوب / گوگل ڈرائیو)، اختیاری",
+    am_media_remove: "در کن",
+    am_media_max: "شما گیشتر 3 عکس لگائت کنیت۔",
+    am_media_view: "عکس و ویڈیو بگند",
+    am_media_title: "کِشت ءِ عکس و ویڈیو",
+    am_media_loading: "عکس لوڈ بئیگ ءَ اَنت...",
+    am_media_none: "اے کِشت ءِ واستہ ہچ عکس یا ویڈیو نہ لگاتگ۔",
+    am_media_open_link: "ویڈیو لنک ءَ پچ کن",
+    am_buy_t: "کشاورزاں ءِ نوکیں رونگ",
+    am_buy_s: "مِل و مزنیں بہا گر: کشاورزاں ءِ پوسٹ کتگیں کِشتاں بگند، عکس و جوانی ءَ بچار و وتی پیشکش ءَ دیم دے۔ کشاورز ءِ فون نمبر تہنا پیشکش ءِ منّگ ءَ رند رسیت۔",
+    am_buy_all: "کُلیں کِشت",
+    am_buy_none: "انگت ہچ نوکیں رونگ نیست۔ کشاورز کہ کِشت ءَ پوسٹ کننت، ادا گندگ بیت۔",
+    am_buy_signin: "نوکیں رونگ ءِ گندگ و پیشکش دیم دیگ ءِ واستہ سائن ان کن۔",
+    am_asking: "لوٹگیں نرخ",
+    am_lot_value: "کُلیں ارزش",
+    am_offer: "پیشکش کن",
+    am_offer_t: "{crop} ءِ واستہ شمئی پیشکش",
+    am_offer_rate: "یک من ءِ شمئی نرخ (کلدار)",
+    am_offer_qty: "کچ (من)",
+    am_offer_org: "مِل / کمپنی ءِ نام",
+    am_offer_type: "بہا گر ءِ رنگ",
+    am_offer_phone: "شمئی موبائل نمبر (کشاورز ءَ پیش دارگ بیت)",
+    am_offer_note: "نوٹ (اختیاری)",
+    am_offer_send: "پیشکش ءَ دیم دے",
+    am_offer_sent: "پیشکش دیم دیگ بوت۔ کشاورز ءَ زوت گندیت۔",
+    am_offer_err: "شمئی پیشکش دیم دیگ نہ بوت۔ پدا کوشست کن۔",
+    am_offer_sent_badge: "پیشکش دیم دیگ بوت",
+    am_err_offer_rate: "یک من ءِ وتی نرخ ءَ نبشتہ کن۔",
+    am_err_offer_qty: "کچ 1 چہ {n} من ءِ نیام ءَ بیت۔",
+    am_my_offers: "منی پیشکش",
+    am_of_pending: "کشاورز ءِ پسّو ءِ ودار",
+    am_of_accepted: "منّگ بوت",
+    am_of_declined: "رد بوت",
+    am_of_withdrawn: "پدا گپتگ بوت",
+    am_withdraw: "پدا بگر",
+    am_seller_contact: "کشاورز ءِ رابطہ",
+    am_contact_loading: "رابطہ لوڈ بئیگ ءَ اِنت...",
+    am_contact_err: "رابطہ انگت نیست۔ کمک ءِ واستہ مئے صلاحکار ءَ کال کن۔",
+    am_real_offer: "رجسٹرڈ بہا گر",
+    am_buyer_phone: "بہا گر ءِ موبائل",
+    am_offers_n: "{n} پیشکش",
+    am_view_offers: "پیشکشاں بگند",
+    am_offer_save_err: "پیشکش اپڈیٹ نہ بوت۔ پدا کوشست کن۔",
+    tour_btn: "رہشونی / ٹور",
+    tour_step: "{total} ءَ چہ {n} پڑاو",
+    tour_next: "دومی",
+    tour_back: "پد",
+    tour_skip: "ٹور ءَ یله کن",
+    tour_finish: "ہلاس",
+    tour_1_t: "کُلیں سروس و مارکیٹ پلیس",
+    tour_1_s: "ایگری شیئر ءِ ہر سروس ادا چہ بنا بیت: مشین ءِ کرایہ، زمین ءِ ٹھیکہ، کِشت ءِ بہا و دگہ ءِ واستہ یک ٹائل ءِ سرا ٹیپ کن۔",
+    tour_2_t: "درخواست پوسٹ کن / اپنی بولی",
+    tour_2_s: "نزیکیں واجہاں ءَ بگوش کجام مشین لوٹئے و وتی نرخ ءَ وت لگا؛ آ منّنت یا پدی پیشکش دیم دینت۔",
+    tour_3_t: "زمین ٹھیکہ و اسٹامپ اقرار نامہ",
+    tour_3_s: "زمین ءَ راستیں واجہاں چہ ٹھیکہ ءَ بگر و معاملہ ءِ گیشینگ ءَ رند دو زبانیں اسٹامپ پیپر اقرار نامہ بگر۔",
+    tour_4_t: "ایگری مارکیٹ: کِشت بہا گر و بہا کن",
+    tour_4_s: "کشاورز وتی رونگ ءَ عکساں گوں وتی نرخ ءَ پوسٹ کننت و مِل و مزنیں بہا گر پیشکش دیم دینت۔",
+    tour_5_t: "اونر پورٹل و بل ءِ بہر",
+    tour_5_s: "وتی مشیناں نبشتہ کن، درخواستاں ءِ پسّو بدے و ہر بل ءَ وتی خالص کٹّ و کمیشن ءَ جتا جتا بگند۔",
+    tour_6_t: "کسان ہیلپر: اے آئی توار ءِ صلاحکار",
+    tour_6_s: "وتی زبان ءَ گپ جت یا نبشتہ کت ہر وہد ہر چیز ءَ جست کن۔",
     ad_cp_edit: "اکاؤنٹ ءِ تفصیلاں بدل کن",
     ad_cp_cancel: "کنسل",
     ad_cp_saved_badge: "سمبالتگیں اکاؤنٹ، ہر بل ءِ سرا پیش دارگ بیت",
@@ -6252,7 +6666,7 @@ function NavBadge({ n, alert }) {
   return n > 0 ? <span className={`min-w-[18px] rounded-full px-1.5 text-center text-[11px] font-bold leading-[18px] ${alert ? "bg-red-600 text-white" : "bg-gold text-soil"}`} aria-label={alert ? `${n} new` : undefined}>{n}</span> : null;
 }
 
-function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs, account, country, setCountry, activityCount, onActivity, adminCount = 0 }) {
+function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs, account, country, setCountry, activityCount, onActivity, adminCount = 0, onTour }) {
   return (
     <>
     <header className="sticky top-0 z-40 w-full max-w-full border-b border-forest/10 bg-white/95 shadow-[0_1px_0_rgba(20,90,50,0.04)] backdrop-blur">
@@ -6265,6 +6679,11 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
           </span>
         </button>
         <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+          {onTour && (
+            <button type="button" onClick={onTour} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:px-3" aria-label={t("tour_btn")}>
+              <Compass className="h-4 w-4" aria-hidden="true" /><span className="hidden text-xs xl:inline xl:text-sm">{t("tour_btn")}</span>
+            </button>
+          )}
           <LangToggle t={t} lang={lang} setLang={setLang} />
           <div className="hidden md:block"><PrefsPill t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
           <button onClick={onActivity} className="relative inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest sm:px-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" aria-label={t("act_title")}>
@@ -6444,7 +6863,7 @@ const HUB_TILES = [
 ];
 function ServicesHub({ t, setTab }) {
   return (
-    <section aria-labelledby="hub-title" className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+    <section aria-labelledby="hub-title" data-tour="hub" className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
       <div className="mb-2.5 flex flex-wrap items-end justify-between gap-x-3 gap-y-1">
         <h2 id="hub-title" className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("hub_title")}</h2>
         <p className="text-xs text-soil/80 rtl:leading-[2]">{t("hub_sub")}</p>
@@ -6452,7 +6871,7 @@ function ServicesHub({ t, setTab }) {
       <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {HUB_TILES.map(({ key, icon: Icon, tone, soon }) => (
           <li key={key} className="min-w-0">
-            <button type="button" onClick={() => setTab(key)}
+            <button type="button" onClick={() => setTab(key)} data-tour={"hub-" + key}
               className="group flex h-full min-h-[76px] w-full flex-col gap-2 rounded-2xl bg-white p-3 text-start shadow-sm ring-1 ring-soil/10 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-leaf focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest active:scale-[0.98]">
               <span className="flex w-full items-start justify-between gap-2">
                 <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ${tone}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
@@ -9740,7 +10159,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
 
   return (
     <>
-      <button onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="kisan-helper" aria-label={t("kh_title")}
+      <button data-tour="helper" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="kisan-helper" aria-label={t("kh_title")}
         className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 z-30 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-gold font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest lg:bottom-6 lg:end-6 lg:h-auto lg:w-auto lg:px-4 lg:py-3">
         {open ? <X className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="h-5 w-5" aria-hidden="true" />}
         <span className="hidden lg:inline">{t("kh_title")}</span>
@@ -11461,6 +11880,7 @@ function CropListingConfirm({ t, p, innerRef, onView, onAnother }) {
         {row(t("am_ok_rate"), <span dir="ltr">{pkr(p.rate)}{t("am_per_maund")}</span>)}
         {row(t("am_ok_total"), <span dir="ltr" className="text-base text-leafink">{pkr(total)}</span>)}
       </dl>
+      <CropMediaStrip t={t} post={p} local={p.media} className="mt-3" />
       <div className="mt-4 flex items-start gap-2 rounded-xl bg-gold/10 p-3 text-sm text-soil ring-1 ring-gold/30">
         <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden="true" />
         <p className="leading-snug rtl:leading-[2]">{t("am_ok_eta")}</p>
@@ -11477,22 +11897,422 @@ function CropListingConfirm({ t, p, innerRef, onView, onAnother }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Agri-Market media + buyer side.                                     */
+/* crop_media/{cropId}_p0..p2 (photos) and {cropId}_v (video): one item */
+/* per document so each stays far below Firestore's 1 MiB limit, and    */
+/* only opened when someone taps "View photos & video". The shared      */
+/* mandi_crops document carries just a small thumbnail and counts.      */
+/* crop_offers/{id}: a buyer's offer, readable by that buyer, the       */
+/* seller and the founder. The seller's phone (crop_contacts) opens to  */
+/* the buyer only after the seller accepts.                             */
+/* ------------------------------------------------------------------ */
+const CROP_MAX_PHOTOS = 3;
+const CROP_VIDEO_MAX = 650 * 1024;
+// a ~320 px JPEG (at most 40,000 data-URL characters) for the listing cards
+const makeThumb = (dataUrl) => new Promise((resolve) => {
+  const img = new Image();
+  img.onload = () => {
+    try {
+      const scale = Math.min(1, 320 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(img.width * scale)); c.height = Math.max(1, Math.round(img.height * scale));
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      let q = 0.65, out = c.toDataURL("image/jpeg", q);
+      while (out.length > 40000 && q > 0.3) { q -= 0.1; out = c.toDataURL("image/jpeg", q); }
+      resolve(out.length <= 40000 ? out : "");
+    } catch (e) { resolve(""); }
+  };
+  img.onerror = () => resolve("");
+  img.src = dataUrl;
+});
+const safeHttps = (u) => (/^https:\/\/\S+$/i.test(String(u || "").trim()) ? String(u).trim().slice(0, 480) : "");
+
+// "Take / Upload Crop Photo & Video" block of the Sell My Crop form
+function CropMediaPicker({ t, media, setMedia }) {
+  const [err, setErr] = useState("");
+  const addFiles = (e) => {
+    const files = [...(e.target.files || [])];
+    e.target.value = "";
+    setErr("");
+    files.forEach((file) => {
+      if (/^video\//.test(file.type || "")) {
+        if (file.size > CROP_VIDEO_MAX) { setErr(t("pf_video_big")); return; }
+        readFileAsDataUrl(file).then((v) => setMedia((m) => ({ ...m, video: v }))).catch(() => setErr(t("pf_err")));
+        return;
+      }
+      shrinkPhoto(file)
+        .then((full) => makeThumb(full).then((thumb) => setMedia((m) => {
+          if (m.photos.length >= CROP_MAX_PHOTOS) { setErr(t("am_media_max")); return m; }
+          return { ...m, photos: [...m.photos, { full, thumb }] };
+        })))
+        .catch(() => setErr(t("ow_photo_err")));
+    });
+  };
+  const full = media.photos.length >= CROP_MAX_PHOTOS;
+  const btn = "inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-xl border border-forest/30 bg-white px-3 text-sm font-bold text-forest";
+  return (
+    <fieldset className="rounded-xl bg-ivory p-3 ring-1 ring-soil/10">
+      <legend className="sr-only">{t("am_media_t")}</legend>
+      <p className="flex items-center gap-2 text-sm font-bold text-forest rtl:leading-[2]"><Camera className="h-4 w-4" aria-hidden="true" />{t("am_media_t")}</p>
+      <p className="mt-0.5 text-[11px] leading-snug text-soil/80 rtl:leading-[2]">{t("am_media_s")}</p>
+      {(media.photos.length > 0 || media.video) && (
+        <ul className="mt-2 grid grid-cols-3 gap-2">
+          {media.photos.map((ph, i) => (
+            <li key={i} className="relative aspect-square overflow-hidden rounded-lg ring-1 ring-soil/15">
+              <img src={ph.thumb || ph.full} alt="" className="h-full w-full object-cover" />
+              <button type="button" onClick={() => setMedia((m) => ({ ...m, photos: m.photos.filter((_, j) => j !== i) }))} aria-label={t("am_media_remove")}
+                className="absolute end-1 top-1 flex h-7 w-7 items-center justify-center rounded-full bg-soil/80 text-white"><X className="h-4 w-4" aria-hidden="true" /></button>
+            </li>
+          ))}
+          {media.video && (
+            <li className="relative aspect-square overflow-hidden rounded-lg bg-black ring-1 ring-soil/15">
+              <video src={media.video} muted playsInline className="h-full w-full object-cover" />
+              <Play className="pointer-events-none absolute inset-0 m-auto h-8 w-8 text-white drop-shadow" aria-hidden="true" />
+              <button type="button" onClick={() => setMedia((m) => ({ ...m, video: "" }))} aria-label={t("am_media_remove")}
+                className="absolute end-1 top-1 flex h-7 w-7 items-center justify-center rounded-full bg-soil/80 text-white"><X className="h-4 w-4" aria-hidden="true" /></button>
+            </li>
+          )}
+        </ul>
+      )}
+      <div className="mt-2 flex flex-wrap gap-2">
+        <label className={btn + (full ? " pointer-events-none opacity-50" : "")}>
+          <Camera className="h-4 w-4" aria-hidden="true" />{t("am_take_photo")}
+          <input type="file" accept="image/*" capture="environment" onChange={addFiles} disabled={full} className="sr-only" />
+        </label>
+        <label className={btn}>
+          <Upload className="h-4 w-4" aria-hidden="true" />{t("am_upload_media")}
+          <input type="file" accept="image/*,video/*" multiple onChange={addFiles} className="sr-only" />
+        </label>
+      </div>
+      <label htmlFor="am-vlink" className="mt-2 block text-xs font-semibold text-soil">{t("am_media_link")}</label>
+      <input id="am-vlink" type="url" dir="ltr" placeholder="https://" value={media.videoUrl} onChange={(e) => setMedia((m) => ({ ...m, videoUrl: e.target.value }))} className={inputCls + " mt-1"} />
+      {err && <p role="alert" className="mt-1.5 text-xs font-semibold text-red-700">{err}</p>}
+    </fieldset>
+  );
+}
+
+// Full photos / video of one crop post: local (just posted) or loaded from crop_media on demand
+function CropMediaViewer({ t, post, local, onClose }) {
+  const [items, setItems] = useState(local ? null : undefined);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    if (local) return undefined;
+    return watchCollection(COL.cropMedia, (list) => setItems([...list].sort((a, b) => String(a.id).localeCompare(String(b.id)))), () => setFailed(true), [["cropId", "==", post.id]]);
+  }, [post.id, local]);
+  const photos = local ? local.photos.map((p) => p.full) : (items || []).filter((x) => x.kind === "photo").map((x) => x.data);
+  const video = local ? local.video : ((items || []).find((x) => x.kind === "video") || {}).data;
+  const link = safeHttps(local ? local.videoUrl : post.videoUrl);
+  const loading = !local && items === undefined && !failed;
+  return (
+    <SheetModal title={t("am_media_title")} onClose={onClose} labelledBy="am-media-h">
+      {loading && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("am_media_loading")}</p>}
+      {!loading && (
+        <div className="space-y-3">
+          {photos.map((src, i) => <img key={i} src={src} alt={t("crop_" + post.crop)} className="w-full rounded-xl object-contain ring-1 ring-soil/15" />)}
+          {video && <video src={video} controls playsInline className="w-full rounded-xl bg-black" />}
+          {link && <a href={link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-forest/30 px-3 text-sm font-bold text-forest"><ExternalLink className="h-4 w-4" aria-hidden="true" />{t("am_media_open_link")}</a>}
+          {!photos.length && !video && !link && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{failed ? t("pf_err") : t("am_media_none")}</p>}
+        </div>
+      )}
+    </SheetModal>
+  );
+}
+
+// Thumbnail + counts + "View photos & video" for a crop post (confirmation card, recent posts, buyer cards)
+function CropMediaStrip({ t, post, local, compact = false, className = "" }) {
+  const [open, setOpen] = useState(false);
+  const thumb = local ? (local.photos[0] && (local.photos[0].thumb || local.photos[0].full)) : post.thumb;
+  const nPhotos = local ? local.photos.length : Number(post.photoCount) || 0;
+  const hasVideo = local ? !!local.video : !!post.hasVideo;
+  const link = safeHttps(local ? local.videoUrl : post.videoUrl);
+  if (!thumb && !nPhotos && !hasVideo && !link) return null;
+  const badges = (
+    <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-soil">
+      {nPhotos > 0 && <span className="inline-flex items-center gap-0.5"><Camera className="h-3.5 w-3.5" aria-hidden="true" /><span dir="ltr">{nPhotos}</span></span>}
+      {hasVideo && <Video className="h-3.5 w-3.5" aria-label="video" />}
+      {link && <ExternalLink className="h-3.5 w-3.5" aria-label="link" />}
+    </span>
+  );
+  return (
+    <>
+      {compact ? (
+        <button type="button" onClick={() => setOpen(true)} aria-label={t("am_media_view")} className={`relative inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-soil/10 ring-1 ring-soil/15 ${className}`}>
+          {thumb ? <img src={thumb} alt="" className="h-full w-full object-cover" /> : <Video className="h-4 w-4 text-soil" aria-hidden="true" />}
+        </button>
+      ) : (
+        <button type="button" onClick={() => setOpen(true)} className={`flex w-full items-center gap-3 rounded-xl bg-ivory p-2 text-start ring-1 ring-soil/10 hover:ring-leaf ${className}`}>
+          <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-soil/10">
+            {thumb ? <img src={thumb} alt="" className="h-full w-full object-cover" /> : <Video className="h-5 w-5 text-soil" aria-hidden="true" />}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-bold text-forest rtl:leading-[2]">{t("am_media_view")}</span>
+            {badges}
+          </span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-soil/50 rtl:-scale-x-100" aria-hidden="true" />
+        </button>
+      )}
+      {open && <CropMediaViewer t={t} post={post} local={local} onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+const OFFER_TYPES = ["flour", "rice", "feed", "ginning", "bulk"];
+const offerStatusTone = { pending: "bg-gold/25 text-soil", accepted: "bg-leaf/20 text-forest", declined: "bg-red-100 text-red-800", withdrawn: "bg-soil/10 text-soil/80" };
+
+function CropOfferModal({ t, post, session, toast, onClose }) {
+  const [f, setF] = useState({ rate: post.rate || "", qty: post.qty || 1, org: (session && session.name) || "", type: post.crop === "rice" ? "rice" : post.crop === "cotton" ? "ginning" : post.crop === "maize" ? "feed" : "flour", phone: (session && session.phone) || "", note: "" });
+  const [errs, setErrs] = useState({});
+  const [busy, setBusy] = useState(false);
+  const set = (k, v) => { setF((s) => ({ ...s, [k]: v })); setErrs((x) => ({ ...x, [k]: undefined })); };
+  const submit = (e) => {
+    e.preventDefault();
+    const er = {}, max = Number(post.qty) || 1, qty = Number(f.qty), rate = Number(f.rate);
+    if (!(rate >= 100)) er.rate = t("am_err_offer_rate");
+    if (!(qty >= 1 && qty <= max)) er.qty = t("am_err_offer_qty").replace("{n}", max.toLocaleString("en-PK"));
+    const phone = String(f.phone || "").replace(/[\s-]/g, "");
+    if (!/^(\+92|0)?3\d{9}$/.test(phone)) er.phone = t("am_err_wallet");
+    setErrs(er);
+    if (Object.keys(er).length) return;
+    setBusy(true);
+    const now = Date.now();
+    const id = `${post.id}_${session.uid.slice(0, 10)}_${now.toString(36)}`;
+    writeDoc(COL.cropOffers, id, {
+      cropId: post.id, crop: post.crop, sellerUid: post.sellerUid, buyerUid: session.uid, buyerName: String(session.name || "").slice(0, 80),
+      buyerOrg: String(f.org || "").trim().slice(0, 80), buyerType: f.type, buyerPhone: phone.slice(0, 16), rate: Math.round(rate), qty: Math.round(qty),
+      note: String(f.note || "").trim().slice(0, 280), status: "pending", uids: [session.uid, post.sellerUid], createdAt: now, updatedAt: now,
+    }).then(() => { toast(t("am_offer_sent")); onClose(); }).catch(() => { setBusy(false); toast(t("am_offer_err"), { type: "error" }); });
+  };
+  return (
+    <SheetModal title={t("am_offer_t").replace("{crop}", t("crop_" + post.crop))} onClose={onClose} labelledBy="am-offer-h">
+      <form onSubmit={submit} noValidate className="space-y-3">
+        <p className="rounded-xl bg-ivory p-2.5 text-sm text-soil"><span dir="ltr" className="font-mono">{post.id}</span> · {t("am_asking")}: <b dir="ltr">{pkr(post.rate)}{t("am_per_maund")}</b> · <span dir="ltr">{Number(post.qty).toLocaleString("en-PK")}</span> {t("am_mann")}</p>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label={t("am_offer_rate")} htmlFor="ao-r" error={errs.rate}><MoneyInput id="ao-r" min={100} step="10" value={f.rate} onChange={(v) => set("rate", v)} className={inputCls + " font-extrabold text-forest"} /></Field>
+          <Field label={t("am_offer_qty")} htmlFor="ao-q" error={errs.qty}><input id="ao-q" type="number" min="1" max={post.qty} dir="ltr" value={f.qty} onChange={(e) => set("qty", e.target.value)} className={inputCls} /></Field>
+        </div>
+        <Field label={t("am_offer_org")} htmlFor="ao-o"><input id="ao-o" maxLength={80} value={f.org} onChange={(e) => set("org", e.target.value)} className={inputCls} /></Field>
+        <Field label={t("am_offer_type")} htmlFor="ao-t">
+          <select id="ao-t" value={f.type} onChange={(e) => set("type", e.target.value)} className={inputCls}>{OFFER_TYPES.map((k) => <option key={k} value={k}>{t("am_type_" + k)}</option>)}</select>
+        </Field>
+        <Field label={t("am_offer_phone")} htmlFor="ao-p" error={errs.phone}><input id="ao-p" inputMode="tel" dir="ltr" placeholder="03XX XXXXXXX" value={f.phone} onChange={(e) => set("phone", e.target.value)} className={inputCls} /></Field>
+        <Field label={t("am_offer_note")} htmlFor="ao-n"><input id="ao-n" maxLength={280} value={f.note} onChange={(e) => set("note", e.target.value)} className={inputCls} /></Field>
+        <p className="text-center text-sm font-semibold text-soil" dir="ltr">{t("am_lot_value")}: {pkr((Number(f.qty) || 0) * (Number(f.rate) || 0))}</p>
+        <button type="submit" disabled={busy} className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 text-sm font-bold text-ivory disabled:opacity-60"><Send className="h-4 w-4" aria-hidden="true" />{t("am_offer_send")}</button>
+      </form>
+    </SheetModal>
+  );
+}
+
+// Seller phone for a buyer whose offer was accepted (crop_contacts opens to that buyer only)
+function CropSellerContact({ t, cropId }) {
+  const [c, setC] = useState(undefined);
+  useEffect(() => { let on = true; readDoc(COL.cropContacts, cropId).then((d) => on && setC(d || null)).catch(() => on && setC(null)); return () => { on = false; }; }, [cropId]);
+  if (c === undefined) return <p className="mt-2 text-xs text-soil/80">{t("am_contact_loading")}</p>;
+  if (!c || !c.sellerPhone) return <p className="mt-2 text-xs font-semibold text-soil/80">{t("am_contact_err")}</p>;
+  const wa = waDigits(c.sellerPhone);
+  return (
+    <div className="mt-2 rounded-lg bg-leaf/10 p-2 ring-1 ring-leaf/30">
+      <p className="text-[11px] font-bold text-forest">{t("am_seller_contact")}: {c.sellerName || ""}</p>
+      <div className="mt-1 flex flex-wrap gap-2">
+        <a href={`tel:${c.sellerPhone}`} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-forest/25 bg-white px-2.5 text-xs font-bold text-forest"><Phone className="h-3.5 w-3.5" aria-hidden="true" /><span dir="ltr">{c.sellerPhone}</span></a>
+        {wa && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-[#1E7A45] px-2.5 text-xs font-bold text-white"><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_wa")}</a>}
+      </div>
+    </div>
+  );
+}
+
+// "Buy Crops (Live Harvests)": mills and bulk buyers browse open crop posts and send offers
+function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }) {
+  const [crop, setCrop] = useState("all");
+  const [offerFor, setOfferFor] = useState(null);
+  const uid = session && session.uid;
+  const myOffers = offers.filter((o) => o.buyerUid === uid).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const myOfferBy = new Map(myOffers.filter((o) => o.status !== "withdrawn").map((o) => [o.cropId, o]));
+  const live = posts.filter((p) => p.status === "open" && !p.own && p.sellerUid && (crop === "all" || p.crop === crop)).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const withdraw = (o) => writeDoc(COL.cropOffers, o.id, { ...o, status: "withdrawn", updatedAt: Date.now() }).catch(() => toast(t("am_offer_save_err"), { type: "error" }));
+  const ago = (ms) => (ms ? new Date(ms).toLocaleDateString(lang === "en" ? "en-GB" : "en-GB", { day: "numeric", month: "short" }) : "");
+  if (!session) {
+    return (
+      <div className="rounded-2xl border border-soil/10 bg-white p-6 text-center shadow-sm">
+        <ShoppingBag className="mx-auto h-8 w-8 text-leafink" aria-hidden="true" />
+        <p className="mt-2 text-sm text-soil rtl:leading-[2]">{t("am_buy_signin")}</p>
+        <button type="button" onClick={() => requireAuth(() => {})} className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-forest px-4 text-sm font-bold text-ivory"><LogIn className="h-4 w-4" aria-hidden="true" />{t("auth_signin")}</button>
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-5">
+      <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <h3 className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("am_buy_t")}</h3>
+        <p className="mt-1 text-sm text-soil/80 rtl:leading-[2]">{t("am_buy_s")}</p>
+        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={t("am_crop")}>
+          {["all", ...Object.keys(CROPS)].map((c) => (
+            <button key={c} type="button" onClick={() => setCrop(c)} aria-pressed={crop === c}
+              className={`min-h-[40px] rounded-full px-3.5 text-sm font-bold ring-1 ${crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{c === "all" ? t("am_buy_all") : t("crop_" + c)}</button>
+          ))}
+        </div>
+      </div>
+      {live.length === 0 ? <p className="rounded-2xl bg-ivory p-5 text-sm text-soil/80 ring-1 ring-soil/10 rtl:leading-[2]">{t("am_buy_none")}</p> : (
+        <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {live.map((p) => {
+            const mine = myOfferBy.get(p.id);
+            return (
+              <li key={p.id} className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-soil/10">
+                {p.thumb ? <img src={p.thumb} alt={t("crop_" + p.crop)} className="aspect-[16/10] w-full object-cover" /> : <CropPhoto crop={p.crop} alt={t("crop_" + p.crop)} className="aspect-[16/10] w-full" />}
+                <div className="flex flex-1 flex-col gap-2 p-3.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-extrabold text-forest rtl:leading-[2]">{t("crop_" + p.crop)} · {t(p.grade === "B" ? "am_grade_b" : "am_grade_a")}</p>
+                    <span className="shrink-0 text-[11px] text-soil/70" dir="ltr">{ago(p.createdAt)}</span>
+                  </div>
+                  <p className="flex items-center gap-1 text-xs text-soil/80"><MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" /><span className="truncate">{p.village || locLabel(p.loc) || "-"}</span></p>
+                  <dl className="grid grid-cols-3 gap-1.5 text-center">
+                    <div className="rounded-lg bg-ivory p-1.5"><dt className="text-[10px] text-soil/70">{t("am_offer_qty")}</dt><dd className="text-sm font-bold text-forest" dir="ltr">{Number(p.qty).toLocaleString("en-PK")}</dd></div>
+                    <div className="rounded-lg bg-ivory p-1.5"><dt className="text-[10px] text-soil/70">{t("am_asking")}</dt><dd className="text-sm font-bold text-forest" dir="ltr">{pkr(p.rate)}</dd></div>
+                    <div className="rounded-lg bg-ivory p-1.5"><dt className="text-[10px] text-soil/70">{t("am_lot_value")}</dt><dd className="text-sm font-bold text-forest" dir="ltr">{pkr((Number(p.qty) || 0) * (Number(p.rate) || 0))}</dd></div>
+                  </dl>
+                  <CropMediaStrip t={t} post={p} />
+                  <div className="mt-auto pt-1">
+                    {mine ? (
+                      <div className="rounded-xl bg-ivory p-2 text-xs ring-1 ring-soil/10">
+                        <p className="flex flex-wrap items-center justify-between gap-1"><span className="font-bold text-forest">{t("am_offer_sent_badge")}: <span dir="ltr">{pkr(mine.rate)}</span> × <span dir="ltr">{mine.qty}</span></span>
+                          <span className={`rounded-full px-2 py-0.5 font-bold ${offerStatusTone[mine.status] || ""}`}>{t("am_of_" + mine.status)}</span></p>
+                        {mine.status === "accepted" && <CropSellerContact t={t} cropId={p.id} />}
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => requireAuth(() => setOfferFor(p))} className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-3 text-sm font-bold text-ivory"><HandCoins className="h-4 w-4" aria-hidden="true" />{t("am_offer")}</button>
+                    )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {myOffers.length > 0 && (
+        <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+          <h3 className="mb-2 font-bold text-forest">{t("am_my_offers")}</h3>
+          <ul className="space-y-2">
+            {myOffers.map((o) => (
+              <li key={o.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span><span dir="ltr" className="font-mono text-xs">{o.cropId}</span> · {t("crop_" + o.crop)} · <b dir="ltr">{pkr(o.rate)}</b>{t("am_per_maund")} × <span dir="ltr">{o.qty}</span> {t("am_mann")}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${offerStatusTone[o.status] || ""}`}>{t("am_of_" + o.status)}</span>
+                </div>
+                {o.status === "pending" && <button type="button" onClick={() => withdraw(o)} className="mt-2 min-h-[40px] rounded-lg border border-soil/20 px-3 text-xs font-bold text-soil">{t("am_withdraw")}</button>}
+                {o.status === "accepted" && <CropSellerContact t={t} cropId={o.cropId} />}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {offerFor && <CropOfferModal t={t} post={offerFor} session={session} toast={toast} onClose={() => setOfferFor(null)} />}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* First-visit guided tour: spotlight + pointing hand on six features. */
+/* Shown once (localStorage) and re-opened from the header "Guide".    */
+/* Targets are the services-hub tiles, which are visible on phones and */
+/* desktops alike, plus the Kisan Helper button.                        */
+/* ------------------------------------------------------------------ */
+const TOUR_KEY = "agrishare.tour.v1";
+const TOUR_STEPS = ['[data-tour="hub"]', '[data-tour="hub-live-request"]', '[data-tour="hub-land"]', '[data-tour="hub-agri-mandi"]', '[data-tour="hub-owner-portal"]', '[data-tour="helper"]'];
+function GuidedTour({ t, onClose }) {
+  const [i, setI] = useState(0);
+  const [rect, setRect] = useState(null);
+  const [vp, setVp] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
+  const nextRef = useRef(null);
+  const last = i === TOUR_STEPS.length - 1;
+  useEffect(() => {
+    let raf = 0, alive = true;
+    const find = () => document.querySelector(TOUR_STEPS[i]);
+    const el0 = find();
+    if (el0) el0.scrollIntoView({ behavior: "smooth", block: "center" });
+    const measure = () => {
+      if (!alive) return;
+      const el = find();
+      const r = el && el.getBoundingClientRect();
+      const nr = r && r.width > 0 ? { top: r.top, left: r.left, width: r.width, height: r.height } : null;
+      setRect((o) => (o && nr && Math.abs(o.top - nr.top) < 0.5 && Math.abs(o.left - nr.left) < 0.5 && Math.abs(o.width - nr.width) < 0.5 && Math.abs(o.height - nr.height) < 0.5 ? o : nr));
+      setVp((o) => (o.w === window.innerWidth && o.h === window.innerHeight ? o : { w: window.innerWidth, h: window.innerHeight }));
+      raf = requestAnimationFrame(measure);
+    };
+    measure();
+    if (nextRef.current) nextRef.current.focus({ preventScroll: true });
+    return () => { alive = false; cancelAnimationFrame(raf); };
+  }, [i]);
+  useEffect(() => {
+    const k = (e) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const fwd = (e.key === "ArrowRight") !== (document.documentElement.dir === "rtl");
+        setI((n) => Math.max(0, Math.min(TOUR_STEPS.length - 1, n + (fwd ? 1 : -1))));
+      }
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [onClose]);
+  const pad = 8, gap = 52, cardW = Math.min(340, vp.w - 24);
+  const below = rect ? rect.top + rect.height + gap + 190 < vp.h : true;
+  const left = rect ? Math.max(12, Math.min(vp.w - cardW - 12, rect.left + rect.width / 2 - cardW / 2)) : (vp.w - cardW) / 2;
+  const cardStyle = !rect ? { left, top: "50%", width: cardW, transform: "translateY(-50%)" }
+    : below ? { left, top: Math.min(vp.h - 200, rect.top + rect.height + gap), width: cardW }
+    : { left, bottom: Math.max(12, vp.h - rect.top + gap), width: cardW };
+  const handX = rect ? Math.max(16, Math.min(vp.w - 48, rect.left + rect.width / 2 - 16)) : 0;
+  const handY = rect ? (below ? rect.top + rect.height + 6 : rect.top - 42) : 0;
+  return createPortal(
+    <div className="fixed inset-0 z-[120]" role="presentation">
+      <div className={`absolute inset-0 ${rect ? "" : "bg-[rgba(16,32,24,0.62)]"}`} />
+      {rect && <div className="pointer-events-none fixed rounded-2xl ring-4 ring-gold transition-all duration-300 ease-out"
+        style={{ top: rect.top - pad, left: rect.left - pad, width: rect.width + pad * 2, height: rect.height + pad * 2, boxShadow: "0 0 0 9999px rgba(16,32,24,0.62)" }} />}
+      {rect && (
+        <span className="pointer-events-none fixed transition-all duration-300 ease-out" style={{ left: handX, top: handY }} aria-hidden="true">
+          <span className="block animate-bounce"><Pointer className={`h-9 w-9 fill-white text-forest drop-shadow-lg ${below ? "" : "rotate-180"}`} strokeWidth={1.8} /></span>
+        </span>
+      )}
+      <div role="dialog" aria-modal="true" aria-labelledby="tour-h" aria-describedby="tour-d" className="fixed rounded-2xl bg-white p-4 shadow-2xl ring-1 ring-forest/10" style={cardStyle}>
+        <p className="text-[11px] font-bold uppercase tracking-wide text-leafink">{t("tour_step").replace("{n}", i + 1).replace("{total}", TOUR_STEPS.length)}</p>
+        <h3 id="tour-h" className="mt-1 font-display text-base font-extrabold text-forest rtl:leading-[2]">{t(`tour_${i + 1}_t`)}</h3>
+        <p id="tour-d" className="mt-1 text-sm leading-snug text-soil rtl:leading-[2]">{t(`tour_${i + 1}_s`)}</p>
+        <div className="mt-3 flex gap-1" aria-hidden="true">{TOUR_STEPS.map((_, n) => <span key={n} className={`h-1.5 flex-1 rounded-full ${n <= i ? "bg-forest" : "bg-soil/15"}`} />)}</div>
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <button type="button" onClick={onClose} className="min-h-[40px] rounded-lg px-1 text-xs font-bold text-soil/80 underline-offset-2 hover:underline">{t("tour_skip")}</button>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setI((n) => Math.max(0, n - 1))} disabled={i === 0} className="min-h-[40px] rounded-xl px-3 text-sm font-bold text-forest ring-1 ring-forest/25 disabled:opacity-40">{t("tour_back")}</button>
+            <button ref={nextRef} type="button" onClick={() => (last ? onClose() : setI((n) => n + 1))} className="min-h-[40px] rounded-xl bg-forest px-4 text-sm font-bold text-ivory">{t(last ? "tour_finish" : "tour_next")}</button>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, saveMandi, settleFinancing, userLoc, setTab, toast, demoMode = false }) {
   const startLoc = userLoc || (session && session.location) || null; // no sample village pre-filled
   const [errs, setErrs] = useState({});
-  const [f, setF] = useState(() => ({ crop: "wheat", qty: 100, grade: "A", loc: startLoc, village: locLabel(startLoc), rate: CROPS.wheat.bench, wallet: "jazzcash", walletNo: (session && session.phone) || "" }));
+  const [f, setF] = useState(() => ({ crop: "wheat", qty: 100, grade: "A", loc: startLoc, village: locLabel(startLoc), rate: "", wallet: "jazzcash", walletNo: (session && session.phone) || "" }));
   const [post, setPost] = useState(null);
   const [bids, setBids] = useState([]);
   const [scanning, setScanning] = useState(false);
   const [picked, setPicked] = useState(null);
   const [receipt, setReceipt] = useState(null);
   const [confirm, setConfirm] = useState(null); // the listing just submitted, shown on the confirmation card
-  const confirmRef = useRef(null), formRef = useRef(null), recentRef = useRef(null);
+  const confirmRef = useRef(null), formRef = useRef(null), recentRef = useRef(null), bidsRef = useRef(null);
+  const [view, setView] = useState("sell"); // "sell" (farmer form) | "buy" (live harvests for mills / bulk buyers)
+  const [media, setMedia] = useState({ photos: [], video: "", videoUrl: "" });
+  const [offers, setOffers] = useState([]); // crop_offers where I am the buyer or the seller
+  const uid = session && session.uid;
+  useEffect(() => {
+    if (!uid) { setOffers([]); return undefined; }
+    return watchCollection(COL.cropOffers, (list) => setOffers(list), () => {}, [["uids", "array-contains", uid]]);
+  }, [uid]);
   const timers = useRef([]);
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
   const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = []; };
   useEffect(() => () => clearTimers(), []);
-  useEffect(() => { if (!post) setF((s) => ({ ...s, rate: CROPS[s.crop].bench })); }, [f.crop]); // eslint-disable-line
 
   const mine = (b) => !!b.own;
   const pendingCredit = bookings.filter((b) => mine(b) && b.financing && b.financing.status !== "settled" && !["cancelled", "declined"].includes(b.status))
@@ -11536,12 +12356,21 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
     if (Object.keys(er).length) return;
     requireAuth(() => {
       const p = { ...f, id: "AM-" + Math.floor(10000 + Math.random() * 89999), qty: Math.max(1, Number(f.qty) || 1), rate: Math.max(100, Number(f.rate) || 0), status: "open", createdAt: Date.now(), sellerUid: session ? session.uid : null, sellerName: session ? session.name : "" };
+      const vlink = safeHttps(media.videoUrl);
+      const thumb = (media.photos[0] && media.photos[0].thumb) || "";
+      Object.assign(p, { photoCount: media.photos.length, hasVideo: !!media.video, ...(thumb ? { thumb } : {}), ...(vlink ? { videoUrl: vlink } : {}) });
+      const localMedia = { photos: media.photos, video: media.video, videoUrl: vlink };
+      if (session) {
+        const warnMedia = (e) => console.warn("[Agri-Share] Crop media not saved:", e && e.code);
+        media.photos.forEach((ph, i) => writeDoc(COL.cropMedia, `${p.id}_p${i}`, { cropId: p.id, sellerUid: session.uid, kind: "photo", data: ph.full, createdAt: p.createdAt }).catch(warnMedia));
+        if (media.video) writeDoc(COL.cropMedia, `${p.id}_v`, { cropId: p.id, sellerUid: session.uid, kind: "video", data: media.video, createdAt: p.createdAt }).catch(warnMedia);
+      }
       // seller email and wallet phone are private: crop_contacts/{cropId} (seller + founder); the shared
       // mandi_crops document never carries them. The full post (with wallet) stays only in this browser for the sale screen.
       const { walletNo, sellerEmail: _noEmail, sellerPhone: _noPhone, ...pub } = p;
       if (session) writeDoc(COL.cropContacts, p.id, { cropId: p.id, sellerUid: session.uid, sellerName: session.name || "", sellerEmail: session.email || "", sellerPhone: String(walletNo || "").replace(/[\s-]/g, ""), wallet: p.wallet, createdAt: Date.now() })
         .catch((e) => console.warn("[Agri-Share] Crop contact not saved:", e && e.code));
-      saveMandi(pub); setPost(p); setReceipt(null); setBids([]); setPicked(null); setConfirm(p);
+      saveMandi(pub); setPost(p); setReceipt(null); setBids([]); setPicked(null); setConfirm({ ...p, media: localMedia }); setMedia({ photos: [], video: "", videoUrl: "" });
       // simulated buyer bids only in the founder's Sample Demo Data mode; live posts wait for real verified buyers
       if (demoMode) setTimeout(() => startBidding(p), 0);
     });
@@ -11553,11 +12382,35 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
   // "Post another crop": keep the submitted listing live for buyers and open a fresh form
   const postAnother = () => {
     clearTimers(); setPost(null); setBids([]); setPicked(null); setReceipt(null); setScanning(false); setConfirm(null);
-    setF((s) => ({ ...s, qty: 100, rate: CROPS[s.crop] ? CROPS[s.crop].bench : s.rate }));
+    setF((s) => ({ ...s, qty: 100, rate: "" }));
     requestAnimationFrame(() => smooth(formRef.current));
   };
   const viewMyCrops = () => smooth(recentRef.current || formRef.current);
-  const pickedBid = bids.find((b) => b.key === picked);
+  const realBids = post ? offers.filter((o) => o.sellerUid === uid && o.cropId === post.id && (o.status === "pending" || o.status === "accepted"))
+    .map((o) => ({ key: o.id, name: o.buyerOrg || o.buyerName || "-", type: o.buyerType, distance: null, rate: o.rate, qty: o.qty,
+      kind: o.rate >= post.rate * 1.015 ? "above" : o.rate >= post.rate ? "accept" : "counter", real: true, offer: o })) : [];
+  const allBids = [...realBids, ...bids];
+  const pickedBid = allBids.find((b) => b.key === picked);
+  const bidQty = (b) => (b && b.qty) || (post ? post.qty : 0);
+  const pendingOffersFor = (id) => offers.filter((o) => o.sellerUid === uid && o.cropId === id && o.status === "pending").length;
+  // accepting a real offer: mark it accepted, then open the seller's contact (crop_contacts) to that buyer only
+  const acceptBid = (b) => {
+    if (!b.real) { setPicked(b.key); return; }
+    const o = b.offer;
+    if (o.status === "accepted") { setPicked(b.key); return; }
+    writeDoc(COL.cropOffers, o.id, { ...o, status: "accepted", updatedAt: Date.now() })
+      .then(() => readDoc(COL.cropContacts, o.cropId).catch(() => null))
+      .then((c) => (c ? writeDoc(COL.cropContacts, o.cropId, { ...c, acceptedBuyerUid: o.buyerUid, acceptedOfferId: o.id, updatedAt: Date.now() }) : null))
+      .then(() => setPicked(b.key))
+      .catch(() => toast(t("am_offer_save_err"), { type: "error" }));
+  };
+  const declineBid = (b) => {
+    if (picked === b.key) setPicked(null);
+    if (!b.real) { setBids((l) => l.filter((x) => x.key !== b.key)); return; }
+    writeDoc(COL.cropOffers, b.offer.id, { ...b.offer, status: "declined", updatedAt: Date.now() }).catch(() => toast(t("am_offer_save_err"), { type: "error" }));
+  };
+  // reopen an earlier post of mine to answer the offers it received
+  const openOffers = (p) => { clearTimers(); setPost(p); setConfirm(null); setReceipt(null); setBids([]); setPicked(null); setScanning(false); requestAnimationFrame(() => smooth(bidsRef.current)); };
 
   // settle oldest credits first, only those the sale proceeds can fully cover
   const plan = (gross) => {
@@ -11567,10 +12420,10 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
   };
   const confirmSale = () => {
     if (!pickedBid || !post) return;
-    const gross = pickedBid.rate * post.qty;
+    const gross = pickedBid.rate * bidQty(pickedBid);
     const pl = plan(gross);
     settleFinancing(pl.ids, post.id);
-    const rec = { saleId: post.id, buyer: pickedBid.name, rate: pickedBid.rate, qty: post.qty, gross, ...pl, wallet: post.wallet, walletNo: post.walletNo };
+    const rec = { saleId: post.id, buyer: pickedBid.name, rate: pickedBid.rate, qty: bidQty(pickedBid), gross, ...pl, wallet: post.wallet, walletNo: post.walletNo };
     saveMandi({ id: post.id, status: "sold", soldTo: pickedBid.name, soldRate: pickedBid.rate, gross, creditSettled: pl.settled, net: pl.net, settledBookings: pl.ids, soldAt: Date.now() });
     clearTimers(); setScanning(false); setReceipt(rec);
     toast(t("toast_sold").replace("{net}", pkr(pl.net)));
@@ -11578,6 +12431,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
   const maskWallet = (n) => (n && n.length >= 4 ? "•••• " + n.slice(-4) : "••••");
   const myPosts = [...mandiPosts].filter((p) => p.own).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
   const typeLabel = (ty) => t("am_type_" + ty);
+  const liveCount = mandiPosts.filter((m) => m.status === "open" && !m.own && m.sellerUid).length;
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="am-h">
@@ -11596,10 +12450,20 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
         </div>
       </div>
 
+      <div role="tablist" aria-label={t("nav_mandi")} className="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-soil/10">
+        {[["sell", HandCoins, t("am_tab_sell")], ["buy", ShoppingBag, t("am_tab_buy")]].map(([k, Icon, label]) => (
+          <button key={k} type="button" role="tab" aria-selected={view === k} onClick={() => setView(k)}
+            className={`flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-2 text-sm font-bold leading-tight rtl:leading-[1.8] ${view === k ? "bg-forest text-ivory shadow" : "text-forest hover:bg-forest/5"}`}>
+            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" /><span className="text-center">{label}</span>
+            {k === "buy" && liveCount > 0 && <span className={`rounded-full px-1.5 text-[11px] ${view === k ? "bg-gold text-soil" : "bg-gold/30 text-soil"}`} dir="ltr">{liveCount}</span>}
+          </button>
+        ))}
+      </div>
+
+      {view === "buy" ? <CropBuyerMarket t={t} lang={lang} session={session} requireAuth={requireAuth} posts={mandiPosts} offers={offers} toast={toast} /> : (<>
       <div className="mb-6">
         <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
-          <h3 className="font-display text-lg font-extrabold text-forest">{t("am_tiles_t")}</h3>
-          <span className="rounded-full bg-ivory px-2.5 py-1 text-[11px] font-bold text-soil ring-1 ring-soil/15">{t("am_updated")}</span>
+          <h3 className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("am_tiles_t2")}</h3>
         </div>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {Object.keys(CROPS).map((c) => (
@@ -11608,12 +12472,12 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
               <CropPhoto crop={c} alt={t("crop_" + c)} className="aspect-[16/10] w-full" />
               <span className="block p-3">
                 <span className="block text-sm font-extrabold text-forest">{t("crop_" + c)}{lang === "en" ? <span className="font-semibold text-soil/80"> / {CROP_LOCAL[c]}</span> : null}</span>
-                <span className="block font-display text-lg font-extrabold text-soil" dir="ltr">{pkr(CROPS[c].bench)}<span className="text-xs font-semibold text-soil/80"> {t("am_per_maund")}</span></span>
+                <span className="mt-0.5 flex items-center gap-1 text-xs font-bold text-leafink rtl:leading-[2]"><Tag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{t("pop_own_rate")}</span>
               </span>
             </button>
           ))}
         </div>
-        <p className="mt-2 text-[11px] text-soil/80">{t("am_tiles_note")}</p>
+        <p className="mt-2 text-[11px] text-soil/80 rtl:leading-[2]">{t("am_tiles_note2")}</p>
       </div>
 
       <div className="mb-6 rounded-2xl border-2 border-leaf/50 bg-leaf/10 p-4">
@@ -11647,10 +12511,11 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
               </Field>
             </div>
             <LocationField t={t} lang={lang} id="am-loc" label={t("lr_village")} value={f.loc} placeholder={t("loc_placeholder")} error={errs.loc} onChange={(loc) => { if (loc) { setErrs((x) => ({ ...x, loc: undefined })); setF((s0) => ({ ...s0, loc, village: locLabel(loc) })); } }} />
-            <Field label={t("am_rate")} htmlFor="am-r" error={errs.rate} hint={(CROPS[f.crop].sourced ? t("am_bench_src") : t("am_bench_est")).replace("{r}", pkr(CROPS[f.crop].bench))}>
+            <Field label={t("am_rate")} htmlFor="am-r" error={errs.rate} hint={t("pop_own_rate")}>
               <MoneyInput id="am-r" min={100} step="10" value={f.rate} onChange={(v) => set("rate", v)} className={inputCls + " text-center text-lg font-extrabold text-forest"} />
             </Field>
             <p className="rounded-xl bg-ivory p-2.5 text-center text-sm font-semibold text-soil" dir="ltr">{t("am_expected_total")}: {pkr((Number(f.qty) || 0) * (Number(f.rate) || 0))}</p>
+            <CropMediaPicker t={t} media={media} setMedia={setMedia} />
             <fieldset>
               <legend className="mb-2 text-sm font-semibold text-soil">{t("am_wallet")}</legend>
               <div className="grid grid-cols-2 gap-2">
@@ -11673,9 +12538,11 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
               <p className="mb-2 text-xs font-bold uppercase tracking-wide text-soil/80">{t("am_recent")}</p>
               <ul className="space-y-1.5">
                 {myPosts.map((p) => (
-                  <li key={p.id} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
-                    <span className="min-w-0 truncate"><span dir="ltr" className="font-mono">{p.id}</span> · {t("crop_" + p.crop)} · {p.qty} {t("am_mann")}</span>
+                  <li key={p.id} className="flex items-center gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
+                    <CropMediaStrip t={t} post={p} compact />
+                    <span className="min-w-0 flex-1 truncate"><span dir="ltr" className="font-mono">{p.id}</span> · {t("crop_" + p.crop)} · {p.qty} {t("am_mann")}</span>
                     <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${p.status === "sold" ? "bg-leaf/15 text-forest" : p.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("am_st_" + p.status)}</span>
+                    {p.status === "open" && pendingOffersFor(p.id) > 0 && (!post || post.id !== p.id) && <button type="button" onClick={() => openOffers(p)} className="shrink-0 rounded-full bg-forest px-2 py-0.5 font-bold text-ivory">{t("am_offers_n").replace("{n}", pendingOffersFor(p.id))}</button>}
                   </li>
                 ))}
               </ul>
@@ -11685,37 +12552,37 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
 
         <div className="min-w-0 space-y-5">
           {confirm && post && post.id === confirm.id && !receipt && <CropListingConfirm t={t} p={confirm} innerRef={confirmRef} onView={viewMyCrops} onAnother={postAnother} />}
-          <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+          <div ref={bidsRef} className="scroll-mt-24 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-2">
               <h3 className="flex items-center gap-2 font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("am_bids")}</h3>
-              {post && (demoMode || bids.length > 0) && <span className="text-xs font-semibold text-soil/80" aria-live="polite">{scanning ? t("am_waiting") : `${bids.length} ${t("am_bids_n")}`}</span>}
+              {post && (demoMode || allBids.length > 0) && <span className="text-xs font-semibold text-soil/80" aria-live="polite">{scanning ? t("am_waiting") : `${allBids.length} ${t("am_bids_n")}`}</span>}
             </div>
             {!post && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("am_idle")}</p>}
-            {post && !demoMode && bids.length === 0 && (
+            {post && !demoMode && allBids.length === 0 && (
               <div className="flex items-start gap-3 rounded-xl bg-leaf/10 p-4 text-sm text-soil ring-1 ring-leaf/30" role="status">
                 <Hourglass className="mt-0.5 h-5 w-5 shrink-0 animate-pulse text-leafink" aria-hidden="true" />
                 <div><p className="font-bold text-forest">{t("am_waiting_buyers")}</p><p className="mt-0.5 text-xs text-soil/80">{t("am_waiting_buyers_sub")}</p></div>
               </div>
             )}
-            {post && demoMode && !scanning && bids.length === 0 && <p className="rounded-xl bg-gold/10 p-4 text-sm text-soil">{t("am_no_bids")}</p>}
+            {post && demoMode && !scanning && allBids.length === 0 && <p className="rounded-xl bg-gold/10 p-4 text-sm text-soil">{t("am_no_bids")}</p>}
             <ul className="grid gap-2 md:grid-cols-2">
-              {[...bids].sort((a, b) => b.rate - a.rate).map((b) => (
+              {[...allBids].sort((a, b) => b.rate - a.rate).map((b) => (
                 <li key={b.key} className={`rounded-xl border p-3 animate-[slidein_.3s_ease-out] ${picked === b.key ? "border-forest bg-forest/5" : "border-soil/10 bg-ivory/60"}`}>
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="truncate font-bold text-forest">{b.name}</p>
-                      <p className="text-xs text-soil/80">{typeLabel(b.type)} · <span dir="ltr">{b.distance} km</span> · {t("am_sample")}</p>
+                      <p className="text-xs text-soil/80">{typeLabel(b.type)} · {b.real ? <span className="font-bold text-leafink">{t("am_real_offer")}</span> : <><span dir="ltr">{b.distance} km</span> · {t("am_sample")}</>}</p>
                     </div>
                     <div className="shrink-0 text-end">
                       <p className={`whitespace-nowrap text-[11px] font-bold ${b.kind === "counter" ? "text-soil" : "text-leafink"}`}>{b.kind === "above" ? t("am_above") : b.kind === "accept" ? t("lr_accepts") : t("lr_counter")}</p>
                       <p className="whitespace-nowrap font-display text-lg font-extrabold text-forest" dir="ltr">{pkr(b.rate)}<span className="text-xs font-semibold text-soil/80">/{t("am_mann")}</span></p>
                     </div>
                   </div>
-                  <p className="mt-1 text-xs text-soil/80" dir="ltr">{post.qty} × {pkr(b.rate)} = <b>{pkr(post.qty * b.rate)}</b> · {t("am_pickup")}</p>
+                  <p className="mt-1 text-xs text-soil/80" dir="ltr">{bidQty(b)} × {pkr(b.rate)} = <b>{pkr(bidQty(b) * b.rate)}</b> · {t("am_pickup")}</p>
                   {!receipt && (
                     <div className="mt-2 flex gap-2">
-                      <button type="button" onClick={() => setPicked(b.key)} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory"><Check className="h-4 w-4" aria-hidden="true" />{t("lr_accept")}</button>
-                      <button type="button" onClick={() => { setBids((l) => l.filter((x) => x.key !== b.key)); if (picked === b.key) setPicked(null); }} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-300 px-3 py-2 text-sm font-bold text-red-800"><X className="h-4 w-4" aria-hidden="true" />{t("lr_decline")}</button>
+                      <button type="button" onClick={() => acceptBid(b)} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory"><Check className="h-4 w-4" aria-hidden="true" />{t("lr_accept")}</button>
+                      <button type="button" onClick={() => declineBid(b)} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-300 px-3 py-2 text-sm font-bold text-red-800"><X className="h-4 w-4" aria-hidden="true" />{t("lr_decline")}</button>
                     </div>
                   )}
                 </li>
@@ -11724,14 +12591,14 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
           </div>
 
           {pickedBid && !receipt && (() => {
-            const gross = pickedBid.rate * post.qty; const pl = plan(gross);
+            const gross = pickedBid.rate * bidQty(pickedBid); const pl = plan(gross);
             return (
               <div className="grid gap-4 rounded-2xl border-2 border-forest bg-white p-4 shadow-md md:grid-cols-[1fr_auto] md:items-start">
                 <div className="rounded-2xl bg-white p-4 ring-2 ring-gold">
                   <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-bold text-forest"><Calculator className="h-4 w-4" aria-hidden="true" />{t("am_settlement")}
                     <span className="inline-flex items-center gap-1 rounded-full bg-forest px-2 py-0.5 text-[11px] text-gold"><Repeat className="h-3 w-3" aria-hidden="true" />{t("am_closed_loop")}</span></p>
                   <div className="space-y-1.5 text-sm text-soil" dir="ltr">
-                    <div className="flex justify-between gap-3"><span>{t("am_gross")} ({post.qty} × {pkr(pickedBid.rate)})</span><b>{pkr(gross)}</b></div>
+                    <div className="flex justify-between gap-3"><span>{t("am_gross")} ({bidQty(pickedBid)} × {pkr(pickedBid.rate)})</span><b>{pkr(gross)}</b></div>
                     <div className="flex justify-between gap-3"><span>{t("am_minus_credit")} ({pl.ids.length})</span><b className="text-red-800">− {pkr(pl.settled)}</b></div>
                     {pl.unsettled > 0 && <p className="text-xs text-soil/80">{t("am_unsettled").replace("{v}", pkr(pl.unsettled))}</p>}
                     <div className="flex justify-between gap-3 border-t border-soil/20 pt-1.5 text-base font-extrabold text-forest"><span>{t("am_net")}</span><span>{pkr(pl.net)}</span></div>
@@ -11740,6 +12607,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                 </div>
                 <div className="space-y-2 md:w-56">
                   <p className="text-sm text-soil"><b>{pickedBid.name}</b></p>
+                  {pickedBid.real && pickedBid.offer.buyerPhone && <a href={`tel:${pickedBid.offer.buyerPhone}`} className="flex min-h-[40px] items-center gap-1.5 rounded-lg bg-leaf/10 px-2.5 text-xs font-bold text-forest ring-1 ring-leaf/30"><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("am_buyer_phone")}: <span dir="ltr">{pickedBid.offer.buyerPhone}</span></a>}
                   <button type="button" onClick={confirmSale} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><BadgeCheck className="h-4 w-4" aria-hidden="true" />{t("am_confirm")}</button>
                   <button type="button" onClick={() => setPicked(null)} className="w-full rounded-xl border border-soil/20 px-4 py-2 text-sm font-bold text-soil">{t("cancel")}</button>
                 </div>
@@ -11762,6 +12630,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
           )}
         </div>
       </div>
+      </>)}
     </section>
   );
 }
@@ -13545,6 +14414,9 @@ function App() {
   const [bookingTarget, setBookingTarget] = useState(null);
   const [toasts, setToasts] = useState([]);
   const [helperOpen, setHelperOpen] = useState(false);
+  const [tourOpen, setTourOpen] = useState(false);
+  const tourSeen = () => { try { return !!window.localStorage.getItem(TOUR_KEY); } catch (e) { return true; } };
+  const closeTour = useCallback(() => { setTourOpen(false); try { window.localStorage.setItem(TOUR_KEY, "1"); } catch (e) { /* private mode */ } }, []);
   const accounts = useAccounts();
   const session = accounts.session;
   const archive = useArchive(session && session.uid); // Clear -> History (per member, synced to user_prefs)
@@ -13962,12 +14834,18 @@ function App() {
   const voucherBooking = voucherId ? bookings.find((b) => b.id === voucherId) : null;
   const activeCount = shownBookings.filter((b) => ["sent", "countered", "confirmed", "completed"].includes(b.status) && session && (b.channel === "ussd" || b.own)).length;
   const showTab = tab === "members" && !accounts.cloudOwner ? "marketplace" : tab;
+  // first visit: start the guided tour once, only on the home tab (marked seen when it is closed or skipped)
+  useEffect(() => {
+    if (tourOpen || showTab !== "marketplace" || tourSeen()) return undefined;
+    const id = setTimeout(() => { if (!document.querySelector('[role="dialog"]')) setTourOpen(true); }, 1800);
+    return () => clearTimeout(id);
+  }, [showTab, tourOpen]); // eslint-disable-line react-hooks/exhaustive-deps
   // machine chosen from a "Popular machines" card: Apni Boli opens on Step 2 with it
 
   return (
     <DealsCtx.Provider value={dealsValue}>
     <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${lang === "ur" || lang === "pa" ? "font-nastaliq" : langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
-      <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs} adminCount={adminCount}
+      <Header onTour={() => { setHelperOpen(false); setTab("marketplace"); setTourOpen(true); }} t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs} adminCount={adminCount}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
       <main id="main" className="w-full">
         {showTab === "marketplace" && (
@@ -14001,6 +14879,7 @@ function App() {
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
       <KisanHelper t={t} lang={lang} listings={publicListings} open={helperOpen} setOpen={setHelperOpen} session={session} dieselPrice={dieselPrice} petrolPrice={country === "PK" && fuel ? fuel.petrol : null} />
       {!helperOpen && <ConsultBar t={t} lang={lang} />}
+      {tourOpen && <GuidedTour t={t} onClose={closeTour} />}
       <BottomNav t={t} adminCount={adminCount} tab={showTab} setTab={setTab} tabs={tabs} activeCount={activeCount} pendingCount={pendingCount} activityCount={activityCount} onActivity={() => setActivityOpen(true)} />
       <ActivityDrawer t={t} dn={dn} open={activityOpen} onClose={() => setActivityOpen(false)} bookings={myBookings} requests={myRequests} deals={myDeals} onVoucher={(id) => { setActivityOpen(false); setVoucherId(id); }} setTab={setTab} />
       {voucherBooking && <VoucherModal b={voucherBooking} t={t} dn={dn} onClose={() => setVoucherId(null)} updateBooking={updateBooking} />}

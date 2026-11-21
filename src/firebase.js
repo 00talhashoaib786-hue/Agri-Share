@@ -90,6 +90,8 @@ export const COL = {
   bookingContacts: "booking_contacts",
   demandContacts: "demand_contacts",
   cropContacts: "crop_contacts",
+  cropMedia: "crop_media",
+  cropOffers: "crop_offers",
   landListings: "land_listings",
   landRequests: "land_requests",
   landBookings: "land_bookings",

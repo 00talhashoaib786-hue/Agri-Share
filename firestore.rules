@@ -187,16 +187,67 @@ service cloud.firestore {
       allow delete: if isFounder();
     }
     // Crop posts: members-only, and seller email / phone / wallet number live in crop_contacts (below).
+    // Listing card media: a small thumbnail (at most 60,000 characters) and a https video link; full photos / video live in crop_media.
+    function cropMediaOk() {
+      let d = request.resource.data;
+      return (!('thumb' in d) || (d.thumb is string && d.thumb.size() <= 60000))
+        && (!('videoUrl' in d) || (d.videoUrl is string && d.videoUrl.size() <= 500 && d.videoUrl.matches('https://.*')))
+        && (!('photoCount' in d) || (d.photoCount is int && d.photoCount >= 0 && d.photoCount <= 3));
+    }
     match /mandi_crops/{id} {
       allow read, delete: if signedIn();
-      allow create: if signedIn() && smallDoc() && !request.resource.data.keys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']);
-      allow update: if signedIn() && smallDoc()
+      allow create: if signedIn() && smallDoc() && cropMediaOk() && !request.resource.data.keys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']);
+      allow update: if signedIn() && smallDoc() && cropMediaOk()
         && (isFounder() || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']));
     }
-    // Seller contact for a crop post (email, wallet / phone number): only the seller and the founder
+    // Crop photos / short video for one post: one item per document ({cropId}_p0..p2, {cropId}_v).
+    // Any signed-in member (buyers) may view; only the seller adds; never edited; seller or founder deletes.
+    match /crop_media/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['cropId', 'sellerUid', 'kind', 'data', 'createdAt'])
+        && request.resource.data.sellerUid == request.auth.uid
+        && request.resource.data.cropId is string && id.split('_')[0] == request.resource.data.cropId
+        && request.resource.data.data is string
+        && ((request.resource.data.kind == 'photo' && request.resource.data.data.size() <= 170000)
+          || (request.resource.data.kind == 'video' && request.resource.data.data.size() <= 900000));
+      allow update: if false;
+      allow delete: if isFounder() || (signedIn() && resource.data.sellerUid == request.auth.uid);
+    }
+    // A buyer's offer on a crop post: readable only by that buyer, the seller and the founder.
+    // Created by the buyer against an open post owned by the named seller; the seller accepts or
+    // declines, the buyer may withdraw while it is pending; nothing else ever changes.
+    function cropAt(cropId) { return get(/databases/$(database)/documents/mandi_crops/$(cropId)).data; }
+    function offerOk() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['cropId', 'crop', 'sellerUid', 'buyerUid', 'buyerName', 'buyerOrg', 'buyerType', 'buyerPhone', 'rate', 'qty', 'note', 'status', 'uids', 'createdAt', 'updatedAt'])
+        && d.cropId is string && d.sellerUid is string && d.buyerUid is string
+        && d.rate is number && d.rate > 0 && d.qty is number && d.qty > 0
+        && d.buyerPhone is string && d.buyerPhone.size() <= 20
+        && (!('note' in d) || (d.note is string && d.note.size() <= 300))
+        && d.uids is list && d.uids.size() == 2 && d.uids[0] == d.buyerUid && d.uids[1] == d.sellerUid;
+    }
+    match /crop_offers/{id} {
+      allow read: if isFounder() || (signedIn() && request.auth.uid in resource.data.uids);
+      allow create: if signedIn() && offerOk()
+        && request.resource.data.buyerUid == request.auth.uid
+        && request.resource.data.sellerUid != request.auth.uid
+        && request.resource.data.status == 'pending'
+        && exists(/databases/$(database)/documents/mandi_crops/$(request.resource.data.cropId))
+        && cropAt(request.resource.data.cropId).get('sellerUid', '') == request.resource.data.sellerUid
+        && cropAt(request.resource.data.cropId).get('status', '') == 'open';
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        && ((resource.data.sellerUid == request.auth.uid && request.resource.data.status in ['accepted', 'declined'])
+          || (resource.data.buyerUid == request.auth.uid && resource.data.status == 'pending' && request.resource.data.status == 'withdrawn'));
+      allow delete: if isFounder();
+    }
+    // Seller contact for a crop post (email, wallet / phone number): the seller, the founder, and the
+    // buyer whose offer the seller accepted (acceptedBuyerUid, set only by the seller after accepting)
     match /crop_contacts/{cropId} {
       allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.sellerUid == request.auth.uid);
-      allow read: if isFounder() || (signedIn() && resource.data.sellerUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && (resource.data.sellerUid == request.auth.uid
+        || resource.data.get('acceptedBuyerUid', '') == request.auth.uid));
       allow update: if signedIn() && smallDoc() && (isFounder()
         || (resource.data.sellerUid == request.auth.uid && request.resource.data.sellerUid == request.auth.uid));
       allow delete: if isFounder();
