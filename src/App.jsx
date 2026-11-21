@@ -131,12 +131,69 @@ const COUNTRIES = {
       { name: "Rotavator", cat: "implement", spec: "6 to 7 ft · needs 45+ HP tractor", min: 900, max: 1400 },
     ],
     regions: [
-      { name: "Ludhiana", province: "Punjab", lat: 30.9, lng: 75.85 }, { name: "Karnal", province: "Haryana", lat: 29.69, lng: 76.99 },
-      { name: "Meerut", province: "Uttar Pradesh", lat: 28.98, lng: 77.71 }, { name: "Lucknow", province: "Uttar Pradesh", lat: 26.85, lng: 80.95 },
-      { name: "Bhopal", province: "Madhya Pradesh", lat: 23.26, lng: 77.41 }, { name: "Nashik", province: "Maharashtra", lat: 20.0, lng: 73.79 },
-      { name: "Jaipur", province: "Rajasthan", lat: 26.91, lng: 75.79 }, { name: "Ahmedabad", province: "Gujarat", lat: 23.02, lng: 72.57 },
-      { name: "Patna", province: "Bihar", lat: 25.59, lng: 85.14 }, { name: "Bardhaman", province: "West Bengal", lat: 23.23, lng: 87.86 },
-      { name: "Guntur", province: "Andhra Pradesh", lat: 16.31, lng: 80.44 }, { name: "Thanjavur", province: "Tamil Nadu", lat: 10.79, lng: 79.14 },
+      { name: "Ludhiana", province: "Punjab", lat: 30.9, lng: 75.85 }, { name: "Amritsar", province: "Punjab", lat: 31.63, lng: 74.87 },
+      { name: "Jalandhar", province: "Punjab", lat: 31.33, lng: 75.58 }, { name: "Patiala", province: "Punjab", lat: 30.34, lng: 76.39 },
+      { name: "Bathinda", province: "Punjab", lat: 30.21, lng: 74.95 }, { name: "Moga", province: "Punjab", lat: 30.82, lng: 75.17 },
+      { name: "Firozpur", province: "Punjab", lat: 30.93, lng: 74.61 }, { name: "Sangrur", province: "Punjab", lat: 30.25, lng: 75.84 },
+      { name: "Hoshiarpur", province: "Punjab", lat: 31.53, lng: 75.91 }, { name: "Gurdaspur", province: "Punjab", lat: 32.04, lng: 75.4 },
+      { name: "Fazilka", province: "Punjab", lat: 30.4, lng: 74.03 }, { name: "Sri Muktsar Sahib", province: "Punjab", lat: 30.47, lng: 74.52 },
+      { name: "Barnala", province: "Punjab", lat: 30.38, lng: 75.55 }, { name: "Kapurthala", province: "Punjab", lat: 31.38, lng: 75.38 },
+      { name: "Mansa", province: "Punjab", lat: 29.99, lng: 75.39 }, { name: "Karnal", province: "Haryana", lat: 29.69, lng: 76.99 },
+      { name: "Hisar", province: "Haryana", lat: 29.15, lng: 75.72 }, { name: "Kurukshetra", province: "Haryana", lat: 29.97, lng: 76.88 },
+      { name: "Panipat", province: "Haryana", lat: 29.39, lng: 76.97 }, { name: "Sirsa", province: "Haryana", lat: 29.53, lng: 75.03 },
+      { name: "Kaithal", province: "Haryana", lat: 29.8, lng: 76.4 }, { name: "Jind", province: "Haryana", lat: 29.32, lng: 76.32 },
+      { name: "Rohtak", province: "Haryana", lat: 28.89, lng: 76.61 }, { name: "Sonipat", province: "Haryana", lat: 28.99, lng: 77.02 },
+      { name: "Fatehabad", province: "Haryana", lat: 29.52, lng: 75.45 }, { name: "Bhiwani", province: "Haryana", lat: 28.79, lng: 76.13 },
+      { name: "Ambala", province: "Haryana", lat: 30.38, lng: 76.78 }, { name: "Yamunanagar", province: "Haryana", lat: 30.13, lng: 77.27 },
+      { name: "Meerut", province: "Uttar Pradesh", lat: 28.98, lng: 77.71 }, { name: "Agra", province: "Uttar Pradesh", lat: 27.18, lng: 78.01 },
+      { name: "Lucknow", province: "Uttar Pradesh", lat: 26.85, lng: 80.95 }, { name: "Muzaffarnagar", province: "Uttar Pradesh", lat: 29.47, lng: 77.7 },
+      { name: "Saharanpur", province: "Uttar Pradesh", lat: 29.96, lng: 77.55 }, { name: "Bareilly", province: "Uttar Pradesh", lat: 28.37, lng: 79.43 },
+      { name: "Moradabad", province: "Uttar Pradesh", lat: 28.84, lng: 78.77 }, { name: "Aligarh", province: "Uttar Pradesh", lat: 27.88, lng: 78.08 },
+      { name: "Mathura", province: "Uttar Pradesh", lat: 27.49, lng: 77.67 }, { name: "Kanpur", province: "Uttar Pradesh", lat: 26.45, lng: 80.33 },
+      { name: "Varanasi", province: "Uttar Pradesh", lat: 25.32, lng: 82.97 }, { name: "Gorakhpur", province: "Uttar Pradesh", lat: 26.76, lng: 83.37 },
+      { name: "Shahjahanpur", province: "Uttar Pradesh", lat: 27.88, lng: 79.91 }, { name: "Lakhimpur Kheri", province: "Uttar Pradesh", lat: 27.95, lng: 80.78 },
+      { name: "Bulandshahr", province: "Uttar Pradesh", lat: 28.41, lng: 77.85 }, { name: "Prayagraj", province: "Uttar Pradesh", lat: 25.44, lng: 81.85 },
+      { name: "Jhansi", province: "Uttar Pradesh", lat: 25.45, lng: 78.57 }, { name: "Udham Singh Nagar (Rudrapur)", province: "Uttarakhand", lat: 28.98, lng: 79.4 },
+      { name: "Dehradun", province: "Uttarakhand", lat: 30.32, lng: 78.03 }, { name: "Haridwar", province: "Uttarakhand", lat: 29.95, lng: 78.16 },
+      { name: "Jammu", province: "Jammu and Kashmir", lat: 32.73, lng: 74.86 }, { name: "Kathua", province: "Jammu and Kashmir", lat: 32.37, lng: 75.52 },
+      { name: "Una", province: "Himachal Pradesh", lat: 31.47, lng: 76.27 }, { name: "Jaipur", province: "Rajasthan", lat: 26.91, lng: 75.79 },
+      { name: "Sri Ganganagar", province: "Rajasthan", lat: 29.9, lng: 73.88 }, { name: "Hanumangarh", province: "Rajasthan", lat: 29.58, lng: 74.33 },
+      { name: "Kota", province: "Rajasthan", lat: 25.21, lng: 75.86 }, { name: "Bikaner", province: "Rajasthan", lat: 28.02, lng: 73.31 },
+      { name: "Alwar", province: "Rajasthan", lat: 27.55, lng: 76.63 }, { name: "Jodhpur", province: "Rajasthan", lat: 26.24, lng: 73.02 },
+      { name: "Bharatpur", province: "Rajasthan", lat: 27.22, lng: 77.49 }, { name: "Ajmer", province: "Rajasthan", lat: 26.45, lng: 74.64 },
+      { name: "Udaipur", province: "Rajasthan", lat: 24.59, lng: 73.71 }, { name: "Indore", province: "Madhya Pradesh", lat: 22.72, lng: 75.86 },
+      { name: "Bhopal", province: "Madhya Pradesh", lat: 23.26, lng: 77.41 }, { name: "Ujjain", province: "Madhya Pradesh", lat: 23.18, lng: 75.78 },
+      { name: "Jabalpur", province: "Madhya Pradesh", lat: 23.18, lng: 79.99 }, { name: "Narmadapuram (Hoshangabad)", province: "Madhya Pradesh", lat: 22.75, lng: 77.72 },
+      { name: "Sehore", province: "Madhya Pradesh", lat: 23.2, lng: 77.08 }, { name: "Vidisha", province: "Madhya Pradesh", lat: 23.52, lng: 77.81 },
+      { name: "Dewas", province: "Madhya Pradesh", lat: 22.97, lng: 76.05 }, { name: "Gwalior", province: "Madhya Pradesh", lat: 26.22, lng: 78.18 },
+      { name: "Sagar", province: "Madhya Pradesh", lat: 23.84, lng: 78.74 }, { name: "Nashik", province: "Maharashtra", lat: 20.0, lng: 73.79 },
+      { name: "Pune", province: "Maharashtra", lat: 18.52, lng: 73.86 }, { name: "Nagpur", province: "Maharashtra", lat: 21.15, lng: 79.09 },
+      { name: "Ahilyanagar (Ahmednagar)", province: "Maharashtra", lat: 19.09, lng: 74.74 }, { name: "Solapur", province: "Maharashtra", lat: 17.66, lng: 75.91 },
+      { name: "Kolhapur", province: "Maharashtra", lat: 16.7, lng: 74.24 }, { name: "Chhatrapati Sambhajinagar (Aurangabad)", province: "Maharashtra", lat: 19.88, lng: 75.34 },
+      { name: "Jalgaon", province: "Maharashtra", lat: 21.01, lng: 75.56 }, { name: "Amravati", province: "Maharashtra", lat: 20.93, lng: 77.75 },
+      { name: "Latur", province: "Maharashtra", lat: 18.4, lng: 76.56 }, { name: "Sangli", province: "Maharashtra", lat: 16.85, lng: 74.58 },
+      { name: "Ahmedabad", province: "Gujarat", lat: 23.02, lng: 72.57 }, { name: "Rajkot", province: "Gujarat", lat: 22.3, lng: 70.8 },
+      { name: "Junagadh", province: "Gujarat", lat: 21.52, lng: 70.46 }, { name: "Mehsana", province: "Gujarat", lat: 23.6, lng: 72.38 },
+      { name: "Anand", province: "Gujarat", lat: 22.56, lng: 72.95 }, { name: "Palanpur (Banaskantha)", province: "Gujarat", lat: 24.17, lng: 72.43 },
+      { name: "Amreli", province: "Gujarat", lat: 21.6, lng: 71.22 }, { name: "Bhavnagar", province: "Gujarat", lat: 21.76, lng: 72.15 },
+      { name: "Surat", province: "Gujarat", lat: 21.17, lng: 72.83 }, { name: "Vadodara", province: "Gujarat", lat: 22.31, lng: 73.18 },
+      { name: "Patna", province: "Bihar", lat: 25.59, lng: 85.14 }, { name: "Muzaffarpur", province: "Bihar", lat: 26.12, lng: 85.39 },
+      { name: "Gaya", province: "Bihar", lat: 24.79, lng: 85.0 }, { name: "Bhagalpur", province: "Bihar", lat: 25.24, lng: 86.98 },
+      { name: "Purnia", province: "Bihar", lat: 25.78, lng: 87.47 }, { name: "Darbhanga", province: "Bihar", lat: 26.15, lng: 85.9 },
+      { name: "Begusarai", province: "Bihar", lat: 25.42, lng: 86.13 }, { name: "Samastipur", province: "Bihar", lat: 25.86, lng: 85.78 },
+      { name: "Bardhaman", province: "West Bengal", lat: 23.23, lng: 87.86 }, { name: "Krishnanagar (Nadia)", province: "West Bengal", lat: 23.4, lng: 88.5 },
+      { name: "Baharampur (Murshidabad)", province: "West Bengal", lat: 24.1, lng: 88.25 }, { name: "Chinsurah (Hooghly)", province: "West Bengal", lat: 22.9, lng: 88.39 },
+      { name: "Raipur", province: "Chhattisgarh", lat: 21.25, lng: 81.63 }, { name: "Cuttack", province: "Odisha", lat: 20.46, lng: 85.88 },
+      { name: "Sambalpur", province: "Odisha", lat: 21.47, lng: 83.97 }, { name: "Guwahati", province: "Assam", lat: 26.14, lng: 91.74 },
+      { name: "Guntur", province: "Andhra Pradesh", lat: 16.31, lng: 80.44 }, { name: "Machilipatnam (Krishna)", province: "Andhra Pradesh", lat: 16.19, lng: 81.14 },
+      { name: "Kurnool", province: "Andhra Pradesh", lat: 15.83, lng: 78.04 }, { name: "Eluru (West Godavari)", province: "Andhra Pradesh", lat: 16.71, lng: 81.1 },
+      { name: "Warangal", province: "Telangana", lat: 17.97, lng: 79.59 }, { name: "Nizamabad", province: "Telangana", lat: 18.67, lng: 78.09 },
+      { name: "Karimnagar", province: "Telangana", lat: 18.44, lng: 79.13 }, { name: "Belagavi", province: "Karnataka", lat: 15.85, lng: 74.5 },
+      { name: "Mandya", province: "Karnataka", lat: 12.52, lng: 76.9 }, { name: "Davanagere", province: "Karnataka", lat: 14.46, lng: 75.92 },
+      { name: "Raichur", province: "Karnataka", lat: 16.21, lng: 77.36 }, { name: "Mysuru", province: "Karnataka", lat: 12.3, lng: 76.64 },
+      { name: "Thanjavur", province: "Tamil Nadu", lat: 10.79, lng: 79.14 }, { name: "Coimbatore", province: "Tamil Nadu", lat: 11.02, lng: 76.96 },
+      { name: "Madurai", province: "Tamil Nadu", lat: 9.93, lng: 78.12 }, { name: "Tiruchirappalli", province: "Tamil Nadu", lat: 10.79, lng: 78.7 },
+      { name: "Palakkad", province: "Kerala", lat: 10.77, lng: 76.65 },
     ],
   },
   US: {
@@ -150,11 +207,26 @@ const COUNTRIES = {
     ],
     regions: [
       { name: "Des Moines", province: "Iowa, USA", lat: 41.59, lng: -93.62 }, { name: "Wichita", province: "Kansas, USA", lat: 37.69, lng: -97.34 },
-      { name: "Lincoln", province: "Nebraska, USA", lat: 40.81, lng: -96.7 }, { name: "Champaign", province: "Illinois, USA", lat: 40.12, lng: -88.24 },
-      { name: "Fresno", province: "California, USA", lat: 36.74, lng: -119.79 }, { name: "Fargo", province: "North Dakota, USA", lat: 46.88, lng: -96.79 },
-      { name: "Hannover", province: "Lower Saxony, Germany", lat: 52.37, lng: 9.73 }, { name: "Chartres", province: "Centre-Val de Loire, France", lat: 48.45, lng: 1.49 },
-      { name: "Lincoln", province: "Lincolnshire, UK", lat: 53.23, lng: -0.54 }, { name: "Lelystad", province: "Flevoland, Netherlands", lat: 52.52, lng: 5.47 },
-      { name: "Poznań", province: "Greater Poland, Poland", lat: 52.41, lng: 16.93 }, { name: "Valladolid", province: "Castile and León, Spain", lat: 41.65, lng: -4.72 },
+      { name: "Lincoln", province: "Nebraska, USA", lat: 40.81, lng: -96.7 }, { name: "Omaha", province: "Nebraska, USA", lat: 41.26, lng: -95.93 },
+      { name: "Champaign", province: "Illinois, USA", lat: 40.12, lng: -88.24 }, { name: "Indianapolis", province: "Indiana, USA", lat: 39.77, lng: -86.16 },
+      { name: "Columbus", province: "Ohio, USA", lat: 39.96, lng: -83.0 }, { name: "Minneapolis", province: "Minnesota, USA", lat: 44.98, lng: -93.27 },
+      { name: "Sioux Falls", province: "South Dakota, USA", lat: 43.55, lng: -96.73 }, { name: "Fargo", province: "North Dakota, USA", lat: 46.88, lng: -96.79 },
+      { name: "Fresno", province: "California, USA", lat: 36.74, lng: -119.79 }, { name: "Bakersfield", province: "California, USA", lat: 35.37, lng: -119.02 },
+      { name: "Stockton", province: "California, USA", lat: 37.96, lng: -121.29 }, { name: "Sacramento", province: "California, USA", lat: 38.58, lng: -121.49 },
+      { name: "Lubbock", province: "Texas, USA", lat: 33.58, lng: -101.86 }, { name: "Amarillo", province: "Texas, USA", lat: 35.22, lng: -101.83 },
+      { name: "Memphis", province: "Tennessee, USA", lat: 35.15, lng: -90.05 }, { name: "Yakima", province: "Washington, USA", lat: 46.6, lng: -120.51 },
+      { name: "Boise", province: "Idaho, USA", lat: 43.62, lng: -116.2 }, { name: "London", province: "England, UK", lat: 51.51, lng: -0.13 },
+      { name: "Birmingham", province: "England, UK", lat: 52.49, lng: -1.89 }, { name: "Manchester", province: "England, UK", lat: 53.48, lng: -2.24 },
+      { name: "Bradford", province: "England, UK", lat: 53.8, lng: -1.76 }, { name: "Leicester", province: "England, UK", lat: 52.64, lng: -1.13 },
+      { name: "Norwich", province: "Norfolk, UK", lat: 52.63, lng: 1.3 }, { name: "Cambridge", province: "Cambridgeshire, UK", lat: 52.21, lng: 0.12 },
+      { name: "Peterborough", province: "Cambridgeshire, UK", lat: 52.57, lng: -0.24 }, { name: "Lincoln", province: "Lincolnshire, UK", lat: 53.23, lng: -0.54 },
+      { name: "York", province: "North Yorkshire, UK", lat: 53.96, lng: -1.08 }, { name: "Glasgow", province: "Scotland, UK", lat: 55.86, lng: -4.25 },
+      { name: "Saskatoon", province: "Saskatchewan, Canada", lat: 52.13, lng: -106.67 }, { name: "Winnipeg", province: "Manitoba, Canada", lat: 49.9, lng: -97.14 },
+      { name: "Calgary", province: "Alberta, Canada", lat: 51.05, lng: -114.07 }, { name: "Brampton", province: "Ontario, Canada", lat: 43.73, lng: -79.76 },
+      { name: "Surrey", province: "British Columbia, Canada", lat: 49.19, lng: -122.85 }, { name: "Hannover", province: "Lower Saxony, Germany", lat: 52.37, lng: 9.73 },
+      { name: "Munich", province: "Bavaria, Germany", lat: 48.14, lng: 11.58 }, { name: "Chartres", province: "Centre-Val de Loire, France", lat: 48.45, lng: 1.49 },
+      { name: "Lelystad", province: "Flevoland, Netherlands", lat: 52.52, lng: 5.47 }, { name: "Pozna\u0144", province: "Greater Poland, Poland", lat: 52.41, lng: 16.93 },
+      { name: "Valladolid", province: "Castile and Le\u00f3n, Spain", lat: 41.65, lng: -4.72 },
     ],
   },
   ME: {
@@ -167,12 +239,24 @@ const COUNTRIES = {
       { name: "Subsoiler", cat: "implement", spec: "3-shank · needs 75+ HP tractor", min: 20, max: 35 },
     ],
     regions: [
-      { name: "Nakuru", province: "Kenya", lat: -0.3, lng: 36.07 }, { name: "Arusha", province: "Tanzania", lat: -3.37, lng: 36.68 },
-      { name: "Kano", province: "Nigeria", lat: 12.0, lng: 8.52 }, { name: "Adama", province: "Ethiopia", lat: 8.54, lng: 39.27 },
-      { name: "Bloemfontein", province: "South Africa", lat: -29.12, lng: 26.21 }, { name: "Meknes", province: "Morocco", lat: 33.9, lng: -5.55 },
-      { name: "Tanta", province: "Egypt", lat: 30.79, lng: 31.0 }, { name: "Al-Kharj", province: "Saudi Arabia", lat: 24.15, lng: 47.31 },
-      { name: "Al Ain", province: "UAE", lat: 24.21, lng: 55.74 }, { name: "Irbid", province: "Jordan", lat: 32.55, lng: 35.85 },
-      { name: "Konya", province: "Türkiye", lat: 37.87, lng: 32.48 },
+      { name: "Dubai", province: "UAE", lat: 25.2, lng: 55.27 }, { name: "Abu Dhabi", province: "UAE", lat: 24.45, lng: 54.38 },
+      { name: "Sharjah", province: "UAE", lat: 25.35, lng: 55.42 }, { name: "Al Ain", province: "UAE", lat: 24.21, lng: 55.74 },
+      { name: "Ras Al Khaimah", province: "UAE", lat: 25.79, lng: 55.94 }, { name: "Fujairah", province: "UAE", lat: 25.13, lng: 56.33 },
+      { name: "Riyadh", province: "Saudi Arabia", lat: 24.71, lng: 46.68 }, { name: "Al-Kharj", province: "Saudi Arabia", lat: 24.15, lng: 47.31 },
+      { name: "Buraydah (Al-Qassim)", province: "Saudi Arabia", lat: 26.33, lng: 43.97 }, { name: "Hail", province: "Saudi Arabia", lat: 27.52, lng: 41.69 },
+      { name: "Sakaka (Al-Jouf)", province: "Saudi Arabia", lat: 29.97, lng: 40.21 }, { name: "Tabuk", province: "Saudi Arabia", lat: 28.38, lng: 36.57 },
+      { name: "Hofuf (Al-Ahsa)", province: "Saudi Arabia", lat: 25.38, lng: 49.59 }, { name: "Jeddah", province: "Saudi Arabia", lat: 21.49, lng: 39.19 },
+      { name: "Dammam", province: "Saudi Arabia", lat: 26.43, lng: 50.1 }, { name: "Doha", province: "Qatar", lat: 25.29, lng: 51.53 },
+      { name: "Muscat", province: "Oman", lat: 23.59, lng: 58.41 }, { name: "Salalah", province: "Oman", lat: 17.02, lng: 54.09 },
+      { name: "Kuwait City", province: "Kuwait", lat: 29.38, lng: 47.99 }, { name: "Manama", province: "Bahrain", lat: 26.23, lng: 50.59 },
+      { name: "Irbid", province: "Jordan", lat: 32.55, lng: 35.85 }, { name: "Konya", province: "T\u00fcrkiye", lat: 37.87, lng: 32.48 },
+      { name: "Adana", province: "T\u00fcrkiye", lat: 37.0, lng: 35.32 }, { name: "Tanta", province: "Egypt", lat: 30.79, lng: 31.0 },
+      { name: "Cairo", province: "Egypt", lat: 30.04, lng: 31.24 }, { name: "Meknes", province: "Morocco", lat: 33.9, lng: -5.55 },
+      { name: "Nakuru", province: "Kenya", lat: -0.3, lng: 36.07 }, { name: "Eldoret", province: "Kenya", lat: 0.51, lng: 35.27 },
+      { name: "Nairobi", province: "Kenya", lat: -1.29, lng: 36.82 }, { name: "Arusha", province: "Tanzania", lat: -3.37, lng: 36.68 },
+      { name: "Kano", province: "Nigeria", lat: 12.0, lng: 8.52 }, { name: "Kaduna", province: "Nigeria", lat: 10.52, lng: 7.44 },
+      { name: "Adama", province: "Ethiopia", lat: 8.54, lng: 39.27 }, { name: "Addis Ababa", province: "Ethiopia", lat: 9.03, lng: 38.74 },
+      { name: "Bloemfontein", province: "South Africa", lat: -29.12, lng: 26.21 },
     ],
   },
 };
@@ -282,6 +366,9 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    reset_done: "Filters & location reset",
+    loc_searching: "Searching places...",
+    loc_osm: "Places from OpenStreetMap",
     am_tab_sell: "Sell My Crop",
     am_tab_buy: "Buy Crops (Live Harvests)",
     am_tiles_t2: "Choose your crop",
@@ -1399,6 +1486,9 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    reset_done: "فلٹر اور مقام ری سیٹ ہو گئے",
+    loc_searching: "مقامات تلاش ہو رہے ہیں...",
+    loc_osm: "مقامات اوپن اسٹریٹ میپ سے",
     am_tab_sell: "اپنی فصل بیچیں",
     am_tab_buy: "فصل خریدیں (تازہ پیداوار)",
     am_tiles_t2: "اپنی فصل چنیں",
@@ -2516,6 +2606,9 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    reset_done: "فلٹر تے تھاں ری سیٹ ہو گئے",
+    loc_searching: "تھاواں لبھیاں جا رہیاں نیں...",
+    loc_osm: "تھاواں اوپن اسٹریٹ میپ توں",
     am_tab_sell: "اپنی فصل ویچو",
     am_tab_buy: "فصل خریدو (تازہ پیداوار)",
     am_tiles_t2: "اپنی فصل چنو",
@@ -3533,6 +3626,9 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    reset_done: "فلٽر ۽ هنڌ ري سيٽ ٿي ويا",
+    loc_searching: "هنڌ ڳولها پيا وڃن...",
+    loc_osm: "هنڌ اوپن اسٽريٽ ميپ مان",
     am_tab_sell: "پنهنجو فصل وڪڻو",
     am_tab_buy: "فصل خريد ڪريو (تازي پيداوار)",
     am_tiles_t2: "پنهنجو فصل چونڊيو",
@@ -4551,6 +4647,9 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    reset_done: "فلټرونه او ځای بېرته تنظیم شول",
+    loc_searching: "ځایونه لټول کېږي...",
+    loc_osm: "ځایونه له اوپن سټریټ میپ څخه",
     am_tab_sell: "خپل فصل وپلورئ",
     am_tab_buy: "فصلونه واخلئ (تازه حاصلات)",
     am_tiles_t2: "خپل فصل وټاکئ",
@@ -5282,6 +5381,9 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    reset_done: "فلٹر و جاگہ ری سیٹ بوتنت",
+    loc_searching: "جاگہ شوہاز بئیگ ءَ اَنت...",
+    loc_osm: "جاگہ اوپن اسٹریٹ میپ ءَ چہ",
     am_tab_sell: "وتی کِشت ءَ بہا کن",
     am_tab_buy: "کِشت بہا گر (نوکیں رونگ)",
     am_tiles_t2: "وتی کِشت ءَ گچین کن",
@@ -6210,7 +6312,7 @@ function normDistrict(name) {
   const parts = String(name || "").toLowerCase().split(",").map((x) => x.replace(/\b(tehsil|district|distt?\.?|zila|zilla|city)\b/g, "").replace(/\s+/g, " ").trim()).filter((x) => x && !PROVINCE_WORDS.test(x));
   return parts[0] || "";
 }
-const districtCentre = (name) => { const n = normDistrict(name); return n ? PK_DISTRICTS.find((d) => normDistrict(d.name) === n) || null : null; };
+const districtCentre = (name) => { const n = normDistrict(name); return n ? PK_DISTRICTS.find((d) => normDistrict(d.name) === n) || (CUR.id !== "PK" ? regionsFor(CUR.id).find((d) => normDistrict(d.name) === n) : null) || null : null; };
 // road km from a chosen location to a listing: its own pin, else its district centre; unknown -> Infinity
 function kmToListing(loc, l) {
   if (!loc || !loc.lat) return l.distance;
@@ -6235,6 +6337,29 @@ const nearestIn = (cc, lat, lng) => regionsFor(cc).reduce((best, d) => { const k
 const provLabel = (lang, cc, code) => ((cc || "PK") === "PK" ? provName(lang, code) : code || "");
 // Country of a saved location (older saves have no country field)
 const locCountry = (loc) => (!loc ? null : loc.country || (loc.lat == null || inPakistanBox(loc.lat, loc.lng) ? "PK" : (COUNTRY_IDS.filter((c) => c !== "PK").map((c) => [c, nearestIn(c, loc.lat, loc.lng).km]).sort((a, b) => a[1] - b[1])[0] || ["PK"])[0]));
+/* Place search and GPS naming: OpenStreetMap Nominatim, limited to the selected country's codes.
+   Requests are debounced (600 ms) and cached, within Nominatim's 1-request-per-second fair-use limit.
+   Results give a clean "City, State" instead of raw coordinates. */
+const GEO_CC = { PK: "pk", CN: "cn", IN: "in", US: "us,gb,ca,de,fr,nl,pl,es,it,ie", ME: "ae,sa,qa,om,kw,bh,jo,tr,eg,ma,ke,tz,ng,et,za" };
+const geoCache = new Map();
+const geoFetch = (url) => {
+  if (geoCache.has(url)) return geoCache.get(url);
+  const p = fetch(url, { headers: { Accept: "application/json" } }).then((r) => (r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status))));
+  geoCache.set(url, p);
+  p.catch(() => geoCache.delete(url));
+  return p;
+};
+const geoPlace = (r) => {
+  const a = (r && r.address) || {};
+  const place = a.village || a.town || a.city || a.hamlet || a.suburb || a.municipality || a.county || (r && r.name) || "";
+  const district = a.city || a.town || a.county || a.state_district || a.municipality || place;
+  const state = a.state || a.region || a.province || a.state_district || a.country || "";
+  return { place, district, state, lat: Math.round(Number(r.lat) * 10000) / 10000, lng: Math.round(Number(r.lon) * 10000) / 10000 };
+};
+const geoSearch = (cc, q) => geoFetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language=en&countrycodes=${GEO_CC[cc] || "pk"}&q=${encodeURIComponent(q)}`)
+  .then((list) => (Array.isArray(list) ? list : []).map(geoPlace).filter((x) => x.place && Number.isFinite(x.lat) && Number.isFinite(x.lng)));
+const geoReverse = (lat, lng) => geoFetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=14&accept-language=en&lat=${lat}&lon=${lng}`)
+  .then((r) => (r && !r.error ? geoPlace(r) : null));
 const fmtLL = (lat, lng) => `${Math.abs(lat).toFixed(3)}° ${lat >= 0 ? "N" : "S"}, ${Math.abs(lng).toFixed(3)}° ${lng >= 0 ? "E" : "W"}`;
 const defaultLocFor = (cc) => {
   if (cc === "PK" || !COUNTRIES[cc]) return DEFAULT_LOC_PK;
@@ -6311,6 +6436,21 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
   const [gps, setGps] = useState("");
   const [err, setErr] = useState("");
   const [sugOpen, setSugOpen] = useState(false);
+  const [geoSug, setGeoSug] = useState([]);
+  const [geoBusy, setGeoBusy] = useState(false);
+  // a place chosen from OpenStreetMap (or named by GPS / pin): { district, province } used when saving outside Pakistan
+  const [geoPick, setGeoPick] = useState(value && cc !== "PK" && value.source && value.source !== "district" ? { district: value.district, province: value.province } : null);
+  const revTok = useRef(0);
+  useEffect(() => {
+    const q0 = query.trim();
+    if (q0.length < 3 || district) { setGeoSug([]); setGeoBusy(false); return undefined; }
+    setGeoBusy(true);
+    let on = true;
+    const id = setTimeout(() => {
+      geoSearch(cc, q0).then((list) => { if (on) { setGeoSug(list); setGeoBusy(false); } }).catch(() => { if (on) { setGeoSug([]); setGeoBusy(false); } });
+    }, 600);
+    return () => { on = false; clearTimeout(id); };
+  }, [query, district, cc]);
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); onClose(); } };
     window.addEventListener("keydown", onKey, true);
@@ -6322,14 +6462,42 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
   const suggestions = (q
     ? REG.filter((d) => d.name.toLowerCase().includes(q)).sort((a, b) => (a.province === province ? 0 : 1) - (b.province === province ? 0 : 1) || (a.name.toLowerCase().startsWith(q) ? 0 : 1) - (b.name.toLowerCase().startsWith(q) ? 0 : 1))
     : REG.filter((d) => !province || d.province === province)).slice(0, 8);
+  const localNames = new Set(suggestions.map((d) => normDistrict(d.name)));
+  const geoList = geoSug.filter((g) => !localNames.has(normDistrict(g.place))).slice(0, 5);
   const chooseDistrict = (d, movePin = true) => {
+    setGeoPick(null);
     setDistrict(d.name); setQuery(d.name); setProvince(d.province); setSugOpen(false); setErr("");
     if (movePin) { setPin({ lat: d.lat, lng: d.lng }); setSource("district"); }
   };
+  // name a point (GPS / map pin) with OpenStreetMap: village filled in if empty; outside Pakistan also city + state
+  const nameFromOsm = (ll) => {
+    const tok = ++revTok.current;
+    geoReverse(ll.lat, ll.lng).then((r) => {
+      if (!r || tok !== revTok.current) return;
+      if (cc !== "PK" && r.district) { setGeoPick({ district: r.district, province: r.state }); setDistrict(r.district); setQuery(r.district); }
+      const dn0 = cc === "PK" ? (nearestIn(cc, ll.lat, ll.lng) || {}).name : r.district;
+      if (r.place && normDistrict(r.place) !== normDistrict(dn0)) setVillage((v) => v || r.place);
+    }).catch(() => {});
+  };
   const dropPin = (ll, src = "pin") => {
-    setPin(ll); setSource(src); setErr("");
+    setPin(ll); setSource(src); setErr(""); setGeoPick(null);
     const near = nearestIn(cc, ll.lat, ll.lng);
     if (near) { setDistrict(near.name); setQuery(near.name); if (!province || src === "gps") setProvince(near.province); }
+    nameFromOsm(ll);
+  };
+  // a place picked from the OpenStreetMap suggestions
+  const chooseGeo = (g) => {
+    revTok.current++;
+    setSugOpen(false); setErr(""); setPin({ lat: g.lat, lng: g.lng }); setSource("search"); setGeoSug([]);
+    if (cc === "PK") {
+      const near = nearestIn(cc, g.lat, g.lng);
+      if (near) { setDistrict(near.name); setQuery(near.name); setProvince(near.province); }
+      setGeoPick(null);
+      setVillage(near && normDistrict(g.place) === normDistrict(near.name) ? "" : g.place);
+    } else {
+      setGeoPick({ district: g.district, province: g.state }); setDistrict(g.district); setQuery(g.district);
+      setVillage(normDistrict(g.place) === normDistrict(g.district) ? "" : g.place);
+    }
   };
   const useGps = () => {
     setErr("");
@@ -6349,6 +6517,10 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
     } catch (e) { setGps(t("loc_gps_denied")); }
   };
   const save = () => {
+    if (geoPick && pin && district === geoPick.district) {
+      onSave({ country: cc, province: geoPick.province, district: geoPick.district, village: village.trim(), lat: pin.lat, lng: pin.lng, source });
+      return;
+    }
     let d = REG.find((x) => x.name === district);
     if (!d && pin) d = nearestIn(cc, pin.lat, pin.lng);
     if (!d) { setErr(t("loc_err")); return; }
@@ -6380,13 +6552,13 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
                 <div className="relative">
                   <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
                   <input id="loc-dist" dir="ltr" role="combobox" aria-expanded={sugOpen} aria-autocomplete="list" autoComplete="off" value={query}
-                    onChange={(e) => { setQuery(e.target.value); setDistrict(""); setSugOpen(true); }} onFocus={() => setSugOpen(true)}
-                    onKeyDown={(e) => { if (e.key === "Enter" && suggestions[0]) { e.preventDefault(); chooseDistrict(suggestions[0]); } }}
+                    onChange={(e) => { setQuery(e.target.value); setDistrict(""); setGeoPick(null); setSugOpen(true); }} onFocus={() => setSugOpen(true)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && (suggestions[0] || geoList[0])) { e.preventDefault(); if (suggestions[0]) chooseDistrict(suggestions[0]); else chooseGeo(geoList[0]); } }}
                     placeholder={t("loc_district_ph")} className={inputCls + " ps-9"} />
                 </div>
               </Field>
-              {sugOpen && suggestions.length > 0 && (
-                <ul role="listbox" className="absolute inset-x-0 top-full z-10 mt-1 max-h-60 overflow-y-auto rounded-xl border border-soil/15 bg-white py-1 shadow-lg">
+              {sugOpen && (suggestions.length > 0 || geoList.length > 0 || geoBusy) && (
+                <ul role="listbox" className="absolute inset-x-0 top-full z-10 mt-1 max-h-72 overflow-y-auto rounded-xl border border-soil/15 bg-white py-1 shadow-lg">
                   {suggestions.map((d) => (
                     <li key={d.name} role="option" aria-selected={district === d.name}>
                       <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => chooseDistrict(d)} className="flex w-full items-center justify-between gap-2 px-3 py-2 text-start text-sm hover:bg-ivory">
@@ -6395,6 +6567,16 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
                       </button>
                     </li>
                   ))}
+                  {geoList.map((g) => (
+                    <li key={`${g.lat},${g.lng}`} role="option" aria-selected={false}>
+                      <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => chooseGeo(g)} className="flex w-full items-center gap-2 px-3 py-2 text-start text-sm hover:bg-ivory">
+                        <Globe className="h-3.5 w-3.5 shrink-0 text-leafink" aria-hidden="true" />
+                        <span className="min-w-0 flex-1 truncate font-semibold text-soil" dir="ltr">{uniqPlaces(g.place, g.state)}</span>
+                      </button>
+                    </li>
+                  ))}
+                  {geoBusy && <li className="px-3 py-2 text-xs text-soil/70" role="status">{t("loc_searching")}</li>}
+                  {geoList.length > 0 && <li className="px-3 pb-1 pt-1.5 text-[10px] text-soil/60" dir="ltr">© OpenStreetMap · {t("loc_osm")}</li>}
                 </ul>
               )}
             </div>
@@ -6408,7 +6590,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
             <div className="rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
               <p className="flex items-center gap-1.5 font-bold text-forest"><MapPin className="h-4 w-4 text-red-700" aria-hidden="true" />{pin ? t("loc_pin") : t("loc_none")}</p>
               {pin && <p className="mt-0.5 font-mono text-xs text-soil/80" dir="ltr">{fmtLL(pin.lat, pin.lng)} · {source.toUpperCase()}</p>}
-              {district && <p className="mt-1 text-xs text-soil/80">{t("loc_nearest")}: <b dir="ltr">{district}</b>{province ? ` · ${provLabel(lang, cc, province)}` : ""}</p>}
+              {district && <p className="mt-1 text-xs text-soil/80">{t("loc_nearest")}: <b dir="ltr">{uniqPlaces(village, district)}</b>{(geoPick ? geoPick.province : province) ? ` · ${geoPick ? geoPick.province : provLabel(lang, cc, province)}` : ""}</p>}
             </div>
             {err && <p className="text-sm font-semibold text-red-700" role="alert">{err}</p>}
           </div>
@@ -6429,7 +6611,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
             <div className="flex min-h-[320px] flex-col">
               <p className="mb-2 text-sm font-bold text-forest">{t("loc_regions")}</p>
               <div className="grid flex-1 content-start gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {REG.map((r) => (
+                {REG.filter((r) => !province || r.province === province).map((r) => (
                   <button type="button" key={r.name + r.province} onClick={() => chooseDistrict(r)} aria-pressed={district === r.name && province === r.province}
                     className={`rounded-xl px-3 py-2.5 text-start ring-1 transition ${district === r.name && province === r.province ? "bg-forest text-ivory ring-forest" : "bg-white text-soil ring-soil/15 hover:ring-leaf"}`}>
                     <span className="block text-sm font-bold" dir="ltr">{r.name}</span>
@@ -6464,7 +6646,7 @@ function LocationField({ t, lang, value, onChange, label, error, allowClear, id,
           {value ? (
             <>
               <span className="block truncate text-sm font-bold text-soil">{locLabel(value)}</span>
-              <span className="block truncate text-[11px] text-soil/80">{provLabel(lang, value.country, value.province)} · <span dir="ltr">{fmtLL(value.lat, value.lng)}</span></span>
+              <span className="block truncate text-[11px] text-soil/80" title={value.lat != null ? fmtLL(value.lat, value.lng) : undefined}>{provLabel(lang, value.country, value.province) || (value.lat != null ? fmtLL(value.lat, value.lng) : "")}</span>
             </>
           ) : <span className="text-sm text-soil/80">{placeholder || t("loc_none")}</span>}
         </button>
@@ -7622,12 +7804,19 @@ function ListingCard({ l, t, dn, lang, onBook }) {
   );
 }
 
-function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setFilters, activeProvinces, userLoc, setUserLoc, onLive, country = "PK", setCountry, demoMode = false, fallbackProps }) {
+function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setFilters, activeProvinces, userLoc, setUserLoc, onLive, country = "PK", setCountry, demoMode = false, fallbackProps, toast }) {
   // short skeleton while listings settle (first paint and country switch)
   const [ready, setReady] = useState(false);
   useEffect(() => { setReady(false); const id = setTimeout(() => setReady(true), 420); return () => clearTimeout(id); }, [country]);
   const { category, province = "all", radius, query } = filters;
   const set = (patch) => setFilters((f) => ({ ...f, ...patch }));
+  // Reset filters: category, search, radius, province, the farm location pin AND the country (back to Pakistan · PKR)
+  const resetAll = () => {
+    if (setCountry && country !== "PK") setCountry("PK");
+    setFilters({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" });
+    if (setUserLoc) setUserLoc(null);
+    if (toast) toast(t("reset_done"));
+  };
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return listings
@@ -7694,7 +7883,7 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
               <div className="mt-1 flex justify-between text-[11px] text-soil/80" dir="ltr"><span>1</span><span>15</span><span>40 km</span></div>
               <p className="mt-1 text-xs text-soil/80">{t("radius_note")}</p>
             </div>
-            <button type="button" onClick={() => setFilters({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" })}
+            <button type="button" onClick={resetAll}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-soil/15 px-3 py-2 text-sm font-semibold text-soil hover:bg-ivory">
               <RotateCcw className="h-4 w-4" aria-hidden="true" />{t("reset")}
             </button>
@@ -7715,7 +7904,7 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
               <Search className="h-10 w-10 text-soil/30" aria-hidden="true" />
               <p className="mt-3 max-w-md text-soil/80">{userLoc ? t("loc_far").replace("{km}", radius).replace("{place}", locLabel(userLoc)) : t("no_results")}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <button onClick={() => set({ radius: MAX_RADIUS, province: "all", category: "all", query: "" })} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
+                <button onClick={resetAll} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
                 {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_live")}</button>}
               </div>
               {nearestBeyond.length === 0 && country === "PK" && <PopularMachines t={t} onRequest={(c) => onLive(c)} />}
@@ -14853,7 +15042,7 @@ function App() {
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} onLand={() => setTab("land")} />
             <TrustStrip t={t} />
             <ServicesHub t={t} setTab={setTab} />
-            <Marketplace fuel={fuel} t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
+            <Marketplace toast={toast} fuel={fuel} t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
               demoMode={demoMode} fallbackProps={{ t, dn, lang, session, requireAuth, saveDemand, toast, dieselPrice, onSendLead: sendLead }} />
             <KeypadBanner t={t} setTab={setTab} />
             <div className="h-20 lg:h-4" aria-hidden="true" />
