@@ -1136,10 +1136,12 @@ const T = {
     arc_k_lead: "Farmer lead",
     arc_k_land_bk: "Land lease request",
     arc_k_land_rq: "Land demand",
-    zc_msg_land: "No online land is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually find suitable land for you from our offline network of landowners!",
+    zc_msg_land: "No online land is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email. We will manually find suitable land for you from our offline network of landowners!",
     ld_month_one: "1 month",
     ld_months_n: "{n} months",
     ld_req_sent_t: "Lease request sent",
+    ld_req_already: "Request already sent",
+    ld_lease_active: "Active lease",
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -2018,10 +2020,12 @@ const T = {
     arc_k_lead: "کسان کی لیڈ",
     arc_k_land_bk: "زمین ٹھیکے کی درخواست",
     arc_k_land_rq: "زمین کی طلب",
-    zc_msg_land: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن زمین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن زمین مالکان کے نیٹ ورک سے آپ کے لیے خود موزوں زمین تلاش کریں گے!",
+    zc_msg_land: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن زمین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں۔ ہم اپنے آف لائن زمین مالکان کے نیٹ ورک سے آپ کے لیے خود موزوں زمین تلاش کریں گے!",
     ld_month_one: "1 مہینہ",
     ld_months_n: "{n} مہینے",
     ld_req_sent_t: "درخواست بھیج دی گئی",
+    ld_req_already: "درخواست پہلے ہی بھیجی جا چکی",
+    ld_lease_active: "فعال ٹھیکہ",
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2800,10 +2804,12 @@ const T = {
     arc_k_lead: "کسان دی لیڈ",
     arc_k_land_bk: "زمین ٹھیکے دی درخواست",
     arc_k_land_rq: "زمین دی منگ",
-    zc_msg_land: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن زمین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن زمین مالکاں دے نیٹ ورک توں تہاڈے لئی آپ چنگی زمین لبھاں گے!",
+    zc_msg_land: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن زمین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو۔ اسیں اپنے آف لائن زمین مالکاں دے نیٹ ورک توں تہاڈے لئی آپ چنگی زمین لبھاں گے!",
     ld_month_one: "1 مہینہ",
     ld_months_n: "{n} مہینے",
     ld_req_sent_t: "درخواست گھل دتی گئی",
+    ld_req_already: "درخواست پہلاں ای گھلی جا چکی",
+    ld_lease_active: "چالو ٹھیکہ",
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -3583,10 +3589,12 @@ const T = {
     arc_k_lead: "هاريءَ جي ليڊ",
     arc_k_land_bk: "زمين ٺيڪي جي درخواست",
     arc_k_land_rq: "زمين جي طلب",
-    zc_msg_land: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن زمين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن زمين مالڪن جي نيٽ ورڪ مان توهان لاءِ پاڻ مناسب زمين ڳولينداسين!",
+    zc_msg_land: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن زمين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو۔ اسان پنهنجي آف لائن زمين مالڪن جي نيٽ ورڪ مان توهان لاءِ پاڻ مناسب زمين ڳولينداسين!",
     ld_month_one: "1 مهينو",
     ld_months_n: "{n} مهينا",
     ld_req_sent_t: "درخواست موڪلي وئي",
+    ld_req_already: "درخواست اڳ ۾ ئي موڪلي وئي آهي",
+    ld_lease_active: "فعال ٺيڪو",
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -4069,10 +4077,12 @@ const T = {
     arc_k_lead: "د بزګر لیډ",
     arc_k_land_bk: "د ځمکې د اجارې غوښتنه",
     arc_k_land_rq: "د ځمکې غوښتنه",
-    zc_msg_land: "اوس ستاسو د 15 نه تر 40 کیلومترو په ساحه کې هېڅ آنلاین ځمکه نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به د ځمکې د مالکانو له خپلې آفلاین شبکې ستاسو لپاره مناسبه ځمکه ومومو!",
+    zc_msg_land: "اوس ستاسو د 15 نه تر 40 کیلومترو په ساحه کې هېڅ آنلاین ځمکه نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ. موږ به د ځمکې د مالکانو له خپلې آفلاین شبکې ستاسو لپاره مناسبه ځمکه ومومو!",
     ld_month_one: "1 میاشت",
     ld_months_n: "{n} میاشتې",
     ld_req_sent_t: "غوښتنه ولېږل شوه",
+    ld_req_already: "غوښتنه دمخه لېږل شوې",
+    ld_lease_active: "فعاله اجاره",
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -4545,10 +4555,12 @@ const T = {
     arc_k_lead: "کِشاورز ءِ لیڈ",
     arc_k_land_bk: "زمین ءِ ٹھیکہ ءِ درخواست",
     arc_k_land_rq: "زمین ءِ لوٹ",
-    zc_msg_land: "اَنّوں شمئے 15 تا 40 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن زمین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی زمین ءِ واہندانی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت جوانیں زمین شوہاز کنیں!",
+    zc_msg_land: "اَنّوں شمئے 15 تا 40 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن زمین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن۔ ما وتی زمین ءِ واہندانی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت جوانیں زمین شوہاز کنیں!",
     ld_month_one: "1 ماہ",
     ld_months_n: "{n} ماہ",
     ld_req_sent_t: "درخواست رَوان بوت",
+    ld_req_already: "درخواست پیسرا رَوان بوتگ",
+    ld_lease_active: "چالوئیں ٹھیکہ",
   },
 };
 
@@ -8358,7 +8370,7 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
       {state === "sent" ? (
         <p className="mt-3 flex items-start gap-2 rounded-xl bg-leaf/15 p-3 text-sm font-semibold text-forest" role="status"><CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t(emailed ? "zc_emailed" : "zc_queued")}</p>
       ) : (
-        <button type="button" onClick={send} disabled={state === "sending"} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-4 py-3 text-sm font-extrabold text-soil shadow disabled:opacity-60">
+        <button type="button" onClick={send} disabled={state === "sending"} className="mt-3 inline-flex w-[calc(100%-3.5rem)] items-center justify-center gap-2 rounded-xl bg-gold px-4 py-3 sm:w-full text-sm font-extrabold text-soil shadow disabled:opacity-60">
           <Send className="h-4 w-4" aria-hidden="true" />{state === "sending" ? t("zc_sending") : t("zc_send")}
         </button>
       )}
@@ -9247,7 +9259,10 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   const [reqStart, setReqStart] = useState(addDaysISO(7));
   const [reqMonths, setReqMonths] = useState(6);
   const [reqSent, setReqSent] = useState({});
+  // one active request per farmer per land: pending or accepted blocks a second request
+  const activeLease = (l) => (uid ? landBookings.find((b) => b.listingId === l.id && b.tenantUid === uid && (b.status === "pending" || b.status === "accepted")) : null);
   const sendLeaseRequest = (l) => requireAuth(() => {
+    if (activeLease(l)) { setReqFor(null); toast(t("ld_req_already"), { type: "info" }); return; }
     const months = Number(reqMonths) || Number(l.months) || 1;
     const b = {
       id: "LB-" + Date.now().toString(36).toUpperCase(), listingId: l.id, requestId: null, status: "pending", createdAt: Date.now(),
@@ -9388,6 +9403,9 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                     </div>
                     <p className="mt-2 font-display text-lg font-extrabold text-forest" dir="ltr">{l.rateType === "total" ? pkr(l.rate) : <>{pkr(l.rate)}<span className="text-xs font-semibold text-soil/80"> {t("ld_per_acre_month")}</span></>}</p>
                     <p className="text-xs text-soil/80">{monthsLabel(t, l.months)} · {t("p_" + (l.payment || "advance"))}</p>
+                    {!l.mine && activeLease(l) ? (
+                      <p className="mt-auto pt-3"><span className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl bg-soil/10 px-4 py-2 text-sm font-bold text-soil/80" aria-disabled="true"><CircleCheck className="h-4 w-4" aria-hidden="true" />{t(activeLease(l).status === "accepted" ? "ld_lease_active" : "ld_req_already")}</span></p>
+                    ) : <>
                     {!l.mine && reqSent[l.id] && reqFor !== l.id && <p className="mt-3 flex items-start gap-1.5 rounded-xl bg-leaf/15 p-2.5 text-xs font-semibold text-forest" role="status"><CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ld_req_sent")}</p>}
                     {!l.mine && (reqFor === l.id ? (
                       <div className="mt-3 space-y-2 rounded-xl bg-ivory p-3">
@@ -9400,6 +9418,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                         <button type="button" onClick={() => sendLeaseRequest(l)} className="w-full rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory">{t("ld_send_req")}</button>
                       </div>
                     ) : <button type="button" onClick={() => { setReqFor(l.id); setReqMonths(Number(l.months) || 6); }} className="mt-auto pt-3"><span className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Handshake className="h-4 w-4" aria-hidden="true" />{t("ld_request")}</span></button>)}
+                    </>}
                   </li>
                 ))}
               </ul>
@@ -9527,7 +9546,7 @@ function GovtPortal({ t }) {
         {pillars.map(([Icon, title, sub], i) => (
           <li key={title} className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-forest text-gold"><Icon className="h-5 w-5" aria-hidden="true" /></span>
-            <p className="mt-3 font-bold text-forest"><span className="me-1 text-gold" dir="ltr">{i + 1}.</span>{t(title)}</p>
+            <p className="mt-3 font-bold text-forest"><span className="text-gold" dir="ltr">{i + 1}.</span>{" "}{t(title)}</p>
             <p className="mt-1 text-sm text-soil/80">{t(sub)}</p>
             <span className="mt-3 inline-block rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("soon")}</span>
           </li>
