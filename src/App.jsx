@@ -2610,6 +2610,7 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    al_view: "ویکھو",
     tour_btn_s: "رہنمائی",
     am_own_offer_pill: "ایہہ کسان دا منگیا ریٹ اے۔ اپنی بولی لاؤ، جیہڑی مناسب لگے پیشکش کرو",
     reset_done: "فلٹر تے تھاں ری سیٹ ہو گئے",
@@ -3632,6 +3633,7 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    al_view: "ڏسو",
     tour_btn_s: "رهنمائي",
     am_own_offer_pill: "هي هاري جو گهريل ريٽ آهي. پنهنجي بولي لڳايو، جيڪا مناسب لڳي آڇ ڪريو",
     reset_done: "فلٽر ۽ هنڌ ري سيٽ ٿي ويا",
@@ -4655,6 +4657,8 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    al_view: "وګورئ",
+    ad_pending: "د تصدیق په تمه",
     tour_btn_s: "لارښود",
     am_own_offer_pill: "دا د بزګر غوښتل شوې بیه ده. خپله بولي ولګوئ، هر مناسب وړاندیز وکړئ",
     reset_done: "فلټرونه او ځای بېرته تنظیم شول",
@@ -5391,6 +5395,8 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    al_view: "بچار",
+    ad_pending: "تصدیقءِ ودارا",
     tour_btn_s: "رہشونی",
     am_own_offer_pill: "اے بزگرءِ لوٹتگیں ریٹ اِنت۔ وتی بولی بلگائیں، ہر مناسبیں پیشکش بکنیں",
     reset_done: "فلٹر و جاگہ ری سیٹ بوتنت",
@@ -13184,6 +13190,18 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
 function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
+  // alert "Review" -> jump to the machine card in Machinery verification and pulse it briefly
+  const [focusLs, setFocusLs] = useState(null);
+  const verifyRef = useRef(null);
+  useEffect(() => {
+    if (!focusLs || sub !== "verify") return undefined;
+    const raf = requestAnimationFrame(() => {
+      const el = document.querySelector(`[data-ls-id="${CSS.escape(String(focusLs.id))}"]`) || verifyRef.current;
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    const tm = setTimeout(() => setFocusLs(null), 2800);
+    return () => { cancelAnimationFrame(raf); clearTimeout(tm); };
+  }, [focusLs, sub]);
   const [diesel, setDiesel] = useState(settings.dieselPrice);
   const [confirmReset, setConfirmReset] = useState(false);
   useEffect(() => { setDiesel(settings.dieselPrice); }, [settings.dieselPrice]);
@@ -13216,7 +13234,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
   const byEmail = useMemo(() => { const m = new Map(); (accounts.members || []).forEach((x) => { if (x.email) m.set(normEmail(x.email), x); }); return m; }, [accounts.members]);
   const prof = (email) => (email ? byEmail.get(normEmail(email)) : null) || {};
   const alerts = [
-    ...listings.filter((l) => !l.isVerified && l.ownerUid && (l.status || "approved") !== "rejected").map((l) => ({ id: "l" + l.id, at: l.submittedAt || 0, kind: "listing", sub: "verify", title: l.name, who: l.ownerName, where: `${l.village || ""}${l.district ? ", " + dn(l.district) : ""}` })),
+    ...listings.filter((l) => !l.isVerified && l.ownerUid && (l.status || "approved") !== "rejected").map((l) => ({ id: "l" + l.id, at: l.submittedAt || 0, kind: "listing", sub: "verify", lsId: l.id, title: l.name, who: l.ownerName, where: `${l.village || ""}${l.district ? ", " + dn(l.district) : ""}` })),
     ...liveRequests.filter((r) => r.status === "open").map((r) => ({ id: "r" + r.id, at: r.createdAt || 0, kind: "request", sub: "live", title: `${t("one_" + r.category)} · ${pkr(r.rate)}/hr`, who: r.renterName || prof(r.renterEmail).name || "", where: r.village || "" })),
     ...demand.filter((d) => d.status === "waiting").map((d) => ({ id: "d" + d.id, at: d.createdAt || 0, kind: "demand", sub: "demand", title: `${t("one_" + d.category)} · ${t("dm_" + d.type)}`, who: d.renterName || "", where: d.village || dn(d.district || "") })),
     ...bookings.filter((b) => b.status === "sent").map((b) => ({ id: "b" + b.id, at: b.createdAt || 0, kind: "booking", sub: "live", title: b.listingName, who: b.renterName || "", where: dn(b.district || "") })),
@@ -13341,7 +13359,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
                   <span className="block break-words font-bold text-forest">{a.title}</span>
                   <span className="block break-words text-xs text-soil/80">{[a.who, a.where, fmtStamp(a.at)].filter(Boolean).join(" · ")}</span>
                 </span>
-                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") setLsFilter("unverified"); }} className="ms-auto shrink-0 rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
+                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") { setLsFilter("unverified"); setFocusLs({ id: a.lsId, n: Date.now() }); } }} className="ms-auto shrink-0 rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
               </li>
             ))}
           </ul>
@@ -13377,7 +13395,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
         <div className="rounded-2xl bg-forest p-4 text-ivory"><p className="text-xs text-ivory/80">{t("ad_kpi_comm")}</p><p className="font-display text-2xl font-extrabold text-gold" dir="ltr">{pkr(earned)}</p></div>
         <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_kpi_gtv")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(gtv)}</p></div>
         <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_kpi_pending")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{pkr(pendingComm)}</p></div>
-        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_pending")}</p><p className="font-display text-2xl font-extrabold text-forest">{counts.pending}</p></div>
+        <div className="rounded-2xl bg-white p-4 ring-1 ring-soil/10"><p className="text-xs text-soil/80">{t("ad_pending")}</p><p className="font-display text-2xl font-extrabold text-forest" dir="ltr">{counts.unverified}</p></div>
         <div className="rounded-2xl bg-gold/15 p-4 ring-1 ring-gold/40"><p className="text-xs text-soil/80">{t("ad_kpi_credit")}</p><p className="font-display text-2xl font-extrabold text-soil" dir="ltr">{pkr(creditOut)}</p></div>
       </div>
       <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto" role="tablist">
@@ -13390,7 +13408,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
       </div>
 
       {sub === "verify" && (
-        <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <div ref={verifyRef} className="scroll-mt-24 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
           <div className="mb-4 flex flex-wrap gap-2">
             {["unverified", "approved", "rejected"].map((s) => (
               <button key={s} onClick={() => setLsFilter(s)} aria-pressed={lsFilter === s}
@@ -13400,7 +13418,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
           {shownListings.length === 0 ? <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
             <ul className="grid gap-3 md:grid-cols-2">
               {shownListings.map((l) => (
-                <li key={l.id} className={`rounded-xl border p-4 ${(l.status || "approved") === "pending" ? "border-gold bg-gold/5" : "border-soil/10 bg-ivory/50"}`}>
+                <li key={l.id} data-ls-id={l.id} className={`scroll-mt-24 rounded-xl border p-4 transition-shadow duration-500 ${(l.status || "approved") === "pending" ? "border-gold bg-gold/5" : "border-soil/10 bg-ivory/50"} ${focusLs && String(focusLs.id) === String(l.id) ? "animate-pulse ring-4 ring-gold/70 ring-offset-2" : ""}`}>
                   <div className="flex items-start gap-3">
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest text-gold"><CategoryIcon category={l.category} className="h-5 w-5" /></span>
                     <div className="min-w-0 flex-1">
