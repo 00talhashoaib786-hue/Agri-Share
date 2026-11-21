@@ -283,14 +283,14 @@ const T = {
     hero_machines: "machines listed in this region",
     hero_owners: "owners",
     hero_bookings: "bookings made on this device",
-    tr1_t: "Verified owners",
-    tr1_s: "Every listing is reviewed by the Agri-Share team before it goes live",
+    tr1_t: "Verified / Unverified badges",
+    tr1_s: "Listings go live immediately with clear Verified / Unverified badges and direct consultant support",
     tr2_t: "4% to 6% fair commission",
     tr2_s: "Only 4% for smallholders under 5 acres",
     tr3_t: "30/70 harvest credit",
     tr3_s: "Pay 30% now, 70% after harvest (proposed partners)",
-    tr4_t: "24/7 helpline & voice help",
-    tr4_s: "Toll-free UAN and the Kisan Helper voice assistant",
+    tr4_t: "Real consultant support",
+    tr4_s: "Call or WhatsApp 0322-4729249 or 0370-0318574, plus the Kisan Helper voice assistant",
     ov_dry: "Dry rent",
     ov_op: "Operator incl.",
     toast_broadcast_t: "Request broadcast",
@@ -443,7 +443,7 @@ const T = {
     mode_sub: "Public visitors always see Live Public Mode. Sample data is switched on only on this device.",
     mode_load_demo: "Load Sample Demo Data",
     mode_go_live: "Switch to Live Public Mode",
-    mode_badge_live: "Live · verified owners only",
+    mode_badge_live: "Live · Verified & unverified owners",
     mode_badge_demo: "Demo data on",
     toast_mode_live: "Live Public Mode: showing real registered owners only.",
     toast_mode_demo: "Sample demo data loaded on this device.",
@@ -536,7 +536,7 @@ const T = {
     loc_gps_outside: "Your GPS position is outside Pakistan. Drop a pin on the map instead.",
     loc_map_hint: "Tap the map to drop a pin. Tap a dot to pick a district.",
     loc_pin: "Pin set",
-    loc_none: "No pin yet",
+    loc_none: "Tap to share GPS or pick your district",
     loc_nearest: "Nearest district",
     loc_save: "Save location",
     loc_clear: "Clear",
@@ -689,7 +689,7 @@ const T = {
     es_machine: "Machine", es_hours: "Idle hours available per day", es_days: "Rental days per season", es_util: "Expected booking rate",
     es_result: "Estimated seasonal rental income", es_month: "per season", es_confirmed: "From confirmed bookings so far",
     es_note: "The 6% commission (4% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
-    ag_title: "Agricultural Land Lease Agreement", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
+    ag_title: "Agri-Agent & USSD Offline Booking", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
     ag1_t: "Who is an Agri-Agent?", ag1_d: "An existing village grocery or mobile-load shop, trained as a local booking point.",
     ag2_t: "What do they do?", ag2_d: "Explain the service, register farmers, show available machines and submit booking requests.",
     ag3_t: "How do they earn?", ag3_d: "A transparent commission per completed booking, under a published policy.",
@@ -697,7 +697,7 @@ const T = {
     ussd_title: "USSD booking", ussd_demo: "USSD menu preview",
     ussd_hint: "Use the keypad or your keyboard. Press the green button to send.",
     kh_title: "Agri-Share Kisan Helper", kh_placeholder: "Ask about hours, costs or which machine...", kh_send: "Send",
-    kh_hello: "Hello! I can estimate rental hours and dry-rent costs, help you pick a machine, and guide you through the website. Ask in English, Urdu or Roman Urdu.",
+    kh_hello: "Assalam-o-Alaikum! Kisan Helper haazir hai. Tap the mic and bol kar poochein, or type in English, Urdu or Roman Urdu. I can estimate rental hours and dry-rent costs, help you pick a machine and guide you through the website.",
     kh_ai: "Claude AI", kh_offline: "Built-in helper", kh_thinking: "Thinking...",
     toast_booked: "Booking request sent to the owner.", toast_listed: "Your machine is live in the marketplace now. The Agri-Share team will verify it shortly.", toast_confirmed: "Booking confirmed.", toast_declined: "Booking declined.",
     toast_completed: "Rental marked as completed.", toast_feedback: "Feedback submitted.", toast_cancelled: "Booking request cancelled.", toast_removed: "Listing removed.",
@@ -863,8 +863,8 @@ const T = {
     pl_settled_by: "Repaid automatically from Agri-Market sale {id}.",
     pl_settle_mandi: "Settle by selling your harvest on Agri-Market",
     kp_title: "No smartphone? Book via keypad phone",
-    kp_sub: "Call the toll-free helpline or dial the USSD code from any basic phone. A Punjabi or Urdu voice guides you step by step, and your booking is confirmed by SMS.",
-    kp_toll: "Toll-free helpline",
+    kp_sub: "Call or WhatsApp our Agri-Share consultant from any basic phone. They find a machine near you and confirm the booking by SMS. A USSD code is coming soon.",
+    kp_toll: "Consultant · Call / WhatsApp",
     kp_ussd: "USSD code",
     kp_demo: "Toll-free from any mobile network.",
     kp_ivr: "Hear the IVR voice steps",
@@ -964,10 +964,10 @@ const T = {
     ai_offline_note: "AI advisor is offline — built-in Kisan Helper is answering",
     mb_open_requests: "Open Requests",
     mb_open_view: "View offers",
-    am_waiting_buyers: "Waiting for verified mill & mandi buyer offers",
-    am_waiting_buyers_sub: "Your crop post is live. Verified flour mills, rice mills and mandi buyers will send offers here; we'll notify you.",
+    am_waiting_buyers: "Buyers are being onboarded. Post now to be first.",
+    am_waiting_buyers_sub: "Your crop post is live. As soon as a mill or mandi buyer makes an offer, it shows here and we notify you.",
     zc_title: "Agri-Share Direct Consultant Support",
-    zc_msg: "No online machine is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email — we will manually arrange a machine for you from our offline network!",
+    zc_msg: "No online machine is available within your 15–40 km range right now. Contact our Agri-Share Consultant directly via Call, WhatsApp, or Email. We will manually arrange a machine for you from our offline network!",
     zc_primary: "Primary consultant",
     zc_secondary: "Second number",
     zc_call: "Call",
@@ -1142,6 +1142,60 @@ const T = {
     ld_req_sent_t: "Lease request sent",
     ld_req_already: "Request already sent",
     ld_lease_active: "Active lease",
+    lt_toggle: "Switch between Urdu and English",
+    loc_ask_t: "Where is your farm?",
+    loc_ask_s: "Share your GPS location or pick your district to see machines near you and the real transport cost.",
+    loc_ask_ph: "Use GPS or choose district",
+    pop_title: "Popular machines in Punjab",
+    pop_sub: "No live machine matches near you yet. These are typical Punjab rates. Tap Book / Request and nearby owners or our consultant will get back to you.",
+    pop_book: "Book / Request",
+    pop_range: "{lo} to {hi}/hr",
+    tb_help: "Need help?",
+    tb_call: "Call",
+    tb_wa: "WhatsApp",
+    tb_hide: "Hide help bar",
+    tb_wa_msg: "Assalam-o-Alaikum Agri-Share, I need help with a machine booking.",
+    lr_intro: "Apna rate batayein, qareebi malik offer bhejenge. Name your rate and nearby owners send offers.",
+    lr_change_country: "Change country",
+    lr_rate_mkt: "Most farmers pay {r}",
+    ld_how_title: "How Zameen Thaika works",
+    ld_how1: "List land",
+    ld_how2: "Tenant requests",
+    ld_how3: "Sign stamp paper",
+    ld_fee_example: "Example: PKR 400,000 lease = PKR 18,000 fee (4.5%), one time",
+    ld_sample_btn: "See a sample Iqrarnama",
+    ld_sample_badge: "Sample",
+    ld_pick_district: "Pick your district first to see land near you. If nothing is listed there, our consultant will find land for you.",
+    la_title: "Agricultural Land Lease Agreement",
+    ag_pilot: "Punjabi · Urdu in pilot. Sindhi planned for expansion.",
+    ag_call: "Call the Agri-Agent desk",
+    ussd_s1: "Select language (Punjabi / Urdu / Sindhi)",
+    ussd_s2: "Choose machine type (Tractor / Thresher / Harvester)",
+    ussd_s3: "Select date, duration and location",
+    ussd_s4: "View machine option, owner ID and rate",
+    ussd_s5: "Review total price and dry-rent terms",
+    ussd_s6: "Owner confirmation and SMS booking record",
+    ussd_s7: "Completion and feedback",
+    ussd_live_note: "Bookings made here appear live in My Bookings and the Owner Portal.",
+    ussd_restart: "Restart",
+    gv_notify: "WhatsApp me when it launches",
+    gv_notify_msg: "Assalam-o-Alaikum Agri-Share, please WhatsApp me when the Government partnership portal launches.",
+    am_tiles_t: "Today's crop prices",
+    am_updated: "Updated Nov 2026",
+    am_per_maund: "/maund",
+    am_tiles_note: "Reference prices per 40 kg maund in Punjab, not offers. Tap a crop to sell it.",
+    es_default: "Example: Massey Ferguson 385 at PKR 2,500/hr × 8h × 30 days × 60% busy. List your machine to use your own rate.",
+    ow_photo_l: "Machine photo (optional)",
+    ow_photo: "Take / Upload Photo",
+    ow_photo_change: "Change photo",
+    ow_photo_remove: "Remove",
+    ow_photo_hint: "A clear photo of your own machine gets more bookings.",
+    ow_photo_err: "Could not read that photo. Please try another one.",
+    mb_sample_t: "What you get after booking",
+    mb_sample_badge: "Sample",
+    mb_sample_s: "Every booking gets a voucher with a booking ID, full price breakdown, live status and the owner's contact once confirmed. Sign in to see yours.",
+    kh_mic_label: "Bol kar poochein",
+    ft_support: "Consultant support"
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1167,14 +1221,14 @@ const T = {
     hero_machines: "اس خطے میں درج مشینیں",
     hero_owners: "مالکان",
     hero_bookings: "اس ڈیوائس پر بکنگز",
-    tr1_t: "تصدیق شدہ مالکان",
-    tr1_s: "ہر لسٹنگ لائیو ہونے سے پہلے ایگری شیئر ٹیم جانچتی ہے",
+    tr1_t: "تصدیق شدہ / غیر تصدیق شدہ نشان",
+    tr1_s: "فہرستیں فوراً لائیو ہوتی ہیں، واضح تصدیق شدہ / غیر تصدیق شدہ نشان اور کنسلٹنٹ کی براہ راست مدد کے ساتھ",
     tr2_t: "4% سے 6% منصفانہ کمیشن",
     tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 4%",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
-    tr4_t: "24/7 ہیلپ لائن اور آواز",
-    tr4_s: "ٹول فری یو اے این اور کسان ہیلپر وائس اسسٹنٹ",
+    tr4_t: "حقیقی کنسلٹنٹ مدد",
+    tr4_s: "0322-4729249 یا 0370-0318574 پر کال یا واٹس ایپ کریں، ساتھ کسان ہیلپر وائس اسسٹنٹ",
     ov_dry: "ڈرائی رینٹ",
     ov_op: "آپریٹر شامل",
     toast_broadcast_t: "درخواست بھیج دی گئی",
@@ -1294,7 +1348,7 @@ const T = {
     loc_gps_outside: "آپ کا GPS مقام پاکستان سے باہر ہے۔ نقشے پر پن لگائیں۔",
     loc_map_hint: "پن لگانے کے لیے نقشے پر ٹیپ کریں۔ ضلع چننے کے لیے نقطے پر ٹیپ کریں۔",
     loc_pin: "پن لگ گیا",
-    loc_none: "ابھی پن نہیں",
+    loc_none: "جی پی ایس دیں یا اپنا ضلع چنیں",
     loc_nearest: "قریبی ضلع",
     loc_save: "مقام محفوظ کریں",
     loc_clear: "صاف کریں",
@@ -1446,7 +1500,7 @@ const T = {
     es_machine: "مشین", es_hours: "روزانہ فارغ گھنٹے", es_days: "سیزن میں کرائے کے دن", es_util: "متوقع بکنگ کی شرح",
     es_result: "سیزن کی تخمینی کرایہ آمدنی", es_month: "فی سیزن", es_confirmed: "اب تک کی تصدیق شدہ بکنگز سے",
     es_note: "6٪ کمیشن (چھوٹے کسانوں کے لیے 4٪) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
-    ag_title: "زرعی زمین کا ٹھیکہ نامہ", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
+    ag_title: "ایگری ایجنٹ اور USSD آف لائن بکنگ", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
     ag1_t: "ایگری ایجنٹ کون ہے؟", ag1_d: "گاؤں کی کریانہ یا موبائل لوڈ کی دکان، جسے بکنگ پوائنٹ کے طور پر تربیت دی جاتی ہے۔",
     ag2_t: "وہ کیا کرتے ہیں؟", ag2_d: "سروس سمجھاتے ہیں، کسانوں کو رجسٹر کرتے ہیں، مشینیں دکھاتے ہیں اور بکنگ بھیجتے ہیں۔",
     ag3_t: "وہ کیسے کماتے ہیں؟", ag3_d: "ہر مکمل بکنگ پر شفاف کمیشن، ایک واضح پالیسی کے تحت۔",
@@ -1454,7 +1508,7 @@ const T = {
     ussd_title: "یو ایس ایس ڈی بکنگ", ussd_demo: "یو ایس ایس ڈی مینو کا جائزہ",
     ussd_hint: "کی پیڈ یا کی بورڈ استعمال کریں۔ بھیجنے کے لیے سبز بٹن دبائیں۔",
     kh_title: "ایگری شیئر کسان ہیلپر", kh_placeholder: "گھنٹے، خرچ یا مشین کے بارے میں پوچھیں...", kh_send: "بھیجیں",
-    kh_hello: "السلام علیکم! میں کرائے کے گھنٹے، ڈرائی رینٹ خرچ کا اندازہ لگا سکتا ہوں اور مشین چننے میں مدد کر سکتا ہوں۔ اردو، انگریزی یا رومن اردو میں پوچھیں۔",
+    kh_hello: "السلام علیکم! کسان ہیلپر حاضر ہے۔ مائیک دبا کر بول کر پوچھیں، یا اردو، انگریزی یا رومن اردو میں لکھیں۔ میں کرائے کے گھنٹے اور ڈرائی رینٹ خرچ کا اندازہ لگا سکتا ہوں، مشین چننے اور ویب سائٹ چلانے میں مدد کر سکتا ہوں۔",
     kh_ai: "Claude AI", kh_offline: "اندرونی ہیلپر", kh_thinking: "سوچ رہا ہوں...",
     toast_booked: "بکنگ کی درخواست مالک کو بھیج دی گئی۔", toast_listed: "آپ کی مشین ابھی مارکیٹ میں لائیو ہے۔ ایگری شیئر ٹیم جلد اس کی تصدیق کرے گی۔", toast_confirmed: "بکنگ کی تصدیق ہو گئی۔", toast_declined: "بکنگ مسترد کر دی گئی۔",
     toast_completed: "کرایہ مکمل ہو گیا۔", toast_feedback: "رائے جمع ہو گئی۔", toast_cancelled: "بکنگ کی درخواست منسوخ ہو گئی۔", toast_removed: "فہرست ہٹا دی گئی۔",
@@ -1613,8 +1667,8 @@ const T = {
     pl_settled_by: "ایگری منڈی فروخت {id} سے خود بخود ادا ہوا۔",
     pl_settle_mandi: "ایگری منڈی پر فصل بیچ کر ادا کریں",
     kp_title: "اسمارٹ فون نہیں؟ سادہ فون سے بکنگ کریں",
-    kp_sub: "کسی بھی سادہ فون سے ٹول فری ہیلپ لائن پر کال کریں یا USSD کوڈ ملائیں۔ پنجابی یا اردو آواز مرحلہ وار رہنمائی کرتی ہے اور بکنگ کی تصدیق SMS پر آتی ہے۔",
-    kp_toll: "ٹول فری ہیلپ لائن",
+    kp_sub: "کسی بھی سادہ فون سے ہمارے ایگری شیئر کنسلٹنٹ کو کال یا واٹس ایپ کریں۔ وہ قریب مشین ڈھونڈ کر بکنگ کی تصدیق SMS پر بھیجیں گے۔ USSD کوڈ جلد آ رہا ہے۔",
+    kp_toll: "کنسلٹنٹ · کال / واٹس ایپ",
     kp_ussd: "USSD کوڈ",
     kp_demo: "کسی بھی موبائل نیٹ ورک سے مفت۔",
     kp_ivr: "IVR آواز کے مراحل",
@@ -1713,7 +1767,7 @@ const T = {
     lr_listed: "مقررہ ریٹ · مالک تصدیق کرے گا",
     lr_step_locked: "مشین یا ریٹ بدلنے کے لیے نئی درخواست شروع کریں۔",
     toast_lr_sent: "درخواست {owner} کو بھیج دی گئی۔ وہ اپنے اونر پورٹل سے تصدیق کریں گے۔",
-    mode_badge_live: "لائیو · صرف تصدیق شدہ مالکان",
+    mode_badge_live: "لائیو · تصدیق شدہ اور غیر تصدیق شدہ مالکان",
     mode_badge_demo: "نمونہ ڈیٹا آن",
     au_err_provider: "فائر بیس میں ای میل/پاس ورڈ لاگ اِن بند ہے۔ فائر بیس کنسول میں Authentication > Sign-in method سے آن کریں۔",
     au_err_network: "فائر بیس سے رابطہ نہیں ہو سکا۔ انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔",
@@ -1848,10 +1902,10 @@ const T = {
     ai_offline_note: "اے آئی مشیر آف لائن ہے، بلٹ ان کسان مددگار جواب دے رہا ہے",
     mb_open_requests: "کھلی درخواستیں",
     mb_open_view: "آفرز دیکھیں",
-    am_waiting_buyers: "تصدیق شدہ ملز اور منڈی خریداروں کی آفرز کا انتظار ہے",
-    am_waiting_buyers_sub: "آپ کی فصل کی پوسٹ لائیو ہے۔ تصدیق شدہ آٹا ملز، رائس ملز اور منڈی خریدار یہاں آفرز بھیجیں گے؛ ہم آپ کو اطلاع دیں گے۔",
+    am_waiting_buyers: "خریدار شامل کیے جا رہے ہیں۔ ابھی پوسٹ کریں اور سب سے پہلے رہیں۔",
+    am_waiting_buyers_sub: "آپ کی فصل کی پوسٹ لائیو ہے۔ جیسے ہی کوئی مل یا منڈی خریدار آفر دے گا، وہ یہاں نظر آئے گی اور ہم آپ کو بتائیں گے۔",
     zc_title: "ایگری شیئر براہ راست کنسلٹنٹ سپورٹ",
-    zc_msg: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن مشین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں — ہم اپنے آف لائن نیٹ ورک سے آپ کے لیے خود مشین کا انتظام کریں گے!",
+    zc_msg: "اس وقت آپ کے 15 سے 40 کلومیٹر کے دائرے میں کوئی آن لائن مشین دستیاب نہیں۔ ہمارے ایگری شیئر کنسلٹنٹ سے کال، واٹس ایپ یا ای میل پر براہ راست رابطہ کریں۔ ہم اپنے آف لائن نیٹ ورک سے آپ کے لیے مشین کا انتظام کریں گے!",
     zc_primary: "مرکزی کنسلٹنٹ",
     zc_secondary: "دوسرا نمبر",
     zc_call: "کال",
@@ -2026,6 +2080,60 @@ const T = {
     ld_req_sent_t: "درخواست بھیج دی گئی",
     ld_req_already: "درخواست پہلے ہی بھیجی جا چکی",
     ld_lease_active: "فعال ٹھیکہ",
+    lt_toggle: "اردو اور انگریزی کے درمیان بدلیں",
+    loc_ask_t: "آپ کا کھیت کہاں ہے؟",
+    loc_ask_s: "قریبی مشینیں اور اصل ٹرانسپورٹ خرچ دیکھنے کے لیے اپنا جی پی ایس مقام دیں یا ضلع چنیں۔",
+    loc_ask_ph: "جی پی ایس یا ضلع چنیں",
+    pop_title: "پنجاب کی مقبول مشینیں",
+    pop_sub: "ابھی آپ کے قریب کوئی لائیو مشین نہیں ملی۔ یہ پنجاب کے عام ریٹ ہیں۔ بک / درخواست دبائیں، قریبی مالکان یا ہمارا کنسلٹنٹ آپ سے رابطہ کرے گا۔",
+    pop_book: "بک / درخواست",
+    pop_range: "{lo} سے {hi} فی گھنٹہ",
+    tb_help: "مدد چاہیے؟",
+    tb_call: "کال",
+    tb_wa: "واٹس ایپ",
+    tb_hide: "مدد کی پٹی چھپائیں",
+    tb_wa_msg: "السلام علیکم ایگری شیئر، مجھے مشین کی بکنگ میں مدد چاہیے۔",
+    lr_intro: "اپنا ریٹ بتائیں، قریبی مالک آفر بھیجیں گے",
+    lr_change_country: "ملک بدلیں",
+    lr_rate_mkt: "زیادہ تر کسان {r} دیتے ہیں",
+    ld_how_title: "زمین ٹھیکہ کیسے کام کرتا ہے",
+    ld_how1: "زمین درج کریں",
+    ld_how2: "کرایہ دار درخواست دے",
+    ld_how3: "اسٹامپ پیپر پر دستخط",
+    ld_fee_example: "مثال: 4,00,000 روپے کا ٹھیکہ = 18,000 روپے فیس (4.5%)، صرف ایک بار",
+    ld_sample_btn: "نمونہ اقرار نامہ دیکھیں",
+    ld_sample_badge: "نمونہ",
+    ld_pick_district: "قریبی زمین دیکھنے کے لیے پہلے اپنا ضلع چنیں۔ وہاں کوئی زمین درج نہ ہو تو ہمارا کنسلٹنٹ آپ کے لیے زمین تلاش کرے گا۔",
+    la_title: "زرعی زمین کا ٹھیکہ نامہ",
+    ag_pilot: "پائلٹ میں پنجابی اور اردو۔ سندھی توسیع میں شامل ہوگی۔",
+    ag_call: "ایگری ایجنٹ ڈیسک کو کال کریں",
+    ussd_s1: "زبان چنیں (پنجابی / اردو / سندھی)",
+    ussd_s2: "مشین کی قسم چنیں (ٹریکٹر / تھریشر / ہارویسٹر)",
+    ussd_s3: "تاریخ، دورانیہ اور مقام چنیں",
+    ussd_s4: "مشین، مالک کی شناخت اور ریٹ دیکھیں",
+    ussd_s5: "کل قیمت اور ڈرائی رینٹ کی شرائط دیکھیں",
+    ussd_s6: "مالک کی تصدیق اور SMS بکنگ ریکارڈ",
+    ussd_s7: "کام مکمل اور رائے",
+    ussd_live_note: "یہاں کی گئی بکنگ فوراً میری بکنگز اور مالک پورٹل میں نظر آتی ہے۔",
+    ussd_restart: "دوبارہ شروع کریں",
+    gv_notify: "شروع ہونے پر مجھے واٹس ایپ کریں",
+    gv_notify_msg: "السلام علیکم ایگری شیئر، سرکاری شراکت کا پورٹل شروع ہونے پر مجھے واٹس ایپ کر دیں۔",
+    am_tiles_t: "آج کے فصلوں کے ریٹ",
+    am_updated: "نومبر 2026 تک تازہ",
+    am_per_maund: "فی من",
+    am_tiles_note: "پنجاب میں 40 کلو من کے حوالہ جاتی ریٹ، آفر نہیں۔ بیچنے کے لیے فصل دبائیں۔",
+    es_default: "مثال: میسی فرگوسن 385، 2,500 روپے فی گھنٹہ × 8 گھنٹے × 30 دن × 60% مصروف۔ اپنا ریٹ لگانے کے لیے اپنی مشین درج کریں۔",
+    ow_photo_l: "مشین کی تصویر (اختیاری)",
+    ow_photo: "تصویر کھینچیں / اپلوڈ کریں",
+    ow_photo_change: "تصویر بدلیں",
+    ow_photo_remove: "ہٹائیں",
+    ow_photo_hint: "اپنی مشین کی صاف تصویر سے زیادہ بکنگ ملتی ہے۔",
+    ow_photo_err: "یہ تصویر نہیں کھل سکی۔ براہ کرم کوئی اور تصویر آزمائیں۔",
+    mb_sample_t: "بکنگ کے بعد آپ کو کیا ملتا ہے",
+    mb_sample_badge: "نمونہ",
+    mb_sample_s: "ہر بکنگ پر واؤچر ملتا ہے: بکنگ آئی ڈی، قیمت کی مکمل تفصیل، لائیو اسٹیٹس اور تصدیق کے بعد مالک کا رابطہ۔ اپنی بکنگ دیکھنے کے لیے سائن ان کریں۔",
+    kh_mic_label: "بول کر پوچھیں",
+    ft_support: "کنسلٹنٹ مدد"
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2051,14 +2159,14 @@ const T = {
     hero_machines: "اس خطے میں درج مشینیں",
     hero_owners: "مالکان",
     hero_bookings: "اس ڈیوائس پر بکنگز",
-    tr1_t: "تصدیق شدہ مالکان",
-    tr1_s: "ہر لسٹنگ لائیو ہونے سے پہلے ایگری شیئر ٹیم جانچتی ہے",
+    tr1_t: "تصدیق شدہ / غیر تصدیق شدہ نشان",
+    tr1_s: "لسٹاں فوراً لائیو ہوندیاں نیں، صاف تصدیق شدہ / غیر تصدیق شدہ نشان تے کنسلٹنٹ دی سدھی مدد نال",
     tr2_t: "4% سے 6% منصفانہ کمیشن",
     tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 4%",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
-    tr4_t: "24/7 ہیلپ لائن اور آواز",
-    tr4_s: "ٹول فری یو اے این تے کسان ہیلپر وائس اسسٹنٹ",
+    tr4_t: "اصل کنسلٹنٹ مدد",
+    tr4_s: "0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو، نال کسان ہیلپر وائس اسسٹنٹ",
     ov_dry: "ڈرائی رینٹ",
     ov_op: "آپریٹر شامل",
     toast_broadcast_t: "درخواست بھیج دی گئی",
@@ -2178,7 +2286,7 @@ const T = {
     loc_gps_outside: "آپ کا GPS مقام پاکستان سے باہر ہے۔ نقشے پر پن لگائیں۔",
     loc_map_hint: "پن لگانے کے لیے نقشے پر ٹیپ کریں۔ ضلع چننے کے لیے نقطے پر ٹیپ کریں۔",
     loc_pin: "پن لگ گیا",
-    loc_none: "ابھی پن نہیں",
+    loc_none: "جی پی ایس دیو یا اپنا ضلع چنو",
     loc_nearest: "قریبی ضلع",
     loc_save: "تھاں سانبھو",
     loc_clear: "صاف کریں",
@@ -2330,7 +2438,7 @@ const T = {
     es_machine: "مشین", es_hours: "روزانہ ویہلے گھنٹے", es_days: "سیزن وچ کرائے دے دن", es_util: "اندازاً بکنگ دی شرح",
     es_result: "سیزن دی اندازاً کرایہ کمائی", es_month: "فی سیزن", es_confirmed: "ہن تک پکیاں بکنگاں توں",
     es_note: "6٪ کمیشن (نکے کساناں لئی 4٪) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
-    ag_title: "واہی والی زمین دا ٹھیکہ نامہ", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
+    ag_title: "ایگری ایجنٹ تے USSD آف لائن بکنگ", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
     ag1_t: "ایگری ایجنٹ کون اے؟", ag1_d: "پنڈ دی کریانے یا موبائل لوڈ دی ہٹی، جنہوں بکنگ پوائنٹ وجوں سکھایا جاندا اے۔",
     ag2_t: "اوہ کی کردے نیں؟", ag2_d: "سروس سمجھاندے، کساناں نوں رجسٹر کردے، مشیناں وکھاندے تے بکنگ گھلدے نیں۔",
     ag3_t: "اوہ کیویں کماندے نیں؟", ag3_d: "ہر پوری بکنگ تے صاف کمیشن، اک کھلی پالیسی ہیٹھ۔",
@@ -2338,7 +2446,7 @@ const T = {
     ussd_title: "یو ایس ایس ڈی بکنگ", ussd_demo: "یو ایس ایس ڈی مینو دی جھلک",
     ussd_hint: "کی پیڈ یا کی بورڈ ورتو۔ گھلن لئی ساوا بٹن دباؤ۔",
     kh_title: "ایگری شیئر کسان ہیلپر", kh_placeholder: "گھنٹے، خرچ یا مشین بارے پچھو...", kh_send: "گھلو",
-    kh_hello: "السلام علیکم! میں کرائے دے گھنٹے، ڈرائی رینٹ خرچ دا اندازہ لا سکدا آں تے مشین چنن وچ مدد کر سکدا آں۔ اردو، انگریزی یا رومن اردو وچ پچھو۔",
+    kh_hello: "السلام علیکم! کسان ہیلپر حاضر اے۔ مائیک دبا کے بول کے پچھو، یا اردو، انگریزی یا رومن اردو وچ لکھو۔ میں کرائے دے گھنٹے تے ڈرائی رینٹ خرچ دا اندازہ لا سکدا آں، مشین چنن تے ویب سائٹ چلان وچ مدد کر سکدا آں۔",
     kh_ai: "Claude AI", kh_offline: "اندرلا ہیلپر", kh_thinking: "سوچ رہیا آں...",
     toast_booked: "بکنگ دی درخواست مالک نوں گھل دتی گئی۔", toast_listed: "جمع ہو گئی۔ ایگری شیئر ٹیم دی منظوری توں بعد منڈی وچ آوے گی۔", toast_confirmed: "بکنگ پکی ہو گئی۔", toast_declined: "بکنگ رد ہو گئی۔",
     toast_completed: "کرایہ پورا ہو گیا۔", toast_feedback: "رائے جمع ہو گئی۔", toast_cancelled: "بکنگ دی درخواست منسوخ ہو گئی۔", toast_removed: "لسٹ ہٹا دتی گئی۔",
@@ -2497,8 +2605,8 @@ const T = {
     pl_settled_by: "ایگری منڈی ویچ {id} توں آپے ادا ہویا۔",
     pl_settle_mandi: "ایگری منڈی تے فصل ویچ کے ادا کرو",
     kp_title: "سمارٹ فون نئیں؟ سادے فون نال بکنگ کرو",
-    kp_sub: "کسے وی سادے فون توں ٹول فری ہیلپ لائن تے کال کرو یا USSD کوڈ ملاؤ۔ پنجابی یا اردو آواز قدم قدم رہنمائی کردی اے تے بکنگ دی تصدیق SMS تے آندی اے۔",
-    kp_toll: "ٹول فری ہیلپ لائن",
+    kp_sub: "کسے وی سادے فون توں ساڈے ایگری شیئر کنسلٹنٹ نوں کال یا واٹس ایپ کرو۔ اوہ نیڑے مشین لبھ کے بکنگ دی تصدیق SMS تے گھلن گے۔ USSD کوڈ چھیتی آ رہیا اے۔",
+    kp_toll: "کنسلٹنٹ · کال / واٹس ایپ",
     kp_ussd: "USSD کوڈ",
     kp_demo: "کسے وی موبائل نیٹ ورک توں مفت۔",
     kp_ivr: "IVR آواز دے قدم",
@@ -2595,7 +2703,7 @@ const T = {
     lr_listed: "پکا ریٹ · مالک تصدیق کرے گا",
     lr_step_locked: "مشین یا ریٹ بدلن لئی نویں درخواست شروع کرو۔",
     toast_lr_sent: "درخواست {owner} نوں گھل دتی۔ اوہ اپنے اونر پورٹل توں تصدیق کرن گے۔",
-    mode_badge_live: "لائیو · صرف تصدیق شدہ مالک",
+    mode_badge_live: "لائیو · تصدیق شدہ تے غیر تصدیق شدہ مالک",
     mode_badge_demo: "نمونہ ڈیٹا آن",
     au_err_provider: "فائر بیس وچ ای میل/پاس ورڈ لاگ اِن بند اے۔ فائر بیس کنسول وچ Authentication > Sign-in method توں چالو کرو۔",
     au_err_network: "فائر بیس نال رابطہ نئیں ہویا۔ انٹرنیٹ ویکھ کے فیر کوشش کرو۔",
@@ -2641,10 +2749,10 @@ const T = {
     ai_offline_note: "اے آئی صلاح کار آف لائن اے، اندرلا کسان مددگار جواب دے رہیا اے",
     mb_open_requests: "کھلیاں درخواستاں",
     mb_open_view: "آفراں ویکھو",
-    am_waiting_buyers: "تصدیق شدہ ملاں تے منڈی خریداراں دیاں آفراں دی اڈیک اے",
-    am_waiting_buyers_sub: "تہاڈی فصل دی پوسٹ لائیو اے۔ تصدیق شدہ آٹا ملاں، رائس ملاں تے منڈی خریدار ایتھے آفراں گھلن گے؛ اسیں تہانوں دساں گے۔",
+    am_waiting_buyers: "خریدار شامل کیتے جا رہے نیں۔ ہنے پوسٹ کرو تے سب توں پہلاں رہو۔",
+    am_waiting_buyers_sub: "تہاڈی فصل دی پوسٹ لائیو اے۔ جیویں ای کوئی مل یا منڈی خریدار آفر دیوے گا، اوہ ایتھے نظر آوے گی تے اسیں تہانوں دساں گے۔",
     zc_title: "ایگری شیئر سدھی کنسلٹنٹ مدد",
-    zc_msg: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن مشین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو — اسیں اپنے آف لائن نیٹ ورک توں تہاڈے لئی آپ مشین دا بندوبست کراں گے!",
+    zc_msg: "ایس ویلے تہاڈے 15 توں 40 کلومیٹر دے گھیرے وچ کوئی آن لائن مشین نئیں۔ ساڈے ایگری شیئر کنسلٹنٹ نال کال، واٹس ایپ یا ای میل تے سدھا رابطہ کرو۔ اسیں اپنے آف لائن نیٹ ورک توں تہاڈے لئی مشین دا بندوبست کراں گے!",
     zc_primary: "وڈا کنسلٹنٹ",
     zc_secondary: "دوجا نمبر",
     zc_call: "کال",
@@ -2810,6 +2918,60 @@ const T = {
     ld_req_sent_t: "درخواست گھل دتی گئی",
     ld_req_already: "درخواست پہلاں ای گھلی جا چکی",
     ld_lease_active: "چالو ٹھیکہ",
+    lt_toggle: "اردو تے انگریزی وچکار بدلو",
+    loc_ask_t: "تہاڈا کھیت کتھے اے؟",
+    loc_ask_s: "نیڑے دیاں مشیناں تے اصل ٹرانسپورٹ خرچ ویکھن لئی اپنا جی پی ایس دیو یا ضلع چنو۔",
+    loc_ask_ph: "جی پی ایس یا ضلع چنو",
+    pop_title: "پنجاب دیاں مشہور مشیناں",
+    pop_sub: "ہلے تہاڈے نیڑے کوئی لائیو مشین نئیں لبھی۔ ایہہ پنجاب دے عام ریٹ نیں۔ بک / درخواست دباؤ، نیڑے دے مالک یا ساڈا کنسلٹنٹ تہاڈے نال رابطہ کرے گا۔",
+    pop_book: "بک / درخواست",
+    pop_range: "{lo} توں {hi} فی گھنٹہ",
+    tb_help: "مدد چاہیدی اے؟",
+    tb_call: "کال",
+    tb_wa: "واٹس ایپ",
+    tb_hide: "مدد والی پٹی لکاؤ",
+    tb_wa_msg: "السلام علیکم ایگری شیئر، مینوں مشین دی بکنگ وچ مدد چاہیدی اے۔",
+    lr_intro: "اپنا ریٹ دسو، نیڑے دے مالک آفر گھلن گے",
+    lr_change_country: "ملک بدلو",
+    lr_rate_mkt: "بہتے کسان {r} دیندے نیں",
+    ld_how_title: "زمین ٹھیکہ کیویں کم کردا اے",
+    ld_how1: "زمین لکھاؤ",
+    ld_how2: "ٹھیکیدار درخواست دیوے",
+    ld_how3: "اسٹامپ پیپر تے دستخط",
+    ld_fee_example: "مثال: 4,00,000 روپے دا ٹھیکہ = 18,000 روپے فیس (4.5%)، صرف اک واری",
+    ld_sample_btn: "نمونہ اقرار نامہ ویکھو",
+    ld_sample_badge: "نمونہ",
+    ld_pick_district: "نیڑے دی زمین ویکھن لئی پہلاں اپنا ضلع چنو۔ اوتھے کوئی زمین نہ ہووے تے ساڈا کنسلٹنٹ تہاڈے لئی زمین لبھے گا۔",
+    la_title: "واہی والی زمین دا ٹھیکہ نامہ",
+    ag_pilot: "پائلٹ وچ پنجابی تے اردو۔ سندھی اگلے پڑاء وچ آوے گی۔",
+    ag_call: "ایگری ایجنٹ ڈیسک نوں کال کرو",
+    ussd_s1: "بولی چنو (پنجابی / اردو / سندھی)",
+    ussd_s2: "مشین دی قسم چنو (ٹریکٹر / تھریشر / ہارویسٹر)",
+    ussd_s3: "تاریخ، ویلا تے تھاں چنو",
+    ussd_s4: "مشین، مالک دی پچھان تے ریٹ ویکھو",
+    ussd_s5: "کل قیمت تے ڈرائی رینٹ دیاں شرطاں ویکھو",
+    ussd_s6: "مالک دی تصدیق تے SMS بکنگ ریکارڈ",
+    ussd_s7: "کم پورا تے رائے",
+    ussd_live_note: "ایتھے کیتی بکنگ فوراً میریاں بکنگاں تے مالک پورٹل وچ نظر آندی اے۔",
+    ussd_restart: "مڑ شروع کرو",
+    gv_notify: "شروع ہون تے مینوں واٹس ایپ کرو",
+    gv_notify_msg: "السلام علیکم ایگری شیئر، سرکاری شراکت والا پورٹل شروع ہووے تے مینوں واٹس ایپ کر دینا۔",
+    am_tiles_t: "اج دے فصلاں دے ریٹ",
+    am_updated: "نومبر 2026 تک تازہ",
+    am_per_maund: "فی من",
+    am_tiles_note: "پنجاب وچ 40 کلو من دے حوالے والے ریٹ، آفر نئیں۔ ویچن لئی فصل دباؤ۔",
+    es_default: "مثال: میسی فرگوسن 385، 2,500 روپے فی گھنٹہ × 8 گھنٹے × 30 دن × 60% مصروف۔ اپنا ریٹ لان لئی اپنی مشین لکھاؤ۔",
+    ow_photo_l: "مشین دی تصویر (مرضی نال)",
+    ow_photo: "تصویر کھچو / اپلوڈ کرو",
+    ow_photo_change: "تصویر بدلو",
+    ow_photo_remove: "ہٹاؤ",
+    ow_photo_hint: "اپنی مشین دی صاف تصویر نال ودھ بکنگ ملدی اے۔",
+    ow_photo_err: "ایہہ تصویر نئیں کھل سکی۔ کوئی ہور تصویر ورتو۔",
+    mb_sample_t: "بکنگ توں بعد تہانوں کی ملدا اے",
+    mb_sample_badge: "نمونہ",
+    mb_sample_s: "ہر بکنگ تے واؤچر ملدا اے: بکنگ آئی ڈی، قیمت دی پوری تفصیل، لائیو حال تے تصدیق توں بعد مالک دا رابطہ۔ اپنی بکنگ ویکھن لئی سائن ان کرو۔",
+    kh_mic_label: "بول کے پچھو",
+    ft_support: "کنسلٹنٹ مدد"
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2835,14 +2997,14 @@ const T = {
     hero_machines: "اس خطے میں درج مشینیں",
     hero_owners: "مالکان",
     hero_bookings: "اس ڈیوائس پر بکنگز",
-    tr1_t: "تصدیق شدہ مالکان",
-    tr1_s: "ہر لسٹنگ لائیو ہونے سے پہلے ایگری شیئر ٹیم جانچتی ہے",
+    tr1_t: "تصديق ٿيل / غير تصديق ٿيل نشان",
+    tr1_s: "لسٽون فوري لائيو ٿين ٿيون، صاف تصديق ٿيل / غير تصديق ٿيل نشان ۽ ڪنسلٽنٽ جي سڌي مدد سان",
     tr2_t: "4% سے 6% منصفانہ کمیشن",
     tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 4%",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
-    tr4_t: "24/7 ہیلپ لائن اور آواز",
-    tr4_s: "ٽول فري يو اي اين ۽ ڪسان هيلپر وائس اسسٽنٽ",
+    tr4_t: "حقيقي ڪنسلٽنٽ مدد",
+    tr4_s: "0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو، گڏ ڪسان هيلپر وائس اسسٽنٽ",
     ov_dry: "ڈرائی رینٹ",
     ov_op: "آپریٹر شامل",
     toast_broadcast_t: "درخواست بھیج دی گئی",
@@ -2962,7 +3124,7 @@ const T = {
     loc_gps_outside: "آپ کا GPS مقام پاکستان سے باہر ہے۔ نقشے پر پن لگائیں۔",
     loc_map_hint: "پن لگانے کے لیے نقشے پر ٹیپ کریں۔ ضلع چننے کے لیے نقطے پر ٹیپ کریں۔",
     loc_pin: "پن لگ گیا",
-    loc_none: "ابھی پن نہیں",
+    loc_none: "جي پي ايس ڏيو يا پنهنجو ضلعو چونڊيو",
     loc_nearest: "قریبی ضلع",
     loc_save: "جاءِ محفوظ ڪريو",
     loc_clear: "صاف کریں",
@@ -3114,7 +3276,7 @@ const T = {
     es_machine: "مشين", es_hours: "روزانو واندا ڪلاڪ", es_days: "موسم ۾ ڪرائي جا ڏينهن", es_util: "متوقع بڪنگ جي شرح",
     es_result: "موسم جي اندازي ڪرائي ڪمائي", es_month: "في موسم", es_confirmed: "اڃا تائين تصديق ٿيل بڪنگن مان",
     es_note: "6٪ ڪميشن (ننڍن هارين لاءِ 4٪) هاري جي بل ۾ شامل ٿئي ٿي، تنهنڪري مالڪ کي پورو مسواڙ ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
-    ag_title: "زرعي زمين جو ٺيڪو نامو", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
+    ag_title: "ايگري ايجنٽ ۽ USSD آف لائن بڪنگ", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
     ag1_t: "ايگري ايجنٽ ڪير آهي؟", ag1_d: "ڳوٺ جو ڪرياني يا موبائل لوڊ جو دڪان، جنهن کي بڪنگ پوائنٽ طور سکيا ڏني وڃي ٿي۔",
     ag2_t: "اهي ڇا ٿا ڪن؟", ag2_d: "سروس سمجهائين ٿا، هارين کي رجسٽر ڪن ٿا، مشينون ڏيکارين ٿا ۽ بڪنگ موڪلين ٿا۔",
     ag3_t: "اهي ڪيئن ڪمائين ٿا؟", ag3_d: "هر مڪمل بڪنگ تي شفاف ڪميشن، هڪ کليل پاليسيءَ تحت۔",
@@ -3122,7 +3284,7 @@ const T = {
     ussd_title: "يو ايس ايس ڊي بڪنگ", ussd_demo: "يو ايس ايس ڊي مينيو جي جھلڪ",
     ussd_hint: "ڪي پيڊ يا ڪي بورڊ استعمال ڪريو۔ موڪلڻ لاءِ سائو بٽڻ دٻايو۔",
     kh_title: "ايگري شيئر هاري هيلپر", kh_placeholder: "ڪلاڪن، خرچ يا مشين بابت پڇو...", kh_send: "موڪليو",
-    kh_hello: "السلام عليڪم! مان ڪرائي جي ڪلاڪن ۽ ڊرائي رينٽ خرچ جو اندازو لڳائي سگهان ٿو ۽ مشين چونڊڻ ۾ مدد ڪري سگهان ٿو۔ اردو، انگريزي يا رومن اردو ۾ پڇو۔",
+    kh_hello: "السلام عليڪم! ڪسان هيلپر حاضر آهي۔ مائيڪ دٻائي ڳالهائي پڇو، يا اردو، انگريزي يا رومن اردو ۾ لکو۔ مان ڪرائي جي ڪلاڪن ۽ ڊرائي رينٽ خرچ جو اندازو لڳائي سگهان ٿو، مشين چونڊڻ ۽ ويب سائيٽ هلائڻ ۾ مدد ڪري سگهان ٿو۔",
     kh_ai: "Claude AI", kh_offline: "اندروني هيلپر", kh_thinking: "سوچي رهيو آهيان...",
     toast_booked: "بڪنگ جي درخواست مالڪ کي موڪلي وئي۔", toast_listed: "جمع ٿي وئي۔ ايگري شيئر ٽيم جي منظوري کان پوءِ بازار ۾ ايندي۔", toast_confirmed: "بڪنگ جي تصديق ٿي وئي۔", toast_declined: "بڪنگ رد ٿي وئي۔",
     toast_completed: "ڪرايو مڪمل ٿيو۔", toast_feedback: "راءِ جمع ٿي۔", toast_cancelled: "بڪنگ جي درخواست منسوخ ٿي۔", toast_removed: "لسٽ هٽائي وئي۔",
@@ -3281,8 +3443,8 @@ const T = {
     pl_settled_by: "ايگري منڊي وڪري {id} مان پاڻمرادو ادا ٿيو۔",
     pl_settle_mandi: "ايگري منڊي تي فصل وڪڻي ادا ڪريو",
     kp_title: "سمارٽ فون ناهي؟ سادي فون سان بڪنگ ڪريو",
-    kp_sub: "ڪنهن به سادي فون مان ٽول فري هيلپ لائن تي ڪال ڪريو يا USSD ڪوڊ ملايو۔ پنجابي يا اردو آواز قدم بقدم رهنمائي ڪري ٿو ۽ بڪنگ جي تصديق SMS تي اچي ٿي۔",
-    kp_toll: "ٽول فري هيلپ لائن",
+    kp_sub: "ڪنهن به سادي فون مان اسان جي ايگري شيئر ڪنسلٽنٽ کي ڪال يا واٽس ايپ ڪريو۔ اهي ويجهي مشين ڳولي بڪنگ جي تصديق SMS تي موڪليندا۔ USSD ڪوڊ جلد اچي رهيو آهي۔",
+    kp_toll: "ڪنسلٽنٽ · ڪال / واٽس ايپ",
     kp_ussd: "USSD ڪوڊ",
     kp_demo: "ڪنهن به موبائل نيٽ ورڪ تان مفت۔",
     kp_ivr: "IVR آواز جا قدم",
@@ -3380,7 +3542,7 @@ const T = {
     lr_listed: "مقرر اگهه · مالڪ تصديق ڪندو",
     lr_step_locked: "مشين يا اگهه بدلائڻ لاءِ نئين درخواست شروع ڪريو۔",
     toast_lr_sent: "درخواست {owner} کي موڪلي وئي۔ هو پنهنجي اونر پورٽل مان تصديق ڪندا۔",
-    mode_badge_live: "لائيو · صرف تصديق ٿيل مالڪ",
+    mode_badge_live: "لائيو · تصديق ٿيل ۽ غير تصديق ٿيل مالڪ",
     mode_badge_demo: "نمونو ڊيٽا آن",
     au_err_provider: "فائر بيس ۾ اي ميل/پاسورڊ لاگ اِن بند آهي۔ فائر بيس ڪنسول ۾ Authentication > Sign-in method مان چالو ڪريو۔",
     au_err_network: "فائر بيس سان رابطو نه ٿيو۔ انٽرنيٽ ڏسي ٻيهر ڪوشش ڪريو۔",
@@ -3426,10 +3588,10 @@ const T = {
     ai_offline_note: "اي آءِ صلاحڪار آف لائن آهي، اندروني ڪسان مددگار جواب ڏئي رهيو آهي",
     mb_open_requests: "کليل درخواستون",
     mb_open_view: "آڇون ڏسو",
-    am_waiting_buyers: "تصديق ٿيل ملن ۽ منڊي خريدارن جي آڇن جو انتظار آهي",
-    am_waiting_buyers_sub: "توهان جي فصل جي پوسٽ لائيو آهي۔ تصديق ٿيل اٽي جون ملون، چانورن جون ملون ۽ منڊي خريدار هتي آڇون موڪليندا؛ اسان توهان کي ٻڌائينداسين۔",
+    am_waiting_buyers: "خريدار شامل ڪيا پيا وڃن۔ هاڻي پوسٽ ڪريو ۽ سڀ کان پهريان رهو۔",
+    am_waiting_buyers_sub: "توهان جي فصل جي پوسٽ لائيو آهي۔ جيئن ئي ڪو مل يا منڊي خريدار آڇ ڏيندو، اها هتي نظر ايندي ۽ اسان توهان کي ٻڌائينداسين۔",
     zc_title: "ايگري شيئر سڌي ڪنسلٽنٽ مدد",
-    zc_msg: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن مشين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو — اسان پنهنجي آف لائن نيٽ ورڪ مان توهان لاءِ پاڻ مشين جو بندوبست ڪنداسين!",
+    zc_msg: "هن وقت توهان جي 15 کان 40 ڪلوميٽرن جي دائري ۾ ڪا آن لائن مشين موجود ناهي۔ اسان جي ايگري شيئر ڪنسلٽنٽ سان ڪال، واٽس ايپ يا اي ميل ذريعي سڌو رابطو ڪريو۔ اسان پنهنجي آف لائن نيٽ ورڪ مان توهان لاءِ مشين جو بندوبست ڪنداسين!",
     zc_primary: "مکيه ڪنسلٽنٽ",
     zc_secondary: "ٻيو نمبر",
     zc_call: "ڪال",
@@ -3595,6 +3757,60 @@ const T = {
     ld_req_sent_t: "درخواست موڪلي وئي",
     ld_req_already: "درخواست اڳ ۾ ئي موڪلي وئي آهي",
     ld_lease_active: "فعال ٺيڪو",
+    lt_toggle: "اردو ۽ انگريزي جي وچ ۾ مٽايو",
+    loc_ask_t: "توهان جي زمين ڪٿي آهي؟",
+    loc_ask_s: "ويجهيون مشينون ۽ اصل ٽرانسپورٽ خرچ ڏسڻ لاءِ پنهنجو جي پي ايس ڏيو يا ضلعو چونڊيو۔",
+    loc_ask_ph: "جي پي ايس يا ضلعو چونڊيو",
+    pop_title: "پنجاب جون مشهور مشينون",
+    pop_sub: "اڃا توهان جي ويجهو ڪا لائيو مشين نه ملي۔ هي پنجاب جا عام اگهه آهن۔ بڪ / درخواست دٻايو، ويجها مالڪ يا اسان جو ڪنسلٽنٽ توهان سان رابطو ڪندو۔",
+    pop_book: "بڪ / درخواست",
+    pop_range: "{lo} کان {hi} في ڪلاڪ",
+    tb_help: "مدد گهرجي؟",
+    tb_call: "ڪال",
+    tb_wa: "واٽس ايپ",
+    tb_hide: "مدد واري پٽي لڪايو",
+    tb_wa_msg: "السلام عليڪم ايگري شيئر، مون کي مشين جي بڪنگ ۾ مدد گهرجي۔",
+    lr_intro: "پنهنجو اگهه ٻڌايو، ويجها مالڪ آڇون موڪليندا",
+    lr_change_country: "ملڪ مٽايو",
+    lr_rate_mkt: "گهڻا هاري {r} ڏين ٿا",
+    ld_how_title: "زمين ٺيڪو ڪيئن ڪم ڪري ٿو",
+    ld_how1: "زمين لکرايو",
+    ld_how2: "ٺيڪيدار درخواست ڏئي",
+    ld_how3: "اسٽامپ پيپر تي صحيح",
+    ld_fee_example: "مثال: 4,00,000 رپين جو ٺيڪو = 18,000 رپيا في (4.5%)، صرف هڪ ڀيرو",
+    ld_sample_btn: "نمونو اقرار نامو ڏسو",
+    ld_sample_badge: "نمونو",
+    ld_pick_district: "ويجهي زمين ڏسڻ لاءِ پهريان پنهنجو ضلعو چونڊيو۔ اتي ڪا زمين لسٽ نه هجي ته اسان جو ڪنسلٽنٽ توهان لاءِ زمين ڳوليندو۔",
+    la_title: "زرعي زمين جو ٺيڪو نامو",
+    ag_pilot: "پائلٽ ۾ پنجابي ۽ اردو۔ سنڌي واڌاري ۾ شامل ٿيندي۔",
+    ag_call: "ايگري ايجنٽ ڊيسڪ کي ڪال ڪريو",
+    ussd_s1: "ٻولي چونڊيو (پنجابي / اردو / سنڌي)",
+    ussd_s2: "مشين جو قسم چونڊيو (ٽريڪٽر / ٿريشر / هارويسٽر)",
+    ussd_s3: "تاريخ، وقت ۽ جاءِ چونڊيو",
+    ussd_s4: "مشين، مالڪ جي سڃاڻپ ۽ اگهه ڏسو",
+    ussd_s5: "ڪل قيمت ۽ ڊرائي رينٽ جون شرطون ڏسو",
+    ussd_s6: "مالڪ جي تصديق ۽ SMS بڪنگ رڪارڊ",
+    ussd_s7: "ڪم مڪمل ۽ راءِ",
+    ussd_live_note: "هتي ڪيل بڪنگ فوري منهنجون بڪنگون ۽ مالڪ پورٽل ۾ نظر اچي ٿي۔",
+    ussd_restart: "ٻيهر شروع ڪريو",
+    gv_notify: "شروع ٿيڻ تي مون کي واٽس ايپ ڪريو",
+    gv_notify_msg: "السلام عليڪم ايگري شيئر، سرڪاري ڀائيواري جو پورٽل شروع ٿئي ته مون کي واٽس ايپ ڪجو۔",
+    am_tiles_t: "اڄ جا فصلن جا اگهه",
+    am_updated: "نومبر 2026 تائين تازو",
+    am_per_maund: "في مڻ",
+    am_tiles_note: "پنجاب ۾ 40 ڪلو مڻ جا حوالي وارا اگهه، آڇ ناهن۔ وڪڻڻ لاءِ فصل دٻايو۔",
+    es_default: "مثال: ميسي فرگوسن 385، 2,500 رپيا في ڪلاڪ × 8 ڪلاڪ × 30 ڏينهن × 60% مصروف۔ پنهنجو اگهه لڳائڻ لاءِ پنهنجي مشين لکرايو۔",
+    ow_photo_l: "مشين جي تصوير (اختياري)",
+    ow_photo: "تصوير ڪڍو / اپلوڊ ڪريو",
+    ow_photo_change: "تصوير مٽايو",
+    ow_photo_remove: "هٽايو",
+    ow_photo_hint: "پنهنجي مشين جي صاف تصوير سان وڌيڪ بڪنگ ملي ٿي۔",
+    ow_photo_err: "هي تصوير کلي نه سگهي۔ مهرباني ڪري ٻي تصوير آزمايو۔",
+    mb_sample_t: "بڪنگ کان پوءِ توهان کي ڇا ملي ٿو",
+    mb_sample_badge: "نمونو",
+    mb_sample_s: "هر بڪنگ تي واؤچر ملي ٿو: بڪنگ آءِ ڊي، قيمت جي پوري تفصيل، لائيو حالت ۽ تصديق کان پوءِ مالڪ جو رابطو۔ پنهنجي بڪنگ ڏسڻ لاءِ سائن ان ڪريو۔",
+    kh_mic_label: "ڳالهائي پڇو",
+    ft_support: "ڪنسلٽنٽ مدد"
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3715,7 +3931,7 @@ const T = {
     kh_short: "بزګر مرستیال",
     kh_placeholder: "د ساعتونو، لګښت یا ماشین په اړه پوښتنه وکړئ...",
     kh_send: "ولېږئ",
-    kh_hello: "السلام علیکم! زه د کرایې ساعتونه او د وچې کرایې لګښت اټکل کولی شم، د ماشین په ټاکلو او د ویب پاڼې په کارولو کې مرسته کوم. په پښتو، اردو یا انګرېزي پوښتنه وکړئ.",
+    kh_hello: "السلام علیکم! د بزګر مرستیال حاضر دی. مایک کېکاږئ او په غږ وپوښتئ، یا په پښتو، اردو، انګلیسي یا رومن اردو ولیکئ. زه د کرایې ساعتونه او د وچې کرایې لګښت اټکل کولی شم، د ماشین په ټاکلو او د ویب پاڼې په کارولو کې مرسته کوم.",
     kh_ai: "Claude AI",
     kh_offline: "دننه مرستیال",
     kh_thinking: "فکر کوم...",
@@ -3755,8 +3971,8 @@ const T = {
     pl_settled_by: "د اګري منډۍ د پلور {id} څخه په خپله تادیه شو.",
     pl_settle_mandi: "په اګري منډۍ کې د فصل په پلورلو تادیه کړئ",
     kp_title: "سمارټ فون نه لرئ؟ په ساده ټیلیفون بکنګ وکړئ",
-    kp_sub: "له هر ساده ټیلیفون څخه وړیا هېلپ لاین ته زنګ ووهئ یا USSD کوډ ډایل کړئ. پنجابي یا اردو غږ ګام په ګام لارښوونه کوي، او بکنګ مو په SMS تاییدېږي.",
-    kp_toll: "وړیا هېلپ لاین",
+    kp_sub: "له هر ساده ټیلیفون څخه زموږ د اګري شېئر مشاور ته زنګ یا واټس اپ وکړئ. هغوی به نږدې ماشین ومومي او بکنګ به په SMS تایید کړي. USSD کوډ ژر راځي.",
+    kp_toll: "مشاور · زنګ / واټس اپ",
     kp_ussd: "USSD کوډ",
 
     kp_ivr: "د IVR غږ ګامونه واورئ",
@@ -3913,10 +4129,10 @@ const T = {
     ai_offline_note: "AI سلاکار آفلاین دی، دننی کسان مرستندوی ځواب ورکوي",
     mb_open_requests: "پرانیستې غوښتنې",
     mb_open_view: "وړاندیزونه وګورئ",
-    am_waiting_buyers: "د تایید شویو ملونو او منډۍ پېرودونکو وړاندیزونو ته انتظار",
-    am_waiting_buyers_sub: "ستاسو د فصل پوسټ ژوندی دی. تایید شوي د اوړو ملونه، د وريجو ملونه او د منډۍ پېرودونکي به دلته وړاندیزونه ولېږي؛ موږ به تاسو خبر کړو.",
+    am_waiting_buyers: "پېرودونکي ورزیاتېږي. اوس یې ثبت کړئ او لومړی اوسئ.",
+    am_waiting_buyers_sub: "ستاسو د فصل پوسټ ژوندی دی. کله چې کوم مل یا د منډۍ پېرودونکی وړاندیز وکړي، دلته به ښکاره شي او موږ به تاسو خبر کړو.",
     zc_title: "د اګري شېئر مستقیم مشاور ملاتړ",
-    zc_msg: "اوس ستاسو د 15 نه تر 40 کیلومترو په ساحه کې هېڅ آنلاین ماشین نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ — موږ به له خپلې آفلاین شبکې ستاسو لپاره ماشین برابر کړو!",
+    zc_msg: "اوس ستاسو د 15 تر 40 کیلومترو په دایره کې کوم آنلاین ماشین نشته. زموږ د اګري شېئر مشاور سره په زنګ، واټس اپ یا برېښنالیک مستقیم اړیکه ونیسئ. موږ به له خپلې آفلاین شبکې څخه ستاسو لپاره ماشین برابر کړو!",
     zc_primary: "اصلي مشاور",
     zc_secondary: "دوهمه شمېره",
     zc_call: "زنګ",
@@ -4031,7 +4247,7 @@ const T = {
     eco_title: "د اګري شېئر 360° ګټه",
     eco_sub: "په اګري شېئر کې ځمکه په اجاره واخلئ او دلته ماشینونه په کرایه واخلئ یا فصل وپلورئ: د راتلونکي ماشین بکنګ پر کمیسیون 0.50٪ تخفیف (کمیسیون له 3.50٪ ټیټ نه کېږي).",
     eco_active: "360° ګټه فعاله ده: د ماشین پر کمیسیون 0.50٪ تخفیف",
-    ag_title: "د کرنیزې ځمکې د اجارې تړون",
+    ag_title: "اګري اېجنټ او USSD آفلاین بکنګ",
     ag_stamp: "اې سټامپ پاڼه دلته ونښلوئ",
     ag_date: "نېټه",
     ag_first: "لومړی اړخ (د ځمکې مالک)",
@@ -4083,6 +4299,66 @@ const T = {
     ld_req_sent_t: "غوښتنه ولېږل شوه",
     ld_req_already: "غوښتنه دمخه لېږل شوې",
     ld_lease_active: "فعاله اجاره",
+    lt_toggle: "د اردو او انګلیسي ترمنځ بدلون",
+    tr1_t: "تایید شوي / نه تایید شوي نښې",
+    tr1_s: "لیستونه سمدستي ژوندي کېږي، د روښانه تایید شوي / نه تایید شوي نښو او د مشاور مستقیمې مرستې سره",
+    tr4_t: "د رښتیني مشاور مرسته",
+    tr4_s: "0322-4729249 یا 0370-0318574 ته زنګ یا واټس اپ وکړئ، او د بزګر مرستیال غږیز مرستندوی",
+    mode_badge_live: "ژوندی · تایید شوي او نه تایید شوي مالکان",
+    loc_none: "GPS ورکړئ یا خپله ولسوالي وټاکئ",
+    loc_ask_t: "ستاسو پټی چېرته دی؟",
+    loc_ask_s: "د نږدې ماشینونو او د ټرانسپورټ د اصلي لګښت لیدو لپاره خپل GPS ځای ورکړئ یا ولسوالي وټاکئ.",
+    loc_ask_ph: "GPS یا ولسوالي وټاکئ",
+    pop_title: "په پنجاب کې مشهور ماشینونه",
+    pop_sub: "لا ستاسو نږدې کوم ژوندی ماشین ونه موندل شو. دا د پنجاب عام نرخونه دي. بکنګ / غوښتنه کېکاږئ، نږدې مالکان یا زموږ مشاور به درسره اړیکه ونیسي.",
+    pop_book: "بکنګ / غوښتنه",
+    pop_range: "{lo} تر {hi} په ساعت",
+    tb_help: "مرسته غواړئ؟",
+    tb_call: "زنګ",
+    tb_wa: "واټس اپ",
+    tb_hide: "د مرستې پټه پټه کړئ",
+    tb_wa_msg: "السلام علیکم اګري شېئر، د ماشین په بکنګ کې مرستې ته اړتیا لرم.",
+    lr_intro: "خپل نرخ ووایاست، نږدې مالکان به وړاندیزونه درولېږي",
+    lr_change_country: "هېواد بدل کړئ",
+    lr_rate_mkt: "ډېری بزګران {r} ورکوي",
+    ld_how_title: "د ځمکې اجاره څنګه کار کوي",
+    ld_how1: "ځمکه ثبت کړئ",
+    ld_how2: "اجاره‌دار غوښتنه کوي",
+    ld_how3: "په سټامپ پاڼه لاسلیک",
+    ld_fee_example: "بېلګه: د 400,000 روپیو اجاره = 18,000 روپۍ فیس (4.5%)، یوازې یو ځل",
+    ld_sample_btn: "د اقرارنامې بېلګه وګورئ",
+    ld_sample_badge: "بېلګه",
+    ld_pick_district: "د نږدې ځمکې لیدو لپاره لومړی خپله ولسوالي وټاکئ. که هلته ځمکه ثبت نه وي، زموږ مشاور به ستاسو لپاره ځمکه ومومي.",
+    la_title: "د کرنیزې ځمکې د اجارې تړون",
+    ag_pilot: "په ازمېښتي پړاو کې پنجابي او اردو. سندهي به په پراختیا کې ورزیاته شي.",
+    ag_call: "د اګري اېجنټ مېز ته زنګ ووهئ",
+    ussd_s1: "ژبه وټاکئ (پنجابي / اردو / سندهي)",
+    ussd_s2: "د ماشین ډول وټاکئ (ټراکټر / تریشر / هارویسټر)",
+    ussd_s3: "نېټه، موده او ځای وټاکئ",
+    ussd_s4: "ماشین، د مالک پېژند او نرخ وګورئ",
+    ussd_s5: "ټول قیمت او د وچې کرایې شرطونه وګورئ",
+    ussd_s6: "د مالک تایید او د SMS بکنګ ریکارډ",
+    ussd_s7: "کار بشپړ او نظر",
+    ussd_live_note: "دلته شوې بکنګ سمدستي زما بکنګونو او د مالک پورټل کې ښکاري.",
+    ussd_restart: "بیا پیل کړئ",
+    gv_notify: "کله چې پیل شي، ما ته واټس اپ وکړئ",
+    gv_notify_msg: "السلام علیکم اګري شېئر، کله چې د حکومت د همکارۍ پورټل پیل شي، مهرباني وکړئ ما ته واټس اپ وکړئ.",
+    am_tiles_t: "د نن ورځې د فصلونو نرخونه",
+    am_updated: "تر نومبر 2026 تازه",
+    am_per_maund: "په من",
+    am_tiles_note: "په پنجاب کې د 40 کیلو من لپاره حوالوي نرخونه، وړاندیز نه دي. د پلور لپاره فصل کېکاږئ.",
+    es_default: "بېلګه: مسي فرګوسن 385، 2,500 روپۍ په ساعت × 8 ساعته × 30 ورځې × 60% بوخت. د خپل نرخ لپاره خپل ماشین ثبت کړئ.",
+    ow_photo_l: "د ماشین انځور (اختیاري)",
+    ow_photo: "انځور واخلئ / پورته کړئ",
+    ow_photo_change: "انځور بدل کړئ",
+    ow_photo_remove: "لرې کړئ",
+    ow_photo_hint: "د خپل ماشین روښانه انځور ډېرې بکنګې راوړي.",
+    ow_photo_err: "دا انځور خلاص نشو. مهرباني وکړئ بل انځور وازمویئ.",
+    mb_sample_t: "له بکنګ وروسته څه ترلاسه کوئ",
+    mb_sample_badge: "بېلګه",
+    mb_sample_s: "هره بکنګ واؤچر لري: د بکنګ پېژند، د قیمت بشپړ توضیح، ژوندی حالت او له تایید وروسته د مالک اړیکه. د خپلې بکنګ لیدو لپاره ننوځئ.",
+    kh_mic_label: "په غږ وپوښتئ",
+    ft_support: "د مشاور مرسته"
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -4191,7 +4467,7 @@ const T = {
     kh_short: "بزگر کمک کار",
     kh_placeholder: "ساعت، خرچ یا مشین ءِ بابت ءَ جُست کن...",
     kh_send: "دیم دئے",
-    kh_hello: "السلام علیکم! من کرایہ ءِ ساعت و ڈرائی رینٹ ءِ خرچ ءِ اندازہ جت کناں، مشین ءِ گچین کنگ و ویب سائٹ ءِ کار بندگ ءَ کمک کناں۔ بلوچی، اردو یا انگریزی ءَ جُست کن۔",
+    kh_hello: "السلام علیکم! بزگر کمک کار حاضر اِنت۔ مائیک ءَ جن و گپ جت ءَ جُست کن، یا بلوچی، اردو، انگریزی یا رومن اردو ءَ نبشتہ کن۔ من کرایہ ءِ ساعت و ڈرائی رینٹ ءِ خرچ ءِ اندازہ جت کناں، مشین ءِ گچین کنگ و ویب سائٹ ءِ کار بندگ ءَ کمک کناں۔",
     kh_ai: "Claude AI",
     kh_offline: "تہی کمک کار",
     kh_thinking: "پِگر کنگ ءَ اوں...",
@@ -4231,8 +4507,8 @@ const T = {
     pl_settled_by: "ایگری منڈی ءِ بہا {id} ءَ چہ وت ءَ دئیگ بوت۔",
     pl_settle_mandi: "ایگری منڈی ءَ کِشت ءِ بہا کنگ ءَ گوں بدئے",
     kp_title: "سمارٹ فون نیست؟ سادگیں فون ءَ گوں بکنگ کن",
-    kp_sub: "ہر سادگیں فون ءَ چہ مُفتیں ہیلپ لائن ءَ کال کن یا USSD کوڈ ءَ جن۔ پنجابی یا اردو توار گام پہ گام راہشونی کنت، و بکنگ ءِ منّگ SMS ءَ کئیت۔",
-    kp_toll: "مُفتیں ہیلپ لائن",
+    kp_sub: "ہر سادگیں فون ءَ چہ مئے ایگری شیئر کنسلٹنٹ ءَ کال یا واٹس ایپ کن۔ آ نزیکیں مشین ءَ شوہاز کنت و بکنگ ءِ منّگ ءَ SMS ءَ دیم دنت۔ USSD کوڈ زوت کئیت۔",
+    kp_toll: "کنسلٹنٹ · کال / واٹس ایپ",
     kp_ussd: "USSD کوڈ",
 
     kp_ivr: "IVR ءِ توار ءِ گام گوش دار",
@@ -4391,10 +4667,10 @@ const T = {
     ai_offline_note: "AI سلاہ کار آف لائن اِنت، تہی کِشاورزی کُمکی پسّو دئیگ اِنت",
     mb_open_requests: "پچ اِتگیں درخواست",
     mb_open_view: "آفر بچار",
-    am_waiting_buyers: "تصدیق کتگیں مِل و منڈی ءِ گِروکانی آفرانی وداریگ اِنت",
-    am_waiting_buyers_sub: "شمئے کِشت ءِ پوسٹ زندگ اِنت۔ تصدیق کتگیں آرت ءِ مِل، برنج ءِ مِل و منڈی ءِ گِروک ادا آفر رَوان دئینت؛ ما شمارا سہی کنیں۔",
+    am_waiting_buyers: "گِروک ہوار کنگ بئیگ ءَ اَنت۔ انّوں پوسٹ کن و اوّلی بئے۔",
+    am_waiting_buyers_sub: "شمئے کِشت ءِ پوسٹ زندگ اِنت۔ وھدے یک مِل یا منڈی ءِ گِروکے آفر دنت، ادا گندگ بیت و ما شمارا سہی کنیں۔",
     zc_title: "ایگری شیئر ءِ راستیں کنسلٹنٹ کُمک",
-    zc_msg: "اَنّوں شمئے 15 تا 40 کلومیٹر ءِ دائرہ ءَ ہچ آن لائن مشین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راست سیادی کن — ما وتی آف لائن نیٹ ورک ءَ چہ شمئے واستا وت مشین ءِ بندوبست کنیں!",
+    zc_msg: "انّوں شمئے 15 تا 40 کلومیٹر ءِ گیرا ءَ ہچ آن لائن مشین نیست۔ مئے ایگری شیئر کنسلٹنٹ ءَ گوں کال، واٹس ایپ یا ای میل ءَ راستیں سیادی کن۔ ما وتی آف لائن نیٹ ورک ءَ چہ شمئے واستا مشین ءِ بندوبست کنیں!",
     zc_primary: "مزنیں کنسلٹنٹ",
     zc_secondary: "دومی نمبر",
     zc_call: "کال",
@@ -4509,7 +4785,7 @@ const T = {
     eco_title: "ایگری شیئر 360° پائدگ",
     eco_sub: "ایگری شیئر ءَ زمین ءَ ٹھیکہ ءَ گِر و ادا مشین ءَ کرایہ ءَ گِر یا کِشت ءَ بہا کن: آیوکیں مشین بکنگ ءَ کمیشن ءِ سرا 0.50٪ کمّی (کمیشن 3.50٪ چہ کم نہ بیت)۔",
     eco_active: "360° پائدگ چالو: مشین ءِ کمیشن ءِ سرا 0.50٪ کمّی",
-    ag_title: "کِشاری زمین ءِ ٹھیکہ نامہ",
+    ag_title: "ایگری ایجنٹ و USSD آف لائن بکنگ",
     ag_stamp: "ای اسٹامپ پیپر ءَ ادا لگئے",
     ag_date: "تاریخ",
     ag_first: "اوّلی دَر (زمین ءِ واہند)",
@@ -4561,6 +4837,66 @@ const T = {
     ld_req_sent_t: "درخواست رَوان بوت",
     ld_req_already: "درخواست پیسرا رَوان بوتگ",
     ld_lease_active: "چالوئیں ٹھیکہ",
+    lt_toggle: "اردو و انگریزی ءِ نیام ءَ بدل کن",
+    tr1_t: "تصدیق بوتگیں / تصدیق نہ بوتگیں نشان",
+    tr1_s: "لِسٹ زوت زندگ بنت، روشنیں تصدیق بوتگیں / تصدیق نہ بوتگیں نشان و کنسلٹنٹ ءِ راستیں کمک ءِ گوں",
+    tr4_t: "راستیں کنسلٹنٹ ءِ کمک",
+    tr4_s: "0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن، گوں بزگر کمک کار ءِ توار ءِ کمک",
+    mode_badge_live: "زندگ · تصدیق بوتگیں و تصدیق نہ بوتگیں واھند",
+    loc_none: "GPS بدئے یا وتی ضلع ءَ گچین کن",
+    loc_ask_t: "شمئے کِشار کجا اِنت؟",
+    loc_ask_s: "نزیکیں مشیناں و ٹرانسپورٹ ءِ راستیں خرچ ءَ چارگ ءِ واستا وتی GPS ءِ جاگہ بدئے یا ضلع گچین کن۔",
+    loc_ask_ph: "GPS یا ضلع گچین کن",
+    pop_title: "پنجاب ءِ نامداریں مشین",
+    pop_sub: "انگت شمئے نزیک ءَ ہچ زندگیں مشین نہ رستگ۔ اے پنجاب ءِ آدتیں نرخ اَنت۔ بک / درخواست ءَ جن، نزیکیں واھند یا مئے کنسلٹنٹ گوں شما سیادی کنت۔",
+    pop_book: "بک / درخواست",
+    pop_range: "{lo} تا {hi} ساعت ءَ",
+    tb_help: "کمک لوٹئے؟",
+    tb_call: "کال",
+    tb_wa: "واٹس ایپ",
+    tb_hide: "کمک ءِ پٹی ءَ چیر کن",
+    tb_wa_msg: "السلام علیکم ایگری شیئر، منا مشین ءِ بکنگ ءَ کمک پکار اِنت۔",
+    lr_intro: "وتی نرخ ءَ بگوش، نزیکیں واھند آفر دیم دیئنت",
+    lr_change_country: "مُلک ءَ بدل کن",
+    lr_rate_mkt: "باز بزگر {r} دیئنت",
+    ld_how_title: "زمین ءِ ٹھیکہ چون کار کنت",
+    ld_how1: "زمین ءَ نبشتہ کن",
+    ld_how2: "ٹھیکہ دار درخواست دنت",
+    ld_how3: "اسٹامپ پیپر ءَ دستخط",
+    ld_fee_example: "مثال: 4,00,000 کلدار ءِ ٹھیکہ = 18,000 کلدار فیس (4.5%)، تهنا یک بر",
+    ld_sample_btn: "نمونہ ءِ اقرار نامہ ءَ بچار",
+    ld_sample_badge: "نمونہ",
+    ld_pick_district: "نزیکیں زمین ءَ چارگ ءِ واستا اوّل وتی ضلع ءَ گچین کن۔ اگاں اودا زمین نبشتہ مہ بیت، مئے کنسلٹنٹ شمئے واستا زمین شوہاز کنت۔",
+    la_title: "کِشاری زمین ءِ ٹھیکہ نامہ",
+    ag_pilot: "پائلٹ ءَ پنجابی و اردو۔ سندھی پراہی ءَ ہوار بیت۔",
+    ag_call: "ایگری ایجنٹ ءِ ڈیسک ءَ کال کن",
+    ussd_s1: "زبان گچین کن (پنجابی / اردو / سندھی)",
+    ussd_s2: "مشین ءِ رنگ گچین کن (ٹریکٹر / تھریشر / ہارویسٹر)",
+    ussd_s3: "تاریخ، وھد و جاگہ گچین کن",
+    ussd_s4: "مشین، واھند ءِ پجّار و نرخ ءَ بچار",
+    ussd_s5: "سجّھیں بہا و ڈرائی رینٹ ءِ شرط ءَ بچار",
+    ussd_s6: "واھند ءِ منّگ و SMS بکنگ ءِ ریکارڈ",
+    ussd_s7: "کار سر بیت و ہیال",
+    ussd_live_note: "ادا کتگیں بکنگ زوت منی بکنگ و واھند ءِ پورٹل ءَ گندگ بیت۔",
+    ussd_restart: "پدا بندات کن",
+    gv_notify: "بندات بیگ ءَ منا واٹس ایپ کن",
+    gv_notify_msg: "السلام علیکم ایگری شیئر، وھدے سرکاری ہمکاری ءِ پورٹل بندات بیت، منا واٹس ایپ کنئے۔",
+    am_tiles_t: "مرچی ءِ کِشت ءِ نرخ",
+    am_updated: "نومبر 2026 تا نوک",
+    am_per_maund: "فی من",
+    am_tiles_note: "پنجاب ءَ 40 کلو من ءِ حوالہ ءِ نرخ، آفر نہ اَنت۔ بہا کنگ ءِ واستا کِشت ءَ جن۔",
+    es_default: "مثال: میسی فرگوسن 385، 2,500 کلدار ساعت ءَ × 8 ساعت × 30 روچ × 60% مشغول۔ وتی نرخ ءِ واستا وتی مشین ءَ نبشتہ کن۔",
+    ow_photo_l: "مشین ءِ عکس (اختیاری)",
+    ow_photo: "عکس بکش / اپلوڈ کن",
+    ow_photo_change: "عکس ءَ بدل کن",
+    ow_photo_remove: "در کن",
+    ow_photo_hint: "وتی مشین ءِ روشنیں عکس ءَ گیشتر بکنگ رسیت۔",
+    ow_photo_err: "اے عکس پچ نہ بوت۔ دگہ عکسے بچکاس۔",
+    mb_sample_t: "بکنگ ءَ رند شمارا چے رسیت",
+    mb_sample_badge: "نمونہ",
+    mb_sample_s: "ہر بکنگ ءَ واؤچرے رسیت: بکنگ ءِ آئی ڈی، بہا ءِ سجّھیں سرجمی، زندگیں حال و منّگ ءَ رند واھند ءِ سیادی۔ وتی بکنگ ءَ چارگ ءِ واستا سائن ان کن۔",
+    kh_mic_label: "گپ جت ءَ جُست کن",
+    ft_support: "کنسلٹنٹ ءِ کمک"
   },
 };
 
@@ -5202,6 +5538,19 @@ function PrefsPill({ t, lang, setLang, country, setCountry, full }) {
   );
 }
 
+// one tap between Urdu and English (the full 6-language picker stays next to it)
+function LangToggle({ t, lang, setLang }) {
+  const ur = lang === "ur";
+  return (
+    <button type="button" onClick={() => setLang(ur ? "en" : "ur")} aria-label={t("lt_toggle")} title={t("lt_toggle")}
+      className="inline-flex min-h-[44px] shrink-0 items-center rounded-full border border-forest/15 bg-white/80 p-1 text-[11px] font-bold shadow-sm transition hover:shadow-md min-[400px]:text-xs sm:text-sm">
+      <span lang="ur" dir="rtl" className={`rounded-full px-1.5 py-1 font-urdu leading-none sm:px-2.5 ${ur ? "bg-forest text-ivory" : "text-forest"}`}>اردو</span>
+      <span className="px-0.5 text-forest/40" aria-hidden="true">|</span>
+      <span lang="en" className={`rounded-full px-1.5 py-1 leading-none sm:px-2.5 ${lang === "en" ? "bg-forest text-ivory" : "text-forest"}`}>English</span>
+    </button>
+  );
+}
+
 function NavBadge({ n, alert }) {
   return n > 0 ? <span className={`min-w-[18px] rounded-full px-1.5 text-center text-[11px] font-bold leading-[18px] ${alert ? "bg-red-600 text-white" : "bg-gold text-soil"}`} aria-label={alert ? `${n} new` : undefined}>{n}</span> : null;
 }
@@ -5219,9 +5568,10 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
           </span>
         </button>
         <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <LangToggle t={t} lang={lang} setLang={setLang} />
           <div className="hidden md:block"><PrefsPill t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
-          <button onClick={onActivity} className="relative inline-flex items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest sm:px-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" aria-label={t("act_title")}>
-            <Activity className="h-4 w-4" aria-hidden="true" /><span className="text-xs sm:text-sm">{t("nav_activity")}</span>
+          <button onClick={onActivity} className="relative inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest sm:px-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" aria-label={t("act_title")}>
+            <Activity className="h-4 w-4" aria-hidden="true" /><span className="hidden text-xs sm:inline sm:text-sm">{t("nav_activity")}</span>
             {activityCount > 0 && <span className="absolute -end-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-gold px-1 text-[11px] font-bold text-soil ring-2 ring-ivory">{activityCount}</span>}
           </button>
           {account}
@@ -5306,6 +5656,15 @@ function Hero({ t, onFind, onList, onLive, onLand, isEnglish, stats }) {
           </p>
           <h1 className="mt-4 font-display text-3xl font-extrabold leading-[1.18] tracking-tight sm:text-4xl sm:leading-[1.15] lg:text-5xl lg:leading-[1.15]">{t("hero_title")}</h1>
           {isEnglish && <p className="mt-2 text-base font-medium italic text-ivory/80 sm:text-lg" lang="ur-Latn">"{t("hero_local")}"</p>}
+          {/* phones and tablets: the three machine photos sit right under the title (the collage below is desktop only) */}
+          <div className="mt-5 grid grid-cols-3 gap-2 lg:hidden">
+            {[["tractor", "high"], ["harvester", "eager"], ["drone", "eager"]].map(([c, p]) => (
+              <figure key={c} className="relative aspect-[4/3] min-h-[72px] overflow-hidden rounded-2xl bg-ivory/10 ring-1 ring-ivory/20">
+                <MachinePhoto category={c} className="absolute inset-0 h-full w-full" alt={t("one_" + c)} priority={p} width={320} height={240} />
+                <figcaption className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/75 to-transparent px-2 pb-1 pt-5 text-[10px] font-bold text-white min-[400px]:text-[11px]">{t("one_" + c)}</figcaption>
+              </figure>
+            ))}
+          </div>
           <p className="mt-4 max-w-xl text-base text-ivory/80 sm:text-lg">{t("hero_desc")}</p>
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             <button onClick={onLive} className="group flex items-center gap-3 rounded-2xl bg-gold p-4 text-start text-soil shadow-xl shadow-black/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ivory">
@@ -5620,7 +5979,9 @@ function ListingCard({ l, t, dn, lang, onBook }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-soil/10 bg-white shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-forest/10 hover:ring-forest/10">
       <div className="relative aspect-video overflow-hidden text-ivory">
-        <MachinePhoto category={l.category} name={l.name} className="h-full w-full transition-transform duration-500 group-hover:scale-105" alt={l.name} />
+        {/^data:image\/(jpeg|png|webp);base64,/.test(String(l.photo || ""))
+          ? <img src={l.photo} alt={l.name} width={640} height={360} loading="lazy" decoding="async" className="h-full w-full bg-forest/20 object-cover transition-transform duration-500 group-hover:scale-105" />
+          : <MachinePhoto category={l.category} name={l.name} className="h-full w-full transition-transform duration-500 group-hover:scale-105" alt={l.name} />}
         <div className="absolute start-3 end-3 top-3 flex flex-wrap gap-1.5">
           {l.spec && <span className="rounded-full bg-black/45 px-2 py-0.5 text-[11px] font-bold text-white ring-1 ring-white/25 backdrop-blur-md" dir="ltr">{String(l.spec).split(/[,·]/)[0].trim().slice(0, 22)}</span>}
           <span className="rounded-full bg-gold/90 px-2 py-0.5 text-[11px] font-bold text-soil backdrop-blur-md">{t("ov_dry")}</span>
@@ -5702,7 +6063,8 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
         <aside className="h-fit rounded-2xl border border-soil/10 bg-white p-4 shadow-sm lg:sticky lg:top-24" aria-label={t("filters")}>
           <p className="mb-4 flex items-center gap-2 font-bold text-forest"><SlidersHorizontal className="h-4 w-4" aria-hidden="true" />{t("filters")}</p>
           <div className="space-y-5">
-            <div>
+            {/* phones get this location box right above the results instead */}
+            <div className="hidden lg:block">
               {setCountry && <div className="mb-2"><CountrySelect t={t} country={country} setCountry={setCountry} id="country-market" /></div>}
               <LocationField t={t} lang={lang} id="my-loc" label={t("loc_your")} value={userLoc} onChange={setUserLoc} allowClear />
               <p className="mt-1 text-[11px] text-soil/80">{userLoc ? t("loc_dist_note") : t("loc_dist_hint")}</p>
@@ -5745,7 +6107,12 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
             </button>
           </div>
         </aside>
-        <div>
+        <div className="order-first lg:order-none">
+          <div className={`mb-4 rounded-2xl p-4 lg:hidden ${userLoc ? "border border-soil/10 bg-white" : "bg-gold/20 ring-2 ring-gold/60"}`}>
+            {!userLoc && <p className="flex items-center gap-2 font-display text-base font-extrabold text-forest"><LocateFixed className="h-5 w-5 text-red-700" aria-hidden="true" />{t("loc_ask_t")}</p>}
+            {!userLoc && <p className="mb-2 mt-0.5 text-xs text-soil/80">{t("loc_ask_s")}</p>}
+            <LocationField t={t} lang={lang} id="my-loc-m" label={userLoc ? t("loc_your") : null} value={userLoc} onChange={setUserLoc} allowClear placeholder={t("loc_ask_ph")} />
+          </div>
           <div className="mb-3 flex justify-end"><ModeBadge t={t} demo={demoMode} /></div>
           {showConsultant && (
             <div className="mb-4"><ConsultantCard t={t} lang={lang} request={{ category: category === "all" ? "tractor" : category, district: userLoc ? userLoc.district : "", village: userLoc ? userLoc.village : "", loc: userLoc }} onSendLead={fallbackProps.onSendLead} requireAuth={fallbackProps.requireAuth} /></div>
@@ -5758,6 +6125,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
                 <button onClick={() => set({ radius: MAX_RADIUS, province: "all", category: "all", query: "" })} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
                 {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_live")}</button>}
               </div>
+              {nearestBeyond.length === 0 && country === "PK" && <PopularMachines t={t} onRequest={(c) => onLive(c)} />}
               {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
                 <div className="mt-6 w-full text-start">
                   <ZeroSupplyFallback {...fallbackProps} onSendLead={undefined} request={{ category, loc: userLoc, village: userLoc ? locLabel(userLoc) : "", district: userLoc ? userLoc.district : "", province: userLoc ? userLoc.province : "", country: CUR.id, hours: 4 }} pickCategory={category === "all"} onExpand={null} />
@@ -5780,6 +6148,51 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
         </div>
       </div>
     </section>
+  );
+}
+
+/* "Popular machines in Punjab": shown when no live machine matches nearby, so the page is never empty.
+   Typical Punjab hourly ranges (dry rent, operator usually included), not quotes. */
+const POPULAR_PK = [["tractor", 1800, 3500], ["harvester", 7000, 10000], ["leveler", 2200, 3000], ["thresher", 2000, 2800]];
+const rangeText = (t, lo, hi) => t("pop_range").replace("{lo}", pkr(lo)).replace("{hi}", Math.round(toLocal(hi)).toLocaleString("en-PK"));
+function PopularMachines({ t, onRequest }) {
+  return (
+    <div className="mt-6 w-full text-start">
+      <p className="font-display text-lg font-extrabold text-forest">{t("pop_title")}</p>
+      <p className="mb-3 text-xs text-soil/80">{t("pop_sub")}</p>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {POPULAR_PK.map(([c, lo, hi]) => (
+          <div key={c} className="flex flex-col overflow-hidden rounded-2xl border border-soil/10 bg-white shadow-sm">
+            <div className="relative aspect-[4/3] min-h-[80px]">
+              <MachinePhoto category={c} className="absolute inset-0 h-full w-full" alt={t("one_" + c)} width={400} height={300} />
+              <span className="absolute start-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-bold text-forest shadow"><CategoryIcon category={c} className="h-3.5 w-3.5" />{t("one_" + c)}</span>
+            </div>
+            <div className="flex flex-1 flex-col gap-2 p-3">
+              <p className="font-display text-sm font-extrabold leading-snug text-forest" dir="ltr">{rangeText(t, lo, hi)}</p>
+              <button type="button" onClick={() => onRequest(c)} className="mt-auto inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl bg-forest px-3 py-2 text-sm font-bold text-ivory hover:bg-[#0f4a28]"><Radar className="h-4 w-4" aria-hidden="true" />{t("pop_book")}</button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="mt-2 text-[11px] text-soil/80">{t("cat_rates_note")}</p>
+    </div>
+  );
+}
+
+/* Compact, dismissible consultant bar: one-tap Call and WhatsApp on every screen */
+function ConsultBar({ t }) {
+  const [hidden, setHidden] = useState(() => { try { return window.sessionStorage.getItem("agrishare.consultbar") === "hidden"; } catch (e) { return false; } });
+  if (hidden) return null;
+  const hide = () => { setHidden(true); try { window.sessionStorage.setItem("agrishare.consultbar", "hidden"); } catch (e) { /* private mode */ } };
+  return (
+    <div role="complementary" aria-label={t("tb_help")}
+      className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] start-2 z-30 flex max-w-[calc(100%-5.25rem)] items-center gap-1 rounded-full bg-white/95 py-1 pe-1 ps-3 text-xs font-bold text-forest shadow-lg ring-1 ring-forest/15 backdrop-blur lg:bottom-6 lg:start-6">
+      <Headphones className="h-4 w-4 shrink-0 text-gold" aria-hidden="true" />
+      <span className="hidden truncate min-[400px]:inline">{t("tb_help")}</span>
+      <a href={`tel:${CONSULTANT.primary.tel}`} className="inline-flex min-h-[44px] items-center gap-1 rounded-full bg-forest px-3 text-ivory" aria-label={`${t("tb_call")} ${CONSULTANT.primary.label}`}><Phone className="h-4 w-4" aria-hidden="true" />{t("tb_call")}</a>
+      <a href={`https://wa.me/${CONSULTANT.primary.wa}?text=${encodeURIComponent(t("tb_wa_msg"))}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center gap-1 rounded-full bg-[#1f8f4e] px-3 text-white" aria-label={`${t("tb_wa")} ${CONSULTANT.primary.label}`}><MessageCircle className="h-4 w-4" aria-hidden="true" />{t("tb_wa")}</a>
+      <button type="button" onClick={hide} className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-soil/70 hover:bg-soil/5" aria-label={t("tb_hide")}><X className="h-4 w-4" aria-hidden="true" /></button>
+    </div>
   );
 }
 
@@ -6053,12 +6466,26 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
     return (
       <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <h2 className="mb-5 font-display text-2xl font-extrabold text-forest">{t("mb_title")}</h2>
-        <div className="flex flex-col items-center rounded-2xl border border-dashed border-soil/25 bg-white px-6 py-14 text-center">
+        <div className="relative mb-4 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm" aria-label={t("mb_sample_t")}>
+          <span className="absolute end-3 top-3 rounded-full bg-gold/30 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-soil">{t("mb_sample_badge")}</span>
+          <p className="pe-16 text-xs font-bold uppercase tracking-wide text-soil/80">{t("mb_sample_t")}</p>
+          <div className="mt-3 flex gap-3">
+            <MachinePhoto category="tractor" className="h-16 w-20 shrink-0 rounded-xl" alt="" width={160} height={128} />
+            <div className="min-w-0">
+              <p className="font-bold text-forest" dir="ltr">Massey Ferguson 385</p>
+              <p className="text-xs text-soil/80" dir="ltr">AS-SAMPLE · {fmtDate(addDaysISO(2))} · 6h · {pkr(15900)}</p>
+              <span className="mt-1 inline-block rounded-full bg-leaf/15 px-2 py-0.5 text-[11px] font-bold text-forest">{t("st_confirmed")}</span>
+            </div>
+          </div>
+          <div className="mt-3"><StatusTracker status="confirmed" t={t} /></div>
+          <p className="mt-2 text-xs text-soil/80">{t("mb_sample_s")}</p>
+        </div>
+        <div className="flex flex-col items-center rounded-2xl border border-dashed border-soil/25 bg-white px-6 py-10 text-center">
           <LogIn className="h-10 w-10 text-soil/30" aria-hidden="true" />
           <p className="mt-3 text-soil/80">{t("mb_signin")}</p>
           <div className="mt-4 flex gap-2">
-            <button onClick={() => openAuth("signin")} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("auth_signin")}</button>
-            <button onClick={() => openAuth("signup")} className="rounded-xl border border-forest/30 px-4 py-2 text-sm font-bold text-forest">{t("auth_signup")}</button>
+            <button onClick={() => openAuth("signin")} className="min-h-[44px] rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("auth_signin")}</button>
+            <button onClick={() => openAuth("signup")} className="min-h-[44px] rounded-xl border border-forest/30 px-4 py-2 text-sm font-bold text-forest">{t("auth_signup")}</button>
           </div>
         </div>
       </section>
@@ -6170,11 +6597,41 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
 /* ------------------------------------------------------------------ */
 /* Owner Portal                                                        */
 /* ------------------------------------------------------------------ */
+// Shrink a phone photo to a small JPEG (longest side 640 px, at most ~120 KB) before it is saved on the listing
+const shrinkPhoto = (file) => new Promise((resolve, reject) => {
+  if (!file || !/^image\//.test(file.type || "")) { reject(new Error("not an image")); return; }
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    try {
+      const scale = Math.min(1, 640 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(img.width * scale)); c.height = Math.max(1, Math.round(img.height * scale));
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      let q = 0.72, out = c.toDataURL("image/jpeg", q);
+      while (out.length > 120000 && q > 0.35) { q -= 0.1; out = c.toDataURL("image/jpeg", q); }
+      URL.revokeObjectURL(url);
+      resolve(out);
+    } catch (e) { URL.revokeObjectURL(url); reject(e); }
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("unreadable image")); };
+  img.src = url;
+});
+
 function ListMachineForm({ t, dn, lang, onAdd, session }) {
   const sessLoc = session && session.location && locCountry(session.location) === CUR.id ? session.location : null;
   const blank = { name: "", category: "tractor", loc: sessLoc, distance: 5, rate: Math.round(askFor("tractor", 2500)), operator: "optional", transport: "optional", ownerName: (session && session.name) || "", ownerPhone: (session && session.phone) || "", spec: "" };
   const [f, setF] = useState(blank);
   const [tried, setTried] = useState(false);
+  const [photoErr, setPhotoErr] = useState(false);
+  const photoRef = useRef(null);
+  const pickPhoto = (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    setPhotoErr(false);
+    shrinkPhoto(file).then((photo) => setF((s) => ({ ...s, photo }))).catch(() => setPhotoErr(true));
+  };
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }));
   const validate = () => {
     const err = {};
@@ -6236,6 +6693,16 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
           <option value="included">{t("tr_included")}</option><option value="optional">{t("tr_optional")}</option><option value="self">{t("tr_self")}</option>
         </select>
       </Field>
+      <div className="sm:col-span-2">
+        <p className="mb-1 text-sm font-semibold text-soil">{t("ow_photo_l")}</p>
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-dashed border-soil/25 bg-ivory p-3">
+          {f.photo ? <img src={f.photo} alt="" className="h-16 w-24 rounded-lg object-cover ring-1 ring-soil/15" /> : <span className="flex h-16 w-24 items-center justify-center rounded-lg bg-white ring-1 ring-soil/10"><Camera className="h-6 w-6 text-soil/50" aria-hidden="true" /></span>}
+          <input ref={photoRef} id="m-photo" type="file" accept="image/*" onChange={pickPhoto} className="sr-only" />
+          <button type="button" onClick={() => photoRef.current && photoRef.current.click()} className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Camera className="h-4 w-4" aria-hidden="true" />{f.photo ? t("ow_photo_change") : t("ow_photo")}</button>
+          {f.photo && <button type="button" onClick={() => setF((s) => ({ ...s, photo: "" }))} className="min-h-[44px] rounded-xl px-3 text-sm font-bold text-red-700 hover:bg-red-50">{t("ow_photo_remove")}</button>}
+          <p className="w-full text-[11px] text-soil/80">{photoErr ? <span className="font-bold text-red-700">{t("ow_photo_err")}</span> : t("ow_photo_hint")}</p>
+        </div>
+      </div>
       <div className="sm:col-span-2"><Field label={t("ow_spec")} htmlFor="m-spec"><input id="m-spec" value={f.spec} onChange={set("spec")} placeholder="e.g. 60 HP, rotavator included" className={inputCls} /></Field></div>
       <p className="flex items-center gap-2 rounded-xl bg-gold/15 p-3 text-sm font-semibold text-soil sm:col-span-2"><Fuel className="h-4 w-4 shrink-0" aria-hidden="true" />{t("ow_fuel")}</p>
       <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory hover:bg-[#0f4a28] sm:col-span-2">
@@ -6254,13 +6721,15 @@ function RangeField({ id, label, value, set, min, max, unit }) {
   );
 }
 
+const EST_DEFAULT_RATE = 2500;
 function EarningsEstimator({ t, listings, bookings }) {
   const [machineId, setMachineId] = useState(listings[0] ? listings[0].id : "");
   const [hoursDay, setHoursDay] = useState(8);
   const [days, setDays] = useState(30);
   const [util, setUtil] = useState(60);
   const machine = listings.find((l) => l.id === machineId) || listings[0];
-  const rate = machine ? machine.rate : 0;
+  // no machine listed yet: a realistic Punjab example (Massey Ferguson 385 at PKR 2,500/hr)
+  const rate = machine ? machine.rate : EST_DEFAULT_RATE;
   const potential = rate * hoursDay * days;
   const expected = Math.round(potential * (util / 100));
   const earned = bookings.filter((b) => ["confirmed", "completed", "feedback"].includes(b.status)).reduce((s, b) => s + b.quote.subtotal, 0);
@@ -6268,10 +6737,11 @@ function EarningsEstimator({ t, listings, bookings }) {
     <div className="grid gap-5 md:grid-cols-2">
       <div className="space-y-4">
         <Field label={t("es_machine")} htmlFor="es-m">
-          <select id="es-m" value={machine ? machine.id : ""} onChange={(e) => setMachineId(e.target.value)} className={inputCls}>
-            {listings.map((l) => <option key={l.id} value={l.id}>{l.name} · {pkr(l.rate)}/hr</option>)}
+          <select id="es-m" value={machine ? machine.id : "default"} onChange={(e) => setMachineId(e.target.value)} className={inputCls}>
+            {listings.length ? listings.map((l) => <option key={l.id} value={l.id}>{l.name} · {pkr(l.rate)}/hr</option>) : <option value="default">Massey Ferguson 385 · {pkr(EST_DEFAULT_RATE)}/hr</option>}
           </select>
         </Field>
+        {!machine && <p className="-mt-2 text-xs text-soil/80">{t("es_default")}</p>}
         <RangeField id="es-h" label={t("es_hours")} value={hoursDay} set={setHoursDay} min={1} max={14} unit=" h" />
         <RangeField id="es-d" label={t("es_days")} value={days} set={setDays} min={5} max={90} unit=" d" />
         <RangeField id="es-u" label={t("es_util")} value={util} set={setUtil} min={10} max={100} unit="%" />
@@ -6347,7 +6817,7 @@ function ClearBtn({ t, onClick, className = "" }) {
 }
 function ClearAllBtn({ t, onClick, count }) {
   return (
-    <button type="button" onClick={onClick} disabled={!count} className="inline-flex items-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-xs font-bold text-forest ring-1 ring-forest/25 hover:bg-ivory disabled:opacity-50">
+    <button type="button" onClick={onClick} disabled={!count} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-forest ring-1 ring-forest/25 hover:bg-ivory disabled:opacity-50">
       <ArchiveIcon className="h-3.5 w-3.5" aria-hidden="true" />{t("arc_clear_all")}{count ? <span className="rounded-full bg-ivory px-1.5 text-[11px] text-soil ring-1 ring-soil/15">{count}</span> : null}
     </button>
   );
@@ -6499,7 +6969,7 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
       <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto scroll-smooth px-4 pe-10 sm:mx-0 sm:px-0 sm:pe-0" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
           <button key={key} role="tab" aria-selected={sub === key} onClick={() => setSub(key)}
-            className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
+            className={`flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
             <Icon className="h-4 w-4" aria-hidden="true" />{label}{badge ? <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{badge}</span> : null}
           </button>
         ))}
@@ -6589,15 +7059,7 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
 /* ------------------------------------------------------------------ */
 /* USSD booking preview (7 steps)                                     */
 /* ------------------------------------------------------------------ */
-const USSD_STEPS = [
-  "Select language (Punjabi / Urdu / Sindhi)",
-  "Choose machine type (Tractor / Thresher / Harvester)",
-  "Select date, duration & location",
-  "View machine option, owner identifier & rate",
-  "Review total price & dry-rent terms",
-  "Owner confirmation & SMS booking record",
-  "Post-rental completion & feedback",
-];
+const USSD_STEPS = ["ussd_s1", "ussd_s2", "ussd_s3", "ussd_s4", "ussd_s5", "ussd_s6", "ussd_s7"];
 const PHASE_STEP = { idle: 0, lang: 1, type: 2, date: 3, hours: 3, loc: 3, options: 4, operator: 5, transport: 5, review: 5, pending: 6, confirmed: 6, complete: 7, rating: 7, done: 7 };
 
 // Roman script copy for USSD screens (GSM friendly, as USSD menus usually are)
@@ -6627,17 +7089,28 @@ const U = {
     cancelled: "Booking cancel. End dabayo.", invalid: "Ghalat input. Wari koshish karyo.",
   },
 };
+// Urdu-script screens, used when the app itself is in Urdu and the caller picks Urdu
+U.urS = {
+  type: "مشین کی قسم چنیں:\n1. ٹریکٹر\n2. تھریشر\n3. ہارویسٹر", date: "تاریخ چنیں:\n1. کل ({d1})\n2. پرسوں ({d2})\n3. {d3}", hours: "کتنے گھنٹے؟ (1 سے 16)\nنمبر لکھ کر بھیجیں",
+  loc: "قریبی علاقہ چنیں:\n1. لاہور دیہی\n2. قصور\n3. شیخوپورہ\n4. اوکاڑہ\n5. فیصل آباد\n6. ساہیوال",
+  options: "مشینیں:", none: "اس قسم کی کوئی مشین نہیں ملی۔\n0. واپس", operator: "آپریٹر چاہیے؟ (+500 روپے فی گھنٹہ)\n1. ہاں\n2. نہیں", transport: "ٹرانسپورٹ چاہیے؟ (+{fee} روپے)\n1. ہاں\n2. نہیں",
+  review: "کل: {total} روپے\nکرایہ {base} + آپریٹر {op} + ٹرانسپورٹ {tr} + فیس 6% {comm}\nڈیزل: آپ کا (ڈرائی رینٹ)\nزائد وقت: مالک سے طے\n1. تصدیق  2. منسوخ",
+  pending: "مالک {owner} کو درخواست بھیج دی۔\nتصدیق کا انتظار...", confirmed: "SMS: ایگری شیئر بکنگ {id} پکی۔\n{machine}، {date}، {h} گھنٹے، {total} روپے۔\n1. کرایہ مکمل",
+  complete: "کیا کرایہ مکمل ہوا؟\n1. ہاں\n2. مسئلہ بتائیں", rating: "درجہ بندی دیں (1 سے 5):", done: "شکریہ! رائے محفوظ ہو گئی۔\nختم دبائیں۔", issue: "شکایت درج۔ ایگری ایجنٹ رابطہ کرے گا۔\nختم دبائیں۔",
+  cancelled: "بکنگ منسوخ۔ ختم دبائیں۔", invalid: "غلط اندراج۔ دوبارہ کوشش کریں۔",
+};
 const fill = (s, vars) => s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : ""));
 const shortDate = (iso) => { try { return new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }); } catch (e) { return iso; } };
 
-function UssdSimulator({ t, listings, createBooking, updateBooking }) {
+function UssdSimulator({ t, lang = "en", listings, createBooking, updateBooking }) {
   const [phase, setPhase] = useState("idle");
   const [input, setInput] = useState("");
   const [data, setData] = useState({});
   const [flash, setFlash] = useState("");
   const timer = useRef(null);
   const phoneRef = useRef(null);
-  const L = U[data.lang || "ur"];
+  const urScript = lang === "ur" && (data.lang || "ur") === "ur";
+  const L = urScript ? U.urS : U[data.lang || "ur"];
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
@@ -6720,8 +7193,8 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
   const screen = (() => {
     const d1 = shortDate(addDaysISO(1)), d2 = shortDate(addDaysISO(2)), d3 = shortDate(addDaysISO(3));
     switch (phase) {
-      case "idle": return "Agri-Share USSD\n\nPress green button to start";
-      case "lang": return "Agri-Share\nZaban chunein / Boli chuno:\n1. Punjabi\n2. Urdu\n3. Sindhi (planned)";
+      case "idle": return lang === "ur" ? "ایگری شیئر USSD\n\nشروع کرنے کے لیے سبز بٹن دبائیں" : "Agri-Share USSD\n\nPress green button to start";
+      case "lang": return lang === "ur" ? "ایگری شیئر\nزبان چنیں:\n1. پنجابی\n2. اردو\n3. سندھی (جلد)" : "Agri-Share\nZaban chunein / Boli chuno:\n1. Punjabi\n2. Urdu\n3. Sindhi (planned)";
       case "type": return L.type;
       case "date": return fill(L.date, { d1, d2, d3 });
       case "hours": return L.hours;
@@ -6756,7 +7229,7 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
             <span>USSD</span>
             <Battery className="h-3.5 w-3.5" aria-hidden="true" />
           </div>
-          <div className="h-[220px] overflow-y-auto whitespace-pre-wrap rounded-md border border-[#1b2a12]/20 bg-[#d6e3c5] p-2" aria-live="polite">
+          <div className={`h-[220px] overflow-y-auto whitespace-pre-wrap rounded-md border border-[#1b2a12]/20 bg-[#d6e3c5] p-2 ${lang === "ur" && (urScript || phase === "idle" || phase === "lang") ? "text-end font-urdu leading-[2]" : ""}`} dir={lang === "ur" && (urScript || phase === "idle" || phase === "lang") ? "rtl" : "ltr"} aria-live="polite">
             {screen}
             {phase === "pending" && <span className="ms-1 inline-block animate-pulse">●</span>}
           </div>
@@ -6793,21 +7266,21 @@ function UssdSimulator({ t, listings, createBooking, updateBooking }) {
                 <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${active ? "bg-gold text-soil" : done ? "bg-leafink text-white" : "bg-ivory text-soil/80"}`}>
                   {done ? <Check className="h-4 w-4" aria-hidden="true" /> : n}
                 </span>
-                <span className="text-sm font-semibold">{s}</span>
+                <span className="text-sm font-semibold">{t(s)}</span>
               </li>
             );
           })}
         </ol>
-        <p className="mt-3 flex items-start gap-2 text-xs text-soil/80"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ussd_hint")} Bookings made here appear live in My Bookings and the Owner Portal.</p>
+        <p className="mt-3 flex items-start gap-2 text-xs text-soil/80"><Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{t("ussd_hint")} {t("ussd_live_note")}</p>
         <button onClick={() => { reset(); setTimeout(() => phoneRef.current && phoneRef.current.focus(), 0); }} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil hover:bg-ivory">
-          <RotateCcw className="h-4 w-4" aria-hidden="true" />Restart
+          <RotateCcw className="h-4 w-4" aria-hidden="true" />{t("ussd_restart")}
         </button>
       </div>
     </div>
   );
 }
 
-function AgentTab({ t, listings, createBooking, updateBooking, setTab }) {
+function AgentTab({ t, lang, listings, createBooking, updateBooking, setTab }) {
   const cards = [
     { icon: Store, title: t("ag1_t"), text: t("ag1_d") },
     { icon: ClipboardList, title: t("ag2_t"), text: t("ag2_d") },
@@ -6824,8 +7297,12 @@ function AgentTab({ t, listings, createBooking, updateBooking, setTab }) {
             <p className="mt-2 max-w-2xl text-ivory/80">{t("ag_sub")}</p>
           </div>
           <div className="flex items-center gap-3 self-center rounded-2xl bg-ivory/10 p-4 ring-1 ring-ivory/15">
-            <Megaphone className="h-8 w-8 text-gold" aria-hidden="true" />
-            <p className="max-w-[220px] text-sm text-ivory/85">Punjabi · Urdu in pilot. Sindhi planned for expansion.</p>
+            <Megaphone className="h-8 w-8 shrink-0 text-gold" aria-hidden="true" />
+            <div className="max-w-[240px] text-sm text-ivory/85">
+              <p>{t("ag_pilot")}</p>
+              <p className="mt-2 text-xs font-semibold text-ivory/80">{t("ag_call")}</p>
+              <a href={`tel:${CONSULTANT.primary.tel}`} className="mt-0.5 inline-flex min-h-[44px] items-center gap-1.5 font-mono text-lg font-extrabold text-gold underline-offset-4 hover:underline" dir="ltr"><Phone className="h-4 w-4" aria-hidden="true" />{CONSULTANT.primary.label}</a>
+            </div>
           </div>
         </div>
       </div>
@@ -6840,7 +7317,7 @@ function AgentTab({ t, listings, createBooking, updateBooking, setTab }) {
       </div>
       <div className="rounded-3xl border border-soil/10 bg-white p-5 shadow-sm sm:p-6">
         <h3 className="mb-5 flex items-center gap-2 font-display text-xl font-extrabold text-forest"><Smartphone className="h-5 w-5" aria-hidden="true" />{t("ussd_title")}</h3>
-        <UssdSimulator t={t} listings={listings} createBooking={createBooking} updateBooking={updateBooking} />
+        <UssdSimulator t={t} lang={lang} listings={listings} createBooking={createBooking} updateBooking={updateBooking} />
       </div>
     </section>
   );
@@ -6860,7 +7337,7 @@ function detectReplyLang(text) {
 }
 const normDigits = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
 
-const HELPER_EXTRA = {"register": {"pa": "ایگری شیئر تے رجسٹر ہون دا طریقہ:\n1. اُتے \"سائن اپ\" دباؤ۔\n2. پورا ناں، ای میل، موبائل تے ضلع لکھو۔\n3. اپنا کردار چنو: کسان، مشینری مالک یا ایگری ایجنٹ۔\n4. پاس ورڈ (گھٹ توں گھٹ 6 حرف) دو واری لکھو تے پرائیویسی نوٹ منو۔\n5. \"اکاؤنٹ بناؤ\" دباؤ۔", "sd": "ايگري شيئر تي رجسٽر ٿيڻ جو طريقو:\n1. مٿي \"سائن اپ\" دٻايو۔\n2. پورو نالو، اي ميل، موبائل ۽ ضلعو لکو۔\n3. پنهنجو ڪردار چونڊيو: هاري، مشينري مالڪ يا ايگري ايجنٽ۔\n4. پاس ورڊ (گهٽ ۾ گهٽ 6 اکر) ٻه ڀيرا لکو ۽ پرائيويسي نوٽ قبول ڪريو۔\n5. \"کاتو ٺاهيو\" دٻايو۔", "ps": "په اګري شېئر کې د نوم لیکنې طریقه:\n1. پورته \"نوم لیکنه\" کېکاږئ.\n2. بشپړ نوم، ای میل، موبایل او ضلع ولیکئ.\n3. خپل رول وټاکئ: بزګر، د ماشین مالک یا اګري اېجنټ.\n4. پاسورډ (لږ تر لږه 6 توري) دوه ځله ولیکئ او د محرمیت یادونه ومنئ.\n5. \"حساب جوړ کړئ\" کېکاږئ.", "bal": "ایگری شیئر ءَ رجسٹر بیگ ءِ راہ:\n1. سرا \"سائن اپ\" ءَ جن۔\n2. پوریں نام، ای میل، موبائل و ضلع نبشتہ کن۔\n3. وتی کار گچین کن: بزگر، مشین ءِ واھند یا ایگری ایجنٹ۔\n4. پاس ورڈ (کمّ ءِ کمّ 6 حرف) دو بر نبشتہ کن و پرائیویسی ءِ نوٹ ءَ بمنّ۔\n5. \"اکاؤنٹ جوڑ کن\" ءَ جن۔"}, "offer": {"pa": "کرایہ ودھ لگدا اے؟ اپنی قیمت دسو:\n1. مشین تے \"بکنگ دی درخواست\" دباؤ۔\n2. \"اپنی قیمت دسو\" چالو کرو۔\n3. فی گھنٹہ پیشکش (لکھے ریٹ دا گھٹ توں گھٹ 60%) تے ٹرانسپورٹ دی پیشکش لکھو۔\n4. سنیہا لکھ کے گھلو۔ مالک منے گا، جوابی پیشکش دیوے گا یا انکار کرے گا۔ ٹرانسپورٹ فاصلے دے حساب نال اے (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)۔", "sd": "ڪرايو وڌيڪ لڳي ٿو؟ پنهنجي قيمت ٻڌايو:\n1. مشين تي \"بڪنگ جي درخواست\" دٻايو۔\n2. \"پنهنجي قيمت ٻڌايو\" چالو ڪريو۔\n3. في ڪلاڪ آڇ (لکيل اگهه جو گهٽ ۾ گهٽ 60%) ۽ ٽرانسپورٽ جي آڇ لکو۔\n4. پيغام لکي موڪليو۔ مالڪ قبول، جوابي آڇ يا انڪار ڪري سگهي ٿو۔ ٽرانسپورٽ فاصلي موجب آهي (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)۔", "ps": "کرایه ډېره ښکاري؟ خپله بیه وړاندې کړئ:\n1. پر ماشین \"د بکنګ غوښتنه\" کېکاږئ.\n2. \"خپله بیه وړاندې کړئ\" چالان کړئ.\n3. فی ساعت وړاندیز (د ثبت شوې بیې لږ تر لږه 60%) او د ټرانسپورټ وړاندیز ولیکئ.\n4. پیغام ولیکئ او ولېږئ. مالک یې منلی، بل وړاندیز ورکولی یا ردولی شي. ټرانسپورټ د واټن له مخې دی (100 روپۍ فی کیلومتر، لږ تر لږه 500).", "bal": "کرایہ گیش اِنت؟ وتی بہا ءَ پیش کن:\n1. مشین ءِ سرا \"بکنگ ءِ درخواست\" ءَ جن۔\n2. \"وتی بہا ءَ پیش کن\" ءَ روشن کن۔\n3. ساعت ءِ پیشکش (نبشتہ کتگیں نرخ ءِ کمّ ءِ کمّ 60%) و ٹرانسپورٹ ءِ پیشکش نبشتہ کن۔\n4. کلہو نبشتہ کن و دیم دئے۔ واھند منّیت، دومی پیشکش دنت یا نہ منّیت۔ ٹرانسپورٹ دوری ءِ ہساب ءَ اِنت (100 کلدار فی کلومیٹر، کمّ ءِ کمّ 500)۔"}, "paylater": {"pa": "ہن وڈھی، بعد وچ ادائیگی: بکنگ فارم وچ ایہہ ادائیگی چنو۔ تسیں ہن صرف 30% دیو؛ باقی 70% تیجی دھر مائیکروفنانس پارٹنر (تجویز: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) دا قرض اے جو وڈھی توں بعد (60 توں 180 دن) دینا اے۔ خطرہ پارٹنر دا اے، ایگری شیئر دا نئیں۔ سوکھا طریقہ: ایگری منڈی تے فصل ویچو، 70% آپے کٹ جاوے گا۔", "sd": "هاڻي لابارو، پوءِ ادائيگي: بڪنگ فارم ۾ هي ادائيگي چونڊيو۔ توهان هاڻي صرف 30% ڏيو؛ باقي 70% ٽئين ڌر مائڪروفنانس پارٽنر (تجويز: جاز ڪيش ڪريڊٽ، ايزي پيسا يا ZTBL) جو قرض آهي جيڪو لاباري کان پوءِ (60 کان 180 ڏينهن) ڏيڻو آهي۔ خطرو پارٽنر جو آهي، ايگري شيئر جو ناهي۔ سولو طريقو: ايگري منڊي تي فصل وڪڻو، 70% پاڻمرادو ڪٽجي ويندو۔", "ps": "اوس لو، وروسته تادیه: د بکنګ په فورمه کې دا تادیه وټاکئ. تاسو اوس یوازې 30% ورکوئ؛ پاتې 70% د دریم اړخ مایکروفنانس شریک (وړاندیز: جاز کیش کریډټ، ایزي پیسه یا ZTBL) پور دی چې له لو وروسته (60 تر 180 ورځو) ورکول کېږي. خطر د شریک دی، د اګري شېئر نه. اسانه لاره: په اګري منډۍ کې فصل وپلورئ، 70% به په خپله پرې شي.", "bal": "انّوں رونگ، رند ءَ زرّ: بکنگ ءِ فارم ءَ اے راہ ءَ گچین کن۔ شما انّوں تهنا 30% دئیت؛ پشت کپتگیں 70% سیمی دَپ ءِ مائیکروفنانس ہمراہ (پیشنهاد: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) ءِ وام اِنت کہ رونگ ءَ رند (60 تا 180 روچ) دئیگ بیت۔ خطر ہمراہ ءِ اِنت، ایگری شیئر ءِ نہ۔ آسانیں راہ: ایگری منڈی ءَ کِشت ءَ بہا کن، 70% وت ءَ کٹ بیت۔"}, "mandi": {"pa": "ایگری منڈی:\n1. فصل (کنک، چول، مکئی، کپاہ)، مقدار من وچ، معیار تے پنڈ چنو۔\n2. فی من متوقع قیمت تے جاز کیش یا ایزی پیسہ نمبر لکھو۔\n3. پوسٹ کرو: آٹا ملاں، رائس ملاں تے وڈے خریدار لائیو بولی لاندے نیں۔\n4. سب توں چنگی بولی منو: ویچ دی رقم وچوں باقی 70% مشینری قرض کٹ کے خالص منافع تہاڈے والٹ وچ۔", "sd": "ايگري منڊي:\n1. فصل (ڪڻڪ، چانور، مڪئي، ڪپهه)، مقدار مڻن ۾، معيار ۽ ڳوٺ چونڊيو۔\n2. في مڻ متوقع قيمت ۽ جاز ڪيش يا ايزي پيسا نمبر لکو۔\n3. پوسٽ ڪريو: اٽي ۽ چانورن جون ملون ۽ وڏا خريدار لائيو بولي ڏين ٿا۔\n4. بهترين بولي قبول ڪريو: وڪري مان باقي 70% مشينري قرض ڪٽجي خالص منافعو توهان جي والٽ ۾۔", "ps": "اګري منډۍ:\n1. فصل (غنم، وريجې، جوار، پنبه)، مقدار په من، کیفیت او کلی وټاکئ.\n2. فی من تمه‌لرونکې بیه او د جاز کیش یا ایزي پیسه شمېره ولیکئ.\n3. ثبت یې کړئ: د اوړو او وريجو ملونه او لوی پېرودونکي ژوندۍ داوطلبي کوي.\n4. غوره داوطلبي ومنئ: له پلور څخه پاتې 70% د ماشین پور پرې کېږي او خالصه ګټه ستاسو والټ ته ځي.", "bal": "ایگری منڈی:\n1. کِشت (گندم، برنج، جُوار، کپاس)، کچ من ءَ، جوانی و میتگ گچین کن۔\n2. فی من امیتیں بہا و جاز کیش یا ایزی پیسہ ءِ نمبر نبشتہ کن۔\n3. دیم دئے: آرت و برنج ءِ مِل و مزنیں گِروک زندگیں بولی جن اَنت۔\n4. گہتریں بولی ءَ بمنّ: بہا ءَ چہ پشت کپتگیں 70% مشین ءِ وام کٹ بیت و خالصیں کٹّ شمئے والٹ ءَ رَوت۔"}, "keypad": {"pa": "سمارٹ فون نئیں؟ کسے وی سادے فون توں ٹول فری ہیلپ لائن 0800-24741 تے کال کرو۔ پنجابی یا اردو آواز دسے گی: مشین لئی 1، فصل ویچن لئی 2، ایجنٹ لئی 0۔ بکنگ دی تصدیق SMS تے آوے گی۔", "sd": "سمارٽ فون ناهي؟ ڪنهن به سادي فون مان ٽول فري هيلپ لائن 0800-24741 تي ڪال ڪريو۔ پنجابي يا اردو آواز ٻڌائيندو: مشين لاءِ 1، فصل وڪڻڻ لاءِ 2، ايجنٽ لاءِ 0۔ بڪنگ جي تصديق SMS تي ايندي۔", "ps": "سمارټ فون نه لرئ؟ له هر ساده ټیلیفون څخه وړیا هېلپ لاین 0800-24741 ته زنګ ووهئ. پنجابي یا اردو غږ لارښوونه کوي: د ماشین لپاره 1، د فصل پلور لپاره 2، اېجنټ لپاره 0. بکنګ مو په SMS تاییدېږي.", "bal": "سمارٹ فون نیست؟ ہر سادگیں فون ءَ چہ مُفتیں ہیلپ لائن 0800-24741 ءَ کال کن۔ پنجابی یا اردو توار راہشونی کنت: مشین ءِ واستا 1، کِشت ءِ بہا ءِ واستا 2، ایجنٹ ءِ واستا 0۔ بکنگ ءِ منّگ SMS ءَ کئیت۔"}, "menu": {"pa": "میں ایہناں وچ مدد کر سکدا آں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، قیمت دی پیشکش، مشین لکھانا\n• ہن وڈھی، بعد وچ ادائیگی (30% / 70%)\n• ایگری منڈی تے فصل ویچنا\n• ڈیزل، آپریٹر، ٹرانسپورٹ تے کمیشن (6%)", "sd": "مان انهن ۾ مدد ڪري سگهان ٿو:\n• ويب سائيٽ: سائن اپ، سائن ان، بڪنگ، قيمت جي آڇ، مشين لکرائڻ\n• هاڻي لابارو، پوءِ ادائيگي (30% / 70%)\n• ايگري منڊي تي فصل وڪڻڻ\n• ڊيزل، آپريٽر، ٽرانسپورٽ ۽ ڪميشن (6%)", "ps": "زه په دې کې مرسته کولی شم:\n• ویب پاڼه: نوم لیکنه، ننوتل، بکنګ، د بیې وړاندیز، د ماشین ثبتول\n• اوس لو، وروسته تادیه (30% / 70%)\n• په اګري منډۍ کې د فصل پلورل\n• ډیزل، چلوونکی، ټرانسپورټ او کمیشن (6%)", "bal": "من اے کاراں کمک کت کناں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، بہا ءِ پیشکش، مشین ءِ نبشتہ کنگ\n• انّوں رونگ، رند ءَ زرّ (30% / 70%)\n• ایگری منڈی ءَ کِشت ءِ بہا کنگ\n• ڈیزل، چلائوک، ٹرانسپورٹ و کمیشن (6%)"}};
+const HELPER_EXTRA = {"register": {"pa": "ایگری شیئر تے رجسٹر ہون دا طریقہ:\n1. اُتے \"سائن اپ\" دباؤ۔\n2. پورا ناں، ای میل، موبائل تے ضلع لکھو۔\n3. اپنا کردار چنو: کسان، مشینری مالک یا ایگری ایجنٹ۔\n4. پاس ورڈ (گھٹ توں گھٹ 6 حرف) دو واری لکھو تے پرائیویسی نوٹ منو۔\n5. \"اکاؤنٹ بناؤ\" دباؤ۔", "sd": "ايگري شيئر تي رجسٽر ٿيڻ جو طريقو:\n1. مٿي \"سائن اپ\" دٻايو۔\n2. پورو نالو، اي ميل، موبائل ۽ ضلعو لکو۔\n3. پنهنجو ڪردار چونڊيو: هاري، مشينري مالڪ يا ايگري ايجنٽ۔\n4. پاس ورڊ (گهٽ ۾ گهٽ 6 اکر) ٻه ڀيرا لکو ۽ پرائيويسي نوٽ قبول ڪريو۔\n5. \"کاتو ٺاهيو\" دٻايو۔", "ps": "په اګري شېئر کې د نوم لیکنې طریقه:\n1. پورته \"نوم لیکنه\" کېکاږئ.\n2. بشپړ نوم، ای میل، موبایل او ضلع ولیکئ.\n3. خپل رول وټاکئ: بزګر، د ماشین مالک یا اګري اېجنټ.\n4. پاسورډ (لږ تر لږه 6 توري) دوه ځله ولیکئ او د محرمیت یادونه ومنئ.\n5. \"حساب جوړ کړئ\" کېکاږئ.", "bal": "ایگری شیئر ءَ رجسٹر بیگ ءِ راہ:\n1. سرا \"سائن اپ\" ءَ جن۔\n2. پوریں نام، ای میل، موبائل و ضلع نبشتہ کن۔\n3. وتی کار گچین کن: بزگر، مشین ءِ واھند یا ایگری ایجنٹ۔\n4. پاس ورڈ (کمّ ءِ کمّ 6 حرف) دو بر نبشتہ کن و پرائیویسی ءِ نوٹ ءَ بمنّ۔\n5. \"اکاؤنٹ جوڑ کن\" ءَ جن۔"}, "offer": {"pa": "کرایہ ودھ لگدا اے؟ اپنی قیمت دسو:\n1. مشین تے \"بکنگ دی درخواست\" دباؤ۔\n2. \"اپنی قیمت دسو\" چالو کرو۔\n3. فی گھنٹہ پیشکش (لکھے ریٹ دا گھٹ توں گھٹ 60%) تے ٹرانسپورٹ دی پیشکش لکھو۔\n4. سنیہا لکھ کے گھلو۔ مالک منے گا، جوابی پیشکش دیوے گا یا انکار کرے گا۔ ٹرانسپورٹ فاصلے دے حساب نال اے (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)۔", "sd": "ڪرايو وڌيڪ لڳي ٿو؟ پنهنجي قيمت ٻڌايو:\n1. مشين تي \"بڪنگ جي درخواست\" دٻايو۔\n2. \"پنهنجي قيمت ٻڌايو\" چالو ڪريو۔\n3. في ڪلاڪ آڇ (لکيل اگهه جو گهٽ ۾ گهٽ 60%) ۽ ٽرانسپورٽ جي آڇ لکو۔\n4. پيغام لکي موڪليو۔ مالڪ قبول، جوابي آڇ يا انڪار ڪري سگهي ٿو۔ ٽرانسپورٽ فاصلي موجب آهي (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)۔", "ps": "کرایه ډېره ښکاري؟ خپله بیه وړاندې کړئ:\n1. پر ماشین \"د بکنګ غوښتنه\" کېکاږئ.\n2. \"خپله بیه وړاندې کړئ\" چالان کړئ.\n3. فی ساعت وړاندیز (د ثبت شوې بیې لږ تر لږه 60%) او د ټرانسپورټ وړاندیز ولیکئ.\n4. پیغام ولیکئ او ولېږئ. مالک یې منلی، بل وړاندیز ورکولی یا ردولی شي. ټرانسپورټ د واټن له مخې دی (100 روپۍ فی کیلومتر، لږ تر لږه 500).", "bal": "کرایہ گیش اِنت؟ وتی بہا ءَ پیش کن:\n1. مشین ءِ سرا \"بکنگ ءِ درخواست\" ءَ جن۔\n2. \"وتی بہا ءَ پیش کن\" ءَ روشن کن۔\n3. ساعت ءِ پیشکش (نبشتہ کتگیں نرخ ءِ کمّ ءِ کمّ 60%) و ٹرانسپورٹ ءِ پیشکش نبشتہ کن۔\n4. کلہو نبشتہ کن و دیم دئے۔ واھند منّیت، دومی پیشکش دنت یا نہ منّیت۔ ٹرانسپورٹ دوری ءِ ہساب ءَ اِنت (100 کلدار فی کلومیٹر، کمّ ءِ کمّ 500)۔"}, "paylater": {"pa": "ہن وڈھی، بعد وچ ادائیگی: بکنگ فارم وچ ایہہ ادائیگی چنو۔ تسیں ہن صرف 30% دیو؛ باقی 70% تیجی دھر مائیکروفنانس پارٹنر (تجویز: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) دا قرض اے جو وڈھی توں بعد (60 توں 180 دن) دینا اے۔ خطرہ پارٹنر دا اے، ایگری شیئر دا نئیں۔ سوکھا طریقہ: ایگری منڈی تے فصل ویچو، 70% آپے کٹ جاوے گا۔", "sd": "هاڻي لابارو، پوءِ ادائيگي: بڪنگ فارم ۾ هي ادائيگي چونڊيو۔ توهان هاڻي صرف 30% ڏيو؛ باقي 70% ٽئين ڌر مائڪروفنانس پارٽنر (تجويز: جاز ڪيش ڪريڊٽ، ايزي پيسا يا ZTBL) جو قرض آهي جيڪو لاباري کان پوءِ (60 کان 180 ڏينهن) ڏيڻو آهي۔ خطرو پارٽنر جو آهي، ايگري شيئر جو ناهي۔ سولو طريقو: ايگري منڊي تي فصل وڪڻو، 70% پاڻمرادو ڪٽجي ويندو۔", "ps": "اوس لو، وروسته تادیه: د بکنګ په فورمه کې دا تادیه وټاکئ. تاسو اوس یوازې 30% ورکوئ؛ پاتې 70% د دریم اړخ مایکروفنانس شریک (وړاندیز: جاز کیش کریډټ، ایزي پیسه یا ZTBL) پور دی چې له لو وروسته (60 تر 180 ورځو) ورکول کېږي. خطر د شریک دی، د اګري شېئر نه. اسانه لاره: په اګري منډۍ کې فصل وپلورئ، 70% به په خپله پرې شي.", "bal": "انّوں رونگ، رند ءَ زرّ: بکنگ ءِ فارم ءَ اے راہ ءَ گچین کن۔ شما انّوں تهنا 30% دئیت؛ پشت کپتگیں 70% سیمی دَپ ءِ مائیکروفنانس ہمراہ (پیشنهاد: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) ءِ وام اِنت کہ رونگ ءَ رند (60 تا 180 روچ) دئیگ بیت۔ خطر ہمراہ ءِ اِنت، ایگری شیئر ءِ نہ۔ آسانیں راہ: ایگری منڈی ءَ کِشت ءَ بہا کن، 70% وت ءَ کٹ بیت۔"}, "mandi": {"pa": "ایگری منڈی:\n1. فصل (کنک، چول، مکئی، کپاہ)، مقدار من وچ، معیار تے پنڈ چنو۔\n2. فی من متوقع قیمت تے جاز کیش یا ایزی پیسہ نمبر لکھو۔\n3. پوسٹ کرو: آٹا ملاں، رائس ملاں تے وڈے خریدار لائیو بولی لاندے نیں۔\n4. سب توں چنگی بولی منو: ویچ دی رقم وچوں باقی 70% مشینری قرض کٹ کے خالص منافع تہاڈے والٹ وچ۔", "sd": "ايگري منڊي:\n1. فصل (ڪڻڪ، چانور، مڪئي، ڪپهه)، مقدار مڻن ۾، معيار ۽ ڳوٺ چونڊيو۔\n2. في مڻ متوقع قيمت ۽ جاز ڪيش يا ايزي پيسا نمبر لکو۔\n3. پوسٽ ڪريو: اٽي ۽ چانورن جون ملون ۽ وڏا خريدار لائيو بولي ڏين ٿا۔\n4. بهترين بولي قبول ڪريو: وڪري مان باقي 70% مشينري قرض ڪٽجي خالص منافعو توهان جي والٽ ۾۔", "ps": "اګري منډۍ:\n1. فصل (غنم، وريجې، جوار، پنبه)، مقدار په من، کیفیت او کلی وټاکئ.\n2. فی من تمه‌لرونکې بیه او د جاز کیش یا ایزي پیسه شمېره ولیکئ.\n3. ثبت یې کړئ: د اوړو او وريجو ملونه او لوی پېرودونکي ژوندۍ داوطلبي کوي.\n4. غوره داوطلبي ومنئ: له پلور څخه پاتې 70% د ماشین پور پرې کېږي او خالصه ګټه ستاسو والټ ته ځي.", "bal": "ایگری منڈی:\n1. کِشت (گندم، برنج، جُوار، کپاس)، کچ من ءَ، جوانی و میتگ گچین کن۔\n2. فی من امیتیں بہا و جاز کیش یا ایزی پیسہ ءِ نمبر نبشتہ کن۔\n3. دیم دئے: آرت و برنج ءِ مِل و مزنیں گِروک زندگیں بولی جن اَنت۔\n4. گہتریں بولی ءَ بمنّ: بہا ءَ چہ پشت کپتگیں 70% مشین ءِ وام کٹ بیت و خالصیں کٹّ شمئے والٹ ءَ رَوت۔"}, "keypad": {"pa": "سمارٹ فون نئیں؟ کسے وی سادے فون توں ساڈے ایگری شیئر کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔ اوہ نیڑے مشین لبھ کے بکنگ دی تصدیق SMS تے گھلن گے۔ پنڈ دا ایگری ایجنٹ وی تہاڈی بکنگ کر سکدا اے۔", "sd": "سمارٽ فون ناهي؟ ڪنهن به سادي فون مان اسان جي ايگري شيئر ڪنسلٽنٽ کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو۔ اهي ويجهي مشين ڳولي بڪنگ جي تصديق SMS تي موڪليندا۔ ڳوٺ جو ايگري ايجنٽ به توهان جي بڪنگ ڪري سگهي ٿو۔", "ps": "سمارټ فون نه لرئ؟ له هر ساده ټیلیفون څخه زموږ د اګري شېئر مشاور ته 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ. هغوی به نږدې ماشین ومومي او بکنګ به په SMS تایید کړي. د کلي اګري اېجنټ هم ستاسو بکنګ کولی شي.", "bal": "سمارٹ فون نیست؟ ہر سادگیں فون ءَ چہ مئے ایگری شیئر کنسلٹنٹ ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔ آ نزیکیں مشین ءَ شوہاز کنت و بکنگ ءِ منّگ ءَ SMS ءَ دیم دنت۔ میتگ ءِ ایگری ایجنٹ ہم شمئے بکنگ ءَ کت کنت۔"}, "menu": {"pa": "میں ایہناں وچ مدد کر سکدا آں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، قیمت دی پیشکش، مشین لکھانا\n• ہن وڈھی، بعد وچ ادائیگی (30% / 70%)\n• ایگری منڈی تے فصل ویچنا\n• ڈیزل، آپریٹر، ٹرانسپورٹ تے کمیشن (6%)", "sd": "مان انهن ۾ مدد ڪري سگهان ٿو:\n• ويب سائيٽ: سائن اپ، سائن ان، بڪنگ، قيمت جي آڇ، مشين لکرائڻ\n• هاڻي لابارو، پوءِ ادائيگي (30% / 70%)\n• ايگري منڊي تي فصل وڪڻڻ\n• ڊيزل، آپريٽر، ٽرانسپورٽ ۽ ڪميشن (6%)", "ps": "زه په دې کې مرسته کولی شم:\n• ویب پاڼه: نوم لیکنه، ننوتل، بکنګ، د بیې وړاندیز، د ماشین ثبتول\n• اوس لو، وروسته تادیه (30% / 70%)\n• په اګري منډۍ کې د فصل پلورل\n• ډیزل، چلوونکی، ټرانسپورټ او کمیشن (6%)", "bal": "من اے کاراں کمک کت کناں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، بہا ءِ پیشکش، مشین ءِ نبشتہ کنگ\n• انّوں رونگ، رند ءَ زرّ (30% / 70%)\n• ایگری منڈی ءَ کِشت ءِ بہا کنگ\n• ڈیزل، چلائوک، ٹرانسپورٹ و کمیشن (6%)"}};
 const HELPER_CHIPS = {"en": ["How do I register?", "The rate is too high. Can I offer less?", "How does Pay After Harvest work?", "How do I sell my wheat?", "I only have a basic phone"], "ur": ["رجسٹر کیسے ہوں؟", "کرایہ مہنگا ہے، کم کیسے کروں؟", "30% ابھی، 70% بعد میں کیسے؟", "اپنی گندم کیسے بیچوں؟", "سادہ فون سے بکنگ؟ ہیلپ لائن"], "pa": ["رجسٹر کیویں ہوواں؟", "کرایہ مہنگا اے، قیمت گھٹ کیویں کراں؟", "30% ہن، 70% بعد وچ کیویں؟", "اپنی کنک منڈی وچ کیویں ویچاں؟", "سادے فون نال بکنگ؟ ہیلپ لائن"], "sd": ["رجسٽر ڪيئن ٿيان؟", "ڪرايو مهانگو آهي، قيمت گهٽ ڪيئن ڪريان؟", "30% هاڻي، 70% پوءِ ڪيئن؟", "پنهنجي ڪڻڪ منڊي ۾ ڪيئن وڪڻان؟", "سادي فون سان بڪنگ؟ هيلپ لائن"], "ps": ["څنګه نوم لیکنه وکړم؟", "کرایه ګرانه ده، بیه څنګه کمه کړم؟", "30% اوس، 70% وروسته څنګه؟", "خپل غنم په منډۍ کې څنګه وپلورم؟", "ساده ټیلیفون لرم، هېلپ لاین؟"], "bal": ["چون رجسٹر باں؟", "کرایہ گران اِنت، بہا ءَ چون کم کناں؟", "30% انّوں، 70% رند ءَ چون؟", "وتی گندم ءَ منڈی ءَ چون بہا کناں؟", "سادگیں فون ہست، ہیلپ لائن؟"]};
 // Reply language: follows the selected app language; in English mode it follows what the farmer typed
 function pickReplyLang(raw, uiLang) {
@@ -7023,9 +7500,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/keypad|button phone|simple phone|sada phone|helpline|help line|0800|toll|ivr|call kar|ہیلپ لائن|سادہ فون|کال|basic phone|هيلپ لائن|هېلپ لاین|ساده ټیلیفون|سادي فون|سادگیں فون/i)) {
     return LX("keypad", {
-      en: "No smartphone? Call the toll-free helpline 0800-24741 from any basic phone. A Punjabi or Urdu voice guides you: press 1 to rent a machine, 2 to sell your crop, 0 to talk to an agent. Your booking is confirmed by SMS. A village Agri-Agent can also book for you.",
-      ur: "اسمارٹ فون نہیں؟ کسی بھی سادہ فون سے ٹول فری ہیلپ لائن 0800-24741 پر کال کریں۔ پنجابی یا اردو آواز رہنمائی کرے گی: مشین کے لیے 1، فصل بیچنے کے لیے 2، ایجنٹ کے لیے 0۔ بکنگ کی تصدیق SMS پر آئے گی۔",
-      ro: "Smartphone nahi? Kisi bhi saade phone se toll-free helpline 0800-24741 par call karein. Punjabi ya Urdu awaaz rehnumai karegi: machine ke liye 1, fasal bechne ke liye 2, agent ke liye 0. Booking ki tasdeeq SMS par aayegi.",
+      en: "No smartphone? Call or WhatsApp our Agri-Share consultant on 0322-4729249 or 0370-0318574 from any basic phone. They will find a machine near you and confirm the booking by SMS. A village Agri-Agent can also book for you.",
+      ur: "اسمارٹ فون نہیں؟ کسی بھی سادہ فون سے ہمارے ایگری شیئر کنسلٹنٹ کو 0322-4729249 یا 0370-0318574 پر کال یا واٹس ایپ کریں۔ وہ قریب مشین ڈھونڈ کر بکنگ کی تصدیق SMS پر بھیجیں گے۔ گاؤں کا ایگری ایجنٹ بھی آپ کی بکنگ کر سکتا ہے۔",
+      ro: "Smartphone nahi? Kisi bhi saade phone se hamare Agri-Share consultant ko 0322-4729249 ya 0370-0318574 par call ya WhatsApp karein. Woh qareeb machine dhoond kar booking ki tasdeeq SMS par bhejenge.",
     });
   }
   if (has(/apni boli|\bboli\b|name your price|اپنی بولی|بولی|پنهنجي ٻولي|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|40 ?km|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
@@ -7121,9 +7598,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/contact|support|help ?line|complain|shikayat|رابطہ|شکایت/i)) {
     return steps({
-      en: "Call the Agri-Share support helpline 0800-24741, or ask your local Agri-Agent. You can also ask me anything about using the website.",
-      ur: "ایگری شیئر سپورٹ ہیلپ لائن 0800-24741 پر کال کریں، یا اپنے مقامی ایگری ایجنٹ سے بات کریں۔ آپ ویب سائٹ کے بارے میں مجھ سے کچھ بھی پوچھ سکتے ہیں۔",
-      ro: "Agri-Share support helpline 0800-24741 par call karein, ya apne local Agri-Agent se baat karein.",
+      en: "Call or WhatsApp our Agri-Share consultant on 0322-4729249 or 0370-0318574, or ask your local Agri-Agent. You can also ask me anything about using the website.",
+      ur: "ہمارے ایگری شیئر کنسلٹنٹ کو 0322-4729249 یا 0370-0318574 پر کال یا واٹس ایپ کریں، یا اپنے مقامی ایگری ایجنٹ سے بات کریں۔ آپ ویب سائٹ کے بارے میں مجھ سے کچھ بھی پوچھ سکتے ہیں۔",
+      ro: "Agri-Share consultant ko 0322-4729249 ya 0370-0318574 par call ya WhatsApp karein, ya apne local Agri-Agent se baat karein.",
     });
   }
   if (/diesel|fuel|petrol|dry|ڈیزل|تیل|ایندھن/i.test(text)) {
@@ -7223,7 +7700,7 @@ How to use the website (guide users step by step when they ask):
 - Commission: 6% standard (5 to 7% range); smallholders under 5 acres tick a box for a subsidised 4%.
 - Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
 - Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Sample flour mills, rice mills, feed mills, ginners and bulk buyers bid live on the farmer's price. Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
-- Keypad phones: toll-free helpline 0800-24741 with Punjabi/Urdu IVR: 1 rent a machine, 2 sell crop, 0 agent. A USSD short code is not allocated yet ("coming soon"): never give out a USSD code.
+- Keypad phones: call or WhatsApp the Agri-Share consultants on 0322-4729249 or 0370-0318574 (there is no toll-free helpline or 24/7 line; never mention 0800 numbers). A USSD short code is not allocated yet ("coming soon"): never give out a USSD code.
 - No smartphone: Agri-Agent & USSD tab shows the village shopkeeper model and the USSD booking flow.
 - Language menu at top right: English, Urdu, Punjabi, Sindhi, Pashto, Balochi.
 - Privacy: only name, email, mobile and district are collected, with consent; passwords are handled by Firebase Authentication; only Agri-Share administrators see member details.
@@ -8020,7 +8497,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
   return (
     <>
       <button onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="kisan-helper" aria-label={t("kh_title")}
-        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 z-30 inline-flex h-12 w-12 items-center justify-center gap-2 rounded-full bg-gold font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest lg:bottom-6 lg:end-6 lg:h-auto lg:w-auto lg:px-4 lg:py-3">
+        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 z-30 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-gold font-bold text-soil shadow-xl shadow-soil/25 ring-4 ring-ivory hover:brightness-105 focus:outline-none focus-visible:ring-forest lg:bottom-6 lg:end-6 lg:h-auto lg:w-auto lg:px-4 lg:py-3">
         {open ? <X className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="h-5 w-5" aria-hidden="true" />}
         <span className="hidden lg:inline">{t("kh_title")}</span>
       </button>
@@ -8126,8 +8603,8 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
           <form onSubmit={(e) => { e.preventDefault(); send(); }} className={`items-center gap-2 border-t border-soil/10 bg-white p-2.5 ${voiceOpen ? "hidden" : "flex"}`}>
             <label htmlFor="kh-in" className="sr-only">{t("kh_placeholder")}</label>
             <input id="kh-in" ref={inputRef} dir="auto" value={input} onChange={(e) => setInput(e.target.value)} placeholder={t("kh_placeholder")} className={inputCls + " py-2"} />
-            <button type="button" onClick={() => (voiceOpen ? endCall() : startCall())} className={`rounded-xl p-2.5 ${voiceOpen ? "bg-red-600 text-white" : "bg-gold text-soil"}`} aria-label={voiceOpen ? t("vc_end") : t("vc_start")} title={voiceOpen ? t("vc_end") : t("vc_start")}>{voiceOpen ? <PhoneOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}</button>
-            <button type="submit" disabled={busy || !input.trim()} className="rounded-xl bg-forest p-2.5 text-ivory disabled:opacity-40" aria-label={t("kh_send")}><Send className="h-4 w-4 rtl:-scale-x-100" /></button>
+            <button type="button" onClick={() => (voiceOpen ? endCall() : startCall())} className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center gap-1 rounded-xl px-2.5 text-xs font-extrabold ${voiceOpen ? "bg-red-600 text-white" : "bg-gold text-soil"}`} aria-label={voiceOpen ? t("vc_end") : t("kh_mic_label")} title={voiceOpen ? t("vc_end") : t("kh_mic_label")}>{voiceOpen ? <PhoneOff className="h-5 w-5" /> : <><Mic className="h-5 w-5" aria-hidden="true" /><span className="max-w-[6.5rem] truncate">{t("kh_mic_label")}</span></>}</button>
+            <button type="submit" disabled={busy || !input.trim()} className="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl bg-forest text-ivory disabled:opacity-40" aria-label={t("kh_send")}><Send className="h-4 w-4 rtl:-scale-x-100" /></button>
           </form>
         </div>
       )}
@@ -8558,7 +9035,16 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
   );
 }
 
-function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
+// Typical rate farmers pay in Pakistan (shown instead of "PKR 0/hr" before nearby owners reply)
+const APNI_RANGE_PK = { tractor: [2200, 2800], harvester: [7000, 10000], leveler: [2200, 3000], thresher: [2000, 2800] };
+const catRange = (cat) => {
+  if (CUR.id === "PK" && APNI_RANGE_PK[cat]) return APNI_RANGE_PK[cat];
+  const ms = CUR.catalog.filter((m) => m.cat === cat);
+  return ms.length ? [Math.min(...ms.map((m) => m.min)) / CUR.fx, Math.max(...ms.map((m) => m.max)) / CUR.fx] : null;
+};
+const startRateFor = (cat) => (CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))));
+
+function LiveRequest({ initialCat = null, ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
   const [autoLeadFor, setAutoLeadFor] = useState(null); // request id whose lead was sent automatically
   const startLoc = () => {
     const cand = userLoc || (session && session.location);
@@ -8566,8 +9052,10 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
   };
   const [f, setF] = useState(() => {
     const loc = startLoc();
-    return { category: "harvester", model: "", chosen: false, loc, village: locLabel(loc), hours: 4, date: addDaysISO(1), rate: 8000, rentType: "dry", peak: true, smallholder: false };
+    const pre = initialCat && catalogCats(CUR.id).includes(initialCat) ? initialCat : null;
+    return { category: pre || "harvester", model: "", chosen: !!pre, loc, village: locLabel(loc), hours: 4, date: addDaysISO(1), rate: pre ? startRateFor(pre) : 8000, rentType: "dry", peak: true, smallholder: false };
   });
+  const [showCountry, setShowCountry] = useState(false);
 
   const [req, setReq] = useState(null); // posted request snapshot
   const [scanTier, setScanTier] = useState(1);
@@ -8608,7 +9096,7 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
 
   // Step 1: choose the machine type, then name your price
   const chooseMachine = (cat) => {
-    setF((s) => ({ ...s, category: cat, model: "", chosen: true, rate: CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))) }));
+    setF((s) => ({ ...s, category: cat, model: "", chosen: true, rate: startRateFor(cat) }));
     scrollTo(stepsRef); // smooth hand-off to Step 2 (Location & offer)
   };
   // Step pills are tabs: 1 Machine type, 2 Location & offer, 3 Live offers
@@ -8762,14 +9250,13 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
   });
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="lr-h">
+    <section className="mx-auto max-w-7xl px-4 pb-44 pt-8 sm:px-6 lg:pb-8" aria-labelledby="lr-h">
       <div className="mb-6 overflow-hidden rounded-3xl bg-forest text-ivory">
         <div className="grid gap-4 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold"><Radar className="h-3.5 w-3.5 text-gold" aria-hidden="true" />{t("ab_name")}</p>
             <h2 id="lr-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("lr_title")}</h2>
-            <p className="mt-1 text-sm font-bold text-gold">{t("ab_tag")}</p>
-            <p className="mt-2 max-w-2xl text-ivory/80">{t("lr_sub")}</p>
+            <p className="mt-2 max-w-2xl text-base font-bold text-gold">{t("lr_intro")}</p>
           </div>
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
             {TIERS.map((tr) => (
@@ -8804,7 +9291,9 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
               <p className="text-sm text-soil/80">{t("lr_choose_sub").replace("{country}", t("country_" + CUR.id))}</p>
             </div>
             <div className="flex flex-col items-end gap-1">
-              {setCountry && <CountrySelect t={t} country={country} setCountry={setCountry} id="country-live" />}
+              {setCountry && (country !== "PK" || showCountry
+                ? <CountrySelect t={t} country={country} setCountry={setCountry} id="country-live" />
+                : <button type="button" onClick={() => setShowCountry(true)} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-2 text-xs font-bold text-forest underline-offset-4 hover:underline"><Globe className="h-4 w-4" aria-hidden="true" />{t("country_PK")} · {t("lr_change_country")}</button>)}
               <p className="text-[11px] text-soil/80">{t("cat_rates_note")}</p>
             </div>
           </div>
@@ -8881,7 +9370,11 @@ function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requir
               <Field label={t("lr_hours")} htmlFor="lr-h2"><input id="lr-h2" type="number" min="1" max="16" value={f.hours} onChange={(e) => set("hours", e.target.value)} className={inputCls} dir="ltr" /></Field>
               <Field label={t("lr_date")} htmlFor="lr-d"><input id="lr-d" type="date" min={todayISO()} value={f.date} onChange={(e) => set("date", e.target.value)} className={inputCls} /></Field>
             </div>
-            <Field label={t("lr_rate")} htmlFor="lr-r" hint={t("lr_rate_hint").replace("{r}", pkr(typical))}>
+            <Field label={t("lr_rate")} htmlFor="lr-r" hint={(() => {
+              const rg = catRange(f.category);
+              const mkt = rg ? t("lr_rate_mkt").replace("{r}", rangeText(t, rg[0], rg[1])) : "";
+              return typical > 0 ? [t("lr_rate_hint").replace("{r}", pkr(typical)), mkt].filter(Boolean).join(" · ") : mkt;
+            })()}>
               <div className="flex items-center gap-2">
                 <button type="button" onClick={() => set("rate", Math.max(fromLocal(CUR.nudge), (Number(f.rate) || 0) - fromLocal(CUR.nudge)))} className="rounded-xl border border-soil/20 bg-white p-2.5 text-forest" aria-label="Lower offer"><Minus className="h-4 w-4" /></button>
                 <MoneyInput id="lr-r" min={100} step="50" value={f.rate} onChange={(v) => set("rate", v)} className={inputCls + " text-center text-lg font-extrabold text-forest"} />
@@ -9124,6 +9617,7 @@ function LandAgreementModal({ t, b, dn, onClose }) {
   // both parties' private phone numbers: readable by either party once the lease is accepted (rules: land_contacts / land_request_contacts)
   const [phones, setPhones] = useState({ owner: "", tenant: "" });
   useEffect(() => {
+    if (b.sample) return undefined; // sample preview: nothing to load
     let alive = true;
     const get = (p, k, f) => p.then((d) => { if (alive && d && d[f]) setPhones((s) => ({ ...s, [k]: d[f] })); }).catch(() => {});
     if (b.listingId) get(readDoc(COL.landContacts, b.listingId), "owner", "ownerPhone");
@@ -9145,7 +9639,8 @@ function LandAgreementModal({ t, b, dn, onClose }) {
       <div className="sheet-in max-h-[94vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="ag-h">
         <div className="voucher-card p-6 text-soil">
           <div className="mb-5 flex min-h-[7.5rem] flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-soil/40 px-4 py-5 text-center text-xs font-semibold leading-relaxed text-soil/70"><span>{t("ag_stamp")}</span><span lang="ur" dir="rtl" className="text-sm leading-[2]">اشٹام پیپر یہاں لگائیں</span><span dir="ltr">E-Stamp Paper</span></div>
-          <h2 id="ag-h" className="text-center font-display text-xl font-extrabold text-forest">{t("ag_title")}</h2>
+          <h2 id="ag-h" className="text-center font-display text-xl font-extrabold text-forest">{t("la_title")}</h2>
+          {b.sample && <p className="mx-auto mt-1 w-fit rounded-full bg-gold/30 px-3 py-0.5 text-xs font-extrabold uppercase tracking-wide text-soil">{t("ld_sample_badge")}</p>}
           <p className="text-center text-lg font-bold text-forest" lang="ur" dir="rtl">اقرار نامہ ٹھیکہ اراضی</p>
           <p className="mt-1 text-center text-xs text-soil/80" dir="ltr">{b.id} · {t("ag_date")}: {fmtDate(b.acceptedAt ? new Date(b.acceptedAt).toISOString().slice(0, 10) : todayISO())}</p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -9352,6 +9847,9 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   };
 
   const tabs = [["find", t("ld_tab_find"), Search], ["list", t("ld_tab_list"), Plus], ["boli", t("ld_tab_boli"), Megaphone], ["mine", t("ld_tab_mine"), ClipboardList]];
+  // a filled-in example so visitors can see the bilingual stamp-paper agreement before they lease
+  const sampleLease = { id: "LB-SAMPLE", sample: true, ownerName: "Muhammad Aslam", tenantName: "Ghulam Rasool", village: "Chak 45/2L", tehsil: "", district: "Okara", ownerDistrict: "Okara", tenantDistrict: "Sahiwal",
+    acres: 5, water: "canal", soil: "loam", months: 12, startDate: addDaysISO(30), endDate: addMonthsISO(addDaysISO(30), 12), total: 400000, payment: "advance" };
   const statusPill = (s) => <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${s === "accepted" ? "bg-leaf/15 text-forest" : s === "declined" ? "bg-red-100 text-red-800" : "bg-gold/25 text-soil"}`}>{t(s === "accepted" ? "ld_accepted" : s === "declined" ? "ld_declined" : "ld_pending")}</span>;
 
   return (
@@ -9361,14 +9859,25 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
         <h2 id="ld-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("ld_title")}</h2>
         <p className="mt-2 max-w-2xl text-ivory/80">{t("ld_sub")}</p>
       </div>
+      <div className="mb-5 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <ol className="grid grid-cols-3 gap-2" aria-label={t("ld_how_title")}>
+          {[["ld_how1", Plus], ["ld_how2", Handshake], ["ld_how3", Printer]].map(([k, Icon], i) => (
+            <li key={k} className="flex flex-col items-center gap-1.5 rounded-xl bg-ivory p-2.5 text-center">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-forest text-gold"><Icon className="h-4 w-4" aria-hidden="true" /></span>
+              <span className="text-xs font-bold leading-snug text-forest sm:text-sm"><span dir="ltr">{i + 1}.</span>{" "}{t(k)}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-3 rounded-xl bg-gold/15 p-2.5 text-center text-sm font-bold text-soil">{t("ld_fee_example")}</p>
+        <button type="button" onClick={() => setAgreement(sampleLease)} className="mt-3 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-forest/30 bg-white px-4 py-2 text-sm font-bold text-forest hover:bg-forest/5"><Eye className="h-4 w-4" aria-hidden="true" />{t("ld_sample_btn")}</button>
+      </div>
       <div className="mb-5"><EcoBenefitCard t={t} active={ecoActive} /></div>
-      <div className="relative mb-5">
-        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pe-10 sm:mx-0 sm:px-0 sm:pe-0" role="tablist">
+      <div className="mb-5">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap" role="tablist">
           {tabs.map(([k, label, Icon]) => (
-            <button key={k} role="tab" aria-selected={sub === k} onClick={() => setSub(k)} className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === k ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}><Icon className="h-4 w-4" aria-hidden="true" />{label}</button>
+            <button key={k} role="tab" aria-selected={sub === k} onClick={() => setSub(k)} className={`flex min-h-[44px] min-w-0 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-bold ring-1 sm:px-4 ${sub === k ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}><Icon className="h-4 w-4" aria-hidden="true" />{label}</button>
           ))}
         </div>
-        <span className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-l from-ivory to-transparent sm:hidden rtl:bg-gradient-to-r" aria-hidden="true" />
       </div>
 
       {sub === "find" && (
@@ -9381,7 +9890,9 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             <Field label={t("ld_filter_budget")} htmlFor="ldf-b"><MoneyInput id="ldf-b" min={0} step="500" value={fl.budget} onChange={(v) => setFl((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
           </aside>
           <div className="min-w-0 space-y-3">
-            {results.length === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
+            {/* ask for the district first; the consultant card follows once we know where to look */}
+            {!fl.loc && <p className="flex items-start gap-2 rounded-2xl bg-gold/20 p-3 text-sm font-semibold text-soil ring-1 ring-gold/50"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-red-700" aria-hidden="true" />{t("ld_pick_district")}</p>}
+            {fl.loc && results.length === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
             <p className="text-sm font-semibold text-soil/80" aria-live="polite">{t(results.length === 1 ? "ld_results_one" : "ld_results").replace("{n}", results.length)}</p>
             {results.length === 0 ? <p className="rounded-2xl border border-dashed border-soil/25 bg-white p-8 text-center text-sm text-soil/80">{t("ld_none")}</p> : (
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -9541,6 +10052,8 @@ function GovtPortal({ t }) {
         <span className="inline-flex items-center gap-2 rounded-full bg-gold px-3 py-1 text-xs font-extrabold text-soil">{t("soon")}</span>
         <h2 id="gv-h" className="mt-4 font-display text-2xl font-extrabold sm:text-3xl">{t("gv_title")}</h2>
         <p className="mt-2 max-w-2xl text-ivory/80">{t("gv_sub")}</p>
+        <a href={`https://wa.me/${CONSULTANT.primary.wa}?text=${encodeURIComponent(t("gv_notify_msg"))}`} target="_blank" rel="noopener noreferrer"
+          className="mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-gold px-4 py-2.5 text-sm font-extrabold text-soil shadow-lg transition hover:brightness-105"><MessageCircle className="h-4 w-4" aria-hidden="true" />{t("gv_notify")}</a>
       </div>
       <ul className="mt-6 grid gap-4 md:grid-cols-3">
         {pillars.map(([Icon, title, sub], i) => (
@@ -9558,7 +10071,7 @@ function GovtPortal({ t }) {
 
 /* ------------------------------------------------------------------ */
 /* Keypad-phone helpline banner (offline access)                       */
-/* Helpline 0800-24741. USSD short code: not allocated yet (shows "coming soon"). Avoid  */
+/* Phone help: the Agri-Share consultants (0322-4729249 / 0370-0318574). USSD: not allocated yet. Avoid */
 /* *786#, which is already used by Easypaisa (Telenor) and JazzCash.   */
 /* ------------------------------------------------------------------ */
 const IVR_SCRIPT = {
@@ -9585,7 +10098,8 @@ function KeypadBanner({ t, setTab }) {
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-2xl bg-ivory/10 px-4 py-3 text-center ring-1 ring-ivory/20">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/80">{t("kp_toll")}</p>
-              <p className="font-mono text-xl font-extrabold text-gold" dir="ltr">0800-24741</p>
+              <a href={`tel:${CONSULTANT.primary.tel}`} className="block font-mono text-lg font-extrabold text-gold underline-offset-4 hover:underline" dir="ltr">{CONSULTANT.primary.label}</a>
+              <a href={`tel:${CONSULTANT.secondary.tel}`} className="block font-mono text-sm font-bold text-ivory/90 underline-offset-4 hover:underline" dir="ltr">{CONSULTANT.secondary.label}</a>
             </div>
             <div className="rounded-2xl bg-ivory/10 px-4 py-3 text-center ring-1 ring-ivory/20">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-ivory/80">{t("kp_ussd")}</p>
@@ -9641,6 +10155,34 @@ const MANDI_BUYERS = {
   cotton: [["Sahiwal Ginning Factory", "ginning"], ["Chichawatni Cotton Ginners", "ginning"], ["Faisalabad Textile Buyers", "bulk"], ["Okara Ginning & Pressing", "ginning"]],
 };
 const round10 = (n) => Math.round(n / 10) * 10;
+const CROP_LOCAL = { wheat: "Gandum", rice: "Chawal", maize: "Makai", cotton: "Kapas" };
+// drawn crop tiles: no download needed, so they show at once even on a weak 3G signal
+function CropArt({ crop, className = "" }) {
+  const sky = { wheat: ["#f6d77a", "#e6b325"], rice: ["#cfe8a9", "#7fb547"], maize: ["#f9e3a1", "#d9a21b"], cotton: ["#dbe9f4", "#9cc3de"] }[crop] || ["#cfe8a9", "#67A834"];
+  const id = "crop-" + crop;
+  const stalks = Array.from({ length: 9 }, (_, i) => 20 + i * 35);
+  return (
+    <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" className={className} role="img" aria-hidden="true">
+      <defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={sky[0]} /><stop offset="1" stopColor={sky[1]} /></linearGradient></defs>
+      <rect width="320" height="200" fill={`url(#${id})`} />
+      <circle cx="268" cy="40" r="20" fill="#fff6d6" opacity="0.8" />
+      <path d="M0 150 Q80 135 160 148 T320 142 V200 H0Z" fill="#5C3A21" opacity="0.35" />
+      {crop === "cotton" && stalks.map((x, i) => (
+        <g key={i}><path d={`M${x} 200 L${x} ${120 + (i % 3) * 8}`} stroke="#3f6b2a" strokeWidth="3" />
+          <circle cx={x - 7} cy={118 + (i % 3) * 8} r="9" fill="#fff" /><circle cx={x + 6} cy={110 + (i % 3) * 8} r="10" fill="#fff" /><circle cx={x + 2} cy={124 + (i % 3) * 8} r="8" fill="#f5f5f0" /></g>
+      ))}
+      {crop === "maize" && stalks.map((x, i) => (
+        <g key={i}><path d={`M${x} 200 L${x} ${90 + (i % 3) * 10}`} stroke="#4c8a2b" strokeWidth="4" />
+          <path d={`M${x} ${140 + (i % 2) * 6} q-22 -10 -26 -30 q18 6 26 22`} fill="#67A834" />
+          <ellipse cx={x + 9} cy={128 + (i % 3) * 6} rx="6" ry="15" fill="#f4c430" stroke="#c9961a" /></g>
+      ))}
+      {(crop === "wheat" || crop === "rice") && stalks.map((x, i) => (
+        <g key={i}><path d={`M${x} 200 Q${x + 4} 150 ${x + (crop === "rice" ? 14 : 2)} ${100 + (i % 3) * 8}`} stroke={crop === "rice" ? "#4c8a2b" : "#b8860b"} strokeWidth="3" fill="none" />
+          {Array.from({ length: 5 }, (_, k) => <ellipse key={k} cx={x + (crop === "rice" ? 14 + k * 2 : 2)} cy={104 + (i % 3) * 8 + k * 9} rx="4.5" ry="7" fill={crop === "rice" ? "#d9c46a" : "#e6b325"} stroke={crop === "rice" ? "#a8933a" : "#a37410"} strokeWidth="1" transform={`rotate(${k % 2 ? 25 : -25} ${x + 2} ${104 + (i % 3) * 8 + k * 9})`} />)}</g>
+      ))}
+    </svg>
+  );
+}
 
 function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, saveMandi, settleFinancing, userLoc, setTab, toast, demoMode = false }) {
   const startLoc = userLoc || (session && session.location) || null; // no sample village pre-filled
@@ -9741,12 +10283,32 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
             <h2 id="am-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("am_title")}</h2>
             <p className="mt-2 max-w-2xl text-ivory/80">{t("am_sub")}</p>
           </div>
-          <div className="rounded-2xl bg-ivory/10 p-4 ring-1 ring-ivory/20">
+          {creditTotal > 0 && <div className="rounded-2xl bg-ivory/10 p-4 ring-1 ring-ivory/20">
             <p className="text-xs text-ivory/80">{t("am_credit")}</p>
             <p className="font-display text-2xl font-extrabold text-gold" dir="ltr">{pkr(creditTotal)}</p>
             <p className="text-[11px] text-ivory/80">{pendingCredit.length} {t("am_credit_n")}</p>
-          </div>
+          </div>}
         </div>
+      </div>
+
+      <div className="mb-6">
+        <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
+          <h3 className="font-display text-lg font-extrabold text-forest">{t("am_tiles_t")}</h3>
+          <span className="rounded-full bg-ivory px-2.5 py-1 text-[11px] font-bold text-soil ring-1 ring-soil/15">{t("am_updated")}</span>
+        </div>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {Object.keys(CROPS).map((c) => (
+            <button type="button" key={c} onClick={() => { if (!post) set("crop", c); }} aria-pressed={f.crop === c}
+              className={`overflow-hidden rounded-2xl bg-white text-start shadow-sm ring-1 transition hover:-translate-y-0.5 hover:shadow-md ${f.crop === c ? "ring-2 ring-forest" : "ring-soil/10"}`}>
+              <CropArt crop={c} className="aspect-[16/10] w-full" />
+              <span className="block p-3">
+                <span className="block text-sm font-extrabold text-forest">{t("crop_" + c)}{lang === "en" ? <span className="font-semibold text-soil/80"> / {CROP_LOCAL[c]}</span> : null}</span>
+                <span className="block font-display text-lg font-extrabold text-soil" dir="ltr">{pkr(CROPS[c].bench)}<span className="text-xs font-semibold text-soil/80"> {t("am_per_maund")}</span></span>
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="mt-2 text-[11px] text-soil/80">{t("am_tiles_note")}</p>
       </div>
 
       <div className="mb-6 rounded-2xl border-2 border-leaf/50 bg-leaf/10 p-4">
@@ -9769,7 +10331,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
               <div className="grid grid-cols-4 gap-2">
                 {Object.keys(CROPS).map((c) => (
                   <button type="button" key={c} onClick={() => set("crop", c)} aria-pressed={f.crop === c}
-                    className={`rounded-xl px-1 py-2.5 text-xs font-bold ring-1 ${f.crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t("crop_" + c)}</button>
+                    className={`min-h-[44px] rounded-xl px-1 py-2.5 text-xs font-bold ring-1 ${f.crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t("crop_" + c)}</button>
                 ))}
               </div>
             </fieldset>
@@ -10424,7 +10986,7 @@ function AdminConsole({ archive, bookingContacts = {}, demandContacts = {}, reqC
       <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
           <button key={key} role="tab" aria-selected={sub === key} onClick={() => setSub(key)}
-            className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
+            className={`flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
             <Icon className="h-4 w-4" aria-hidden="true" />{label}{badge ? <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{badge}</span> : null}
           </button>
         ))}
@@ -11267,7 +11829,7 @@ function AccountMenu({ t, session, onSignIn, onSignUp, onSignOut }) {
   if (!session) {
     return (
       <div className="flex items-center gap-1.5">
-        <button onClick={onSignIn} className="inline-flex items-center gap-1.5 rounded-xl border border-forest/15 bg-white px-2.5 py-2 text-sm font-bold text-forest hover:bg-forest/5"><LogIn className="h-4 w-4" aria-hidden="true" /><span className="text-xs sm:text-sm">{t("auth_signin")}</span></button>
+        <button onClick={onSignIn} aria-label={t("auth_signin")} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-forest/15 bg-white px-2.5 py-2 text-sm font-bold text-forest hover:bg-forest/5"><LogIn className="h-4 w-4" aria-hidden="true" /><span className="hidden text-xs min-[400px]:inline sm:text-sm">{t("auth_signin")}</span></button>
         <button onClick={onSignUp} className="hidden items-center gap-1.5 rounded-xl bg-gold px-3 py-2 text-sm font-bold text-soil hover:brightness-105 sm:inline-flex"><UserPlus className="h-4 w-4" aria-hidden="true" />{t("auth_signup")}</button>
       </div>
     );
@@ -11376,13 +11938,13 @@ const FOOTER_INFO = {
       "Farmers search nearby machines or post a request with the hourly rate they want to pay.",
       "Verified owners respond. You see the full cost before you agree: rent, transport, diesel and the platform fee.",
       "Confirm the booking and pay with EasyPaisa, JazzCash or cash through your Agri-Agent. Rate the owner after the job.",
-      "Owners list machines from the Owner Portal. Every listing is reviewed by the Agri-Share team before it goes live.",
+      "Owners list machines from the Owner Portal. Listings go live immediately with clear Verified / Unverified badges and direct consultant support.",
     ],
   },
   safety: {
     title: "Safety & Escrow Policy",
     body: [
-      "Every machine listing is reviewed before it appears in the marketplace.",
+      "Listings go live immediately with a clear Verified or Unverified badge. The Agri-Share team checks owners and marks them Verified.",
       "Each booking has a booking ID and verification badge. Check both with the owner at hand-over.",
       "Agree hours, rate and fuel terms in the app before work starts, so both sides have the same record.",
       "Escrow (holding your payment until the job is done) is being introduced with our payment partners. Where it is not yet available, pay the owner only after the machine arrives and work begins.",
@@ -11394,7 +11956,7 @@ const FOOTER_INFO = {
     body: [
       "Agri-Agents are village shopkeepers and community members who book machines for farmers without smartphones.",
       "Agents search the marketplace, submit bookings on a farmer's behalf and help with cash payments.",
-      "Agents earn a commission on every completed booking. Call 0800-24741 or open the Agri-Agent & USSD tab to get started.",
+      "Agents earn a commission on every completed booking. Call 0322-4729249 or open the Agri-Agent & USSD tab to get started.",
     ],
   },
 };
@@ -11421,8 +11983,8 @@ function Footer({ t, setTab }) {
               <Icon className="h-5 w-5 shrink-0 text-gold" aria-hidden="true" />{FOOTER_INFO[k].title}
             </button>
           ))}
-          <a href="tel:080024741" className="flex items-center gap-3 rounded-2xl bg-gold/15 p-4 text-sm font-bold ring-1 ring-gold/40 transition hover:bg-gold/25">
-            <Headphones className="h-5 w-5 shrink-0 text-gold" aria-hidden="true" /><span>Support & Helpline: <span className="font-mono">0800-24741</span></span>
+          <a href="tel:+923224729249" className="flex items-center gap-3 rounded-2xl bg-gold/15 p-4 text-sm font-bold ring-1 ring-gold/40 transition hover:bg-gold/25">
+            <Headphones className="h-5 w-5 shrink-0 text-gold" aria-hidden="true" /><span>{t("ft_support")}: <span className="font-mono" dir="ltr">0322-4729249 · 0370-0318574</span></span>
           </a>
         </nav>
       </div>
@@ -11448,7 +12010,7 @@ function Footer({ t, setTab }) {
             </ul>
             <div className="mt-5 flex flex-wrap gap-2">
               {info === "agent" && setTab && <button type="button" onClick={() => { setInfo(null); setTab("agri-agent"); }} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">Open Agri-Agent & USSD</button>}
-              <a href="tel:080024741" className="inline-flex items-center gap-2 rounded-xl border border-soil/20 px-4 py-2 text-sm font-bold text-forest"><Phone className="h-4 w-4" aria-hidden="true" />0800-24741</a>
+              <a href="tel:+923224729249" className="inline-flex items-center gap-2 rounded-xl border border-soil/20 px-4 py-2 text-sm font-bold text-forest"><Phone className="h-4 w-4" aria-hidden="true" /><span dir="ltr">0322-4729249</span></a>
             </div>
           </div>
         </div>
@@ -11910,6 +12472,8 @@ function App() {
     });
   }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified, listings]); // eslint-disable-line
   const [leads, setLeads] = useState([]);
+  const [liveCat, setLiveCat] = useState(null);
+  useEffect(() => { if (tab !== "live-request") setLiveCat(null); }, [tab]); // a picked "Popular machine" applies to one visit only
   useEffect(() => {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setLeads([]); return undefined; }
     return watchCollection(COL.leads, (list) => setLeads(list), (e) => console.warn("[Agri-Share] Leads listener:", e && e.code));
@@ -12017,6 +12581,7 @@ function App() {
   const voucherBooking = voucherId ? bookings.find((b) => b.id === voucherId) : null;
   const activeCount = shownBookings.filter((b) => ["sent", "countered", "confirmed", "completed"].includes(b.status) && session && (b.channel === "ussd" || b.own)).length;
   const showTab = tab === "members" && !accounts.cloudOwner ? "marketplace" : tab;
+  // machine chosen from a "Popular machines" card: Apni Boli opens on Step 2 with it
 
   return (
     <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${lang === "ur" || lang === "pa" ? "font-nastaliq" : langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
@@ -12027,14 +12592,15 @@ function App() {
           <>
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} onLand={() => setTab("land")} />
             <TrustStrip t={t} />
-            <KeypadBanner t={t} setTab={setTab} />
-            <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={() => setTab("live-request")} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
+            <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
               demoMode={demoMode} fallbackProps={{ t, dn, lang, session, requireAuth, saveDemand, toast, dieselPrice, onSendLead: sendLead }} />
+            <KeypadBanner t={t} setTab={setTab} />
+            <div className="h-20 lg:h-4" aria-hidden="true" />
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
         {showTab === "owner-portal" && <OwnerPortal archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
-        {showTab === "live-request" && <LiveRequest ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
+        {showTab === "live-request" && <LiveRequest key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
         {showTab === "admin" && <AdminPanel archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
@@ -12042,7 +12608,7 @@ function App() {
         {showTab === "land" && <LandLease archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBooking} sendLead={sendLead} ecoActive={ecoActive} />}
         {showTab === "govt" && <GovtPortal t={t} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
-        {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}
+        {showTab === "agri-agent" && <AgentTab lang={lang} setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}
       </main>
       <Footer t={t} setTab={setTab} />
       {bookingTarget && (
@@ -12051,6 +12617,7 @@ function App() {
       )}
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
       <KisanHelper t={t} lang={lang} listings={publicListings} open={helperOpen} setOpen={setHelperOpen} session={session} dieselPrice={dieselPrice} />
+      {!helperOpen && <ConsultBar t={t} lang={lang} />}
       <BottomNav t={t} adminCount={adminCount} tab={showTab} setTab={setTab} tabs={tabs} activeCount={activeCount} pendingCount={pendingCount} activityCount={activityCount} onActivity={() => setActivityOpen(true)} />
       <ActivityDrawer t={t} dn={dn} open={activityOpen} onClose={() => setActivityOpen(false)} bookings={myBookings} requests={myRequests} deals={myDeals} onVoucher={(id) => { setActivityOpen(false); setVoucherId(id); }} setTab={setTab} />
       {voucherBooking && <VoucherModal b={voucherBooking} t={t} dn={dn} onClose={() => setVoucherId(null)} updateBooking={updateBooking} />}
