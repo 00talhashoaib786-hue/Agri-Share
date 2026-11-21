@@ -366,6 +366,8 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    tour_btn_s: "Guide",
+    am_own_offer_pill: "Farmer's asking rate. Make your own offer · Apni boli lagayein",
     reset_done: "Filters & location reset",
     loc_searching: "Searching places...",
     loc_osm: "Places from OpenStreetMap",
@@ -1486,6 +1488,8 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    tour_btn_s: "رہنمائی",
+    am_own_offer_pill: "یہ کسان کا مانگا ہوا ریٹ ہے۔ اپنی بولی لگائیں، جو مناسب لگے پیشکش کریں",
     reset_done: "فلٹر اور مقام ری سیٹ ہو گئے",
     loc_searching: "مقامات تلاش ہو رہے ہیں...",
     loc_osm: "مقامات اوپن اسٹریٹ میپ سے",
@@ -2606,6 +2610,8 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    tour_btn_s: "رہنمائی",
+    am_own_offer_pill: "ایہہ کسان دا منگیا ریٹ اے۔ اپنی بولی لاؤ، جیہڑی مناسب لگے پیشکش کرو",
     reset_done: "فلٹر تے تھاں ری سیٹ ہو گئے",
     loc_searching: "تھاواں لبھیاں جا رہیاں نیں...",
     loc_osm: "تھاواں اوپن اسٹریٹ میپ توں",
@@ -3626,6 +3632,8 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    tour_btn_s: "رهنمائي",
+    am_own_offer_pill: "هي هاري جو گهريل ريٽ آهي. پنهنجي بولي لڳايو، جيڪا مناسب لڳي آڇ ڪريو",
     reset_done: "فلٽر ۽ هنڌ ري سيٽ ٿي ويا",
     loc_searching: "هنڌ ڳولها پيا وڃن...",
     loc_osm: "هنڌ اوپن اسٽريٽ ميپ مان",
@@ -4647,6 +4655,8 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    tour_btn_s: "لارښود",
+    am_own_offer_pill: "دا د بزګر غوښتل شوې بیه ده. خپله بولي ولګوئ، هر مناسب وړاندیز وکړئ",
     reset_done: "فلټرونه او ځای بېرته تنظیم شول",
     loc_searching: "ځایونه لټول کېږي...",
     loc_osm: "ځایونه له اوپن سټریټ میپ څخه",
@@ -5381,6 +5391,8 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    tour_btn_s: "رہشونی",
+    am_own_offer_pill: "اے بزگرءِ لوٹتگیں ریٹ اِنت۔ وتی بولی بلگائیں، ہر مناسبیں پیشکش بکنیں",
     reset_done: "فلٹر و جاگہ ری سیٹ بوتنت",
     loc_searching: "جاگہ شوہاز بئیگ ءَ اَنت...",
     loc_osm: "جاگہ اوپن اسٹریٹ میپ ءَ چہ",
@@ -6862,7 +6874,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
         </button>
         <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
           {onTour && (
-            <button type="button" onClick={onTour} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:px-3" aria-label={t("tour_btn")}>
+            <button type="button" onClick={onTour} className="hidden min-h-[44px] items-center gap-1.5 rounded-full md:inline-flex border border-forest/15 bg-white/80 px-2.5 py-2 text-sm font-bold text-forest shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:px-3" aria-label={t("tour_btn")}>
               <Compass className="h-4 w-4" aria-hidden="true" /><span className="hidden text-xs xl:inline xl:text-sm">{t("tour_btn")}</span>
             </button>
           )}
@@ -6891,7 +6903,14 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
       </nav>
     </header>
     {/* phones: country & language scroll away with the page so the sticky bar stays one compact row */}
-    <div className="w-full border-b border-forest/5 bg-white/80 px-4 py-2 md:hidden"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
+    <div className="flex w-full items-center gap-2 border-b border-forest/5 bg-white/80 px-4 py-2 md:hidden">
+      <div className="min-w-0 flex-1"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
+      {onTour && (
+        <button type="button" onClick={onTour} className="inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 py-1.5 text-xs font-bold text-forest shadow-sm transition hover:shadow-md" aria-label={t("tour_btn")} title={t("tour_btn")}>
+          <Compass className="h-4 w-4" aria-hidden="true" /><span className="whitespace-nowrap rtl:leading-[2]">{t("tour_btn_s")}</span>
+        </button>
+      )}
+    </div>
     </>
   );
 }
@@ -12369,7 +12388,10 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
                         {mine.status === "accepted" && <CropSellerContact t={t} cropId={p.id} />}
                       </div>
                     ) : (
+                      <>
+                      <p className="mb-1.5 flex items-start gap-1.5 rounded-lg bg-gold/15 px-2.5 py-1.5 text-[11px] font-semibold leading-snug text-soil ring-1 ring-gold/30 rtl:leading-[2]"><Tag className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" aria-hidden="true" /><span>{t("am_own_offer_pill")}</span></p>
                       <button type="button" onClick={() => requireAuth(() => setOfferFor(p))} className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-3 text-sm font-bold text-ivory"><HandCoins className="h-4 w-4" aria-hidden="true" />{t("am_offer")}</button>
+                      </>
                     )}
                   </div>
                 </div>
