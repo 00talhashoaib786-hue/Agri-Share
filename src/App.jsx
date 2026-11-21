@@ -34,6 +34,7 @@ import {
   Delete, PhoneCall, PhoneOff, CircleCheck, Hourglass, Ban, BadgeCheck, SlidersHorizontal,
   RotateCcw, Fan, Minus, GraduationCap, HandCoins, Signal, Battery, Eye, EyeOff, Handshake,
   Coins, ArrowRight, Megaphone, LogIn, LogOut, UserPlus, KeyRound, Mail, Lock, UserCircle2, Copy, MessageSquareText, Tag, Repeat, Database, Radar, Gauge, Siren, TriangleAlert, Route, Zap, LocateFixed, Crosshair, Mic, MicOff, Volume2, VolumeX, AudioLines, PlayCircle, Drone, Ruler, Shovel, Globe, Droplets, Camera, Activity, Headphones, Percent, Printer, Download, Ticket, Inbox, Menu,
+  Video, Play, Upload, Landmark, Receipt, ExternalLink,
   Archive as ArchiveIcon, History as HistoryIcon,
 } from "lucide-react";
 
@@ -281,6 +282,74 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    cs_comm_t: "Agri-Share Platform Commission",
+    cs_comm_s: "Auto-deducted platform facilitation fee payable to Agri-Share Official Account",
+    cs_net_t: "Net Owner Payout",
+    cs_net_s: "Direct payout to Machinery / Land Owner",
+    ca_title: "Agri-Share Official Collection Account",
+    ca_sub: "Pay the platform commission only to this account, then upload the receipt.",
+    ca_bank: "Bank name",
+    ca_acc_title: "Account title",
+    ca_iban: "IBAN / Account number",
+    ca_jazz: "JazzCash",
+    ca_easy: "EasyPaisa",
+    ca_raast: "Raast ID",
+    ca_none: "The official account details will be shared by Agri-Share support. Call",
+    rc_upload: "Upload Commission Payment Receipt",
+    rc_replace: "Replace receipt",
+    rc_pending: "Receipt under review",
+    rc_verified: "Commission received",
+    rc_title: "Commission payment receipt",
+    rc_amount: "Amount paid (PKR)",
+    rc_ref: "Transaction ID (optional)",
+    rc_photo: "Receipt photo",
+    rc_pick: "Choose photo",
+    rc_send: "Submit receipt",
+    rc_sent: "Receipt submitted. Agri-Share will verify it soon.",
+    rc_err: "Could not save. Please check your connection and try again.",
+    rc_need_photo: "Please add a photo of the receipt.",
+    rc_not_party: "Only the farmer or the owner of this deal can do this.",
+    pf_title: "Verified Work & Handover Proofs",
+    pf_add: "Add Photo / Video Proof",
+    pf_none: "No proofs yet. Add a photo before and after the work.",
+    pf_stage: "Stage",
+    pf_st_before: "Before Work / Handover",
+    pf_st_after: "After Work / Completion",
+    pf_st_meter: "Meter / Fuel Reading",
+    pf_st_land: "Land Condition",
+    pf_file: "Photo or short video",
+    pf_file_hint: "Photos are compressed to 120 KB. Videos up to 650 KB. For a longer video, paste a link.",
+    pf_url: "Or video link (YouTube, Google Drive)",
+    pf_note: "Note (optional)",
+    pf_save: "Save proof",
+    pf_saved: "Proof saved. Both sides of the deal can see it.",
+    pf_err: "Could not save the proof. Please check your connection and try again.",
+    pf_need: "Add a photo, a short video or a video link.",
+    pf_video_big: "This video is too large. Please paste a video link instead.",
+    pf_bad_url: "Please enter a full link starting with https://",
+    pf_by_farmer: "Farmer / tenant",
+    pf_by_owner: "Owner",
+    pf_by_admin: "Agri-Share",
+    pf_open_link: "Open video link",
+    cl_tab: "Commission",
+    cl_title: "Commission Due Wallet",
+    cl_sub: "Commission on deals the farmer paid you in cash. Settle it anytime: pay the official account below and upload the receipt.",
+    cl_due: "Due",
+    cl_review: "Under review",
+    cl_paid: "Paid",
+    cl_none: "No commission due. Confirmed deals will show here.",
+    cl_machine: "Machinery",
+    cl_land: "Land lease",
+    ad_cp_t: "Official Collection Account",
+    ad_cp_sub: "Shown on every bill. Only the founder can change it.",
+    ad_cp_save: "Save account",
+    ad_cp_saved: "Account saved.",
+    ad_rc_t: "Commission receipts",
+    ad_rc_sub: "Check each receipt against the bank or wallet statement, then mark it received.",
+    ad_rc_none: "No receipts yet.",
+    ad_rc_verify: "Verify Commission Received",
+    ad_rc_from: "From",
+    ad_founder_only: "Only the founder can change this.",
     "hub_title": "All Agri-Share Services",
     "hub_sub": "Tap any service to open it",
     "hub_live-request_t": "Post a Request (Apni Boli)",
@@ -304,7 +373,7 @@ const T = {
     am_ok_qty: "Quantity",
     am_ok_rate: "Asking rate",
     am_ok_total: "Total expected payout",
-    am_ok_eta: "Buyers and mills usually respond within 2 to 6 hours. You can also call or WhatsApp Agri-Share support anytime.",
+    am_ok_eta: "We aim to respond within 2 to 6 hours. You can also call or WhatsApp Agri-Share support anytime.",
     am_ok_view: "View My Crop Listings",
     am_ok_another: "Post Another Crop",
     vc_mic_blocked: "Microphone permission denied. Allow the microphone in your browser settings, then tap to speak again.",
@@ -1258,6 +1327,74 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    cs_comm_t: "ایگری شیئر پلیٹ فارم کمیشن",
+    cs_comm_s: "پلیٹ فارم کی سہولت فیس، خود بخود الگ، ایگری شیئر کے سرکاری اکاؤنٹ میں جمع ہو گی",
+    cs_net_t: "مالک کو خالص ادائیگی",
+    cs_net_s: "مشینری یا زمین کے مالک کو براہ راست ادائیگی",
+    ca_title: "ایگری شیئر کا سرکاری وصولی اکاؤنٹ",
+    ca_sub: "پلیٹ فارم کمیشن صرف اسی اکاؤنٹ میں جمع کرائیں، پھر رسید اپ لوڈ کریں۔",
+    ca_bank: "بینک کا نام",
+    ca_acc_title: "اکاؤنٹ ٹائٹل",
+    ca_iban: "IBAN / اکاؤنٹ نمبر",
+    ca_jazz: "جاز کیش",
+    ca_easy: "ایزی پیسہ",
+    ca_raast: "راست آئی ڈی",
+    ca_none: "سرکاری اکاؤنٹ کی تفصیل ایگری شیئر سپورٹ دے گی۔ کال کریں",
+    rc_upload: "کمیشن ادائیگی کی رسید اپ لوڈ کریں",
+    rc_replace: "رسید بدلیں",
+    rc_pending: "رسید کی جانچ جاری ہے",
+    rc_verified: "کمیشن وصول ہو گیا",
+    rc_title: "کمیشن ادائیگی کی رسید",
+    rc_amount: "ادا شدہ رقم (روپے)",
+    rc_ref: "ٹرانزیکشن آئی ڈی (اختیاری)",
+    rc_photo: "رسید کی تصویر",
+    rc_pick: "تصویر منتخب کریں",
+    rc_send: "رسید جمع کرائیں",
+    rc_sent: "رسید جمع ہو گئی۔ ایگری شیئر جلد اس کی تصدیق کرے گا۔",
+    rc_err: "محفوظ نہیں ہو سکا۔ انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔",
+    rc_need_photo: "براہ کرم رسید کی تصویر لگائیں۔",
+    rc_not_party: "یہ کام صرف اس سودے کا کسان یا مالک کر سکتا ہے۔",
+    pf_title: "تصدیق شدہ کام اور حوالگی کے ثبوت",
+    pf_add: "تصویر / ویڈیو ثبوت لگائیں",
+    pf_none: "ابھی کوئی ثبوت نہیں۔ کام سے پہلے اور بعد کی تصویر لگائیں۔",
+    pf_stage: "مرحلہ",
+    pf_st_before: "کام / حوالگی سے پہلے",
+    pf_st_after: "کام کے بعد / مکمل",
+    pf_st_meter: "میٹر / ڈیزل ریڈنگ",
+    pf_st_land: "زمین کی حالت",
+    pf_file: "تصویر یا مختصر ویڈیو",
+    pf_file_hint: "تصویر 120 KB تک چھوٹی کی جاتی ہے۔ ویڈیو 650 KB تک۔ لمبی ویڈیو کا لنک لگائیں۔",
+    pf_url: "یا ویڈیو لنک (یوٹیوب، گوگل ڈرائیو)",
+    pf_note: "نوٹ (اختیاری)",
+    pf_save: "ثبوت محفوظ کریں",
+    pf_saved: "ثبوت محفوظ ہو گیا۔ سودے کے دونوں فریق اسے دیکھ سکتے ہیں۔",
+    pf_err: "ثبوت محفوظ نہیں ہو سکا۔ انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔",
+    pf_need: "تصویر، مختصر ویڈیو یا ویڈیو لنک لگائیں۔",
+    pf_video_big: "یہ ویڈیو بہت بڑی ہے۔ براہ کرم ویڈیو کا لنک لگائیں۔",
+    pf_bad_url: "براہ کرم https:// سے شروع ہونے والا پورا لنک لکھیں",
+    pf_by_farmer: "کسان / ٹھیکیدار",
+    pf_by_owner: "مالک",
+    pf_by_admin: "ایگری شیئر",
+    pf_open_link: "ویڈیو لنک کھولیں",
+    cl_tab: "کمیشن",
+    cl_title: "کمیشن واجب الادا والٹ",
+    cl_sub: "ان سودوں کا کمیشن جن کی رقم کسان نے آپ کو نقد دی۔ کسی بھی وقت ادا کریں: نیچے والے سرکاری اکاؤنٹ میں جمع کرا کے رسید اپ لوڈ کریں۔",
+    cl_due: "واجب",
+    cl_review: "جانچ میں",
+    cl_paid: "ادا شدہ",
+    cl_none: "کوئی کمیشن واجب نہیں۔ تصدیق شدہ سودے یہاں نظر آئیں گے۔",
+    cl_machine: "مشینری",
+    cl_land: "زمین ٹھیکہ",
+    ad_cp_t: "سرکاری وصولی اکاؤنٹ",
+    ad_cp_sub: "ہر بل پر دکھایا جاتا ہے۔ صرف بانی اسے بدل سکتے ہیں۔",
+    ad_cp_save: "اکاؤنٹ محفوظ کریں",
+    ad_cp_saved: "اکاؤنٹ محفوظ ہو گیا۔",
+    ad_rc_t: "کمیشن کی رسیدیں",
+    ad_rc_sub: "ہر رسید کو بینک یا والٹ اسٹیٹمنٹ سے ملائیں، پھر وصول شدہ لگائیں۔",
+    ad_rc_none: "ابھی کوئی رسید نہیں۔",
+    ad_rc_verify: "کمیشن وصولی کی تصدیق کریں",
+    ad_rc_from: "بھیجنے والا",
+    ad_founder_only: "صرف بانی اسے بدل سکتے ہیں۔",
     "hub_title": "ایگری شیئر کی تمام سروسز",
     "hub_sub": "کھولنے کے لیے کسی بھی سروس پر ٹیپ کریں",
     "hub_live-request_t": "درخواست دیں (اپنی بولی)",
@@ -1281,7 +1418,7 @@ const T = {
     am_ok_qty: "مقدار",
     am_ok_rate: "آپ کا ریٹ",
     am_ok_total: "کل متوقع رقم",
-    am_ok_eta: "خریدار اور ملیں عموماً 2 سے 6 گھنٹے میں جواب دیتے ہیں۔ آپ کسی بھی وقت ایگری شیئر سپورٹ کو کال یا واٹس ایپ کر سکتے ہیں۔",
+    am_ok_eta: "ہماری کوشش ہے کہ 2 سے 6 گھنٹے میں جواب دیں۔ آپ کسی بھی وقت ایگری شیئر سپورٹ کو کال یا واٹس ایپ کر سکتے ہیں۔",
     am_ok_view: "میری فصلوں کی لسٹنگ دیکھیں",
     am_ok_another: "ایک اور فصل لسٹ کریں",
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -2235,6 +2372,74 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    cs_comm_t: "ایگری شیئر پلیٹ فارم کمیشن",
+    cs_comm_s: "پلیٹ فارم دی سہولت فیس، آپے وکھ، ایگری شیئر دے سرکاری کھاتے وچ جمع ہووے گی",
+    cs_net_t: "مالک نوں خالص ادائیگی",
+    cs_net_s: "مشینری یا زمین دے مالک نوں سدھی ادائیگی",
+    ca_title: "ایگری شیئر دا سرکاری وصولی کھاتہ",
+    ca_sub: "پلیٹ فارم کمیشن صرف ایسے کھاتے وچ جمع کراؤ، فیر رسید اپ لوڈ کرو۔",
+    ca_bank: "بینک دا ناں",
+    ca_acc_title: "کھاتے دا ناں",
+    ca_iban: "IBAN / کھاتہ نمبر",
+    ca_jazz: "جاز کیش",
+    ca_easy: "ایزی پیسہ",
+    ca_raast: "راست آئی ڈی",
+    ca_none: "سرکاری کھاتے دی تفصیل ایگری شیئر سپورٹ دیوے گی۔ کال کرو",
+    rc_upload: "کمیشن ادائیگی دی رسید اپ لوڈ کرو",
+    rc_replace: "رسید بدلو",
+    rc_pending: "رسید دی جانچ ہو رہی اے",
+    rc_verified: "کمیشن وصول ہو گیا",
+    rc_title: "کمیشن ادائیگی دی رسید",
+    rc_amount: "ادا کیتی رقم (روپے)",
+    rc_ref: "ٹرانزیکشن آئی ڈی (مرضی)",
+    rc_photo: "رسید دی تصویر",
+    rc_pick: "تصویر چنو",
+    rc_send: "رسید جمع کراؤ",
+    rc_sent: "رسید جمع ہو گئی۔ ایگری شیئر چھیتی ایہدی تصدیق کرے گا۔",
+    rc_err: "محفوظ نئیں ہو سکیا۔ انٹرنیٹ چیک کر کے فیر کوشش کرو۔",
+    rc_need_photo: "مہربانی کر کے رسید دی تصویر لاؤ۔",
+    rc_not_party: "ایہ کم صرف ایس سودے دا کسان یا مالک کر سکدا اے۔",
+    pf_title: "تصدیق شدہ کم تے حوالگی دے ثبوت",
+    pf_add: "تصویر / ویڈیو ثبوت لاؤ",
+    pf_none: "ہلے کوئی ثبوت نئیں۔ کم توں پہلاں تے بعد دی تصویر لاؤ۔",
+    pf_stage: "مرحلہ",
+    pf_st_before: "کم / حوالگی توں پہلاں",
+    pf_st_after: "کم توں بعد / مکمل",
+    pf_st_meter: "میٹر / ڈیزل ریڈنگ",
+    pf_st_land: "زمین دی حالت",
+    pf_file: "تصویر یا چھوٹی ویڈیو",
+    pf_file_hint: "تصویر 120 KB تک چھوٹی کیتی جاندی اے۔ ویڈیو 650 KB تک۔ لمی ویڈیو دا لنک لاؤ۔",
+    pf_url: "یا ویڈیو لنک (یوٹیوب، گوگل ڈرائیو)",
+    pf_note: "نوٹ (مرضی)",
+    pf_save: "ثبوت محفوظ کرو",
+    pf_saved: "ثبوت محفوظ ہو گیا۔ سودے دے دوویں فریق ایہنوں ویکھ سکدے نیں۔",
+    pf_err: "ثبوت محفوظ نئیں ہو سکیا۔ انٹرنیٹ چیک کر کے فیر کوشش کرو۔",
+    pf_need: "تصویر، چھوٹی ویڈیو یا ویڈیو لنک لاؤ۔",
+    pf_video_big: "ایہ ویڈیو بہت وڈی اے۔ مہربانی کر کے ویڈیو دا لنک لاؤ۔",
+    pf_bad_url: "مہربانی کر کے https:// نال شروع ہون والا پورا لنک لکھو",
+    pf_by_farmer: "کسان / ٹھیکیدار",
+    pf_by_owner: "مالک",
+    pf_by_admin: "ایگری شیئر",
+    pf_open_link: "ویڈیو لنک کھولو",
+    cl_tab: "کمیشن",
+    cl_title: "کمیشن بقایا والٹ",
+    cl_sub: "اوہناں سودیاں دا کمیشن جنہاں دی رقم کسان نے تہانوں نقد دتی۔ کسے ویلے وی ادا کرو: تھلے والے سرکاری کھاتے وچ جمع کرا کے رسید اپ لوڈ کرو۔",
+    cl_due: "بقایا",
+    cl_review: "جانچ وچ",
+    cl_paid: "ادا شدہ",
+    cl_none: "کوئی کمیشن بقایا نئیں۔ تصدیق شدہ سودے ایتھے دسن گے۔",
+    cl_machine: "مشینری",
+    cl_land: "زمین ٹھیکہ",
+    ad_cp_t: "سرکاری وصولی کھاتہ",
+    ad_cp_sub: "ہر بل تے وکھایا جاندا اے۔ صرف بانی ایہنوں بدل سکدے نیں۔",
+    ad_cp_save: "کھاتہ محفوظ کرو",
+    ad_cp_saved: "کھاتہ محفوظ ہو گیا۔",
+    ad_rc_t: "کمیشن دیاں رسیداں",
+    ad_rc_sub: "ہر رسید نوں بینک یا والٹ اسٹیٹمنٹ نال ملاؤ، فیر وصول شدہ لاؤ۔",
+    ad_rc_none: "ہلے کوئی رسید نئیں۔",
+    ad_rc_verify: "کمیشن وصولی دی تصدیق کرو",
+    ad_rc_from: "بھیجن والا",
+    ad_founder_only: "صرف بانی ایہنوں بدل سکدے نیں۔",
     "hub_title": "ایگری شیئر دیاں ساریاں سروساں",
     "hub_sub": "کھولن لئی کسے وی سروس تے ٹیپ کرو",
     "hub_live-request_t": "درخواست دیو (اپنی بولی)",
@@ -2258,7 +2463,7 @@ const T = {
     am_ok_qty: "مقدار",
     am_ok_rate: "تہاڈا ریٹ",
     am_ok_total: "کل متوقع رقم",
-    am_ok_eta: "خریدار تے ملاں عام طور تے 2 توں 6 گھنٹیاں وچ جواب دیندے نیں۔ تسیں کسے ویلے وی ایگری شیئر سپورٹ نوں کال یا واٹس ایپ کر سکدے او۔",
+    am_ok_eta: "ساڈی کوشش اے کہ 2 توں 6 گھنٹیاں وچ جواب دئیے۔ تسیں کسے ویلے وی ایگری شیئر سپورٹ نوں کال یا واٹس ایپ کر سکدے او۔",
     am_ok_view: "میریاں فصلاں دی لسٹنگ ویکھو",
     am_ok_another: "ہور فصل لسٹ کرو",
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -3112,6 +3317,74 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    cs_comm_t: "ايگري شيئر پليٽ فارم ڪميشن",
+    cs_comm_s: "پليٽ فارم جي سهولت في، پاڻمرادو الڳ، ايگري شيئر جي سرڪاري کاتي ۾ جمع ٿيندي",
+    cs_net_t: "مالڪ کي خالص ادائيگي",
+    cs_net_s: "مشينري يا زمين جي مالڪ کي سڌي ادائيگي",
+    ca_title: "ايگري شيئر جو سرڪاري وصولي کاتو",
+    ca_sub: "پليٽ فارم ڪميشن صرف هن کاتي ۾ جمع ڪرايو، پوءِ رسيد اپ لوڊ ڪريو.",
+    ca_bank: "بئنڪ جو نالو",
+    ca_acc_title: "کاتي جو عنوان",
+    ca_iban: "IBAN / کاتي نمبر",
+    ca_jazz: "جاز ڪيش",
+    ca_easy: "ايزي پيسا",
+    ca_raast: "راسٽ آءِ ڊي",
+    ca_none: "سرڪاري کاتي جي تفصيل ايگري شيئر سپورٽ ڏيندي. ڪال ڪريو",
+    rc_upload: "ڪميشن ادائيگي جي رسيد اپ لوڊ ڪريو",
+    rc_replace: "رسيد مٽايو",
+    rc_pending: "رسيد جي جانچ ٿي رهي آهي",
+    rc_verified: "ڪميشن وصول ٿي وئي",
+    rc_title: "ڪميشن ادائيگي جي رسيد",
+    rc_amount: "ادا ڪيل رقم (رپيا)",
+    rc_ref: "ٽرانزيڪشن آءِ ڊي (اختياري)",
+    rc_photo: "رسيد جي تصوير",
+    rc_pick: "تصوير چونڊيو",
+    rc_send: "رسيد جمع ڪرايو",
+    rc_sent: "رسيد جمع ٿي وئي. ايگري شيئر جلد ان جي تصديق ڪندو.",
+    rc_err: "محفوظ نه ٿي سگهيو. انٽرنيٽ چيڪ ڪري ٻيهر ڪوشش ڪريو.",
+    rc_need_photo: "مهرباني ڪري رسيد جي تصوير لڳايو.",
+    rc_not_party: "اهو ڪم صرف هن سودي جو هاري يا مالڪ ڪري سگهي ٿو.",
+    pf_title: "تصديق ٿيل ڪم ۽ حوالگي جا ثبوت",
+    pf_add: "تصوير / وڊيو ثبوت لڳايو",
+    pf_none: "اڃا ڪو ثبوت ناهي. ڪم کان اڳ ۽ پوءِ جي تصوير لڳايو.",
+    pf_stage: "مرحلو",
+    pf_st_before: "ڪم / حوالگي کان اڳ",
+    pf_st_after: "ڪم کان پوءِ / مڪمل",
+    pf_st_meter: "ميٽر / ڊيزل ريڊنگ",
+    pf_st_land: "زمين جي حالت",
+    pf_file: "تصوير يا ننڍي وڊيو",
+    pf_file_hint: "تصوير 120 KB تائين ننڍي ڪئي وڃي ٿي. وڊيو 650 KB تائين. ڊگهي وڊيو جي لنڪ لڳايو.",
+    pf_url: "يا وڊيو لنڪ (يوٽيوب، گوگل ڊرائيو)",
+    pf_note: "نوٽ (اختياري)",
+    pf_save: "ثبوت محفوظ ڪريو",
+    pf_saved: "ثبوت محفوظ ٿي ويو. سودي جا ٻئي فريق ان کي ڏسي سگهن ٿا.",
+    pf_err: "ثبوت محفوظ نه ٿي سگهيو. انٽرنيٽ چيڪ ڪري ٻيهر ڪوشش ڪريو.",
+    pf_need: "تصوير، ننڍي وڊيو يا وڊيو لنڪ لڳايو.",
+    pf_video_big: "هي وڊيو تمام وڏي آهي. مهرباني ڪري وڊيو جي لنڪ لڳايو.",
+    pf_bad_url: "مهرباني ڪري https:// سان شروع ٿيندڙ پوري لنڪ لکو",
+    pf_by_farmer: "هاري / ٺيڪيدار",
+    pf_by_owner: "مالڪ",
+    pf_by_admin: "ايگري شيئر",
+    pf_open_link: "وڊيو لنڪ کوليو",
+    cl_tab: "ڪميشن",
+    cl_title: "ڪميشن بقايا والٽ",
+    cl_sub: "انهن سودن جي ڪميشن جن جي رقم هاري توهان کي نقد ڏني. ڪنهن به وقت ادا ڪريو: هيٺ ڏنل سرڪاري کاتي ۾ جمع ڪرائي رسيد اپ لوڊ ڪريو.",
+    cl_due: "بقايا",
+    cl_review: "جانچ ۾",
+    cl_paid: "ادا ٿيل",
+    cl_none: "ڪا ڪميشن بقايا ناهي. تصديق ٿيل سودا هتي نظر ايندا.",
+    cl_machine: "مشينري",
+    cl_land: "زمين ٺيڪو",
+    ad_cp_t: "سرڪاري وصولي کاتو",
+    ad_cp_sub: "هر بل تي ڏيکاريو وڃي ٿو. صرف باني ان کي مٽائي سگهي ٿو.",
+    ad_cp_save: "کاتو محفوظ ڪريو",
+    ad_cp_saved: "کاتو محفوظ ٿي ويو.",
+    ad_rc_t: "ڪميشن جون رسيدون",
+    ad_rc_sub: "هر رسيد کي بئنڪ يا والٽ اسٽيٽمينٽ سان ملايو، پوءِ وصول ٿيل لڳايو.",
+    ad_rc_none: "اڃا ڪا رسيد ناهي.",
+    ad_rc_verify: "ڪميشن وصولي جي تصديق ڪريو",
+    ad_rc_from: "موڪليندڙ",
+    ad_founder_only: "صرف باني ان کي مٽائي سگهي ٿو.",
     "hub_title": "ايگري شيئر جون سڀ سروسز",
     "hub_sub": "کولڻ لاءِ ڪنهن به سروس تي ٽيپ ڪريو",
     "hub_live-request_t": "درخواست ڏيو (اپني بولي)",
@@ -3135,7 +3408,7 @@ const T = {
     am_ok_qty: "مقدار",
     am_ok_rate: "توهان جو اگهه",
     am_ok_total: "ڪل متوقع رقم",
-    am_ok_eta: "خريدار ۽ ملون عام طور 2 کان 6 ڪلاڪن ۾ جواب ڏين ٿيون. توهان ڪنهن به وقت ايگري شيئر سپورٽ کي ڪال يا واٽس ايپ ڪري سگهو ٿا.",
+    am_ok_eta: "اسان جي ڪوشش آهي ته 2 کان 6 ڪلاڪن ۾ جواب ڏيون. توهان ڪنهن به وقت ايگري شيئر سپورٽ کي ڪال يا واٽس ايپ ڪري سگهو ٿا.",
     am_ok_view: "منهنجي فصلن جي لسٽنگ ڏسو",
     am_ok_another: "ٻيو فصل لسٽ ڪريو",
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -3990,6 +4263,74 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    cs_comm_t: "د ایګري شیئر د پلیټ فارم کمیشن",
+    cs_comm_s: "د پلیټ فارم د اسانتیا فیس، په خپله جلا کېږي، د ایګري شیئر رسمي حساب ته ورکول کېږي",
+    cs_net_t: "مالک ته خالص تادیه",
+    cs_net_s: "د ماشین یا ځمکې مالک ته مستقیمه تادیه",
+    ca_title: "د ایګري شیئر رسمي د راټولولو حساب",
+    ca_sub: "د پلیټ فارم کمیشن یوازې دې حساب ته ورکړئ، بیا رسید پورته کړئ.",
+    ca_bank: "د بانک نوم",
+    ca_acc_title: "د حساب سرلیک",
+    ca_iban: "IBAN / د حساب شمېره",
+    ca_jazz: "جاز کیش",
+    ca_easy: "ایزي پیسه",
+    ca_raast: "راسټ آی ډي",
+    ca_none: "د رسمي حساب جزئیات به د ایګري شیئر ملاتړ درکړي. زنګ ووهئ",
+    rc_upload: "د کمیشن د تادیې رسید پورته کړئ",
+    rc_replace: "رسید بدل کړئ",
+    rc_pending: "رسید د کتنې لاندې دی",
+    rc_verified: "کمیشن ترلاسه شو",
+    rc_title: "د کمیشن د تادیې رسید",
+    rc_amount: "ورکړل شوې پیسې (روپۍ)",
+    rc_ref: "د راکړې ورکړې آی ډي (اختیاري)",
+    rc_photo: "د رسید انځور",
+    rc_pick: "انځور وټاکئ",
+    rc_send: "رسید وسپارئ",
+    rc_sent: "رسید وسپارل شو. ایګري شیئر به ژر یې تصدیق کړي.",
+    rc_err: "خوندي نه شو. خپل انټرنیټ وګورئ او بیا هڅه وکړئ.",
+    rc_need_photo: "مهرباني وکړئ د رسید انځور ورزیات کړئ.",
+    rc_not_party: "دا کار یوازې د دې معاملې بزګر یا مالک کولی شي.",
+    pf_title: "تصدیق شوي د کار او سپارنې ثبوتونه",
+    pf_add: "انځور / ویډیو ثبوت ورزیات کړئ",
+    pf_none: "تر اوسه ثبوت نشته. د کار نه مخکې او وروسته انځور ورزیات کړئ.",
+    pf_stage: "پړاو",
+    pf_st_before: "د کار / سپارنې نه مخکې",
+    pf_st_after: "د کار نه وروسته / بشپړ",
+    pf_st_meter: "میټر / د ډیزلو لوستنه",
+    pf_st_land: "د ځمکې حالت",
+    pf_file: "انځور یا لنډه ویډیو",
+    pf_file_hint: "انځورونه تر 120 KB پورې کوچني کېږي. ویډیو تر 650 KB پورې. د اوږدې ویډیو لینک ورکړئ.",
+    pf_url: "یا د ویډیو لینک (یوټیوب، ګوګل ډرایو)",
+    pf_note: "یادښت (اختیاري)",
+    pf_save: "ثبوت خوندي کړئ",
+    pf_saved: "ثبوت خوندي شو. د معاملې دواړه خواوې یې لیدلی شي.",
+    pf_err: "ثبوت خوندي نه شو. خپل انټرنیټ وګورئ او بیا هڅه وکړئ.",
+    pf_need: "انځور، لنډه ویډیو یا د ویډیو لینک ورزیات کړئ.",
+    pf_video_big: "دا ویډیو ډېره لویه ده. مهرباني وکړئ د ویډیو لینک ورکړئ.",
+    pf_bad_url: "مهرباني وکړئ بشپړ لینک ولیکئ چې په https:// پیل شي",
+    pf_by_farmer: "بزګر / اجاره دار",
+    pf_by_owner: "مالک",
+    pf_by_admin: "ایګري شیئر",
+    pf_open_link: "د ویډیو لینک پرانیزئ",
+    cl_tab: "کمیشن",
+    cl_title: "د پاتې کمیشن بټوه",
+    cl_sub: "د هغو معاملو کمیشن چې بزګر تاسو ته نغدې پیسې درکړې. هر وخت یې ورکړئ: لاندې رسمي حساب ته یې ورکړئ او رسید پورته کړئ.",
+    cl_due: "پاتې",
+    cl_review: "د کتنې لاندې",
+    cl_paid: "ورکړل شوی",
+    cl_none: "هېڅ کمیشن پاتې نه دی. تصدیق شوې معاملې به دلته ښکاره شي.",
+    cl_machine: "ماشینونه",
+    cl_land: "د ځمکې اجاره",
+    ad_cp_t: "رسمي د راټولولو حساب",
+    ad_cp_sub: "په هر بل کې ښودل کېږي. یوازې بنسټګر یې بدلولی شي.",
+    ad_cp_save: "حساب خوندي کړئ",
+    ad_cp_saved: "حساب خوندي شو.",
+    ad_rc_t: "د کمیشن رسیدونه",
+    ad_rc_sub: "هر رسید د بانک یا بټوې له بیان سره پرتله کړئ، بیا یې ترلاسه شوی په نښه کړئ.",
+    ad_rc_none: "تر اوسه رسید نشته.",
+    ad_rc_verify: "د کمیشن ترلاسه کېدو تصدیق",
+    ad_rc_from: "له خوا",
+    ad_founder_only: "یوازې بنسټګر دا بدلولی شي.",
     "hub_title": "د ایګري شیئر ټول خدمتونه",
     "hub_sub": "د خلاصولو لپاره پر هر خدمت ټک وکړئ",
     "hub_live-request_t": "غوښتنه وکړئ (اپني بولي)",
@@ -4013,7 +4354,7 @@ const T = {
     am_ok_qty: "مقدار",
     am_ok_rate: "ستاسو نرخ",
     am_ok_total: "ټوله تمه شوې پیسې",
-    am_ok_eta: "پېرودونکي او ملونه معمولاً په 2 تر 6 ساعتونو کې ځواب ورکوي. تاسو هر وخت ایګري شیئر ملاتړ ته زنګ یا واټس اپ کولی شئ.",
+    am_ok_eta: "زموږ هڅه دا ده چې په 2 تر 6 ساعتونو کې ځواب درکړو. تاسو هر وخت ایګري شیئر ملاتړ ته زنګ یا واټس اپ کولی شئ.",
     am_ok_view: "زما د فصلونو لیستونه وګورئ",
     am_ok_another: "بل فصل لیست کړئ",
     au_m_email: "برېښنالیک",
@@ -4581,6 +4922,74 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    cs_comm_t: "ایگری شیئر ءِ پلیٹ فارم کمیشن",
+    cs_comm_s: "پلیٹ فارم ءِ آسانی ءِ فیس، وت جتا بیت، ایگری شیئر ءِ سرکاری اکاؤنٹ ءَ دیگ بیت",
+    cs_net_t: "واجہ ءَ را خالص زر",
+    cs_net_s: "مشینری یا زمین ءِ واجہ ءَ را راستیں زر",
+    ca_title: "ایگری شیئر ءِ سرکاری مچ کنگ ءِ اکاؤنٹ",
+    ca_sub: "پلیٹ فارم کمیشن ءَ بس همے اکاؤنٹ ءَ بدئے، رند ءَ رسید ءَ اپ لوڈ کن۔",
+    ca_bank: "بینک ءِ نام",
+    ca_acc_title: "اکاؤنٹ ءِ ٹائٹل",
+    ca_iban: "IBAN / اکاؤنٹ نمبر",
+    ca_jazz: "جاز کیش",
+    ca_easy: "ایزی پیسہ",
+    ca_raast: "راست آئی ڈی",
+    ca_none: "سرکاری اکاؤنٹ ءِ تفصیل ایگری شیئر سپورٹ دنت۔ کال کن",
+    rc_upload: "کمیشن ءِ زر ءِ رسید ءَ اپ لوڈ کن",
+    rc_replace: "رسید ءَ بدل کن",
+    rc_pending: "رسید ءِ چارگ بیگ ءَ اِنت",
+    rc_verified: "کمیشن رسِت",
+    rc_title: "کمیشن ءِ زر ءِ رسید",
+    rc_amount: "داتگیں زر (کلدار)",
+    rc_ref: "ٹرانزیکشن آئی ڈی (اختیاری)",
+    rc_photo: "رسید ءِ عکس",
+    rc_pick: "عکس ءَ گچین کن",
+    rc_send: "رسید ءَ دئے",
+    rc_sent: "رسید رسِت۔ ایگری شیئر زوت تصدیق کنت۔",
+    rc_err: "سمبال نہ بوت۔ انٹرنیٹ ءَ بچار و پدا جُهد کن۔",
+    rc_need_photo: "مهربانی کن، رسید ءِ عکس ءَ لگا۔",
+    rc_not_party: "اے کار ءَ بس اے سودا ءِ بزگر یا واجہ کُت کنت۔",
+    pf_title: "تصدیق بوتگیں کار و سپارگ ءِ ثبوت",
+    pf_add: "عکس / ویڈیو ثبوت لگا",
+    pf_none: "انگت هچ ثبوت نیست۔ کار ءِ پیسر و رند ءِ عکس ءَ لگا۔",
+    pf_stage: "مرحلہ",
+    pf_st_before: "کار / سپارگ ءِ پیسر",
+    pf_st_after: "کار ءِ رند / سرجم",
+    pf_st_meter: "میٹر / ڈیزل ءِ وانگ",
+    pf_st_land: "زمین ءِ حال",
+    pf_file: "عکس یا کسانیں ویڈیو",
+    pf_file_hint: "عکس 120 KB تان کسان کنگ بیت۔ ویڈیو 650 KB تان۔ درازیں ویڈیو ءِ لنک ءَ لگا۔",
+    pf_url: "یا ویڈیو لنک (یوٹیوب، گوگل ڈرائیو)",
+    pf_note: "نوٹ (اختیاری)",
+    pf_save: "ثبوت ءَ سمبال",
+    pf_saved: "ثبوت سمبال بوت۔ سودا ءِ دوئیں نیمگ اِشی ءَ گند کننت۔",
+    pf_err: "ثبوت سمبال نہ بوت۔ انٹرنیٹ ءَ بچار و پدا جُهد کن۔",
+    pf_need: "عکس، کسانیں ویڈیو یا ویڈیو لنک ءَ لگا۔",
+    pf_video_big: "اے ویڈیو باز مزن اِنت۔ مهربانی کن، ویڈیو ءِ لنک ءَ لگا۔",
+    pf_bad_url: "مهربانی کن، https:// گوں بنگیج بوئوکیں سرجمیں لنک ءَ بنبیس",
+    pf_by_farmer: "بزگر / ٹھیکیدار",
+    pf_by_owner: "واجہ",
+    pf_by_admin: "ایگری شیئر",
+    pf_open_link: "ویڈیو لنک ءَ پچ کن",
+    cl_tab: "کمیشن",
+    cl_title: "پشت کپتگیں کمیشن ءِ والٹ",
+    cl_sub: "هما سودایانی کمیشن کہ آیانی زر ءَ بزگر ءَ شما را نقد دات۔ هر وهد ءَ بدئے: جہل ءِ سرکاری اکاؤنٹ ءَ بدئے و رسید ءَ اپ لوڈ کن۔",
+    cl_due: "پشت کپتگ",
+    cl_review: "چارگ ءَ",
+    cl_paid: "داتگ",
+    cl_none: "هچ کمیشن پشت نہ کپتگ۔ تصدیق بوتگیں سودا ادا گندگ بنت۔",
+    cl_machine: "مشینری",
+    cl_land: "زمین ٹھیکہ",
+    ad_cp_t: "سرکاری مچ کنگ ءِ اکاؤنٹ",
+    ad_cp_sub: "هر بل ءِ سرا پیش دارگ بیت۔ بس بنیاد کنوک اِشی ءَ بدل کُت کنت۔",
+    ad_cp_save: "اکاؤنٹ ءَ سمبال",
+    ad_cp_saved: "اکاؤنٹ سمبال بوت۔",
+    ad_rc_t: "کمیشن ءِ رسید",
+    ad_rc_sub: "هر رسید ءَ بینک یا والٹ ءِ اسٹیٹمنٹ ءَ گوں تچک کن، رند ءَ رسِتگ ءِ نشان بجن۔",
+    ad_rc_none: "انگت هچ رسید نیست۔",
+    ad_rc_verify: "کمیشن ءِ رسگ ءِ تصدیق کن",
+    ad_rc_from: "چہ",
+    ad_founder_only: "بس بنیاد کنوک اِشی ءَ بدل کُت کنت۔",
     "hub_title": "ایگری شیئر ءِ سجّیں سروس",
     "hub_sub": "پچ کنگ ءِ واستا هر سروس ءِ سرا ٹیپ کن",
     "hub_live-request_t": "درخواست دئے (وتی بولی)",
@@ -4604,7 +5013,7 @@ const T = {
     am_ok_qty: "مِکدار",
     am_ok_rate: "شمئی نرخ",
     am_ok_total: "سجّیں اُمیتی زَر",
-    am_ok_eta: "گِروک و مِل عام طور ءَ 2 تا 6 ساعت ءَ پسّو دَینت۔ شما هر وهد ءَ ایگری شیئر سپورٹ ءَ را کال یا واٹس ایپ کُت کنئے۔",
+    am_ok_eta: "مئے جُهد کنیں کہ 2 تا 6 ساعت ءَ پسّو بدئیں۔ شما هر وهد ءَ ایگری شیئر سپورٹ ءَ را کال یا واٹس ایپ کُت کنئے۔",
     am_ok_view: "منی کِشتانی لِسٹنگ ءَ بچار",
     am_ok_another: "دگہ کِشتے لِسٹ کن",
     role_buyer: "فصل ءِ گِرَوک",
@@ -6083,6 +6492,396 @@ function VerifyPattern({ seed, size = 116 }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Split bill, official collection account, commission receipts and    */
+/* photo / video work proofs. App provides the data through DealsCtx,   */
+/* so bills and deal cards can show them without extra props.          */
+/* ------------------------------------------------------------------ */
+const DealsCtx = React.createContext(null);
+const useDeals = () => React.useContext(DealsCtx);
+const PROOF_STAGES = ["before", "after", "meter", "land"];
+const PROOF_VIDEO_MAX = 650 * 1024; // short clips only: a Firestore document holds at most 1 MiB
+const dealKeyOf = (deal) => `${deal.kind}_${deal.id}`;
+const bookingDeal = (b) => ({ kind: "booking", id: b.id, title: b.listingName, amount: Math.round((b.quote && b.quote.commission) || 0), uids: [b.renterUid, b.ownerUid].filter(Boolean), farmerUid: b.renterUid || "", ownerUid: b.ownerUid || "" });
+const landDeal = (b) => ({ kind: "land", id: b.id, title: uniqPlaces(b.village, b.district) || b.id, amount: landCommission(b.total).amount, uids: [b.tenantUid, b.ownerUid].filter(Boolean), farmerUid: b.tenantUid || "", ownerUid: b.ownerUid || "" });
+const isDealParty = (ctx, deal) => !!(ctx && ctx.session && ctx.session.uid && deal && !deal.sample && (ctx.isFounder || deal.uids.includes(ctx.session.uid)));
+const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
+  const r = new FileReader();
+  r.onload = () => resolve(String(r.result || ""));
+  r.onerror = () => reject(new Error("unreadable file"));
+  r.readAsDataURL(file);
+});
+
+// Two clear lines: what goes to Agri-Share, what goes to the owner. They always add up to the bill total.
+function CommissionSplit({ t, commission, total, className = "" }) {
+  const c = Math.max(0, Math.round(Number(commission) || 0));
+  const net = Math.max(0, Math.round(Number(total) || 0) - c);
+  const line = (Icon, tone, title, sub, value) => (
+    <div className="flex items-start gap-3 p-3">
+      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tone}`}><Icon className="h-4 w-4" aria-hidden="true" /></span>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-extrabold text-forest rtl:leading-[2]">{title}</p>
+        <p className="text-[11px] leading-snug text-soil/80 rtl:leading-[2]">{sub}</p>
+      </div>
+      <p className="shrink-0 font-display text-base font-extrabold text-forest tabular-nums" dir="ltr">{pkr(value)}</p>
+    </div>
+  );
+  return (
+    <div className={`divide-y divide-soil/10 overflow-hidden rounded-xl bg-white ring-1 ring-soil/15 ${className}`}>
+      {line(Landmark, "bg-gold/20 text-soil", t("cs_comm_t"), t("cs_comm_s"), c)}
+      {line(HandCoins, "bg-leaf/15 text-forest", t("cs_net_t"), t("cs_net_s"), net)}
+    </div>
+  );
+}
+
+// Agri-Share official collection account (app_settings/company_payment) plus the receipt upload for this deal
+function CompanyAccountCard({ t, deal, className = "" }) {
+  const ctx = useDeals();
+  const cp = (ctx && ctx.company) || {};
+  const rows = [["ca_bank", cp.bankName], ["ca_acc_title", cp.accountTitle], ["ca_iban", cp.iban], ["ca_jazz", cp.jazzcash], ["ca_easy", cp.easypaisa], ["ca_raast", cp.raast]].filter((r) => r[1]);
+  return (
+    <div className={`rounded-xl bg-forest/[0.04] p-3 ring-1 ring-forest/15 ${className}`}>
+      <p className="flex items-center gap-2 text-sm font-extrabold text-forest rtl:leading-[2]"><Landmark className="h-4 w-4 text-gold" aria-hidden="true" />{t("ca_title")}</p>
+      <p className="mt-0.5 text-[11px] leading-snug text-soil/80 rtl:leading-[2]">{t("ca_sub")}</p>
+      {rows.length ? (
+        <dl className="mt-2 divide-y divide-soil/10 rounded-lg bg-white px-3 text-sm ring-1 ring-soil/10">
+          {rows.map(([k, v]) => (
+            <div key={k} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 py-1.5">
+              <dt className="text-xs text-soil/80">{t(k)}</dt>
+              <dd className="min-w-0 break-all text-end font-mono text-[13px] font-bold text-soil" dir="ltr">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <p className="mt-2 rounded-lg bg-white p-2.5 text-xs text-soil ring-1 ring-soil/10 rtl:leading-[2]">{t("ca_none")} <a href={`tel:${CONSULTANT.primary.tel}`} className="font-bold text-forest underline" dir="ltr">{CONSULTANT.primary.label}</a></p>
+      )}
+      {deal && <div className="no-print mt-3"><ReceiptButton t={t} deal={deal} /></div>}
+    </div>
+  );
+}
+
+function ReceiptButton({ t, deal }) {
+  const ctx = useDeals();
+  const [open, setOpen] = useState(false);
+  if (!isDealParty(ctx, deal)) return null;
+  const r = ctx.receipts[dealKeyOf(deal)];
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {r && r.status === "verified" ? (
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-leaf/15 px-3 py-1.5 text-xs font-bold text-forest ring-1 ring-leaf/30"><BadgeCheck className="h-4 w-4" aria-hidden="true" />{t("rc_verified")}</span>
+      ) : (
+        <>
+          {r && <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/20 px-3 py-1.5 text-xs font-bold text-soil ring-1 ring-gold/40"><Hourglass className="h-3.5 w-3.5" aria-hidden="true" />{t("rc_pending")}</span>}
+          <button type="button" onClick={() => setOpen(true)} className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-forest px-3.5 text-sm font-bold text-ivory"><Upload className="h-4 w-4" aria-hidden="true" />{t(r ? "rc_replace" : "rc_upload")}</button>
+        </>
+      )}
+      {open && <ReceiptModal t={t} deal={deal} onClose={() => setOpen(false)} />}
+    </div>
+  );
+}
+
+function SheetModal({ title, onClose, children, labelledBy }) {
+  useEffect(() => {
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [onClose]);
+  return createPortal(
+    <div className="fixed inset-0 z-[95] flex items-end justify-center bg-soil/50 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
+      <div className="sheet-in max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-5 pb-24 shadow-2xl sm:rounded-3xl sm:pb-5" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby={labelledBy}>
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <h3 id={labelledBy} className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{title}</h3>
+          <button type="button" onClick={onClose} aria-label="Close" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-soil ring-1 ring-soil/15 hover:bg-ivory"><X className="h-5 w-5" aria-hidden="true" /></button>
+        </div>
+        {children}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+function ReceiptModal({ t, deal, onClose }) {
+  const ctx = useDeals();
+  const prev = ctx.receipts[dealKeyOf(deal)];
+  const [amount, setAmount] = useState(prev ? prev.amount : deal.amount);
+  const [ref, setRef] = useState(prev ? prev.ref || "" : "");
+  const [photo, setPhoto] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const pick = (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    setErr("");
+    shrinkPhoto(file).then(setPhoto).catch(() => setErr(t("ow_photo_err")));
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    if (!photo) { setErr(t("rc_need_photo")); return; }
+    if (!isDealParty(ctx, deal)) { setErr(t("rc_not_party")); return; }
+    setBusy(true);
+    const now = Date.now();
+    const doc = {
+      dealKey: dealKeyOf(deal), kind: deal.kind, dealId: deal.id, amount: Math.max(0, Math.round(Number(amount) || 0)), photo, ref: String(ref || "").slice(0, 100),
+      uids: deal.uids, ownerUid: deal.ownerUid || "", byUid: ctx.session.uid, byName: ctx.session.name || "", status: "pending", createdAt: prev ? prev.createdAt || now : now, updatedAt: now,
+    };
+    ctx.saveReceipt(doc).then(() => { ctx.toast(t("rc_sent")); onClose(); }).catch(() => { setBusy(false); setErr(t("rc_err")); });
+  };
+  return (
+    <SheetModal title={t("rc_title")} onClose={onClose} labelledBy="rc-h">
+      <form onSubmit={submit} noValidate className="space-y-4">
+        <p className="rounded-xl bg-ivory px-3 py-2 text-xs text-soil" dir="auto"><span dir="ltr" className="font-mono font-bold">{deal.id}</span> · {deal.title}</p>
+        <Field label={t("rc_amount")} htmlFor="rc-amt"><input id="rc-amt" type="number" inputMode="numeric" min="0" dir="ltr" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls + " text-lg font-extrabold text-forest"} /></Field>
+        <Field label={t("rc_ref")} htmlFor="rc-ref"><input id="rc-ref" dir="ltr" maxLength={100} value={ref} onChange={(e) => setRef(e.target.value)} className={inputCls} /></Field>
+        <div>
+          <p className="mb-1.5 text-sm font-semibold text-soil">{t("rc_photo")}</p>
+          {photo && <img src={photo} alt="" className="mb-2 max-h-56 w-full rounded-xl object-contain ring-1 ring-soil/15" />}
+          <label className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-xl border border-forest/30 px-3.5 text-sm font-bold text-forest">
+            <Camera className="h-4 w-4" aria-hidden="true" />{t("rc_pick")}
+            <input type="file" accept="image/*" onChange={pick} className="sr-only" />
+          </label>
+        </div>
+        {err && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">{err}</p>}
+        <button type="submit" disabled={busy} className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 text-sm font-bold text-ivory disabled:opacity-60"><Receipt className="h-4 w-4" aria-hidden="true" />{busy ? "..." : t("rc_send")}</button>
+      </form>
+    </SheetModal>
+  );
+}
+
+// Owner Portal: commission owed on confirmed deals that were paid in cash to the owner
+function CommissionLedger({ t, uid, bookings = [], landBookings = [] }) {
+  const ctx = useDeals();
+  if (!ctx || !uid) return null;
+  const deals = [
+    ...bookings.filter((b) => b.ownerUid === uid && ["confirmed", "completed", "feedback"].includes(b.status)).map((b) => ({ ...bookingDeal(b), date: b.date })),
+    ...landBookings.filter((b) => b.ownerUid === uid && b.status === "accepted").map((b) => ({ ...landDeal(b), date: b.startDate })),
+  ].filter((d) => d.amount > 0);
+  const stateOf = (d) => { const r = ctx.receipts[dealKeyOf(d)]; return r ? (r.status === "verified" ? "paid" : "review") : "due"; };
+  const sum = (st) => deals.filter((d) => stateOf(d) === st).reduce((a, d) => a + d.amount, 0);
+  const pill = { due: "bg-red-50 text-red-700 ring-red-200", review: "bg-gold/20 text-soil ring-gold/40", paid: "bg-leaf/15 text-forest ring-leaf/30" };
+  return (
+    <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+      <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <h3 className="flex items-center gap-2 font-bold text-forest"><Wallet className="h-4 w-4 text-gold" aria-hidden="true" />{t("cl_title")}</h3>
+        <p className="mt-1 text-xs text-soil/80 rtl:leading-[2]">{t("cl_sub")}</p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {[["due", "cl_due"], ["review", "cl_review"], ["paid", "cl_paid"]].map(([st, k]) => (
+            <div key={st} className={`rounded-xl p-2.5 text-center ring-1 ${pill[st]}`}>
+              <p className="text-[11px] font-bold uppercase tracking-wide">{t(k)}</p>
+              <p className="mt-0.5 font-display text-base font-extrabold tabular-nums" dir="ltr">{pkr(sum(st))}</p>
+            </div>
+          ))}
+        </div>
+        {deals.length === 0 ? <p className="mt-3 rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("cl_none")}</p> : (
+          <ul className="mt-3 space-y-2">
+            {deals.map((d) => {
+              const st = stateOf(d);
+              return (
+                <li key={dealKeyOf(d)} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <span className="min-w-0">
+                      <span className="block font-bold text-forest" dir="auto">{d.title}</span>
+                      <span className="text-xs text-soil/80"><span dir="ltr" className="font-mono">{d.id}</span> · {t(d.kind === "land" ? "cl_land" : "cl_machine")}{d.date ? <> · <span dir="ltr">{fmtDate(d.date)}</span></> : null}</span>
+                    </span>
+                    <span className="flex shrink-0 items-center gap-2">
+                      <b className="tabular-nums text-forest" dir="ltr">{pkr(d.amount)}</b>
+                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ring-1 ${pill[st]}`}>{t(st === "due" ? "cl_due" : st === "review" ? "cl_review" : "cl_paid")}</span>
+                    </span>
+                  </div>
+                  {st !== "paid" && <div className="mt-2"><ReceiptButton t={t} deal={d} /></div>}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+      <CompanyAccountCard t={t} className="h-fit bg-white" />
+    </div>
+  );
+}
+
+// Shared photo / video proof strip on a deal card (only the deal's farmer, owner and the founder see it)
+function ProofStrip({ t, deal, className = "" }) {
+  const ctx = useDeals();
+  const [adding, setAdding] = useState(false);
+  const [view, setView] = useState(null);
+  if (!isDealParty(ctx, deal)) return null;
+  const list = (deal.kind === "land" ? ctx.landProofs : ctx.bookingProofs).filter((p) => p.dealId === deal.id).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  return (
+    <div className={`rounded-xl bg-white p-3 ring-1 ring-soil/10 ${className}`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wide text-forest rtl:leading-[2]"><ShieldCheck className="h-4 w-4 text-leafink" aria-hidden="true" />{t("pf_title")} {list.length ? <span className="rounded-full bg-forest/10 px-1.5 text-[11px]">{list.length}</span> : null}</p>
+        <button type="button" onClick={() => setAdding(true)} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-forest/30 bg-white px-3 text-xs font-bold text-forest hover:bg-forest/5"><Camera className="h-4 w-4" aria-hidden="true" />{t("pf_add")}</button>
+      </div>
+      {list.length === 0 ? <p className="mt-2 text-xs text-soil/80 rtl:leading-[2]">{t("pf_none")}</p> : (
+        <ul className="no-scrollbar -mx-1 mt-2 flex gap-2 overflow-x-auto px-1 pb-1">
+          {list.map((p) => (
+            <li key={p.id} className="shrink-0">
+              <button type="button" onClick={() => setView(p)} className="group block w-24 text-start" aria-label={t("pf_st_" + p.stage)}>
+                <span className="relative block h-20 w-24 overflow-hidden rounded-lg bg-forest/10 ring-1 ring-soil/15">
+                  {p.photo ? <img src={p.photo} alt="" className="h-full w-full object-cover" loading="lazy" />
+                    : <span className="flex h-full w-full items-center justify-center bg-forest text-ivory"><Play className="h-7 w-7" aria-hidden="true" /></span>}
+                  {!p.photo && <span className="absolute bottom-1 start-1 rounded bg-black/50 px-1 text-[10px] font-bold text-white"><Video className="inline h-3 w-3" aria-hidden="true" /></span>}
+                </span>
+                <span className="mt-1 block truncate text-[11px] font-bold text-soil">{t("pf_st_" + p.stage)}</span>
+                <span className="block truncate text-[10px] text-soil/70">{t("pf_by_" + (p.byRole || "admin"))} · <span dir="ltr">{fmtDate(new Date(p.createdAt || Date.now()).toISOString().slice(0, 10))}</span></span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {adding && <ProofModal t={t} deal={deal} onClose={() => setAdding(false)} />}
+      {view && (
+        <SheetModal title={t("pf_st_" + view.stage)} onClose={() => setView(null)} labelledBy="pf-view-h">
+          {view.photo && <img src={view.photo} alt={t("pf_st_" + view.stage)} className="w-full rounded-xl object-contain ring-1 ring-soil/15" />}
+          {view.video && <video src={view.video} controls playsInline className="w-full rounded-xl bg-black" />}
+          {view.videoUrl && <a href={view.videoUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-forest px-4 text-sm font-bold text-ivory"><ExternalLink className="h-4 w-4" aria-hidden="true" />{t("pf_open_link")}</a>}
+          {view.note && <p className="mt-3 rounded-xl bg-ivory p-3 text-sm text-soil" dir="auto">{view.note}</p>}
+          <p className="mt-2 text-xs text-soil/80">{t("pf_by_" + (view.byRole || "admin"))}{view.byName ? ` (${view.byName})` : ""} · <span dir="ltr">{new Date(view.createdAt || Date.now()).toLocaleString("en-PK")}</span></p>
+        </SheetModal>
+      )}
+    </div>
+  );
+}
+
+function ProofModal({ t, deal, onClose }) {
+  const ctx = useDeals();
+  const [stage, setStage] = useState(deal.kind === "land" ? "land" : "before");
+  const [photo, setPhoto] = useState("");
+  const [video, setVideo] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [note, setNote] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const pick = (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    setErr("");
+    if (/^video\//.test(file.type || "")) {
+      if (file.size > PROOF_VIDEO_MAX) { setErr(t("pf_video_big")); return; }
+      readFileAsDataUrl(file).then((v) => { setVideo(v); setPhoto(""); }).catch(() => setErr(t("pf_err")));
+      return;
+    }
+    shrinkPhoto(file).then((v) => { setPhoto(v); setVideo(""); }).catch(() => setErr(t("ow_photo_err")));
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    const url = videoUrl.trim();
+    if (url && !/^https:\/\/\S+$/i.test(url)) { setErr(t("pf_bad_url")); return; }
+    if (!photo && !video && !url) { setErr(t("pf_need")); return; }
+    if (!isDealParty(ctx, deal)) { setErr(t("rc_not_party")); return; }
+    setBusy(true);
+    const uid = ctx.session.uid;
+    const doc = {
+      id: `${deal.id}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+      dealId: deal.id, kind: deal.kind, stage, uids: deal.uids, byUid: uid, byName: ctx.session.name || "",
+      byRole: uid === deal.farmerUid ? "farmer" : uid === deal.ownerUid ? "owner" : "admin", createdAt: Date.now(),
+      ...(photo ? { photo } : {}), ...(video ? { video } : {}), ...(url ? { videoUrl: url.slice(0, 480) } : {}), ...(note.trim() ? { note: note.trim().slice(0, 280) } : {}),
+    };
+    ctx.addProof(doc).then(() => { ctx.toast(t("pf_saved")); onClose(); }).catch(() => { setBusy(false); setErr(t("pf_err")); });
+  };
+  return (
+    <SheetModal title={t("pf_add")} onClose={onClose} labelledBy="pf-h">
+      <form onSubmit={submit} noValidate className="space-y-4">
+        <fieldset>
+          <legend className="mb-1.5 text-sm font-semibold text-soil">{t("pf_stage")}</legend>
+          <div className="grid grid-cols-2 gap-2">
+            {PROOF_STAGES.map((k) => (
+              <label key={k} className={`flex min-h-[48px] cursor-pointer items-center rounded-xl px-3 py-2 text-sm font-bold leading-snug ring-1 rtl:leading-[2] ${stage === k ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/20"}`}>
+                <input type="radio" name="pf-stage" value={k} checked={stage === k} onChange={() => setStage(k)} className="sr-only" />{t("pf_st_" + k)}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div>
+          <p className="mb-1.5 text-sm font-semibold text-soil">{t("pf_file")}</p>
+          {photo && <img src={photo} alt="" className="mb-2 max-h-56 w-full rounded-xl object-contain ring-1 ring-soil/15" />}
+          {video && <video src={video} controls playsInline className="mb-2 max-h-56 w-full rounded-xl bg-black" />}
+          <label className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-xl border border-forest/30 px-3.5 text-sm font-bold text-forest">
+            <Camera className="h-4 w-4" aria-hidden="true" />{t("rc_pick")}
+            <input type="file" accept="image/*,video/*" onChange={pick} className="sr-only" />
+          </label>
+          <p className="mt-1.5 text-[11px] text-soil/80 rtl:leading-[2]">{t("pf_file_hint")}</p>
+        </div>
+        <Field label={t("pf_url")} htmlFor="pf-url"><input id="pf-url" type="url" dir="ltr" placeholder="https://" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} className={inputCls} /></Field>
+        <Field label={t("pf_note")} htmlFor="pf-note"><input id="pf-note" maxLength={280} value={note} onChange={(e) => setNote(e.target.value)} className={inputCls} /></Field>
+        {err && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">{err}</p>}
+        <button type="submit" disabled={busy} className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 text-sm font-bold text-ivory disabled:opacity-60"><Upload className="h-4 w-4" aria-hidden="true" />{busy ? "..." : t("pf_save")}</button>
+      </form>
+    </SheetModal>
+  );
+}
+
+// Admin Panel: the official account (founder only) and the commission receipts to verify
+function CompanyPaymentAdmin({ t, isFounder }) {
+  const ctx = useDeals();
+  const blank = { bankName: "", accountTitle: "", iban: "", jazzcash: "", easypaisa: "", raast: "" };
+  const [f, setF] = useState(blank);
+  const loaded = useRef(false);
+  useEffect(() => {
+    if (!loaded.current && ctx && ctx.company) { loaded.current = true; setF({ ...blank, ...Object.fromEntries(Object.keys(blank).map((k) => [k, ctx.company[k] || ""])) }); }
+  }, [ctx && ctx.company]); // eslint-disable-line react-hooks/exhaustive-deps
+  const save = (e) => {
+    e.preventDefault();
+    if (!isFounder) { ctx.toast(t("ad_founder_only"), { type: "error" }); return; }
+    const clean = Object.fromEntries(Object.entries(f).map(([k, v]) => [k, String(v || "").trim().slice(0, 60)]));
+    ctx.saveCompany(clean).then(() => ctx.toast(t("ad_cp_saved"))).catch(() => ctx.toast(t("rc_err"), { type: "error" }));
+  };
+  const field = (k, label) => (
+    <label key={k} className="text-xs font-bold text-soil" htmlFor={"cp-" + k}>{t(label)}
+      <input id={"cp-" + k} dir="ltr" maxLength={60} value={f[k]} onChange={(e) => setF((s) => ({ ...s, [k]: e.target.value }))} className={inputCls + " mt-1"} />
+    </label>
+  );
+  return (
+    <form onSubmit={save} className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
+      <h3 className="flex items-center gap-2 font-bold text-forest"><Landmark className="h-4 w-4" aria-hidden="true" />{t("ad_cp_t")}</h3>
+      <p className="mt-1 text-xs text-soil/80">{t("ad_cp_sub")}</p>
+      <fieldset disabled={!isFounder} className="mt-4 grid gap-2 sm:grid-cols-2 disabled:opacity-60">
+        {field("bankName", "ca_bank")}{field("accountTitle", "ca_acc_title")}
+        <div className="sm:col-span-2">{field("iban", "ca_iban")}</div>
+        {field("jazzcash", "ca_jazz")}{field("easypaisa", "ca_easy")}{field("raast", "ca_raast")}
+        <button type="submit" className="min-h-[44px] rounded-xl bg-forest px-5 text-sm font-bold text-ivory sm:col-span-2">{t("ad_cp_save")}</button>
+      </fieldset>
+      {!isFounder && <p className="mt-2 text-xs font-semibold text-soil/80">{t("ad_founder_only")}</p>}
+    </form>
+  );
+}
+
+function ReceiptsAdmin({ t, isFounder }) {
+  const ctx = useDeals();
+  const [view, setView] = useState(null);
+  const list = Object.values((ctx && ctx.receipts) || {}).sort((a, b) => (a.status === "pending" ? 0 : 1) - (b.status === "pending" ? 0 : 1) || (b.updatedAt || 0) - (a.updatedAt || 0));
+  const toggle = (r) => {
+    if (!isFounder) { ctx.toast(t("ad_founder_only"), { type: "error" }); return; }
+    ctx.verifyReceipt(r, r.status !== "verified").catch(() => ctx.toast(t("rc_err"), { type: "error" }));
+  };
+  return (
+    <div className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm lg:col-span-2">
+      <h3 className="flex items-center gap-2 font-bold text-forest"><Receipt className="h-4 w-4" aria-hidden="true" />{t("ad_rc_t")}</h3>
+      <p className="mt-1 text-xs text-soil/80">{t("ad_rc_sub")}</p>
+      {list.length === 0 ? <p className="mt-3 rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ad_rc_none")}</p> : (
+        <ul className="mt-3 grid gap-2 md:grid-cols-2">
+          {list.map((r) => (
+            <li key={r.dealKey || r.id} className="flex gap-3 rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
+              <button type="button" onClick={() => setView(r)} className="h-16 w-16 shrink-0 overflow-hidden rounded-lg ring-1 ring-soil/15" aria-label={t("rc_photo")}>{r.photo ? <img src={r.photo} alt="" className="h-full w-full object-cover" /> : <Receipt className="m-auto h-6 w-6 text-soil/40" />}</button>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold text-forest"><span dir="ltr" className="font-mono">{r.dealId}</span> · {t(r.kind === "land" ? "cl_land" : "cl_machine")}</p>
+                <p className="text-xs text-soil/80">{t("ad_rc_from")}: {r.byName || "-"} · <b dir="ltr">{pkr(r.amount || 0)}</b>{r.ref ? <> · <span dir="ltr" className="font-mono">{r.ref}</span></> : null}</p>
+                <label className="mt-2 flex min-h-[40px] cursor-pointer items-center gap-2 text-xs font-bold text-forest">
+                  <input type="checkbox" checked={r.status === "verified"} disabled={!isFounder} onChange={() => toggle(r)} className="h-5 w-5 accent-[#145A32]" />
+                  {t("ad_rc_verify")}
+                </label>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+      {view && <SheetModal title={t("rc_title")} onClose={() => setView(null)} labelledBy="ad-rc-h"><img src={view.photo} alt={t("rc_photo")} className="w-full rounded-xl object-contain ring-1 ring-soil/15" /></SheetModal>}
+    </div>
+  );
+}
+
 function voucherSteps(b) {
   const stopped = ["declined", "cancelled"].includes(b.status);
   const confirmed = ["confirmed", "completed", "feedback"].includes(b.status);
@@ -6186,6 +6985,9 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
               </tbody></table>
               {b.financing && <p className="mt-2 text-xs text-soil/80" dir="ltr">{t("pay_paylater")}: {t("pl_now")} <b>{pkr(b.financing.advance)}</b> · {t("pl_later")} <b>{pkr(b.financing.balance)}</b> ({b.financing.partner})</p>}
             </div>
+            <CommissionSplit t={t} commission={q.commission} total={q.total} />
+            {!stopped && <CompanyAccountCard t={t} deal={bookingDeal(b)} />}
+            {!stopped && <div className="no-print"><ProofStrip t={t} deal={bookingDeal(b)} /></div>}
             <p className="muted text-[11px] leading-snug text-soil/80">{t("vo_note")} {t("vo_pattern_note")}</p>
           </div>
         </div>
@@ -6888,6 +7690,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
                   <CircleCheck className="h-4 w-4" aria-hidden="true" />{t("mb_complete")}
                 </button>
               )}
+              {["confirmed", "completed", "feedback"].includes(b.status) && <ProofStrip t={t} deal={bookingDeal(b)} className="mt-3" />}
               {b.status === "completed" && <FeedbackForm t={t} onSubmit={(rating, comment) => updateBooking(b.id, "feedback", { rating, comment })} />}
               {b.status === "feedback" && (
                 <p className="mt-3 flex items-center gap-2 text-sm text-forest">
@@ -7266,6 +8069,7 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
     { key: "requests", label: t("ow_requests"), icon: ClipboardList, badge: pending.length },
     { key: "list", label: t("ow_list"), icon: Plus },
     { key: "earnings", label: t("ow_earn"), icon: Calculator },
+    { key: "commission", label: t("cl_tab"), icon: Wallet },
     { key: "history", label: t("arc_history"), icon: HistoryIcon },
   ];
   return (
@@ -7290,6 +8094,7 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
       {sub === "requests" && archive && <div className="mb-3 flex flex-wrap items-center justify-end gap-2"><span className="me-auto text-xs text-soil/80">{t("arc_clear_hint")}</span><ClearAllBtn t={t} count={readKeys.length} onClick={() => clearKeys(readKeys)} /></div>}
       {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} requests={liveRequests} myListings={listings} saveRequest={saveRequest} toast={toast} isCleared={isCl} onClear={archive ? clearKeys : null} />}
       {sub === "history" && <HistoryList t={t} items={histItems} onRestore={restore} />}
+      {sub === "commission" && <CommissionLedger t={t} uid={uid} bookings={bookings} landBookings={landBookings || []} />}
       {sub === "requests" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
@@ -7315,9 +8120,12 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
             {responded.length === 0 ? (myOffers.length ? null : <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("ow_no_history")}</p>) : (
             <ul className="divide-y divide-soil/10">
                 {responded.map((b) => (
-                  <li key={b.id} className="flex items-center justify-between gap-2 py-2.5 text-sm">
-                    <span className="min-w-0"><span className="block truncate font-semibold text-soil">{b.listingName}</span><span className="text-xs text-soil/80" dir="ltr">{b.id} · {fmtDate(b.date)}</span></span>
-                    <span className="flex shrink-0 items-center gap-1.5"><StatusPill status={b.status} t={t} />{archive && <ClearBtn t={t} onClick={() => clearKeys("bk:" + b.id)} />}</span>
+                  <li key={b.id} className="py-2.5 text-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="min-w-0"><span className="block truncate font-semibold text-soil">{b.listingName}</span><span className="text-xs text-soil/80" dir="ltr">{b.id} · {fmtDate(b.date)}</span></span>
+                      <span className="flex shrink-0 items-center gap-1.5"><StatusPill status={b.status} t={t} />{archive && <ClearBtn t={t} onClick={() => clearKeys("bk:" + b.id)} />}</span>
+                    </div>
+                    {["confirmed", "completed", "feedback"].includes(b.status) && <ProofStrip t={t} deal={bookingDeal(b)} className="mt-2" />}
                   </li>
                 ))}
               </ul>
@@ -9976,6 +10784,8 @@ function LandAgreementModal({ t, b, dn, onClose }) {
             ))}
           </ol>
           <div className="mt-4"><CommissionCard t={t} total={b.total} /></div>
+          <CommissionSplit t={t} commission={landCommission(b.total).amount} total={b.total} className="mt-3" />
+          <CompanyAccountCard t={t} deal={b.sample ? null : landDeal(b)} className="mt-3" />
           <div className="mt-6 flex gap-4"><Sign label={`${t("ag_first")} · ${t("ag_sign")}`} /><Sign label={`${t("ag_second")} · ${t("ag_sign")}`} /></div>
           <div className="mt-4 flex gap-4"><Sign label={`${t("ag_witness1")} / گواہ نمبر 1`} /><Sign label={`${t("ag_witness2")} / گواہ نمبر 2`} /></div>
         </div>
@@ -10321,6 +11131,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                   </div>
                 )}
                 {contactShown[b.id] && (contactShown[b.id].none ? <p className="mt-1 text-xs text-soil/80">{t("ct_none")}</p> : <div className="mt-2"><ContactButtons t={t} phone={contactShown[b.id].phone} name={contactShown[b.id].name} /></div>)}
+                {b.status === "accepted" && <ProofStrip t={t} deal={landDeal(b)} className="mt-2" />}
               </div>
             ))}
           </div>
@@ -10335,6 +11146,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                   {b.status === "accepted" && <><button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button><button type="button" onClick={() => showContact(b)} className="rounded-lg border border-forest/30 px-2.5 py-1.5 text-xs font-bold text-forest">{t("ld_contact")}</button></>}
                 </div>
                 {contactShown[b.id] && (contactShown[b.id].none ? <p className="mt-1 text-xs text-soil/80">{t("ct_none")}</p> : <div className="mt-2"><ContactButtons t={t} phone={contactShown[b.id].phone} name={contactShown[b.id].name} /></div>)}
+                {b.status === "accepted" && <ProofStrip t={t} deal={landDeal(b)} className="mt-2" />}
               </div>
             ))}
             <h3 className="pt-2 font-bold text-forest">{t("ld_my_listings")}</h3>
@@ -10467,19 +11279,20 @@ const round10 = (n) => Math.round(n / 10) * 10;
 const CROP_LOCAL = { wheat: "Gandum", rice: "Chawal", maize: "Makai", cotton: "Kapas" };
 // Real crop photos from Wikimedia Commons (freely licensed). If one cannot load (offline, renamed file),
 // a clean gradient tile with the crop's icon is shown instead.
-// Local crop photos in public/crops/{crop}.{ext}. Each extension is tried in turn, then the gradient tile.
+// Local crop photos in public/crops/{crop}.{ext}. The saved extension is tried first, then the others, then the gradient tile.
 const CROP_EXTS = ["jpg", "jpeg", "png", "webp"];
 const CROP_PHOTOS = {
-  wheat: { base: "/crops/wheat", tone: ["#f6d77a", "#c9961a"] },
-  rice: { base: "/crops/rice", tone: ["#cfe8a9", "#5f9a32"] },
-  maize: { base: "/crops/maize", tone: ["#f9e3a1", "#d09312"] },
-  cotton: { base: "/crops/cotton", tone: ["#eef3f7", "#9cb8c9"] },
+  wheat: { base: "/crops/wheat", exts: ["webp", "jpg", "jpeg", "png"], tone: ["#f6d77a", "#c9961a"] },
+  rice: { base: "/crops/rice", exts: ["jpeg", "jpg", "png", "webp"], tone: ["#cfe8a9", "#5f9a32"] },
+  maize: { base: "/crops/maize", exts: ["jpeg", "jpg", "png", "webp"], tone: ["#f9e3a1", "#d09312"] },
+  cotton: { base: "/crops/cotton", exts: ["jpeg", "jpg", "png", "webp"], tone: ["#eef3f7", "#9cb8c9"] },
 };
 function CropPhoto({ crop, alt = "", className = "" }) {
   const info = CROP_PHOTOS[crop] || { tone: ["#cfe8a9", "#67A834"] };
-  const [step, setStep] = useState(0); // index into CROP_EXTS; past the end = gradient tile
+  const exts = info.exts || CROP_EXTS;
+  const [step, setStep] = useState(0); // index into exts; past the end = gradient tile
   const bg = { backgroundImage: `linear-gradient(135deg, ${info.tone[0]}, ${info.tone[1]})` };
-  if (!info.base || step >= CROP_EXTS.length) {
+  if (!info.base || step >= exts.length) {
     return (
       <span className={`relative flex items-center justify-center ${className}`} style={bg} role="img" aria-label={alt}>
         <Wheat className="h-10 w-10 text-white/90 drop-shadow" aria-hidden="true" />
@@ -10488,7 +11301,7 @@ function CropPhoto({ crop, alt = "", className = "" }) {
   }
   return (
     <span className={`relative block overflow-hidden ${className}`} style={bg}>
-      <img key={step} src={`${info.base}.${CROP_EXTS[step]}`} alt={alt} width={640} height={400} loading="lazy" decoding="async" referrerPolicy="no-referrer"
+      <img key={step} src={`${info.base}.${exts[step]}`} alt={alt} width={640} height={400} loading="lazy" decoding="async" referrerPolicy="no-referrer"
         onError={() => setStep((n) => n + 1)} className="absolute inset-0 h-full w-full object-cover" />
     </span>
   );
@@ -10505,7 +11318,7 @@ function CropListingConfirm({ t, p, innerRef, onView, onAnother }) {
   );
   return (
     <section ref={innerRef} tabIndex={-1} role="status" aria-live="polite" aria-labelledby="am-ok-title"
-      className="scroll-mt-24 rounded-2xl border-2 border-leaf/50 bg-white p-5 shadow-lg shadow-leaf/10 focus:outline-none">
+      className="scroll-mt-24 rounded-2xl border-2 border-leaf/50 bg-white px-5 pb-20 pt-5 shadow-lg sm:pb-6 shadow-leaf/10 focus:outline-none">
       <div className="flex items-start gap-3">
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-leaf text-white shadow ring-4 ring-leaf/20"><Check className="h-7 w-7" strokeWidth={3} aria-hidden="true" /></span>
         <div className="min-w-0">
@@ -11456,6 +12269,8 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
 
       {sub === "settings" && (
         <div className="grid gap-5 lg:grid-cols-2">
+          <CompanyPaymentAdmin t={t} isFounder={!!accounts.isFounder} />
+          <ReceiptsAdmin t={t} isFounder={!!accounts.isFounder} />
           <form onSubmit={saveDiesel} className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
             <h3 className="flex items-center gap-2 font-bold text-forest"><Fuel className="h-4 w-4" aria-hidden="true" />{t("ad_fuel_t")}</h3>
             <p className="mt-1 text-xs text-soil/80">{t("ad_fuel_sub")}</p>
@@ -12863,6 +13678,45 @@ function App() {
   // fuel prices: the founder's manual override (app_settings/fuel_rates) wins; otherwise the daily /api/fuel-rates
   const [fuelOverride, setFuelOverride] = useState(null);
   const [fuelLive, setFuelLive] = useState(null);
+  // Official collection account, commission receipts and work proofs (see DealsCtx)
+  const [company, setCompany] = useState(null);
+  const [receiptList, setReceiptList] = useState([]);
+  const [bookingProofs, setBookingProofs] = useState([]);
+  const [landProofs, setLandProofs] = useState([]);
+  const dealsUid = session && session.uid;
+  const dealsFounder = !!accounts.isFounder;
+  useEffect(() => watchDoc(COL.appSettings, "company_payment", (d) => setCompany(d || null), () => setCompany(null)), []);
+  useEffect(() => {
+    if (!dealsUid) { setReceiptList([]); setBookingProofs([]); setLandProofs([]); return undefined; }
+    // rules let each member read only deals they are part of; the founder reads everything
+    const q = dealsFounder ? undefined : [["uids", "array-contains", dealsUid]];
+    const quiet = () => { /* offline: keep what we have */ };
+    const un = [
+      watchCollection(COL.commissionReceipts, (l) => setReceiptList(l), quiet, q),
+      watchCollection(COL.bookingProofs, (l) => setBookingProofs(l), quiet, q),
+      watchCollection(COL.landProofs, (l) => setLandProofs(l), quiet, q),
+    ];
+    return () => un.forEach((u) => { try { u(); } catch (e) { /* ignore */ } });
+  }, [dealsUid, dealsFounder]);
+  const dealsValue = useMemo(() => {
+    const receipts = {};
+    receiptList.forEach((r) => { receipts[r.dealKey || r.id] = r; });
+    const strip = ({ id, ...rest }) => rest;
+    return {
+      session, isFounder: dealsFounder, company, receipts, bookingProofs, landProofs, toast,
+      saveReceipt: (doc) => writeDoc(COL.commissionReceipts, doc.dealKey, doc).then(() => setReceiptList((l) => [...l.filter((x) => (x.dealKey || x.id) !== doc.dealKey), { ...doc, id: doc.dealKey }])),
+      verifyReceipt: (r, on) => {
+        const next = { ...strip(r), status: on ? "verified" : "pending", verifiedAt: on ? Date.now() : 0, verifiedBy: on ? ((accounts.fbUser && accounts.fbUser.email) || "") : "" };
+        return writeDoc(COL.commissionReceipts, r.dealKey || r.id, next).then(() => setReceiptList((l) => l.map((x) => ((x.dealKey || x.id) === (r.dealKey || r.id) ? { ...next, id: x.id } : x))));
+      },
+      addProof: (doc) => {
+        const { id, ...data } = doc;
+        const land = doc.kind === "land";
+        return writeDoc(land ? COL.landProofs : COL.bookingProofs, id, data).then(() => (land ? setLandProofs : setBookingProofs)((l) => (l.some((x) => x.id === id) ? l : [...l, doc])));
+      },
+      saveCompany: (data) => writeDoc(COL.appSettings, "company_payment", { ...data, updatedAt: Date.now(), updatedBy: (accounts.fbUser && accounts.fbUser.email) || "" }).then(() => setCompany((c) => ({ ...(c || {}), ...data }))),
+    };
+  }, [session, dealsFounder, company, receiptList, bookingProofs, landProofs, toast, accounts.fbUser]);
   useEffect(() => watchDoc(COL.appSettings, "fuel_rates", (d) => setFuelOverride(d && d.override && validFuel(d.diesel) ? d : null), () => setFuelOverride(null)), []);
   useEffect(() => {
     if (fuelOverride) return undefined;
@@ -12985,6 +13839,7 @@ function App() {
   // machine chosen from a "Popular machines" card: Apni Boli opens on Step 2 with it
 
   return (
+    <DealsCtx.Provider value={dealsValue}>
     <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${lang === "ur" || lang === "pa" ? "font-nastaliq" : langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
       <Header t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs} adminCount={adminCount}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
@@ -13025,6 +13880,7 @@ function App() {
       {voucherBooking && <VoucherModal b={voucherBooking} t={t} dn={dn} onClose={() => setVoucherId(null)} updateBooking={updateBooking} />}
       <Toasts toasts={toasts} dismiss={dismissToast} />
     </div>
+    </DealsCtx.Provider>
   );
 }
 

@@ -47,15 +47,98 @@ service cloud.firestore {
       allow delete: if isAdmin() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid);
     }
 
-    // app_settings/fuel_rates  founder's manual fuel price override { override, diesel, petrol, updatedAt, updatedBy }
-    // Everyone may read it (the app needs the rate before sign-in); only the founder may change it.
+    // app_settings/fuel_rates       founder's manual fuel price override { override, diesel, petrol, updatedAt, updatedBy }
+    // app_settings/company_payment  Agri-Share official collection account shown on every bill
+    //   { bankName, accountTitle, iban, jazzcash, easypaisa, raast, updatedAt, updatedBy }
+    // Everyone may read them (bills show the account before sign-in); only the founder may change them.
+    function companyOk() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['bankName', 'accountTitle', 'iban', 'jazzcash', 'easypaisa', 'raast', 'updatedAt', 'updatedBy'])
+        && d.get('bankName', '') is string && d.get('bankName', '').size() <= 60
+        && d.get('accountTitle', '') is string && d.get('accountTitle', '').size() <= 60
+        && d.get('iban', '') is string && d.get('iban', '').size() <= 60
+        && d.get('jazzcash', '') is string && d.get('jazzcash', '').size() <= 60
+        && d.get('easypaisa', '') is string && d.get('easypaisa', '').size() <= 60
+        && d.get('raast', '') is string && d.get('raast', '').size() <= 60;
+    }
     match /app_settings/{id} {
       allow read: if true;
       allow create, update: if isFounder() && smallDoc()
         && (id != 'fuel_rates' || (request.resource.data.get('diesel', 0) is number
             && request.resource.data.get('diesel', 0) >= 150 && request.resource.data.get('diesel', 0) <= 600
             && request.resource.data.get('petrol', 0) is number
-            && request.resource.data.get('petrol', 0) >= 150 && request.resource.data.get('petrol', 0) <= 600));
+            && request.resource.data.get('petrol', 0) >= 150 && request.resource.data.get('petrol', 0) <= 600))
+        && (id != 'company_payment' || companyOk());
+      allow delete: if isFounder();
+    }
+
+    // ---------------- Deal parties (machinery bookings and land leases) ----------------
+    // The farmer / tenant and the owner come from the deal document itself, never from what the client sends.
+    function bookingAt(dealId) { return get(/databases/$(database)/documents/bookings/$(dealId)).data; }
+    function landAt(dealId) { return get(/databases/$(database)/documents/land_bookings/$(dealId)).data; }
+    function dealParties(kind, dealId) {
+      return kind == 'land'
+        ? [landAt(dealId).get('tenantUid', ''), landAt(dealId).get('ownerUid', '')]
+        : [bookingAt(dealId).get('renterUid', ''), bookingAt(dealId).get('ownerUid', '')];
+    }
+    // the writer is a party, and the doc's "uids" (who may read it) are only that deal's farmer and owner
+    function partyWrite(kind, dealId, uids) {
+      return request.auth.uid in dealParties(kind, dealId) && dealParties(kind, dealId).hasAll(uids);
+    }
+
+    // Commission receipts: one per deal, id "booking_<id>" or "land_<id>". The farmer or owner uploads
+    // (status "pending"); only the founder marks it "verified". Readable by that deal's parties and the founder.
+    function receiptOk(id) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['dealKey', 'kind', 'dealId', 'amount', 'photo', 'ref', 'uids', 'ownerUid', 'byUid', 'byName', 'status', 'createdAt', 'updatedAt', 'verifiedAt', 'verifiedBy'])
+        && d.kind in ['booking', 'land'] && d.dealId is string && id == d.kind + '_' + d.dealId && d.dealKey == id
+        && d.status in ['pending', 'verified']
+        && d.amount is number && d.amount >= 0 && d.amount <= 100000000
+        && d.photo is string && d.photo.size() <= 170000
+        && d.get('ref', '') is string && d.get('ref', '').size() <= 120
+        && d.uids is list && d.uids.size() >= 1 && d.uids.size() <= 2;
+    }
+    match /commission_receipts/{id} {
+      allow read: if isFounder() || (signedIn() && request.auth.uid in resource.data.uids);
+      allow create: if signedIn() && receiptOk(id) && (isFounder()
+        || (request.resource.data.status == 'pending' && request.resource.data.byUid == request.auth.uid
+            && partyWrite(request.resource.data.kind, request.resource.data.dealId, request.resource.data.uids)));
+      // a party may replace the receipt until the founder verifies it; they can never verify it themselves
+      allow update: if signedIn() && receiptOk(id) && (isFounder()
+        || (request.auth.uid in resource.data.uids && resource.data.status != 'verified'
+            && request.resource.data.status == 'pending' && request.resource.data.byUid == request.auth.uid
+            && request.resource.data.uids == resource.data.uids
+            && request.resource.data.get('verifiedBy', '') == ''));
+      allow delete: if isFounder();
+    }
+
+    // Photo / video work and handover proofs. Only the deal's farmer / tenant, its owner and the founder
+    // can read or add them. Proofs are never edited (a record of what happened); only the founder deletes.
+    function proofOk(kind) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['dealId', 'kind', 'stage', 'photo', 'video', 'videoUrl', 'note', 'uids', 'byUid', 'byName', 'byRole', 'createdAt'])
+        && d.kind == kind && d.dealId is string
+        && d.stage in ['before', 'after', 'meter', 'land']
+        && d.byUid == request.auth.uid
+        && d.uids is list && d.uids.size() >= 1 && d.uids.size() <= 2
+        && d.get('photo', '') is string && d.get('photo', '').size() <= 170000
+        && d.get('video', '') is string && d.get('video', '').size() <= 900000
+        && d.get('videoUrl', '') is string && d.get('videoUrl', '').size() <= 500
+        && d.get('note', '') is string && d.get('note', '').size() <= 300
+        && (d.get('photo', '') != '' || d.get('video', '') != '' || d.get('videoUrl', '') != '');
+    }
+    match /booking_proofs/{id} {
+      allow read: if isFounder() || (signedIn() && request.auth.uid in resource.data.uids);
+      allow create: if signedIn() && proofOk('booking')
+        && (isFounder() || partyWrite('booking', request.resource.data.dealId, request.resource.data.uids));
+      allow update: if false;
+      allow delete: if isFounder();
+    }
+    match /land_proofs/{id} {
+      allow read: if isFounder() || (signedIn() && request.auth.uid in resource.data.uids);
+      allow create: if signedIn() && proofOk('land')
+        && (isFounder() || partyWrite('land', request.resource.data.dealId, request.resource.data.uids));
+      allow update: if false;
       allow delete: if isFounder();
     }
 

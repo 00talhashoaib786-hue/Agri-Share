@@ -96,7 +96,10 @@ export const COL = {
   landContacts: "land_contacts",
   landReqContacts: "land_request_contacts",
   prefs: "user_prefs", // per-member private settings (e.g. the Clear -> History archive)
-  appSettings: "app_settings", // public app-wide settings, e.g. app_settings/fuel_rates (founder writes)
+  appSettings: "app_settings", // public app-wide settings: fuel_rates, company_payment (founder writes)
+  commissionReceipts: "commission_receipts", // one per deal ("booking_<id>" / "land_<id>"): receipt photo, founder verifies
+  bookingProofs: "booking_proofs", // photo / video work proofs for a machinery booking (farmer, owner, founder only)
+  landProofs: "land_proofs", // photo / video handover proofs for a land lease (tenant, owner, founder only)
 };
 
 let app = null, auth = null;
