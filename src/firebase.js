@@ -90,6 +90,11 @@ export const COL = {
   bookingContacts: "booking_contacts",
   demandContacts: "demand_contacts",
   cropContacts: "crop_contacts",
+  landListings: "land_listings",
+  landRequests: "land_requests",
+  landBookings: "land_bookings",
+  landContacts: "land_contacts",
+  landReqContacts: "land_request_contacts",
 };
 
 let app = null, auth = null;

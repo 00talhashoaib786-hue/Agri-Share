@@ -136,6 +136,60 @@ service cloud.firestore {
       allow read, update, delete: if isFounder();
     }
     // Profiles hold email and phone: each member reads only their own; the founder reads all
+    // ---------------- Thaikay Te Zameen (land leasing) ----------------
+    // Land listings: public sees approved only; the owner sees their own; admins see all. Instant live but unverified.
+    match /land_listings/{id} {
+      allow read: if resource.data.get('status', '') == 'approved'
+        || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid)
+        || isAdmin();
+      allow create: if signedIn() && smallDoc() && (isAdmin()
+        || (request.resource.data.ownerUid == request.auth.uid
+            && request.resource.data.status == 'approved'
+            && request.resource.data.get('isVerified', false) == false
+            && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone'])));
+      allow update: if signedIn() && smallDoc() && (isAdmin()
+        || (resource.data.get('ownerUid', '') == request.auth.uid
+            && request.resource.data.get('ownerUid', '') == request.auth.uid
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'isVerified', 'verifiedAt', 'ownerEmail', 'ownerPhone'])));
+      allow delete: if isAdmin() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid);
+    }
+    // "Zameen Ki Boli": members can read (owners in the district send offers); renter contact lives elsewhere
+    match /land_requests/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && smallDoc() && request.resource.data.renterUid == request.auth.uid
+        && !request.resource.data.keys().hasAny(['renterEmail', 'renterPhone']);
+      allow update: if signedIn() && smallDoc()
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['renterEmail', 'renterPhone', 'renterUid']);
+      allow delete: if isAdmin() || (signedIn() && resource.data.renterUid == request.auth.uid);
+    }
+    // Land leases: only the land owner, the tenant and admins
+    match /land_bookings/{id} {
+      allow read: if isAdmin() || (signedIn() && (resource.data.ownerUid == request.auth.uid || resource.data.tenantUid == request.auth.uid));
+      allow create: if signedIn() && smallDoc() && request.resource.data.tenantUid == request.auth.uid
+        && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone', 'renterEmail', 'renterPhone']);
+      allow update: if signedIn() && smallDoc() && (isAdmin()
+        || ((resource.data.ownerUid == request.auth.uid || resource.data.tenantUid == request.auth.uid)
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['ownerUid', 'tenantUid', 'ownerEmail', 'ownerPhone', 'renterEmail', 'renterPhone'])));
+      allow delete: if isAdmin();
+    }
+    // Land owner contact: the owner, tenants whose lease the owner accepted (acceptedUids), and the founder
+    match /land_contacts/{listingId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.ownerUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && (resource.data.ownerUid == request.auth.uid
+        || request.auth.uid in resource.data.get('acceptedUids', [])));
+      allow update: if signedIn() && smallDoc() && (isFounder()
+        || (resource.data.ownerUid == request.auth.uid && request.resource.data.ownerUid == request.auth.uid));
+      allow delete: if isFounder();
+    }
+    // Tenant contact for a land demand or lease request: the tenant, the accepted land owner (acceptedUid), and the founder
+    match /land_request_contacts/{requestId} {
+      allow create: if signedIn() && smallDoc() && (isFounder() || request.resource.data.renterUid == request.auth.uid);
+      allow read: if isFounder() || (signedIn() && (resource.data.renterUid == request.auth.uid
+        || resource.data.get('acceptedUid', '') == request.auth.uid));
+      allow update: if signedIn() && smallDoc() && (isFounder()
+        || (resource.data.renterUid == request.auth.uid && request.resource.data.renterUid == request.auth.uid));
+      allow delete: if isFounder();
+    }
     match /users/{uid} {
       allow read: if (signedIn() && request.auth.uid == uid) || isFounder();
       allow create, update: if ((signedIn() && request.auth.uid == uid) || isFounder()) && smallDoc();

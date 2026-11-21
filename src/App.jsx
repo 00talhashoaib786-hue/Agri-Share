@@ -687,7 +687,7 @@ const T = {
     es_machine: "Machine", es_hours: "Idle hours available per day", es_days: "Rental days per season", es_util: "Expected booking rate",
     es_result: "Estimated seasonal rental income", es_month: "per season", es_confirmed: "From confirmed bookings so far",
     es_note: "The 6% commission (4% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
-    ag_title: "Agri-Agent network", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
+    ag_title: "Agricultural Land Lease Agreement", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
     ag1_t: "Who is an Agri-Agent?", ag1_d: "An existing village grocery or mobile-load shop, trained as a local booking point.",
     ag2_t: "What do they do?", ag2_d: "Explain the service, register farmers, show available machines and submit booking requests.",
     ag3_t: "How do they earn?", ag3_d: "A transparent commission per completed booking, under a published policy.",
@@ -998,7 +998,122 @@ const T = {
     vo_pay_direct: "Cash / Direct on arrival",
     ow_offer_sent_row: "Offer sent · {rate}/hr",
     ow_offer_waiting: "Waiting for farmer",
-    ow_offer_accepted: "Accepted"
+    ow_offer_accepted: "Accepted",
+    nav_land: "Zameen Thaika (Land Lease)",
+    nav_s_land: "Land",
+    nav_govt: "Govt Portal",
+    nav_s_govt: "Govt",
+    soon: "Coming soon",
+    hero_land: "Lease farmland (Zameen Thaika)",
+    ld_title: "Thaikay Te Zameen: Farmland Lease",
+    ld_sub: "Lease farmland directly from owners, or post the land you need and let owners send offers.",
+    ld_tab_find: "Find land",
+    ld_tab_list: "List my land",
+    ld_tab_boli: "Zameen Ki Boli",
+    ld_tab_mine: "My land deals",
+    ld_village: "Village / title",
+    ld_title_ph: "e.g. 10 acres near the canal, Chak 45",
+    ld_district: "District",
+    ld_tehsil: "Tehsil",
+    ld_area: "Total area",
+    ld_acres: "Acres",
+    ld_kanals: "Kanals",
+    ld_water: "Water source",
+    w_canal: "Canal (Nehri) + tubewell",
+    w_solar: "Solar tubewell",
+    w_electric: "Electric / diesel tubewell",
+    w_barani: "Barani (rain-fed, no water)",
+    w_any: "Any water source",
+    ld_soil: "Soil quality",
+    s_loam: "Fertile loam (Mera)",
+    s_laser: "Laser leveled",
+    s_sandy: "Sandy (Retli)",
+    s_saline: "Saline (Kallar)",
+    ld_road: "Road access",
+    r_paved: "Paved road (Pakki sarak)",
+    r_kacha: "Kacha rasta",
+    ld_months: "Lease duration (months)",
+    ld_rate_type: "Thaika rate",
+    rt_acre: "PKR per acre per month",
+    rt_total: "Total lease value (PKR)",
+    ld_rate: "Expected rate",
+    ld_payment: "Payment schedule",
+    p_advance: "Full advance (Peshgi)",
+    p_two: "2 installments",
+    ld_featured: "Featured boost (PKR 999 per acre)",
+    ld_featured_note: "Shown first in search. Our team will contact you to collect the boost fee of {fee}.",
+    ld_featured_badge: "Featured",
+    ld_submit: "List my land",
+    ld_listed: "Your land is live now. The Agri-Share team will verify it shortly.",
+    ld_err_area: "Enter the land area.",
+    ld_err_rate: "Enter your expected rate.",
+    ld_filter_radius: "Radius",
+    ld_filter_acres: "Minimum acres",
+    ld_filter_budget: "Max. budget (PKR / acre / month)",
+    ld_myloc_hint: "Choose your village or district to see land nearby",
+    ld_results: "{n} land listings",
+    ld_results_one: "1 land listing",
+    ld_none: "No land matches yet.",
+    ld_land: "Farmland",
+    ld_per_acre_month: "/ acre / month",
+    ld_total_value: "Total lease value",
+    ld_request: "Request lease",
+    ld_start: "Start date",
+    ld_send_req: "Send lease request",
+    ld_req_sent: "Lease request sent to the land owner.",
+    ld_boli_title: "Zameen Ki Boli: post the land you need",
+    ld_boli_sub: "Land owners in your district will send you offers.",
+    ld_budget: "Your budget (PKR / acre / month)",
+    ld_boli_post: "Post land demand",
+    ld_boli_posted: "Your land demand is live. Owners in your district can now send offers.",
+    ld_offers: "Offers from land owners",
+    ld_no_offers: "No offers yet.",
+    ld_accept: "Accept offer",
+    ld_offer_rate: "Your offer (PKR / acre / month)",
+    ld_send_offer: "Send offer",
+    ld_offer_sent: "Your offer was sent to the farmer.",
+    ld_open_demand: "Farmers looking for land in your district",
+    ld_incoming: "Lease requests for your land",
+    ld_my_listings: "My land listings",
+    ld_my_leases: "My leases",
+    ld_accept_req: "Accept",
+    ld_decline: "Decline",
+    ld_accepted: "Lease accepted",
+    ld_pending: "Waiting for owner",
+    ld_declined: "Declined",
+    ld_contact: "Show contact",
+    ld_agreement: "Print / Download Stamp-Paper Agreement",
+    cm_title: "Agri-Share commission",
+    cm_sub: "A flat one-time facilitation fee of 4.5% on the total lease value, whatever the lease length.",
+    cm_total: "Total commission",
+    eco_title: "Agri-Share 360° Ecosystem Benefit",
+    eco_sub: "Lease land on Agri-Share and also rent machinery or sell your harvest here: you get a 0.50% commission rebate on your next machinery booking (commission never goes below 3.50%).",
+    eco_active: "360° benefit active: 0.50% off machinery commission",
+    ag_stamp: "Attach E-Stamp Paper here",
+    ag_date: "Date",
+    ag_first: "First Party (Land Owner)",
+    ag_second: "Second Party (Tenant / Farmer)",
+    ag_land: "Land details",
+    ag_period: "Lease period",
+    ag_amount: "Total thaika amount",
+    ag_clause1: "The First Party leases the land described above to the Second Party for cultivation for the stated period.",
+    ag_clause2: "The Second Party will pay the thaika amount according to the payment schedule and hand the land back at the end of the lease.",
+    ag_clause3: "Agri-Share is only a facilitation platform; its commission is shown below. Any dispute will be settled under the laws of Pakistan.",
+    ag_witness1: "Witness No. 1",
+    ag_witness2: "Witness No. 2",
+    ag_sign: "Signature / Thumbprint",
+    ag_cnic: "CNIC",
+    ag_name: "Name",
+    ag_print: "Print",
+    ag_close: "Close",
+    gv_title: "Agri-Share Government & Institutional Partnership Portal",
+    gv_sub: "Coming soon, in partnership with the Government of Pakistan and the Provincial Agriculture Departments.",
+    gv_p1_t: "Interest-free & subsidized Kisan loans",
+    gv_p1_s: "Verified through your digital farm and lease history on Agri-Share.",
+    gv_p2_t: "Legal protection & e-stamp registration for thaika agreements",
+    gv_p2_s: "Register land lease agreements digitally for legal safety.",
+    gv_p3_t: "Direct government subsidy, seed & fertilizer support",
+    gv_p3_s: "Subsidies delivered straight to verified farmers.",
   },
   ur: {
     vc_mic_blocked: "مائیک کی اجازت نہیں ملی۔ براؤزر کی سیٹنگز میں مائیک کی اجازت دیں، پھر دوبارہ بولنے کے لیے دبائیں۔",
@@ -1303,7 +1418,7 @@ const T = {
     es_machine: "مشین", es_hours: "روزانہ فارغ گھنٹے", es_days: "سیزن میں کرائے کے دن", es_util: "متوقع بکنگ کی شرح",
     es_result: "سیزن کی تخمینی کرایہ آمدنی", es_month: "فی سیزن", es_confirmed: "اب تک کی تصدیق شدہ بکنگز سے",
     es_note: "6٪ کمیشن (چھوٹے کسانوں کے لیے 4٪) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
-    ag_title: "ایگری ایجنٹ نیٹ ورک", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
+    ag_title: "زرعی زمین کا ٹھیکہ نامہ", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
     ag1_t: "ایگری ایجنٹ کون ہے؟", ag1_d: "گاؤں کی کریانہ یا موبائل لوڈ کی دکان، جسے بکنگ پوائنٹ کے طور پر تربیت دی جاتی ہے۔",
     ag2_t: "وہ کیا کرتے ہیں؟", ag2_d: "سروس سمجھاتے ہیں، کسانوں کو رجسٹر کرتے ہیں، مشینیں دکھاتے ہیں اور بکنگ بھیجتے ہیں۔",
     ag3_t: "وہ کیسے کماتے ہیں؟", ag3_d: "ہر مکمل بکنگ پر شفاف کمیشن، ایک واضح پالیسی کے تحت۔",
@@ -1741,7 +1856,122 @@ const T = {
     vo_pay_direct: "نقد / پہنچنے پر براہ راست",
     ow_offer_sent_row: "آفر بھیجی · {rate} فی گھنٹہ",
     ow_offer_waiting: "کسان کا انتظار",
-    ow_offer_accepted: "قبول ہو گئی"
+    ow_offer_accepted: "قبول ہو گئی",
+    nav_land: "زمین ٹھیکہ",
+    nav_s_land: "زمین",
+    nav_govt: "سرکاری پورٹل",
+    nav_s_govt: "سرکاری",
+    soon: "جلد آ رہا ہے",
+    hero_land: "زرعی زمین ٹھیکے پر لیں",
+    ld_title: "ٹھیکے تے زمین: زرعی زمین کا ٹھیکہ",
+    ld_sub: "زمین براہ راست مالکان سے ٹھیکے پر لیں، یا اپنی ضرورت پوسٹ کریں اور مالکان آفرز بھیجیں گے۔",
+    ld_tab_find: "زمین تلاش کریں",
+    ld_tab_list: "اپنی زمین درج کریں",
+    ld_tab_boli: "زمین کی بولی",
+    ld_tab_mine: "میرے زمین کے معاملات",
+    ld_village: "گاؤں / عنوان",
+    ld_title_ph: "مثلاً نہر کے قریب 10 ایکڑ، چک 45",
+    ld_district: "ضلع",
+    ld_tehsil: "تحصیل",
+    ld_area: "کل رقبہ",
+    ld_acres: "ایکڑ",
+    ld_kanals: "کنال",
+    ld_water: "پانی کا ذریعہ",
+    w_canal: "نہری + ٹیوب ویل",
+    w_solar: "سولر ٹیوب ویل",
+    w_electric: "بجلی / ڈیزل ٹیوب ویل",
+    w_barani: "بارانی (پانی نہیں)",
+    w_any: "کوئی بھی ذریعہ",
+    ld_soil: "زمین کی قسم",
+    s_loam: "زرخیز میرا",
+    s_laser: "لیزر سے ہموار",
+    s_sandy: "ریتلی",
+    s_saline: "کلر والی",
+    ld_road: "سڑک تک رسائی",
+    r_paved: "پکی سڑک",
+    r_kacha: "کچا راستہ",
+    ld_months: "ٹھیکے کی مدت (مہینے)",
+    ld_rate_type: "ٹھیکے کا ریٹ",
+    rt_acre: "روپے فی ایکڑ فی مہینہ",
+    rt_total: "کل ٹھیکہ رقم (روپے)",
+    ld_rate: "متوقع ریٹ",
+    ld_payment: "ادائیگی کا طریقہ",
+    p_advance: "مکمل پیشگی",
+    p_two: "2 قسطیں",
+    ld_featured: "نمایاں اشتہار (999 روپے فی ایکڑ)",
+    ld_featured_note: "تلاش میں سب سے اوپر نظر آئے گی۔ ہماری ٹیم {fee} فیس کے لیے آپ سے رابطہ کرے گی۔",
+    ld_featured_badge: "نمایاں",
+    ld_submit: "اپنی زمین درج کریں",
+    ld_listed: "آپ کی زمین اب لائیو ہے۔ ایگری شیئر ٹیم جلد تصدیق کرے گی۔",
+    ld_err_area: "زمین کا رقبہ لکھیں۔",
+    ld_err_rate: "اپنا متوقع ریٹ لکھیں۔",
+    ld_filter_radius: "دائرہ",
+    ld_filter_acres: "کم از کم ایکڑ",
+    ld_filter_budget: "زیادہ سے زیادہ بجٹ (روپے / ایکڑ / مہینہ)",
+    ld_myloc_hint: "قریبی زمین دیکھنے کے لیے اپنا گاؤں یا ضلع چنیں",
+    ld_results: "{n} زمینیں",
+    ld_results_one: "1 زمین",
+    ld_none: "ابھی کوئی زمین نہیں ملی۔",
+    ld_land: "زرعی زمین",
+    ld_per_acre_month: "/ ایکڑ / مہینہ",
+    ld_total_value: "کل ٹھیکہ رقم",
+    ld_request: "ٹھیکے کی درخواست",
+    ld_start: "شروع کی تاریخ",
+    ld_send_req: "ٹھیکے کی درخواست بھیجیں",
+    ld_req_sent: "ٹھیکے کی درخواست زمین کے مالک کو بھیج دی گئی۔",
+    ld_boli_title: "زمین کی بولی: اپنی ضرورت کی زمین پوسٹ کریں",
+    ld_boli_sub: "آپ کے ضلع کے زمین مالکان آپ کو آفرز بھیجیں گے۔",
+    ld_budget: "آپ کا بجٹ (روپے / ایکڑ / مہینہ)",
+    ld_boli_post: "زمین کی طلب پوسٹ کریں",
+    ld_boli_posted: "آپ کی زمین کی طلب لائیو ہے۔ آپ کے ضلع کے مالکان اب آفرز بھیج سکتے ہیں۔",
+    ld_offers: "زمین مالکان کی آفرز",
+    ld_no_offers: "ابھی کوئی آفر نہیں۔",
+    ld_accept: "آفر قبول کریں",
+    ld_offer_rate: "آپ کی آفر (روپے / ایکڑ / مہینہ)",
+    ld_send_offer: "آفر بھیجیں",
+    ld_offer_sent: "آپ کی آفر کسان کو بھیج دی گئی۔",
+    ld_open_demand: "آپ کے ضلع میں زمین کے متلاشی کسان",
+    ld_incoming: "آپ کی زمین کے لیے ٹھیکے کی درخواستیں",
+    ld_my_listings: "میری زمینیں",
+    ld_my_leases: "میرے ٹھیکے",
+    ld_accept_req: "قبول کریں",
+    ld_decline: "انکار",
+    ld_accepted: "ٹھیکہ منظور",
+    ld_pending: "مالک کا انتظار",
+    ld_declined: "انکار ہو گیا",
+    ld_contact: "رابطہ دکھائیں",
+    ld_agreement: "اسٹامپ پیپر معاہدہ پرنٹ / ڈاؤن لوڈ کریں",
+    cm_title: "ایگری شیئر کمیشن",
+    cm_sub: "کل ٹھیکہ رقم پر 4.5٪ کا ایک ہی مقررہ ریٹ، ایک بار، ٹھیکے کی مدت چاہے جتنی بھی ہو۔",
+    cm_total: "کل کمیشن",
+    eco_title: "ایگری شیئر 360° فائدہ",
+    eco_sub: "ایگری شیئر پر زمین ٹھیکے پر لیں اور یہاں مشینری کرائے پر لیں یا فصل بیچیں: اگلی مشینری بکنگ پر 0.50٪ کمیشن کی چھوٹ (کمیشن 3.50٪ سے کم نہیں ہوگا)۔",
+    eco_active: "360° فائدہ فعال: مشینری کمیشن پر 0.50٪ چھوٹ",
+    ag_stamp: "ای اسٹامپ پیپر یہاں لگائیں",
+    ag_date: "تاریخ",
+    ag_first: "فریق اول (زمین کا مالک)",
+    ag_second: "فریق ثانی (ٹھیکیدار / کسان)",
+    ag_land: "زمین کی تفصیل",
+    ag_period: "ٹھیکے کی مدت",
+    ag_amount: "کل ٹھیکہ رقم",
+    ag_clause1: "فریق اول اوپر درج زمین مقررہ مدت کے لیے کاشت کاری کی غرض سے فریق ثانی کو ٹھیکے پر دیتا ہے۔",
+    ag_clause2: "فریق ثانی ادائیگی کے طریقے کے مطابق ٹھیکہ رقم ادا کرے گا اور مدت ختم ہونے پر زمین واپس کرے گا۔",
+    ag_clause3: "ایگری شیئر صرف سہولت کار پلیٹ فارم ہے؛ اس کا کمیشن نیچے درج ہے۔ کسی بھی تنازع کا فیصلہ پاکستان کے قوانین کے مطابق ہوگا۔",
+    ag_witness1: "گواہ نمبر 1",
+    ag_witness2: "گواہ نمبر 2",
+    ag_sign: "دستخط / انگوٹھا",
+    ag_cnic: "شناختی کارڈ نمبر",
+    ag_name: "نام",
+    ag_print: "پرنٹ",
+    ag_close: "بند کریں",
+    gv_title: "ایگری شیئر سرکاری و ادارہ جاتی شراکت پورٹل",
+    gv_sub: "جلد آ رہا ہے، حکومت پاکستان اور صوبائی محکمہ زراعت کے اشتراک سے۔",
+    gv_p1_t: "بلا سود اور رعایتی کسان قرضے",
+    gv_p1_s: "ایگری شیئر پر آپ کی ڈیجیٹل کھیتی اور ٹھیکے کی تاریخ سے تصدیق۔",
+    gv_p2_t: "ٹھیکہ ناموں کا قانونی تحفظ اور ای اسٹامپ رجسٹریشن",
+    gv_p2_s: "قانونی تحفظ کے لیے ٹھیکہ نامے ڈیجیٹل طور پر رجسٹر کریں۔",
+    gv_p3_t: "براہ راست سرکاری سبسڈی، بیج اور کھاد کی مدد",
+    gv_p3_s: "سبسڈی براہ راست تصدیق شدہ کسانوں تک۔",
   },
   pa: {
     vc_mic_blocked: "مائیک دی اجازت نئیں ملی۔ براؤزر دیاں سیٹنگاں وچ مائیک دی اجازت دیو، فیر دوبارہ بولن لئی دباؤ۔",
@@ -2046,7 +2276,7 @@ const T = {
     es_machine: "مشین", es_hours: "روزانہ ویہلے گھنٹے", es_days: "سیزن وچ کرائے دے دن", es_util: "اندازاً بکنگ دی شرح",
     es_result: "سیزن دی اندازاً کرایہ کمائی", es_month: "فی سیزن", es_confirmed: "ہن تک پکیاں بکنگاں توں",
     es_note: "6٪ کمیشن (نکے کساناں لئی 4٪) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
-    ag_title: "ایگری ایجنٹ نیٹ ورک", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
+    ag_title: "واہی والی زمین دا ٹھیکہ نامہ", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
     ag1_t: "ایگری ایجنٹ کون اے؟", ag1_d: "پنڈ دی کریانے یا موبائل لوڈ دی ہٹی، جنہوں بکنگ پوائنٹ وجوں سکھایا جاندا اے۔",
     ag2_t: "اوہ کی کردے نیں؟", ag2_d: "سروس سمجھاندے، کساناں نوں رجسٹر کردے، مشیناں وکھاندے تے بکنگ گھلدے نیں۔",
     ag3_t: "اوہ کیویں کماندے نیں؟", ag3_d: "ہر پوری بکنگ تے صاف کمیشن، اک کھلی پالیسی ہیٹھ۔",
@@ -2384,7 +2614,122 @@ const T = {
     vo_pay_direct: "نقد / اپڑن تے سدھا",
     ow_offer_sent_row: "آفر گھلی · {rate} فی گھنٹہ",
     ow_offer_waiting: "کسان دی اڈیک",
-    ow_offer_accepted: "منظور ہو گئی"
+    ow_offer_accepted: "منظور ہو گئی",
+    nav_land: "زمین ٹھیکہ",
+    nav_s_land: "زمین",
+    nav_govt: "سرکاری پورٹل",
+    nav_s_govt: "سرکاری",
+    soon: "چھیتی آ رہیا اے",
+    hero_land: "واہی والی زمین ٹھیکے تے لؤ",
+    ld_title: "ٹھیکے تے زمین: واہی والی زمین دا ٹھیکہ",
+    ld_sub: "زمین سدھی مالکاں توں ٹھیکے تے لؤ، یا اپنی لوڑ پاؤ تے مالک آفراں گھلن گے۔",
+    ld_tab_find: "زمین لبھو",
+    ld_tab_list: "اپنی زمین درج کرو",
+    ld_tab_boli: "زمین دی بولی",
+    ld_tab_mine: "میرے زمین دے معاملے",
+    ld_village: "پنڈ / سرخی",
+    ld_title_ph: "جیویں نہر کول 10 ایکڑ، چک 45",
+    ld_district: "ضلع",
+    ld_tehsil: "تحصیل",
+    ld_area: "کُل رقبہ",
+    ld_acres: "ایکڑ",
+    ld_kanals: "کنال",
+    ld_water: "پانی دا ذریعہ",
+    w_canal: "نہری + ٹیوب ویل",
+    w_solar: "سولر ٹیوب ویل",
+    w_electric: "بجلی / ڈیزل ٹیوب ویل",
+    w_barani: "بارانی (پانی نئیں)",
+    w_any: "کوئی وی ذریعہ",
+    ld_soil: "زمین دی قسم",
+    s_loam: "زرخیز میرا",
+    s_laser: "لیزر نال پدھری",
+    s_sandy: "ریتلی",
+    s_saline: "کلر والی",
+    ld_road: "سڑک تک رسائی",
+    r_paved: "پکی سڑک",
+    r_kacha: "کچا رستہ",
+    ld_months: "ٹھیکے دی مدت (مہینے)",
+    ld_rate_type: "ٹھیکے دا ریٹ",
+    rt_acre: "روپے فی ایکڑ فی مہینہ",
+    rt_total: "کُل ٹھیکہ رقم (روپے)",
+    ld_rate: "متوقع ریٹ",
+    ld_payment: "ادائیگی دا طریقہ",
+    p_advance: "پوری پیشگی",
+    p_two: "2 قسطاں",
+    ld_featured: "نمایاں اشتہار (999 روپے فی ایکڑ)",
+    ld_featured_note: "لبھائی وچ سب توں اُتے دسے گی۔ ساڈی ٹیم {fee} فیس لئی تہاڈے نال رابطہ کرے گی۔",
+    ld_featured_badge: "نمایاں",
+    ld_submit: "اپنی زمین درج کرو",
+    ld_listed: "تہاڈی زمین ہُݨ لائیو اے۔ ایگری شیئر ٹیم چھیتی تصدیق کرے گی۔",
+    ld_err_area: "زمین دا رقبہ لکھو۔",
+    ld_err_rate: "اپنا متوقع ریٹ لکھو۔",
+    ld_filter_radius: "گھیرا",
+    ld_filter_acres: "گھٹ توں گھٹ ایکڑ",
+    ld_filter_budget: "ودھ توں ودھ بجٹ (روپے / ایکڑ / مہینہ)",
+    ld_myloc_hint: "نیڑے دی زمین ویکھن لئی اپنا پنڈ یا ضلع چنو",
+    ld_results: "{n} زمیناں",
+    ld_results_one: "1 زمین",
+    ld_none: "ہلے کوئی زمین نئیں لبھی۔",
+    ld_land: "واہی والی زمین",
+    ld_per_acre_month: "/ ایکڑ / مہینہ",
+    ld_total_value: "کُل ٹھیکہ رقم",
+    ld_request: "ٹھیکے دی درخواست",
+    ld_start: "شروع دی تاریخ",
+    ld_send_req: "ٹھیکے دی درخواست گھلو",
+    ld_req_sent: "ٹھیکے دی درخواست زمین دے مالک نوں گھل دتی گئی۔",
+    ld_boli_title: "زمین دی بولی: اپنی لوڑ دی زمین پاؤ",
+    ld_boli_sub: "تہاڈے ضلعے دے زمین مالک تہانوں آفراں گھلن گے۔",
+    ld_budget: "تہاڈا بجٹ (روپے / ایکڑ / مہینہ)",
+    ld_boli_post: "زمین دی منگ پاؤ",
+    ld_boli_posted: "تہاڈی زمین دی منگ لائیو اے۔ تہاڈے ضلعے دے مالک ہُݨ آفراں گھل سکدے نیں۔",
+    ld_offers: "زمین مالکاں دیاں آفراں",
+    ld_no_offers: "ہلے کوئی آفر نئیں۔",
+    ld_accept: "آفر منو",
+    ld_offer_rate: "تہاڈی آفر (روپے / ایکڑ / مہینہ)",
+    ld_send_offer: "آفر گھلو",
+    ld_offer_sent: "تہاڈی آفر کسان نوں گھل دتی گئی۔",
+    ld_open_demand: "تہاڈے ضلعے وچ زمین لبھدے کسان",
+    ld_incoming: "تہاڈی زمین لئی ٹھیکے دیاں درخواستاں",
+    ld_my_listings: "میریاں زمیناں",
+    ld_my_leases: "میرے ٹھیکے",
+    ld_accept_req: "منو",
+    ld_decline: "انکار",
+    ld_accepted: "ٹھیکہ منظور",
+    ld_pending: "مالک دی اڈیک",
+    ld_declined: "انکار ہو گیا",
+    ld_contact: "رابطہ وکھاؤ",
+    ld_agreement: "اسٹامپ پیپر معاہدہ پرنٹ / ڈاؤن لوڈ کرو",
+    cm_title: "ایگری شیئر کمیشن",
+    cm_sub: "کُل ٹھیکہ رقم تے 4.5٪ دا اکو مقرر ریٹ، اک واری، ٹھیکے دی مدت بھاویں جنی وی ہووے۔",
+    cm_total: "کُل کمیشن",
+    eco_title: "ایگری شیئر 360° فائدہ",
+    eco_sub: "ایگری شیئر تے زمین ٹھیکے تے لؤ تے ایتھے مشینری کرائے تے لؤ یا فصل ویچو: اگلی مشینری بکنگ تے 0.50٪ کمیشن دی چھوٹ (کمیشن 3.50٪ توں گھٹ نئیں ہووے گا)۔",
+    eco_active: "360° فائدہ چالو: مشینری کمیشن تے 0.50٪ چھوٹ",
+    ag_stamp: "ای اسٹامپ پیپر ایتھے لاؤ",
+    ag_date: "تاریخ",
+    ag_first: "فریق اول (زمین دا مالک)",
+    ag_second: "فریق ثانی (ٹھیکیدار / کسان)",
+    ag_land: "زمین دی تفصیل",
+    ag_period: "ٹھیکے دی مدت",
+    ag_amount: "کُل ٹھیکہ رقم",
+    ag_clause1: "فریق اول اُتے لکھی زمین مقرر مدت لئی واہی دی غرض نال فریق ثانی نوں ٹھیکے تے دیندا اے۔",
+    ag_clause2: "فریق ثانی ادائیگی دے طریقے مطابق ٹھیکہ رقم دیوے گا تے مدت مُکن تے زمین واپس کرے گا۔",
+    ag_clause3: "ایگری شیئر صرف سہولت دین والا پلیٹ فارم اے؛ ایہدا کمیشن تھلے لکھیا اے۔ کسے وی جھگڑے دا فیصلہ پاکستان دے قانوناں مطابق ہووے گا۔",
+    ag_witness1: "گواہ نمبر 1",
+    ag_witness2: "گواہ نمبر 2",
+    ag_sign: "دستخط / انگوٹھا",
+    ag_cnic: "شناختی کارڈ نمبر",
+    ag_name: "ناں",
+    ag_print: "پرنٹ",
+    ag_close: "بند کرو",
+    gv_title: "ایگری شیئر سرکاری تے ادارہ جاتی شراکت پورٹل",
+    gv_sub: "چھیتی آ رہیا اے، حکومت پاکستان تے صوبائی محکمہ زراعت دے نال۔",
+    gv_p1_t: "بلا سود تے رعایتی کسان قرضے",
+    gv_p1_s: "ایگری شیئر تے تہاڈی ڈیجیٹل واہی تے ٹھیکے دی تاریخ نال تصدیق۔",
+    gv_p2_t: "ٹھیکہ نامیاں دا قانونی تحفظ تے ای اسٹامپ رجسٹریشن",
+    gv_p2_s: "قانونی تحفظ لئی ٹھیکہ نامے ڈیجیٹل طور تے رجسٹر کرو۔",
+    gv_p3_t: "سدھی سرکاری سبسڈی، بیج تے کھاد دی مدد",
+    gv_p3_s: "سبسڈی سدھی تصدیق شدہ کساناں تک۔",
   },
   sd: {
     vc_mic_blocked: "مائيڪ جي اجازت نه ملي۔ برائوزر جي سيٽنگن ۾ مائيڪ جي اجازت ڏيو، پوءِ ٻيهر ڳالهائڻ لاءِ دٻايو۔",
@@ -2689,7 +3034,7 @@ const T = {
     es_machine: "مشين", es_hours: "روزانو واندا ڪلاڪ", es_days: "موسم ۾ ڪرائي جا ڏينهن", es_util: "متوقع بڪنگ جي شرح",
     es_result: "موسم جي اندازي ڪرائي ڪمائي", es_month: "في موسم", es_confirmed: "اڃا تائين تصديق ٿيل بڪنگن مان",
     es_note: "6٪ ڪميشن (ننڍن هارين لاءِ 4٪) هاري جي بل ۾ شامل ٿئي ٿي، تنهنڪري مالڪ کي پورو مسواڙ ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
-    ag_title: "ايگري ايجنٽ نيٽ ورڪ", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
+    ag_title: "زرعي زمين جو ٺيڪو نامو", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
     ag1_t: "ايگري ايجنٽ ڪير آهي؟", ag1_d: "ڳوٺ جو ڪرياني يا موبائل لوڊ جو دڪان، جنهن کي بڪنگ پوائنٽ طور سکيا ڏني وڃي ٿي۔",
     ag2_t: "اهي ڇا ٿا ڪن؟", ag2_d: "سروس سمجهائين ٿا، هارين کي رجسٽر ڪن ٿا، مشينون ڏيکارين ٿا ۽ بڪنگ موڪلين ٿا۔",
     ag3_t: "اهي ڪيئن ڪمائين ٿا؟", ag3_d: "هر مڪمل بڪنگ تي شفاف ڪميشن، هڪ کليل پاليسيءَ تحت۔",
@@ -3028,7 +3373,122 @@ const T = {
     vo_pay_direct: "نقد / پهچڻ تي سڌو",
     ow_offer_sent_row: "آڇ موڪلي · {rate} في ڪلاڪ",
     ow_offer_waiting: "هاري جو انتظار",
-    ow_offer_accepted: "قبول ٿي"
+    ow_offer_accepted: "قبول ٿي",
+    nav_land: "زمين ٺيڪو",
+    nav_s_land: "زمين",
+    nav_govt: "سرڪاري پورٽل",
+    nav_s_govt: "سرڪاري",
+    soon: "جلد اچي رهيو آهي",
+    hero_land: "زرعي زمين ٺيڪي تي وٺو",
+    ld_title: "ٺيڪي تي زمين: زرعي زمين جو ٺيڪو",
+    ld_sub: "زمين سڌو مالڪن کان ٺيڪي تي وٺو، يا پنهنجي ضرورت پوسٽ ڪريو ۽ مالڪ آڇون موڪليندا۔",
+    ld_tab_find: "زمين ڳوليو",
+    ld_tab_list: "پنهنجي زمين درج ڪريو",
+    ld_tab_boli: "زمين جي ٻولي",
+    ld_tab_mine: "منهنجا زمين جا معاملا",
+    ld_village: "ڳوٺ / عنوان",
+    ld_title_ph: "جيئن واهه ويجهو 10 ايڪڙ، چڪ 45",
+    ld_district: "ضلعو",
+    ld_tehsil: "تعلقو",
+    ld_area: "ڪل ايراضي",
+    ld_acres: "ايڪڙ",
+    ld_kanals: "ڪنال",
+    ld_water: "پاڻيءَ جو ذريعو",
+    w_canal: "واهه + ٽيوب ويل",
+    w_solar: "سولر ٽيوب ويل",
+    w_electric: "بجلي / ڊيزل ٽيوب ويل",
+    w_barani: "باراني (پاڻي ناهي)",
+    w_any: "ڪو به ذريعو",
+    ld_soil: "زمين جو قسم",
+    s_loam: "زرخيز ميرا",
+    s_laser: "ليزر سان سڌي",
+    s_sandy: "واريءَ واري",
+    s_saline: "ڪلر واري",
+    ld_road: "روڊ تائين رسائي",
+    r_paved: "پڪو روڊ",
+    r_kacha: "ڪچو رستو",
+    ld_months: "ٺيڪي جي مدت (مهينا)",
+    ld_rate_type: "ٺيڪي جو اگهه",
+    rt_acre: "رپيا في ايڪڙ في مهينو",
+    rt_total: "ڪل ٺيڪي جي رقم (رپيا)",
+    ld_rate: "متوقع اگهه",
+    ld_payment: "ادائيگي جو طريقو",
+    p_advance: "مڪمل پيشگي",
+    p_two: "2 قسطون",
+    ld_featured: "نمايان اشتهار (999 رپيا في ايڪڙ)",
+    ld_featured_note: "ڳولا ۾ سڀ کان مٿي ڏيکاري ويندي۔ اسان جي ٽيم {fee} في لاءِ توهان سان رابطو ڪندي۔",
+    ld_featured_badge: "نمايان",
+    ld_submit: "پنهنجي زمين درج ڪريو",
+    ld_listed: "توهان جي زمين هاڻي لائيو آهي۔ ايگري شيئر ٽيم جلد تصديق ڪندي۔",
+    ld_err_area: "زمين جي ايراضي لکو۔",
+    ld_err_rate: "پنهنجو متوقع اگهه لکو۔",
+    ld_filter_radius: "دائرو",
+    ld_filter_acres: "گهٽ ۾ گهٽ ايڪڙ",
+    ld_filter_budget: "وڌ ۾ وڌ بجيٽ (رپيا / ايڪڙ / مهينو)",
+    ld_myloc_hint: "ويجهي زمين ڏسڻ لاءِ پنهنجو ڳوٺ يا ضلعو چونڊيو",
+    ld_results: "{n} زمينون",
+    ld_results_one: "1 زمين",
+    ld_none: "اڃا ڪا زمين نه ملي۔",
+    ld_land: "زرعي زمين",
+    ld_per_acre_month: "/ ايڪڙ / مهينو",
+    ld_total_value: "ڪل ٺيڪي جي رقم",
+    ld_request: "ٺيڪي جي درخواست",
+    ld_start: "شروعات جي تاريخ",
+    ld_send_req: "ٺيڪي جي درخواست موڪليو",
+    ld_req_sent: "ٺيڪي جي درخواست زمين جي مالڪ کي موڪلي وئي۔",
+    ld_boli_title: "زمين جي ٻولي: پنهنجي ضرورت جي زمين پوسٽ ڪريو",
+    ld_boli_sub: "توهان جي ضلعي جا زمين مالڪ توهان کي آڇون موڪليندا۔",
+    ld_budget: "توهان جي بجيٽ (رپيا / ايڪڙ / مهينو)",
+    ld_boli_post: "زمين جي طلب پوسٽ ڪريو",
+    ld_boli_posted: "توهان جي زمين جي طلب لائيو آهي۔ توهان جي ضلعي جا مالڪ هاڻي آڇون موڪلي سگهن ٿا۔",
+    ld_offers: "زمين مالڪن جون آڇون",
+    ld_no_offers: "اڃا ڪا آڇ ناهي۔",
+    ld_accept: "آڇ قبول ڪريو",
+    ld_offer_rate: "توهان جي آڇ (رپيا / ايڪڙ / مهينو)",
+    ld_send_offer: "آڇ موڪليو",
+    ld_offer_sent: "توهان جي آڇ هاري کي موڪلي وئي۔",
+    ld_open_demand: "توهان جي ضلعي ۾ زمين ڳوليندڙ هاري",
+    ld_incoming: "توهان جي زمين لاءِ ٺيڪي جون درخواستون",
+    ld_my_listings: "منهنجون زمينون",
+    ld_my_leases: "منهنجا ٺيڪا",
+    ld_accept_req: "قبول",
+    ld_decline: "انڪار",
+    ld_accepted: "ٺيڪو منظور",
+    ld_pending: "مالڪ جو انتظار",
+    ld_declined: "انڪار ٿيو",
+    ld_contact: "رابطو ڏيکاريو",
+    ld_agreement: "اسٽامپ پيپر معاهدو پرنٽ / ڊائونلوڊ ڪريو",
+    cm_title: "ايگري شيئر ڪميشن",
+    cm_sub: "ڪل ٺيڪي جي رقم تي 4.5٪ جو هڪ ئي مقرر اگهه، هڪ ڀيرو، ٺيڪي جي مدت ڀلي ڪيتري به هجي۔",
+    cm_total: "ڪل ڪميشن",
+    eco_title: "ايگري شيئر 360° فائدو",
+    eco_sub: "ايگري شيئر تي زمين ٺيڪي تي وٺو ۽ هتي مشينري ڪرائي تي وٺو يا فصل وڪڻو: ايندڙ مشينري بڪنگ تي 0.50٪ ڪميشن جي رعايت (ڪميشن 3.50٪ کان گهٽ نه ٿيندو)۔",
+    eco_active: "360° فائدو فعال: مشينري ڪميشن تي 0.50٪ رعايت",
+    ag_stamp: "اي اسٽامپ پيپر هتي لڳايو",
+    ag_date: "تاريخ",
+    ag_first: "پهرين ڌر (زمين جو مالڪ)",
+    ag_second: "ٻي ڌر (ٺيڪيدار / هاري)",
+    ag_land: "زمين جي تفصيل",
+    ag_period: "ٺيڪي جي مدت",
+    ag_amount: "ڪل ٺيڪي جي رقم",
+    ag_clause1: "پهرين ڌر مٿي ڄاڻايل زمين مقرر مدت لاءِ پوکيءَ جي مقصد سان ٻي ڌر کي ٺيڪي تي ڏئي ٿي۔",
+    ag_clause2: "ٻي ڌر ادائيگي جي طريقي مطابق ٺيڪي جي رقم ادا ڪندي ۽ مدت پوري ٿيڻ تي زمين واپس ڪندي۔",
+    ag_clause3: "ايگري شيئر صرف سهولت ڏيندڙ پليٽ فارم آهي؛ ان جو ڪميشن هيٺ ڏنل آهي۔ ڪنهن به تڪرار جو فيصلو پاڪستان جي قانونن مطابق ٿيندو۔",
+    ag_witness1: "شاهد نمبر 1",
+    ag_witness2: "شاهد نمبر 2",
+    ag_sign: "صحيح / آڱوٺو",
+    ag_cnic: "شناختي ڪارڊ نمبر",
+    ag_name: "نالو",
+    ag_print: "پرنٽ",
+    ag_close: "بند ڪريو",
+    gv_title: "ايگري شيئر سرڪاري ۽ ادارتي ڀائيواري پورٽل",
+    gv_sub: "جلد اچي رهيو آهي، حڪومت پاڪستان ۽ صوبائي زراعت کاتي جي ڀائيواري سان۔",
+    gv_p1_t: "بنا وياج ۽ رعايتي هاري قرض",
+    gv_p1_s: "ايگري شيئر تي توهان جي ڊجيٽل پوک ۽ ٺيڪي جي تاريخ ذريعي تصديق۔",
+    gv_p2_t: "ٺيڪي ناما جو قانوني تحفظ ۽ اي اسٽامپ رجسٽريشن",
+    gv_p2_s: "قانوني تحفظ لاءِ ٺيڪي ناما ڊجيٽل طور رجسٽر ڪريو۔",
+    gv_p3_t: "سڌي سرڪاري سبسڊي، ٻج ۽ ڀاڻ جي مدد",
+    gv_p3_s: "سبسڊي سڌو تصديق ٿيل هارين تائين۔",
   },
   ps: {
     au_m_email: "برېښنالیک",
@@ -3374,7 +3834,123 @@ const T = {
     vo_pay_direct: "نغدې / د رسېدو پر وخت مستقیم",
     ow_offer_sent_row: "وړاندیز ولېږل شو · {rate} په ساعت",
     ow_offer_waiting: "د بزګر انتظار",
-    ow_offer_accepted: "ومنل شو"
+    ow_offer_accepted: "ومنل شو",
+    nav_land: "د ځمکې اجاره",
+    nav_s_land: "ځمکه",
+    nav_govt: "حکومتي پورټل",
+    nav_s_govt: "حکومتي",
+    soon: "ژر راځي",
+    hero_land: "کرنیزه ځمکه په اجاره واخلئ",
+    ld_title: "ځمکه په اجاره: د کرنیزې ځمکې اجاره",
+    ld_sub: "ځمکه مستقیم له مالکانو په اجاره واخلئ، یا خپله اړتیا ثبت کړئ او مالکان به وړاندیزونه درولېږي.",
+    ld_tab_find: "ځمکه ولټوئ",
+    ld_tab_list: "خپله ځمکه ثبت کړئ",
+    ld_tab_boli: "د ځمکې بولي",
+    ld_tab_mine: "زما د ځمکې معاملې",
+    ld_village: "کلی / سرلیک",
+    ld_title_ph: "لکه د ویالې سره 10 ایکړه، چک 45",
+    ld_district: "ولسوالۍ",
+    ld_tehsil: "تحصیل",
+    ld_area: "ټوله ساحه",
+    ld_acres: "ایکړه",
+    ld_kanals: "کنال",
+    ld_water: "د اوبو سرچینه",
+    w_canal: "ویاله + ټیوب ویل",
+    w_solar: "سولر ټیوب ویل",
+    w_electric: "برېښنا / ډیزل ټیوب ویل",
+    w_barani: "للمي (اوبه نشته)",
+    w_any: "هره سرچینه",
+    ld_soil: "د خاورې ډول",
+    s_loam: "زرخېزه خاوره",
+    s_laser: "په لېزر هواره",
+    s_sandy: "شګلنه",
+    s_saline: "مالګینه (کلر)",
+    ld_road: "سړک ته لاسرسی",
+    r_paved: "پوخ سړک",
+    r_kacha: "خام لار",
+    ld_months: "د اجارې موده (میاشتې)",
+    ld_rate_type: "د اجارې نرخ",
+    rt_acre: "روپۍ په ایکړ په میاشت",
+    rt_total: "د اجارې ټوله پیسه (روپۍ)",
+    ld_rate: "تمه شوی نرخ",
+    ld_payment: "د تادیې طریقه",
+    p_advance: "بشپړ پېشکي",
+    p_two: "2 قسطونه",
+    ld_featured: "ځانګړی اعلان (999 روپۍ په ایکړ)",
+    ld_featured_note: "په لټون کې به لومړی ښکاره شي. زموږ ټیم به د {fee} فیس لپاره له تاسو سره اړیکه ونیسي.",
+    ld_featured_badge: "ځانګړی",
+    ld_submit: "خپله ځمکه ثبت کړئ",
+    ld_listed: "ستاسو ځمکه اوس ژوندۍ ده. د اګري شېئر ټیم به ژر یې تایید کړي.",
+    ld_err_area: "د ځمکې ساحه ولیکئ.",
+    ld_err_rate: "خپل تمه شوی نرخ ولیکئ.",
+    ld_filter_radius: "ساحه",
+    ld_filter_acres: "لږ تر لږه ایکړه",
+    ld_filter_budget: "تر ټولو ډېر بودیجه (روپۍ / ایکړ / میاشت)",
+    ld_myloc_hint: "نږدې ځمکه لیدو لپاره خپل کلی یا ولسوالۍ وټاکئ",
+    ld_results: "{n} ځمکې",
+    ld_results_one: "1 ځمکه",
+    ld_none: "لا هېڅ ځمکه ونه موندل شوه.",
+    ld_land: "کرنیزه ځمکه",
+    ld_per_acre_month: "/ ایکړ / میاشت",
+    ld_total_value: "د اجارې ټوله پیسه",
+    ld_request: "د اجارې غوښتنه",
+    ld_start: "د پیل نېټه",
+    ld_send_req: "د اجارې غوښتنه ولېږئ",
+    ld_req_sent: "د اجارې غوښتنه د ځمکې مالک ته ولېږل شوه.",
+    ld_boli_title: "د ځمکې بولي: د اړتیا ځمکه ثبت کړئ",
+    ld_boli_sub: "ستاسو د ولسوالۍ د ځمکې مالکان به تاسو ته وړاندیزونه ولېږي.",
+    ld_budget: "ستاسو بودیجه (روپۍ / ایکړ / میاشت)",
+    ld_boli_post: "د ځمکې غوښتنه ثبت کړئ",
+    ld_boli_posted: "ستاسو د ځمکې غوښتنه ژوندۍ ده. ستاسو د ولسوالۍ مالکان اوس وړاندیزونه لېږلی شي.",
+    ld_offers: "د ځمکې د مالکانو وړاندیزونه",
+    ld_no_offers: "لا هېڅ وړاندیز نشته.",
+    ld_accept: "وړاندیز ومنئ",
+    ld_offer_rate: "ستاسو وړاندیز (روپۍ / ایکړ / میاشت)",
+    ld_send_offer: "وړاندیز ولېږئ",
+    ld_offer_sent: "ستاسو وړاندیز بزګر ته ولېږل شو.",
+    ld_open_demand: "ستاسو په ولسوالۍ کې د ځمکې لټوونکي بزګران",
+    ld_incoming: "ستاسو د ځمکې لپاره د اجارې غوښتنې",
+    ld_my_listings: "زما ځمکې",
+    ld_my_leases: "زما اجارې",
+    ld_accept_req: "منل",
+    ld_decline: "رد",
+    ld_accepted: "اجاره ومنل شوه",
+    ld_pending: "د مالک انتظار",
+    ld_declined: "رد شو",
+    ld_contact: "اړیکه وښایاست",
+    ld_agreement: "د سټامپ پاڼې تړون چاپ / ډاونلوډ کړئ",
+    cm_title: "د اګري شېئر کمیسیون",
+    cm_sub: "د اجارې پر ټوله پیسه د 4.5٪ یو ثابت نرخ، یوازې یو ځل، که د اجارې موده هر څومره وي.",
+    cm_total: "ټول کمیسیون",
+    eco_title: "د اګري شېئر 360° ګټه",
+    eco_sub: "په اګري شېئر کې ځمکه په اجاره واخلئ او دلته ماشینونه په کرایه واخلئ یا فصل وپلورئ: د راتلونکي ماشین بکنګ پر کمیسیون 0.50٪ تخفیف (کمیسیون له 3.50٪ ټیټ نه کېږي).",
+    eco_active: "360° ګټه فعاله ده: د ماشین پر کمیسیون 0.50٪ تخفیف",
+    ag_title: "د کرنیزې ځمکې د اجارې تړون",
+    ag_stamp: "اې سټامپ پاڼه دلته ونښلوئ",
+    ag_date: "نېټه",
+    ag_first: "لومړی اړخ (د ځمکې مالک)",
+    ag_second: "دوهم اړخ (اجاره دار / بزګر)",
+    ag_land: "د ځمکې جزئیات",
+    ag_period: "د اجارې موده",
+    ag_amount: "د اجارې ټوله پیسه",
+    ag_clause1: "لومړی اړخ پورته ذکر شوې ځمکه د ټاکلې مودې لپاره د کرنې په موخه دوهم اړخ ته په اجاره ورکوي.",
+    ag_clause2: "دوهم اړخ به د تادیې د طریقې سره سم د اجارې پیسې ورکړي او د مودې په پای کې به ځمکه بېرته وسپاري.",
+    ag_clause3: "اګري شېئر یوازې اسانتیا برابرونکی پلاټفارم دی؛ کمیسیون یې لاندې ښودل شوی. هره شخړه به د پاکستان د قوانینو سره سمه حل کېږي.",
+    ag_witness1: "شاهد نمبر 1",
+    ag_witness2: "شاهد نمبر 2",
+    ag_sign: "لاسلیک / ګوته",
+    ag_cnic: "د شناختي کارت شمېره",
+    ag_name: "نوم",
+    ag_print: "چاپ",
+    ag_close: "بندول",
+    gv_title: "د اګري شېئر د حکومت او ادارو د همکارۍ پورټل",
+    gv_sub: "ژر راځي، د پاکستان حکومت او ولایتي کرنې ریاستونو په ګډون.",
+    gv_p1_t: "بې سوده او سبسایډي لرونکي بزګر پورونه",
+    gv_p1_s: "په اګري شېئر کې ستاسو د ډیجیټل کرنې او اجارې تاریخ له لارې تایید.",
+    gv_p2_t: "د اجارې تړونونو قانوني ساتنه او اې سټامپ ثبت",
+    gv_p2_s: "د قانوني خوندیتوب لپاره د اجارې تړونونه ډیجیټل ثبت کړئ.",
+    gv_p3_t: "مستقیم حکومتي سبسایډي، تخم او سرې",
+    gv_p3_s: "سبسایډي مستقیم تایید شویو بزګرانو ته.",
   },
   bal: {
     role_buyer: "فصل ءِ گِرَوک",
@@ -3710,7 +4286,123 @@ const T = {
     vo_pay_direct: "نغد / رسگ ءِ وھدا راست",
     ow_offer_sent_row: "آفر رَوان بوت · {rate} ساعت ءَ",
     ow_offer_waiting: "کِشاورز ءِ وداریگ",
-    ow_offer_accepted: "منّگ بوت"
+    ow_offer_accepted: "منّگ بوت",
+    nav_land: "زمین ءِ ٹھیکہ",
+    nav_s_land: "زمین",
+    nav_govt: "سرکاری پورٹل",
+    nav_s_govt: "سرکاری",
+    soon: "زوت کئیت",
+    hero_land: "کِشاری زمین ءَ ٹھیکہ ءَ گِر",
+    ld_title: "ٹھیکہ ءَ زمین: کِشاری زمین ءِ ٹھیکہ",
+    ld_sub: "زمین ءَ راست واہنداں چہ ٹھیکہ ءَ گِر، یا وتی لوٹ ءَ پیش کن و واہند آفر رَوان دئینت۔",
+    ld_tab_find: "زمین ءَ شوہاز",
+    ld_tab_list: "وتی زمین ءَ نبشتہ کن",
+    ld_tab_boli: "زمین ءِ بولی",
+    ld_tab_mine: "منی زمین ءِ معاملہ",
+    ld_village: "مِتگ / سرگال",
+    ld_title_ph: "پیم کؤر ءِ کرّا 10 ایکڑ، چک 45",
+    ld_district: "ضلع",
+    ld_tehsil: "تحصیل",
+    ld_area: "سجّہیں رقبہ",
+    ld_acres: "ایکڑ",
+    ld_kanals: "کنال",
+    ld_water: "آپ ءِ ذریعہ",
+    w_canal: "کؤر + ٹیوب ویل",
+    w_solar: "سولر ٹیوب ویل",
+    w_electric: "بجلی / ڈیزل ٹیوب ویل",
+    w_barani: "بارانی (آپ نیست)",
+    w_any: "ہر ذریعہ",
+    ld_soil: "زمین ءِ رنگ",
+    s_loam: "زرخیزیں میرا",
+    s_laser: "لیزر ءَ ہموار",
+    s_sandy: "ریکی",
+    s_saline: "سور (کلر)",
+    ld_road: "راہ ءَ رسگ",
+    r_paved: "پکّیں راہ",
+    r_kacha: "کچّیں راہ",
+    ld_months: "ٹھیکہ ءِ مدّت (ماہ)",
+    ld_rate_type: "ٹھیکہ ءِ نرخ",
+    rt_acre: "کلدار فی ایکڑ فی ماہ",
+    rt_total: "سجّہیں ٹھیکہ ءِ زرّ (کلدار)",
+    ld_rate: "امیتیں نرخ",
+    ld_payment: "زرّ دئیگ ءِ وڑ",
+    p_advance: "سجّہیں پیشگی",
+    p_two: "2 قسط",
+    ld_featured: "نمایاں اشتہار (999 کلدار فی ایکڑ)",
+    ld_featured_note: "شوہاز ءَ سرا پیش داشتگ بیت۔ مئے ٹیم {fee} فیس ءِ واستا گوں شما سیادی کنت۔",
+    ld_featured_badge: "نمایاں",
+    ld_submit: "وتی زمین ءَ نبشتہ کن",
+    ld_listed: "شمئے زمین اَنّوں زندگ اِنت۔ ایگری شیئر ٹیم زوت تصدیق کنت۔",
+    ld_err_area: "زمین ءِ رقبہ ءَ بنویس۔",
+    ld_err_rate: "وتی امیتیں نرخ ءَ بنویس۔",
+    ld_filter_radius: "دائرہ",
+    ld_filter_acres: "کم چہ کم ایکڑ",
+    ld_filter_budget: "گیشتر بجٹ (کلدار / ایکڑ / ماہ)",
+    ld_myloc_hint: "نزّیکیں زمین ءِ چارگ ءِ واستا وتی مِتگ یا ضلع ءَ گچین کن",
+    ld_results: "{n} زمین",
+    ld_results_one: "1 زمین",
+    ld_none: "انگت ہچ زمین در نہ کپت۔",
+    ld_land: "کِشاری زمین",
+    ld_per_acre_month: "/ ایکڑ / ماہ",
+    ld_total_value: "سجّہیں ٹھیکہ ءِ زرّ",
+    ld_request: "ٹھیکہ ءِ درخواست",
+    ld_start: "بُنگیج ءِ تاریخ",
+    ld_send_req: "ٹھیکہ ءِ درخواست ءَ رَوان دئے",
+    ld_req_sent: "ٹھیکہ ءِ درخواست زمین ءِ واہند ءَ رَوان بوت۔",
+    ld_boli_title: "زمین ءِ بولی: وتی لوٹ ءِ زمین ءَ پیش کن",
+    ld_boli_sub: "شمئے ضلع ءِ زمین ءِ واہند شمارا آفر رَوان دئینت۔",
+    ld_budget: "شمئے بجٹ (کلدار / ایکڑ / ماہ)",
+    ld_boli_post: "زمین ءِ لوٹ ءَ پیش کن",
+    ld_boli_posted: "شمئے زمین ءِ لوٹ زندگ اِنت۔ شمئے ضلع ءِ واہند اَنّوں آفر رَوان دات کن اَنت۔",
+    ld_offers: "زمین ءِ واہندانی آفر",
+    ld_no_offers: "انگت ہچ آفر نیست۔",
+    ld_accept: "آفر ءَ منّ",
+    ld_offer_rate: "شمئے آفر (کلدار / ایکڑ / ماہ)",
+    ld_send_offer: "آفر رَوان دئے",
+    ld_offer_sent: "شمئے آفر کِشاورز ءَ رَوان بوت۔",
+    ld_open_demand: "شمئے ضلع ءَ زمین ءِ شوہاز کنوکیں کِشاورز",
+    ld_incoming: "شمئے زمین ءِ واستا ٹھیکہ ءِ درخواست",
+    ld_my_listings: "منی زمین",
+    ld_my_leases: "منی ٹھیکہ",
+    ld_accept_req: "منّ",
+    ld_decline: "نہ",
+    ld_accepted: "ٹھیکہ منّگ بوت",
+    ld_pending: "واہند ءِ وداریگ",
+    ld_declined: "نہ منّگ بوت",
+    ld_contact: "سیادی ءَ پیش دار",
+    ld_agreement: "اسٹامپ پیپر ءِ معاہدہ ءَ پرنٹ / ڈاؤن لوڈ کن",
+    cm_title: "ایگری شیئر ءِ کمیشن",
+    cm_sub: "سجّہیں ٹھیکہ ءِ زرّ ءِ سرا 4.5٪ ءِ یک گیشینتگیں نرخ، یک بر، ٹھیکہ ءِ مدّت ہر چنت بہ بیت۔",
+    cm_total: "سجّہیں کمیشن",
+    eco_title: "ایگری شیئر 360° پائدگ",
+    eco_sub: "ایگری شیئر ءَ زمین ءَ ٹھیکہ ءَ گِر و ادا مشین ءَ کرایہ ءَ گِر یا کِشت ءَ بہا کن: آیوکیں مشین بکنگ ءَ کمیشن ءِ سرا 0.50٪ کمّی (کمیشن 3.50٪ چہ کم نہ بیت)۔",
+    eco_active: "360° پائدگ چالو: مشین ءِ کمیشن ءِ سرا 0.50٪ کمّی",
+    ag_title: "کِشاری زمین ءِ ٹھیکہ نامہ",
+    ag_stamp: "ای اسٹامپ پیپر ءَ ادا لگئے",
+    ag_date: "تاریخ",
+    ag_first: "اوّلی دَر (زمین ءِ واہند)",
+    ag_second: "دومی دَر (ٹھیکہ دار / کِشاورز)",
+    ag_land: "زمین ءِ سرجمی",
+    ag_period: "ٹھیکہ ءِ مدّت",
+    ag_amount: "سجّہیں ٹھیکہ ءِ زرّ",
+    ag_clause1: "اوّلی دَر بُرزا نبشتگیں زمین ءَ گیشینتگیں مدّت ءِ واستا کِشار ءِ مکسد ءَ دومی دَر ءَ ٹھیکہ ءَ دنت۔",
+    ag_clause2: "دومی دَر زرّ دئیگ ءِ وڑ ءَ ٹھیکہ ءِ زرّ ءَ دنت و مدّت ءِ ہلاسی ءَ زمین ءَ پر گردینیت۔",
+    ag_clause3: "ایگری شیئر تہنا کُمک کنوکیں پلیٹ فارم اِنت؛ آئی ءِ کمیشن جہلا پیش اِنت۔ ہر جیڑہ ءِ فیصلہ پاکستان ءِ قانون ءِ وڑا بیت۔",
+    ag_witness1: "گواہ نمبر 1",
+    ag_witness2: "گواہ نمبر 2",
+    ag_sign: "دستخط / مُٹّ",
+    ag_cnic: "شناختی کارڈ ءِ نمبر",
+    ag_name: "نام",
+    ag_print: "پرنٹ",
+    ag_close: "بند کن",
+    gv_title: "ایگری شیئر ءِ سرکاری و اِدارہ ئی شراکت ءِ پورٹل",
+    gv_sub: "زوت کئیت، حکومت پاکستان و صوبائی محکمہ زراعت ءِ ہمراہی ءَ۔",
+    gv_p1_t: "بے سود و رعایتی کِشاورز ءِ وام",
+    gv_p1_s: "ایگری شیئر ءَ شمئے ڈیجیٹل کِشار و ٹھیکہ ءِ تاریخ ءِ سرا تصدیق۔",
+    gv_p2_t: "ٹھیکہ نامہانی قانونی پہریز و ای اسٹامپ رجسٹریشن",
+    gv_p2_s: "قانونی پہریز ءِ واستا ٹھیکہ نامہاں ڈیجیٹل رجسٹر کن۔",
+    gv_p3_t: "راستیں سرکاری سبسڈی، تُخم و کھاد ءِ کُمک",
+    gv_p3_s: "سبسڈی راست تصدیق کتگیں کِشاورزاں رسیت۔",
   },
 };
 
@@ -4324,6 +5016,8 @@ const TABS = [
   { key: "bookings", label: "nav_bookings", short: "nav_s_bookings", icon: ClipboardList },
   { key: "owner-portal", label: "nav_owner", short: "nav_s_owner", icon: HandCoins },
   { key: "agri-agent", label: "nav_agent", short: "nav_s_agent", icon: Smartphone },
+  { key: "land", label: "nav_land", short: "nav_s_land", icon: Sprout },
+  { key: "govt", label: "nav_govt", short: "nav_s_govt", icon: ShieldCheck, soon: true },
 ];
 
 function PrefsPill({ t, lang, setLang, country, setCountry, full }) {
@@ -4383,6 +5077,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
             <Icon className="h-4 w-4" aria-hidden="true" />{t(label)}
             {key === "bookings" && <NavBadge n={activeCount} />}
             {key === "owner-portal" && <NavBadge n={pendingCount} />}
+            {key === "govt" && <span className="rounded-full bg-gold/30 px-1.5 text-[10px] font-bold text-soil">{t("soon")}</span>}
             {key === "admin" && <NavBadge n={adminCount} alert />}
             <span className={`absolute inset-x-2 bottom-0 h-[3px] rounded-t-full transition-all ${tab === key ? "bg-forest" : "bg-transparent"}`} aria-hidden="true" />
           </button>
@@ -4439,7 +5134,7 @@ function BottomNav({ t, tab, setTab, tabs, activeCount, pendingCount, onActivity
 /* ------------------------------------------------------------------ */
 /* Hero: split layout, two role CTAs, live counts; trust strip below   */
 /* ------------------------------------------------------------------ */
-function Hero({ t, onFind, onList, onLive, isEnglish, stats }) {
+function Hero({ t, onFind, onList, onLive, onLand, isEnglish, stats }) {
   return (
     <section className="relative overflow-hidden bg-forest text-ivory">
       <div className="pointer-events-none absolute inset-0 opacity-[0.06]" aria-hidden="true" style={{ backgroundImage: "repeating-linear-gradient(-8deg, #FAF8EE 0 2px, transparent 2px 26px)" }} />
@@ -4474,7 +5169,10 @@ function Hero({ t, onFind, onList, onLive, isEnglish, stats }) {
               <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-1 rtl:-scale-x-100" aria-hidden="true" />
             </button>
           </div>
-          <button onClick={onFind} className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-ivory/80 underline-offset-4 hover:text-ivory hover:underline"><Search className="h-4 w-4" aria-hidden="true" />{t("cta_find")}</button>
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+            <button onClick={onFind} className="inline-flex items-center gap-1.5 text-sm font-bold text-ivory/80 underline-offset-4 hover:text-ivory hover:underline"><Search className="h-4 w-4" aria-hidden="true" />{t("cta_find")}</button>
+            {onLand && <button onClick={onLand} className="inline-flex items-center gap-1.5 text-sm font-bold text-gold underline-offset-4 hover:underline"><Sprout className="h-4 w-4" aria-hidden="true" />{t("hero_land")}</button>}
+          </div>
         </div>
         {/* photo collage with live counts */}
         <div className="relative hidden h-[420px] lg:block" aria-hidden="true">
@@ -4930,7 +5628,7 @@ function Marketplace({ t, dn, lang, listings, onBook, filters, setFilters, activ
 /* ------------------------------------------------------------------ */
 /* Booking modal with transparent price calculator                     */
 /* ------------------------------------------------------------------ */
-function BookingModal({ listing, t, dn, onClose, onSubmit, session }) {
+function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = false }) {
   const [date, setDate] = useState(addDaysISO(1));
   const [hours, setHours] = useState(4);
   const [wantOp, setWantOp] = useState(false);
@@ -4962,7 +5660,7 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session }) {
   }, [onClose]);
 
   const terms = offerOn ? { rate: Number(offerRate) || listing.rate, transport: Number(offerTr) >= 0 ? Number(offerTr) : listedTr } : null;
-  const commissionRate = smallholder ? SMALLHOLDER_COMMISSION : COMMISSION;
+  const commissionRate = ecoCommission(smallholder ? SMALLHOLDER_COMMISSION : COMMISSION, ecoActive);
   const q = quote(listing, hours, wantOp, wantTr, terms, commissionRate);
   const listedQ = quote(listing, hours, wantOp, wantTr, null, commissionRate);
   const payLater = payment === "paylater";
@@ -5882,13 +6580,13 @@ function pickReplyLang(raw, uiLang) {
 // Machinery rate replies in every language. Ranges come from the country's rate card (CUR.catalog),
 // the same numbers shown on the machine-type cards, so the helper never contradicts the app.
 const RATE_NAMES = {
-  en: { tractor: "Tractor", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser land leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
-  ro: { tractor: "Tractor", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
-  ur: { tractor: "ٹریکٹر", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لینڈ لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زرعی آلہ" },
-  pa: { tractor: "ٹریکٹر", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زرعی سند" },
-  sd: { tractor: "ٽريڪٽر", harvester: "ڪمبائن هارويسٽر", thresher: "ٿريشر", leveler: "ليزر ليولر", drone: "اسپري ڊرون", planter: "پلانٽر", implement: "زرعي اوزار" },
-  ps: { tractor: "ټراکټور", harvester: "کمباین هارویسټر", thresher: "تریشر", leveler: "لېزر لیولر", drone: "سپرې ډرون", planter: "پلانټر", implement: "کرنیزه آله" },
-  bal: { tractor: "ٹریکٹر", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زراعتی اوزار" },
+  en: { tractor: "Tractor", land: "Agricultural land", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser land leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
+  ro: { tractor: "Tractor", land: "Zarai zameen", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
+  ur: { tractor: "ٹریکٹر", land: "زرعی زمین", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لینڈ لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زرعی آلہ" },
+  pa: { tractor: "ٹریکٹر", land: "واہی والی زمین", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زرعی سند" },
+  sd: { tractor: "ٽريڪٽر", land: "زرعي زمين", harvester: "ڪمبائن هارويسٽر", thresher: "ٿريشر", leveler: "ليزر ليولر", drone: "اسپري ڊرون", planter: "پلانٽر", implement: "زرعي اوزار" },
+  ps: { tractor: "ټراکټور", land: "کرنیزه ځمکه", harvester: "کمباین هارویسټر", thresher: "تریشر", leveler: "لېزر لیولر", drone: "سپرې ډرون", planter: "پلانټر", implement: "کرنیزه آله" },
+  bal: { tractor: "ٹریکٹر", land: "کِشاری زمین", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زراعتی اوزار" },
 };
 const RATE_TPL = {
   en: { head: "Current hourly rental rates (dry rent, diesel extra):", item: (n, lo, hi) => `• ${n}: ${lo} – ${hi} per hour`, tip: "Tip: you can also name your own price with Apni Boli, and nearby owners will send you offers.",
@@ -7564,7 +8262,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
   );
 }
 
-function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
+function LiveRequest({ ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
   const [autoLeadFor, setAutoLeadFor] = useState(null); // request id whose lead was sent automatically
   const startLoc = () => {
     const cand = userLoc || (session && session.location);
@@ -7729,7 +8427,7 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
   const offersInTier = [...ownerOffers, ...offers.filter((o) => o.owner.tier <= scanTier && !ownerOffers.some((x) => x.owner.ownerUid && x.owner.ownerUid === o.owner.ownerUid))].filter((o) => !declined.has(o.key));
   const noMatch = req && !scanning && offersInTier.length === 0;
   const pickedOffer = offersInTier.find((o) => o.key === picked);
-  const lrCommission = (req || f).smallholder ? SMALLHOLDER_COMMISSION : COMMISSION;
+  const lrCommission = ecoCommission((req || f).smallholder ? SMALLHOLDER_COMMISSION : COMMISSION, ecoActive);
   const qFor = (o) => liveQuote({ rate: o.rate, hours: req.hours, km: o.owner.distance, category: req.category, rentType: req.rentType, dieselPrice, commissionRate: lrCommission });
 
   const confirm = () => {
@@ -8066,6 +8764,459 @@ function LiveRequest({ t, dn, lang, listings, session, requireAuth, createBookin
         </div>
       </div>
       )}
+    </section>
+  );
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Thaikay Te Zameen: agricultural land leasing (two-sided)            */
+/* land_listings (public, approved), land_requests ("Zameen Ki Boli"), */
+/* land_bookings (the two parties + founder). Contacts are private:    */
+/* land_contacts/{listingId}, land_request_contacts/{requestId|booking}*/
+/* ------------------------------------------------------------------ */
+const LAND_WATER = ["canal", "solar", "electric", "barani"];
+const LAND_SOIL = ["loam", "laser", "sandy", "saline"];
+const LAND_ROAD = ["paved", "kacha"];
+const LAND_BOOST_PER_ACRE = 999;
+const landAcres = (l) => (l.areaUnit === "kanal" ? (Number(l.areaInput) || 0) / 8 : Number(l.acres || l.areaInput) || 0);
+const landTotal = (l, months) => {
+  const m = Math.max(1, Number(months || l.months) || 1);
+  return l.rateType === "total" ? Math.round(Number(l.rate) || 0) : Math.round((Number(l.rate) || 0) * landAcres(l) * m);
+};
+const addMonthsISO = (iso, m) => { const d = new Date((iso || todayISO()) + "T00:00:00"); d.setMonth(d.getMonth() + Math.max(1, Number(m) || 1)); return d.toISOString().slice(0, 10); };
+
+/* Land lease commission: a flat 4.5% one-time facilitation fee,
+   charged once on the total lease value, whatever the lease length. */
+const LAND_COMMISSION_PCT = 4.5;
+function landCommission(total) {
+  const pct = LAND_COMMISSION_PCT;
+  return { pct, amount: Math.round(((Number(total) || 0) * pct) / 100) };
+}
+
+/* 360° ecosystem rebate: tenants with an accepted land lease get 0.50% off machinery commission, never below 3.50% */
+const ECO_REBATE = 0.005, ECO_FLOOR = 0.035;
+const ecoCommission = (base, eligible) => (eligible ? Math.max(ECO_FLOOR, base - ECO_REBATE) : base);
+
+function CommissionCard({ t, total }) {
+  const c = landCommission(total);
+  return (
+    <div className="rounded-xl bg-ivory p-3 ring-1 ring-soil/10">
+      <p className="text-sm font-bold text-forest">{t("cm_title")}</p>
+      <p className="mt-0.5 text-[11px] text-soil/80">{t("cm_sub")}</p>
+      <p className="mt-2 flex justify-between border-t border-soil/15 pt-1 text-sm font-extrabold text-forest" dir="ltr"><span dir="auto">{t("cm_total")} · {c.pct.toFixed(2)}%</span><span className="tabular-nums">{pkr(c.amount)}</span></p>
+    </div>
+  );
+}
+
+function EcoBenefitCard({ t, active }) {
+  return (
+    <div className={`rounded-2xl p-4 ring-1 ${active ? "bg-leaf/15 ring-leaf/40" : "bg-white ring-soil/10"}`}>
+      <p className="flex items-center gap-2 font-bold text-forest"><Repeat className="h-4 w-4 text-gold" aria-hidden="true" />{t("eco_title")}</p>
+      <p className="mt-1 text-xs text-soil/80">{t("eco_sub")}</p>
+      {active && <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-forest px-2.5 py-1 text-[11px] font-bold text-ivory"><BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />{t("eco_active")}</p>}
+    </div>
+  );
+}
+
+// Printable bilingual stamp-paper agreement (uses the voucher print styles)
+function LandAgreementModal({ t, b, dn, onClose }) {
+  const comm = landCommission(b.total);
+  const print = () => {
+    document.body.classList.add("print-voucher");
+    const done = () => { document.body.classList.remove("print-voucher"); window.removeEventListener("afterprint", done); };
+    window.addEventListener("afterprint", done);
+    setTimeout(() => { try { window.print(); } catch (e) { done(); } }, 50);
+  };
+  const Row = ({ k, v }) => <div className="flex justify-between gap-3 border-b border-dashed border-soil/20 py-1.5 text-sm"><span className="text-soil/80">{k}</span><span className="text-end font-semibold text-soil">{v}</span></div>;
+  const Sign = ({ label }) => <div className="flex-1 pt-10 text-center text-xs text-soil"><div className="border-t border-soil/60 pt-1">{label}</div><div className="mt-3 border-t border-soil/30 pt-1 text-soil/80">{t("ag_name")} / {t("ag_cnic")}</div></div>;
+  return createPortal(
+    <div id="voucher-root" className="fixed inset-0 z-[85] flex items-end justify-center bg-soil/50 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
+      <div className="sheet-in max-h-[94vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="ag-h">
+        <div className="voucher-card p-6 text-soil">
+          <div className="mb-4 flex h-28 items-center justify-center rounded-xl border-2 border-dashed border-soil/40 text-center text-xs font-semibold text-soil/70">{t("ag_stamp")}<br /><span lang="ur" dir="rtl">اشٹام پیپر / E-Stamp Paper</span></div>
+          <h2 id="ag-h" className="text-center font-display text-xl font-extrabold text-forest">{t("ag_title")}</h2>
+          <p className="text-center text-lg font-bold text-forest" lang="ur" dir="rtl">اقرار نامہ ٹھیکہ اراضی</p>
+          <p className="mt-1 text-center text-xs text-soil/80" dir="ltr">{b.id} · {t("ag_date")}: {fmtDate(b.acceptedAt ? new Date(b.acceptedAt).toISOString().slice(0, 10) : todayISO())}</p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-xl bg-ivory p-3"><p className="text-xs font-bold uppercase text-soil/80">{t("ag_first")} <span lang="ur">/ فریق اول</span></p><p className="mt-1 font-bold">{b.ownerName || "________________"}</p><p className="mt-2 text-xs text-soil/80">{t("ag_cnic")}: ____________________</p></div>
+            <div className="rounded-xl bg-ivory p-3"><p className="text-xs font-bold uppercase text-soil/80">{t("ag_second")} <span lang="ur">/ فریق ثانی</span></p><p className="mt-1 font-bold">{b.tenantName || "________________"}</p><p className="mt-2 text-xs text-soil/80">{t("ag_cnic")}: ____________________</p></div>
+          </div>
+          <div className="mt-4">
+            <p className="mb-1 text-sm font-bold text-forest">{t("ag_land")}</p>
+            <Row k={t("ld_village")} v={uniqPlaces(b.village, b.tehsil, dn ? dn(b.district || "") : b.district) || "-"} />
+            <Row k={t("ld_area")} v={`${Number(b.acres || 0).toFixed(2)} ${t("ld_acres")}`} />
+            <Row k={t("ld_water")} v={t("w_" + (b.water || "canal"))} />
+            <Row k={t("ld_soil")} v={t("s_" + (b.soil || "loam"))} />
+            <Row k={t("ag_period")} v={`${fmtDate(b.startDate)} → ${fmtDate(b.endDate)} (${b.months})`} />
+            <Row k={t("ag_amount")} v={pkr(b.total)} />
+            <Row k={t("ld_payment")} v={t("p_" + (b.payment || "advance"))} />
+          </div>
+          <ol className="mt-4 list-decimal space-y-1 ps-5 text-sm leading-relaxed">
+            <li>{t("ag_clause1")}</li><li>{t("ag_clause2")}</li><li>{t("ag_clause3")}</li>
+          </ol>
+          <div className="mt-4"><CommissionCard t={t} total={b.total} /></div>
+          <p className="mt-1 text-[11px] text-soil/70" dir="ltr">{t("cm_total")}: {pkr(comm.amount)}</p>
+          <div className="mt-6 flex gap-4"><Sign label={`${t("ag_first")} · ${t("ag_sign")}`} /><Sign label={`${t("ag_second")} · ${t("ag_sign")}`} /></div>
+          <div className="mt-4 flex gap-4"><Sign label={`${t("ag_witness1")} / گواہ نمبر 1`} /><Sign label={`${t("ag_witness2")} / گواہ نمبر 2`} /></div>
+        </div>
+        <div className="no-print flex gap-2 border-t border-soil/10 p-4">
+          <button type="button" onClick={print} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Printer className="h-4 w-4" aria-hidden="true" />{t("ag_print")}</button>
+          <button type="button" onClick={onClose} className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("ag_close")}</button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+function LandForm({ t, lang, session, onCreate }) {
+  const sessLoc = session && session.location ? session.location : null;
+  const blank = { title: "", loc: sessLoc, tehsil: "", areaUnit: "acre", areaInput: 5, water: "canal", soil: "loam", road: "paved", months: 6, rateType: "perAcreMonth", rate: 8000, payment: "advance", featured: false, ownerPhone: (session && session.phone) || "" };
+  const [f, setF] = useState(blank);
+  const [errs, setErrs] = useState({});
+  const set = (k, v) => { setF((s) => ({ ...s, [k]: v })); setErrs((e) => ({ ...e, [k]: undefined })); };
+  const acres = landAcres(f);
+  const total = landTotal({ ...f, acres }, f.months);
+  const submit = (e) => {
+    e.preventDefault();
+    const er = {};
+    if (!f.loc) er.loc = t("loc_err");
+    if (!(acres > 0)) er.areaInput = t("ld_err_area");
+    if (!(Number(f.rate) > 0)) er.rate = t("ld_err_rate");
+    if (!/^(\+92|0)?3\d{9}$/.test(String(f.ownerPhone || "").replace(/[\s-]/g, ""))) er.ownerPhone = t("err_phone");
+    setErrs(er);
+    if (Object.keys(er).length) return;
+    onCreate({ ...f, acres, total });
+    setF(blank);
+  };
+  const Select = ({ id, label, k, opts, prefix }) => (
+    <Field label={label} htmlFor={id}><select id={id} value={f[k]} onChange={(e) => set(k, e.target.value)} className={inputCls + " pe-7 text-sm"}>{opts.map((o) => <option key={o} value={o}>{t(prefix + o)}</option>)}</select></Field>
+  );
+  return (
+    <form onSubmit={submit} noValidate className="grid gap-4 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm sm:grid-cols-2">
+      <div className="sm:col-span-2"><Field label={t("ld_village")} htmlFor="ld-title"><input id="ld-title" value={f.title} onChange={(e) => set("title", e.target.value)} className={inputCls} placeholder={t("ld_title_ph")} /></Field></div>
+      <div className="sm:col-span-2"><LocationField t={t} lang={lang} id="ld-loc" label={`${t("ld_district")} / ${t("ld_village")}`} value={f.loc} placeholder={t("loc_placeholder")} error={errs.loc} onChange={(loc) => loc && set("loc", loc)} /></div>
+      <Field label={t("ld_tehsil")} htmlFor="ld-teh"><input id="ld-teh" value={f.tehsil} onChange={(e) => set("tehsil", e.target.value)} className={inputCls} /></Field>
+      <div className="grid grid-cols-2 items-end gap-2">
+        <Field label={t("ld_area")} htmlFor="ld-area" error={errs.areaInput}><input id="ld-area" type="number" min="0.1" step="0.5" value={f.areaInput} onChange={(e) => set("areaInput", e.target.value)} className={inputCls} dir="ltr" /></Field>
+        <Field label=" " htmlFor="ld-unit"><select id="ld-unit" value={f.areaUnit} onChange={(e) => set("areaUnit", e.target.value)} className={inputCls + " pe-7 text-sm"}><option value="acre">{t("ld_acres")}</option><option value="kanal">{t("ld_kanals")}</option></select></Field>
+      </div>
+      <Select id="ld-water" label={t("ld_water")} k="water" opts={LAND_WATER} prefix="w_" />
+      <Select id="ld-soil" label={t("ld_soil")} k="soil" opts={LAND_SOIL} prefix="s_" />
+      <Select id="ld-road" label={t("ld_road")} k="road" opts={LAND_ROAD} prefix="r_" />
+      <Field label={t("ld_months")} htmlFor="ld-months"><select id="ld-months" value={f.months} onChange={(e) => set("months", Number(e.target.value))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{m === 12 ? "12+" : m}</option>)}</select></Field>
+      <Field label={t("ld_rate_type")} htmlFor="ld-rt"><select id="ld-rt" value={f.rateType} onChange={(e) => set("rateType", e.target.value)} className={inputCls + " pe-7 text-sm"}><option value="perAcreMonth">{t("rt_acre")}</option><option value="total">{t("rt_total")}</option></select></Field>
+      <Field label={t("ld_rate")} htmlFor="ld-rate" error={errs.rate}><MoneyInput id="ld-rate" min={100} step="100" value={f.rate} onChange={(v) => set("rate", v)} className={inputCls} /></Field>
+      <Select id="ld-pay" label={t("ld_payment")} k="payment" opts={["advance", "two"]} prefix="p_" />
+      <Field label={t("ow_ownerphone")} htmlFor="ld-phone" error={errs.ownerPhone}><input id="ld-phone" type="tel" inputMode="tel" value={f.ownerPhone} onChange={(e) => set("ownerPhone", e.target.value)} className={inputCls} dir="ltr" placeholder="0300 1234567" /></Field>
+      <label className="flex cursor-pointer items-start gap-2 rounded-xl bg-gold/10 p-3 text-sm ring-1 ring-gold/40 sm:col-span-2">
+        <input type="checkbox" checked={f.featured} onChange={(e) => set("featured", e.target.checked)} className="mt-1 h-4 w-4 accent-forest" />
+        <span><span className="font-bold text-forest">{t("ld_featured")}</span>{f.featured && <span className="mt-0.5 block text-xs text-soil/80">{t("ld_featured_note").replace("{fee}", pkr(Math.round(LAND_BOOST_PER_ACRE * acres)))}</span>}</span>
+      </label>
+      <div className="sm:col-span-2"><p className="mb-1 text-sm font-semibold text-soil" dir="ltr"><span dir="auto">{t("ld_total_value")}</span>: <b className="text-forest">{pkr(total)}</b></p><CommissionCard t={t} total={total} /></div>
+      <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory sm:col-span-2"><Plus className="h-4 w-4" aria-hidden="true" />{t("ld_submit")}</button>
+    </form>
+  );
+}
+
+function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landListings, landRequests, landBookings, setLandListings, saveLandRequest, saveLandBooking, sendLead, ecoActive }) {
+  const [sub, setSub] = useState("find");
+  const [agreement, setAgreement] = useState(null);
+  const [contactShown, setContactShown] = useState({});
+  const uid = session && session.uid;
+  const rtl = (LANGS.find((l) => l.code === lang) || {}).dir === "rtl";
+
+  // ---------- search ----------
+  const [fl, setFl] = useState({ loc: userLoc || (session && session.location) || null, radius: 100, minAcres: 0, water: "any", budget: 0 });
+  const withKm = useMemo(() => landListings
+    .filter((l) => (l.status || "approved") === "approved")
+    .map((l) => ({ ...l, km: fl.loc && fl.loc.lat ? kmToListing(fl.loc, l) : null })), [landListings, fl.loc]);
+  const results = withKm
+    .filter((l) => l.km == null || l.km <= fl.radius)
+    .filter((l) => landAcres(l) >= (Number(fl.minAcres) || 0))
+    .filter((l) => fl.water === "any" || l.water === fl.water)
+    .filter((l) => !(Number(fl.budget) > 0) || l.rateType === "total" || Number(l.rate) <= Number(fl.budget))
+    .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (a.km ?? 9999) - (b.km ?? 9999));
+  const within100 = fl.loc && fl.loc.lat ? withKm.filter((l) => !l.mine && l.km != null && l.km <= 100).length : null;
+
+  // ---------- lease request on a listing ----------
+  const [reqFor, setReqFor] = useState(null);
+  const [reqStart, setReqStart] = useState(addDaysISO(7));
+  const [reqMonths, setReqMonths] = useState(6);
+  const sendLeaseRequest = (l) => requireAuth(() => {
+    const months = Number(reqMonths) || Number(l.months) || 1;
+    const b = {
+      id: "LB-" + Date.now().toString(36).toUpperCase(), listingId: l.id, requestId: null, status: "pending", createdAt: Date.now(),
+      ownerUid: l.ownerUid, ownerName: l.ownerName || "", tenantUid: session.uid, tenantName: session.name || "",
+      village: l.village || l.title || "", tehsil: l.tehsil || "", district: l.district || "", acres: landAcres(l), water: l.water, soil: l.soil,
+      months, startDate: reqStart, endDate: addMonthsISO(reqStart, months), total: landTotal(l, months), payment: l.payment || "advance", country: CUR.id,
+    };
+    saveLandBooking(b);
+    // tenant contact is private; the land owner is the counterparty who may read it
+    writeDoc(COL.landReqContacts, b.id, { requestId: b.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: l.ownerUid || "", createdAt: Date.now() }).catch((e) => console.warn("[Agri-Share] Land contact not saved:", e && e.code));
+    setReqFor(null);
+    toast(t("ld_req_sent"), { title: t("nav_land") });
+  });
+
+  // ---------- Zameen Ki Boli (land demand) ----------
+  const [bf, setBf] = useState({ loc: userLoc || (session && session.location) || null, acres: 5, water: "any", months: 6, budget: 8000 });
+  const [boliErr, setBoliErr] = useState("");
+  const postBoli = (e) => {
+    e.preventDefault();
+    if (!bf.loc) { setBoliErr(t("loc_err")); return; }
+    requireAuth(() => {
+      const near = landListings.filter((l) => (l.status || "approved") === "approved" && kmToListing(bf.loc, l) <= 100);
+      const r = { id: "LR-" + Date.now().toString(36).toUpperCase(), renterUid: session.uid, renterName: session.name || "", village: locLabel(bf.loc), district: bf.loc.district || "", loc: bf.loc, acres: Number(bf.acres) || 1, water: bf.water, months: Number(bf.months) || 1, budget: Number(bf.budget) || 0, status: "open", createdAt: Date.now(), country: CUR.id, matchedOwnerUids: [...new Set(near.map((l) => l.ownerUid).filter(Boolean))], offers: [] };
+      saveLandRequest(r);
+      writeDoc(COL.landReqContacts, r.id, { requestId: r.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: "", createdAt: Date.now() }).catch((e2) => console.warn("[Agri-Share] Land demand contact not saved:", e2 && e2.code));
+      if (!near.length && sendLead) sendLead({ category: "land", district: bf.loc.district, village: locLabel(bf.loc), hours: null, rate: r.budget, requestId: r.id }, true).catch(() => {});
+      toast(t("ld_boli_posted"), { title: t("ld_tab_boli") });
+      setSub("mine");
+    });
+  };
+  const acceptOffer = (r, o) => {
+    const months = r.months || 1;
+    const total = Math.round(o.rate * r.acres * months);
+    const b = {
+      id: "LB-" + Date.now().toString(36).toUpperCase(), listingId: o.listingId || null, requestId: r.id, status: "accepted", createdAt: Date.now(), acceptedAt: Date.now(),
+      ownerUid: o.uid, ownerName: o.ownerName || "", tenantUid: session.uid, tenantName: session.name || "",
+      village: r.village || "", tehsil: "", district: r.district || "", acres: r.acres, water: r.water === "any" ? (o.water || "canal") : r.water, soil: o.soil || "loam",
+      months, startDate: addDaysISO(7), endDate: addMonthsISO(addDaysISO(7), months), total, payment: "advance", country: CUR.id,
+    };
+    saveLandBooking(b);
+    saveLandRequest({ id: r.id, status: "booked", acceptedOwnerUid: o.uid, bookingId: b.id });
+    writeDoc(COL.landReqContacts, r.id, { requestId: r.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: o.uid, createdAt: Date.now() }).catch(() => {});
+    toast(t("ld_accepted"), { title: t("nav_land") });
+  };
+
+  // ---------- owner side ----------
+  const myListings = landListings.filter((l) => l.mine);
+  const myDistricts = new Set([session && session.location && session.location.district, ...myListings.map((l) => l.district)].map(normDistrict).filter(Boolean));
+  const openDemand = uid ? landRequests.filter((r) => r.status === "open" && r.renterUid !== uid && (myDistricts.has(normDistrict(r.district)) || (r.matchedOwnerUids || []).includes(uid))) : [];
+  const [offerRates, setOfferRates] = useState({});
+  const sendOffer = (r) => {
+    const rate = Math.round(Number(offerRates[r.id]) || 0);
+    if (rate < 100) return;
+    const listing = myListings.find((l) => normDistrict(l.district) === normDistrict(r.district)) || myListings[0];
+    const offer = { uid, ownerName: session.name || "", listingId: listing ? listing.id : null, rate, water: listing ? listing.water : "", soil: listing ? listing.soil : "", at: Date.now() };
+    saveLandRequest({ id: r.id, offers: [...(r.offers || []).filter((o) => o.uid !== uid), offer] });
+    toast(t("ld_offer_sent"), { title: t("ld_tab_boli") });
+  };
+  const incoming = landBookings.filter((b) => uid && b.ownerUid === uid);
+  const myLeases = landBookings.filter((b) => uid && b.tenantUid === uid);
+  const myDemand = landRequests.filter((r) => uid && r.renterUid === uid);
+  const decide = (b, status) => saveLandBooking({ id: b.id, status, ...(status === "accepted" ? { acceptedAt: Date.now() } : {}) });
+  // owner: once a lease is accepted, let that tenant read the owner's private contact
+  useEffect(() => {
+    if (!uid) return;
+    incoming.filter((b) => b.status === "accepted" && b.listingId).forEach((b) => {
+      readDoc(COL.landContacts, b.listingId).then((c) => {
+        if (c && !(c.acceptedUids || []).includes(b.tenantUid)) writeDoc(COL.landContacts, b.listingId, { ...c, acceptedUids: [...(c.acceptedUids || []), b.tenantUid] }).catch(() => {});
+      }).catch(() => {});
+    });
+  }, [uid, incoming.map((b) => b.id + b.status).join("|")]); // eslint-disable-line
+  const showContact = (b) => {
+    const mineAsOwner = b.ownerUid === uid;
+    const p = mineAsOwner ? readDoc(COL.landReqContacts, b.requestId || b.id) : b.listingId ? readDoc(COL.landContacts, b.listingId) : Promise.resolve(null);
+    p.then((c) => setContactShown((s) => ({ ...s, [b.id]: c ? { name: c.renterName || c.ownerName, phone: c.renterPhone || c.ownerPhone, email: c.renterEmail || c.ownerEmail } : { none: true } })))
+      .catch(() => setContactShown((s) => ({ ...s, [b.id]: { none: true } })));
+  };
+
+  const tabs = [["find", t("ld_tab_find"), Search], ["list", t("ld_tab_list"), Plus], ["boli", t("ld_tab_boli"), Megaphone], ["mine", t("ld_tab_mine"), ClipboardList]];
+  const statusPill = (s) => <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${s === "accepted" ? "bg-leaf/15 text-forest" : s === "declined" ? "bg-red-100 text-red-800" : "bg-gold/25 text-soil"}`}>{t(s === "accepted" ? "ld_accepted" : s === "declined" ? "ld_declined" : "ld_pending")}</span>;
+
+  return (
+    <section className={`mx-auto max-w-7xl px-4 py-8 sm:px-6 ${rtl ? "leading-[2]" : ""}`} aria-labelledby="ld-h">
+      <div className="mb-5 overflow-hidden rounded-3xl bg-forest p-6 text-ivory md:p-8">
+        <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold"><Sprout className="h-3.5 w-3.5 text-gold" aria-hidden="true" />{t("nav_land")}</p>
+        <h2 id="ld-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("ld_title")}</h2>
+        <p className="mt-2 max-w-2xl text-ivory/80">{t("ld_sub")}</p>
+      </div>
+      <div className="mb-5"><EcoBenefitCard t={t} active={ecoActive} /></div>
+      <div className="relative mb-5">
+        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pe-10 sm:mx-0 sm:px-0 sm:pe-0" role="tablist">
+          {tabs.map(([k, label, Icon]) => (
+            <button key={k} role="tab" aria-selected={sub === k} onClick={() => setSub(k)} className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === k ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}><Icon className="h-4 w-4" aria-hidden="true" />{label}</button>
+          ))}
+        </div>
+        <span className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-l from-ivory to-transparent sm:hidden rtl:bg-gradient-to-r" aria-hidden="true" />
+      </div>
+
+      {sub === "find" && (
+        <div className="grid gap-5 lg:grid-cols-[300px_1fr]">
+          <aside className="h-fit space-y-3 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+            <LocationField t={t} lang={lang} id="ldf-loc" label={t("ld_district")} value={fl.loc} placeholder={t("ld_myloc_hint")} onChange={(loc) => loc && setFl((s) => ({ ...s, loc }))} />
+            <Field label={t("ld_filter_radius")} htmlFor="ldf-r"><select id="ldf-r" value={fl.radius} onChange={(e) => setFl((s) => ({ ...s, radius: Number(e.target.value) }))} className={inputCls + " pe-7 text-sm"}>{[25, 50, 100].map((r) => <option key={r} value={r}>{r} km</option>)}</select></Field>
+            <Field label={t("ld_filter_acres")} htmlFor="ldf-a"><input id="ldf-a" type="number" min="0" value={fl.minAcres} onChange={(e) => setFl((s) => ({ ...s, minAcres: e.target.value }))} className={inputCls} dir="ltr" /></Field>
+            <Field label={t("ld_water")} htmlFor="ldf-w"><select id="ldf-w" value={fl.water} onChange={(e) => setFl((s) => ({ ...s, water: e.target.value }))} className={inputCls + " pe-7 text-sm"}><option value="any">{t("w_any")}</option>{LAND_WATER.map((w) => <option key={w} value={w}>{t("w_" + w)}</option>)}</select></Field>
+            <Field label={t("ld_filter_budget")} htmlFor="ldf-b"><MoneyInput id="ldf-b" min={0} step="500" value={fl.budget} onChange={(v) => setFl((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
+          </aside>
+          <div className="min-w-0 space-y-3">
+            {within100 === 0 && sendLead && <ConsultantCard t={t} lang={lang} request={{ category: "land", district: fl.loc ? fl.loc.district : "", village: locLabel(fl.loc), loc: fl.loc }} onSendLead={sendLead} requireAuth={requireAuth} />}
+            <p className="text-sm font-semibold text-soil/80" aria-live="polite">{t(results.length === 1 ? "ld_results_one" : "ld_results").replace("{n}", results.length)}</p>
+            {results.length === 0 ? <p className="rounded-2xl border border-dashed border-soil/25 bg-white p-8 text-center text-sm text-soil/80">{t("ld_none")}</p> : (
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {results.map((l) => (
+                  <li key={l.id} className={`flex flex-col rounded-2xl border bg-white p-4 shadow-sm ${l.featured ? "border-gold ring-1 ring-gold/50" : "border-soil/10"}`}>
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <p className="min-w-0 break-words font-bold text-forest">{l.title || l.village || t("ld_land")}</p>
+                      <span className="flex shrink-0 gap-1">
+                        {l.featured && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil">{t("ld_featured_badge")}</span>}
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${l.isVerified ? "bg-leaf/15 text-forest" : "bg-gold/25 text-soil"}`}>{t(l.isVerified ? "ls_verified" : "ls_unverified")}</span>
+                      </span>
+                    </div>
+                    <p className="text-xs text-soil/80">{uniqPlaces(l.village, l.tehsil, dn(l.district || ""))}{l.km != null ? <span dir="ltr"> · {Math.round(l.km)} km</span> : null}</p>
+                    <div className="mt-2 flex flex-wrap gap-1.5 text-[11px] font-semibold">
+                      <span className="rounded-full bg-ivory px-2 py-0.5 ring-1 ring-soil/10" dir="ltr">{landAcres(l).toFixed(1)} <span dir="auto">{t("ld_acres")}</span></span>
+                      <span className="rounded-full bg-leaf/10 px-2 py-0.5 text-forest ring-1 ring-leaf/30"><Droplets className="me-1 inline h-3 w-3" aria-hidden="true" />{t("w_" + l.water)}</span>
+                      <span className="rounded-full bg-gold/10 px-2 py-0.5 ring-1 ring-gold/30">{t("s_" + l.soil)}</span>
+                      <span className="rounded-full bg-ivory px-2 py-0.5 ring-1 ring-soil/10">{t("r_" + l.road)}</span>
+                    </div>
+                    <p className="mt-2 font-display text-lg font-extrabold text-forest" dir="ltr">{l.rateType === "total" ? pkr(l.rate) : <>{pkr(l.rate)}<span className="text-xs font-semibold text-soil/80"> {t("ld_per_acre_month")}</span></>}</p>
+                    <p className="text-xs text-soil/80">{l.months} · {t("p_" + (l.payment || "advance"))}</p>
+                    {!l.mine && (reqFor === l.id ? (
+                      <div className="mt-3 space-y-2 rounded-xl bg-ivory p-3">
+                        <div className="grid grid-cols-2 items-end gap-2">
+                          <Field label={t("ld_start")} htmlFor={`lds-${l.id}`}><input id={`lds-${l.id}`} type="date" min={todayISO()} value={reqStart} onChange={(e) => setReqStart(e.target.value)} className={inputCls + " text-sm"} /></Field>
+                          <Field label={t("ld_months")} htmlFor={`ldm-${l.id}`}><select id={`ldm-${l.id}`} value={reqMonths} onChange={(e) => setReqMonths(Number(e.target.value))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{m}</option>)}</select></Field>
+                        </div>
+                        <p className="text-sm" dir="ltr"><span dir="auto">{t("ld_total_value")}</span>: <b>{pkr(landTotal(l, reqMonths))}</b></p>
+                        <CommissionCard t={t} total={landTotal(l, reqMonths)} />
+                        <button type="button" onClick={() => sendLeaseRequest(l)} className="w-full rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory">{t("ld_send_req")}</button>
+                      </div>
+                    ) : <button type="button" onClick={() => { setReqFor(l.id); setReqMonths(Number(l.months) || 6); }} className="mt-auto pt-3"><span className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Handshake className="h-4 w-4" aria-hidden="true" />{t("ld_request")}</span></button>)}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+
+      {sub === "list" && <LandForm t={t} lang={lang} session={session} onCreate={(f) => requireAuth(() => {
+        const id = "LL-" + Date.now().toString(36).toUpperCase();
+        const { ownerPhone, loc, areaInput, ...rest } = f;
+        const l = { ...rest, areaInput: Number(areaInput), id, ownerUid: session.uid, ownerName: session.name || "", village: f.title || (loc && loc.village) || "", district: loc.district || "", province: loc.province || "", lat: loc.lat, lng: loc.lng, country: loc.country || CUR.id, status: "approved", isVerified: false, available: true, boostFee: f.featured ? Math.round(LAND_BOOST_PER_ACRE * f.acres) : 0, createdAt: Date.now() };
+        setLandListings((ls) => [...ls, l]);
+        writeDoc(COL.landContacts, id, { listingId: id, ownerUid: session.uid, ownerName: session.name || "", ownerPhone: String(ownerPhone || "").replace(/[\s-]/g, ""), ownerEmail: session.email || "", acceptedUids: [], createdAt: Date.now() }).catch((e) => console.warn("[Agri-Share] Land owner contact not saved:", e && e.code));
+        toast(t("ld_listed"), { title: t("nav_land") });
+        setSub("mine");
+      })} />}
+
+      {sub === "boli" && (
+        <div className="grid gap-5 lg:grid-cols-2">
+          <form onSubmit={postBoli} noValidate className="space-y-3 rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
+            <h3 className="font-bold text-forest">{t("ld_boli_title")}</h3>
+            <p className="text-xs text-soil/80">{t("ld_boli_sub")}</p>
+            <LocationField t={t} lang={lang} id="ldb-loc" label={t("ld_district")} value={bf.loc} placeholder={t("loc_placeholder")} error={boliErr || undefined} onChange={(loc) => { if (loc) { setBoliErr(""); setBf((s) => ({ ...s, loc })); } }} />
+            <div className="grid grid-cols-2 items-end gap-2">
+              <Field label={t("ld_acres")} htmlFor="ldb-a"><input id="ldb-a" type="number" min="0.5" step="0.5" value={bf.acres} onChange={(e) => setBf((s) => ({ ...s, acres: e.target.value }))} className={inputCls} dir="ltr" /></Field>
+              <Field label={t("ld_months")} htmlFor="ldb-m"><select id="ldb-m" value={bf.months} onChange={(e) => setBf((s) => ({ ...s, months: Number(e.target.value) }))} className={inputCls + " pe-7 text-sm"}>{Array.from({ length: 12 }, (_, i) => i + 1).map((m) => <option key={m} value={m}>{m}</option>)}</select></Field>
+            </div>
+            <Field label={t("ld_water")} htmlFor="ldb-w"><select id="ldb-w" value={bf.water} onChange={(e) => setBf((s) => ({ ...s, water: e.target.value }))} className={inputCls + " pe-7 text-sm"}><option value="any">{t("w_any")}</option>{LAND_WATER.map((w) => <option key={w} value={w}>{t("w_" + w)}</option>)}</select></Field>
+            <Field label={t("ld_budget")} htmlFor="ldb-b"><MoneyInput id="ldb-b" min={100} step="500" value={bf.budget} onChange={(v) => setBf((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
+            <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><Megaphone className="h-4 w-4" aria-hidden="true" />{t("ld_boli_post")}</button>
+          </form>
+          <div className="space-y-3 rounded-2xl border border-gold/50 bg-gold/10 p-4">
+            <h3 className="font-bold text-forest">{t("ld_open_demand")}</h3>
+            {openDemand.length === 0 ? <p className="text-sm text-soil/80">{t("ld_no_offers")}</p> : (
+              <ul className="space-y-2">
+                {openDemand.map((r) => (
+                  <li key={r.id} className="rounded-xl bg-white p-3 text-sm ring-1 ring-soil/10">
+                    <p className="font-bold text-forest">{uniqPlaces(r.village, dn(r.district || ""))}</p>
+                    <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · {r.months} · {pkr(r.budget)} <span dir="auto">{t("ld_per_acre_month")}</span> · <span dir="auto">{t(r.water === "any" ? "w_any" : "w_" + r.water)}</span></p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <label className="sr-only" htmlFor={`ldo-${r.id}`}>{t("ld_offer_rate")}</label>
+                      <MoneyInput id={`ldo-${r.id}`} min={100} step="100" value={offerRates[r.id] || r.budget} onChange={(v) => setOfferRates((s) => ({ ...s, [r.id]: v }))} className={inputCls + " max-w-[9rem] py-1.5"} />
+                      <button type="button" onClick={() => sendOffer(r)} className="ms-auto rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{(r.offers || []).some((o) => o.uid === uid) ? t("ow_offer_update") : t("ld_send_offer")}</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+
+      {sub === "mine" && (
+        <div className="grid gap-5 lg:grid-cols-2">
+          <div className="space-y-3 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+            <h3 className="font-bold text-forest">{t("ld_my_leases")}</h3>
+            {myDemand.filter((r) => r.status === "open").map((r) => (
+              <div key={r.id} className="rounded-xl bg-gold/10 p-3 text-sm ring-1 ring-gold/40">
+                <p className="font-bold text-forest">{t("ld_tab_boli")} · {uniqPlaces(r.village, dn(r.district || ""))}</p>
+                <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · {r.months} · {pkr(r.budget)}</p>
+                <p className="mt-2 text-xs font-bold text-soil/80">{t("ld_offers")}</p>
+                {(r.offers || []).length === 0 ? <p className="text-xs text-soil/80">{t("ld_no_offers")}</p> : (r.offers || []).map((o) => (
+                  <div key={o.uid} className="mt-1 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-white px-2 py-1.5">
+                    <span className="text-xs"><b>{o.ownerName || "-"}</b> · <span dir="ltr">{pkr(o.rate)}</span> {t("ld_per_acre_month")}</span>
+                    <button type="button" onClick={() => acceptOffer(r, o)} className="rounded-lg bg-forest px-2.5 py-1 text-xs font-bold text-ivory">{t("ld_accept")}</button>
+                  </div>
+                ))}
+              </div>
+            ))}
+            {myLeases.length === 0 && myDemand.filter((r) => r.status === "open").length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : myLeases.map((b) => (
+              <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
+                <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(b.village, dn(b.district || ""))}</p>{statusPill(b.status)}</div>
+                <p className="text-xs text-soil/80" dir="ltr">{b.id} · {Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} · {pkr(b.total)}</p>
+                {b.status === "accepted" && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button>
+                    <button type="button" onClick={() => showContact(b)} className="rounded-lg border border-forest/30 px-2.5 py-1.5 text-xs font-bold text-forest">{t("ld_contact")}</button>
+                  </div>
+                )}
+                {contactShown[b.id] && (contactShown[b.id].none ? <p className="mt-1 text-xs text-soil/80">{t("ct_none")}</p> : <div className="mt-2"><ContactButtons t={t} phone={contactShown[b.id].phone} name={contactShown[b.id].name} /></div>)}
+              </div>
+            ))}
+          </div>
+          <div className="space-y-3 rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+            <h3 className="font-bold text-forest">{t("ld_incoming")}</h3>
+            {incoming.length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : incoming.map((b) => (
+              <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
+                <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{b.tenantName || "-"} · {uniqPlaces(b.village, dn(b.district || ""))}</p>{statusPill(b.status)}</div>
+                <p className="text-xs text-soil/80" dir="ltr">{Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} · {pkr(b.total)}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {b.status === "pending" && <><button type="button" onClick={() => decide(b, "accepted")} className="rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory">{t("ld_accept_req")}</button><button type="button" onClick={() => decide(b, "declined")} className="rounded-lg border border-red-300 px-2.5 py-1.5 text-xs font-bold text-red-800">{t("ld_decline")}</button></>}
+                  {b.status === "accepted" && <><button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button><button type="button" onClick={() => showContact(b)} className="rounded-lg border border-forest/30 px-2.5 py-1.5 text-xs font-bold text-forest">{t("ld_contact")}</button></>}
+                </div>
+                {contactShown[b.id] && (contactShown[b.id].none ? <p className="mt-1 text-xs text-soil/80">{t("ct_none")}</p> : <div className="mt-2"><ContactButtons t={t} phone={contactShown[b.id].phone} name={contactShown[b.id].name} /></div>)}
+              </div>
+            ))}
+            <h3 className="pt-2 font-bold text-forest">{t("ld_my_listings")}</h3>
+            {myListings.length === 0 ? <p className="text-sm text-soil/80">{t("ld_none")}</p> : myListings.map((l) => (
+              <div key={l.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
+                <span className="min-w-0"><span className="block font-bold text-forest">{l.title || l.village}</span><span className="text-xs text-soil/80" dir="ltr">{landAcres(l).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {pkr(l.rate)}</span></span>
+                <span className="flex gap-1">{l.featured && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil">{t("ld_featured_badge")}</span>}<span className="rounded-full bg-gold/25 px-2 py-0.5 text-[10px] font-bold text-soil">{t(l.isVerified ? "ls_verified" : "ls_unverified")}</span></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {agreement && <LandAgreementModal t={t} b={agreement} dn={dn} onClose={() => setAgreement(null)} />}
+    </section>
+  );
+}
+
+function GovtPortal({ t }) {
+  const pillars = [[HandCoins, "gv_p1_t", "gv_p1_s"], [ShieldCheck, "gv_p2_t", "gv_p2_s"], [Sprout, "gv_p3_t", "gv_p3_s"]];
+  return (
+    <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6" aria-labelledby="gv-h">
+      <div className="overflow-hidden rounded-3xl bg-forest p-6 text-ivory md:p-10">
+        <span className="inline-flex items-center gap-2 rounded-full bg-gold px-3 py-1 text-xs font-extrabold text-soil">{t("soon")}</span>
+        <h2 id="gv-h" className="mt-4 font-display text-2xl font-extrabold sm:text-3xl">{t("gv_title")}</h2>
+        <p className="mt-2 max-w-2xl text-ivory/80">{t("gv_sub")}</p>
+      </div>
+      <ul className="mt-6 grid gap-4 md:grid-cols-3">
+        {pillars.map(([Icon, title, sub], i) => (
+          <li key={title} className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-forest text-gold"><Icon className="h-5 w-5" aria-hidden="true" /></span>
+            <p className="mt-3 font-bold text-forest"><span className="me-1 text-gold" dir="ltr">{i + 1}.</span>{t(title)}</p>
+            <p className="mt-1 text-sm text-soil/80">{t(sub)}</p>
+            <span className="mt-3 inline-block rounded-full bg-gold/25 px-2 py-0.5 text-[11px] font-bold text-soil">{t("soon")}</span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -9963,7 +11114,7 @@ const docKey = (id) => String(id).replace(/\//g, "_");
 
 // Collections the rules keep private to signed-in members (they hold names, phones and wallet numbers).
 // Signed-out visitors don't listen to them at all, so the console has no permission-denied noise.
-const PRIVATE_SYNC = new Set(["bookings", "requests", "mandi", "demand"]);
+const PRIVATE_SYNC = new Set(["bookings", "requests", "mandi", "demand", "landRequests", "landBookings"]);
 
 function useCollectionSync(key, items, setItems, authUid, report, queries) {
   const queryKey = queries ? JSON.stringify(queries) : "all";
@@ -10098,6 +11249,10 @@ function useCloudSync(state, setters, authUid, isAdminReader) {
   useCollectionSync("requests", state.liveRequests, setters.setLiveRequests, authUid, report);
   useCollectionSync("mandi", state.mandiPosts, setters.setMandiPosts, authUid, report);
   useCollectionSync("demand", state.demand, setters.setDemand, authUid, report);
+  // land: listings like machinery (approved + own, admins all); land bookings only for the two parties
+  useCollectionSync("landListings", state.landListings, setters.setLandListings, authUid, report, isAdminReader ? null : authUid ? [["status", "==", "approved"], ["ownerUid", "==", authUid]] : [["status", "==", "approved"]]);
+  useCollectionSync("landRequests", state.landRequests, setters.setLandRequests, authUid, report);
+  useCollectionSync("landBookings", state.landBookings, setters.setLandBookings, authUid, report, isAdminReader ? null : authUid ? [["tenantUid", "==", authUid], ["ownerUid", "==", authUid]] : null);
   useSettingsSync(state.settings, setters.setSettings, authUid, report);
   const vals = Object.values(status);
   const overall = !FIREBASE_ENABLED ? "local" : vals.includes("nodb") ? "nodb" : vals.includes("connecting") || vals.length < 6 ? "connecting" : vals.every((v) => v === "live") ? "live" : vals.includes("live") ? "partial" : vals.every((v) => v === "denied") ? "denied" : vals.includes("offline") ? "offline" : "local";
@@ -10127,6 +11282,9 @@ function App() {
   const [bookings, setBookings] = useState(() => store.get("agrishare.bookings.v1", []));
   const [liveRequests, setLiveRequests] = useState(() => store.get("agrishare.requests.v1", []));
   const [mandiPosts, setMandiPosts] = useState(() => store.get("agrishare.mandi.v1", []));
+  const [landListings, setLandListings] = useState(() => store.get("agrishare.land.listings.v1", []));
+  const [landRequests, setLandRequests] = useState(() => store.get("agrishare.land.requests.v1", []));
+  const [landBookings, setLandBookings] = useState(() => store.get("agrishare.land.bookings.v1", []));
   const [settings, setSettings] = useState(() => {
     const saved = store.get("agrishare.settings.v1", {});
     const { activeDistricts, ...rest } = saved; // older versions stored pilot districts; provinces replace them
@@ -10178,11 +11336,14 @@ function App() {
   useEffect(() => { store.set("agrishare.bookings.v1", bookings); }, [bookings]);
   useEffect(() => { store.set("agrishare.requests.v1", liveRequests); }, [liveRequests]);
   useEffect(() => { store.set("agrishare.mandi.v1", mandiPosts); }, [mandiPosts]);
+  useEffect(() => { store.set("agrishare.land.listings.v1", landListings); }, [landListings]);
+  useEffect(() => { store.set("agrishare.land.requests.v1", landRequests); }, [landRequests]);
+  useEffect(() => { store.set("agrishare.land.bookings.v1", landBookings); }, [landBookings]);
   useEffect(() => { store.set("agrishare.settings.v1", settings); }, [settings]);
   useEffect(() => { store.set("agrishare.demand.v1", demand); }, [demand]);
 
   // Live Firestore sync (falls back to localStorage when Firebase is unreachable or refuses)
-  const cloud = useCloudSync({ listings, bookings, liveRequests, settings, mandiPosts, demand }, { setListings, setBookings, setLiveRequests, setSettings, setMandiPosts, setDemand }, accounts.fbUid, !!(accounts.isAdmin && accounts.fbUser && accounts.fbUser.emailVerified));
+  const cloud = useCloudSync({ listings, bookings, liveRequests, settings, mandiPosts, demand, landListings, landRequests, landBookings }, { setListings, setBookings, setLiveRequests, setSettings, setMandiPosts, setDemand, setLandListings, setLandRequests, setLandBookings }, accounts.fbUid, !!(accounts.isAdmin && accounts.fbUser && accounts.fbUser.emailVerified));
   useEffect(() => {
     store.set("agrishare.lang", lang);
     document.documentElement.lang = langMeta.html || lang;
@@ -10396,6 +11557,12 @@ function App() {
     setLeads((ls) => ls.map((x) => (x.id === lead.id ? next : x)));
     writeDoc(COL.leads, lead.id, next).catch((e) => console.warn("[Agri-Share] Could not update lead:", e && e.code));
   };
+  // land: "mine" from uid; no contact fields kept in the shared state
+  const shownLand = useMemo(() => landListings.map(({ ownerEmail, ownerPhone, ...l }) => ({ ...l, mine: Boolean(uid && l.ownerUid === uid) })), [landListings, uid]); // eslint-disable-line
+  const saveLandRequest = (patch) => setLandRequests((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
+  const saveLandBooking = (patch) => setLandBookings((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
+  // 360° benefit: an accepted land lease as tenant -> 0.50% off machinery commission (floor 3.50%)
+  const ecoActive = Boolean(uid && landBookings.some((b) => b.tenantUid === uid && b.status === "accepted"));
   const saveDemand = (rec) => setDemand((list) => (list.some((d) => d.id === rec.id) ? list.map((d) => (d.id === rec.id ? { ...d, ...rec } : d)) : [...list, rec]));
   // Only admin-approved machines in switched-on pilot districts are visible to renters
   const publicListings = useMemo(() => marketListings
@@ -10496,7 +11663,7 @@ function App() {
       <main id="main" className="w-full">
         {showTab === "marketplace" && (
           <>
-            <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} />
+            <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} onLand={() => setTab("land")} />
             <TrustStrip t={t} />
             <KeypadBanner t={t} setTab={setTab} />
             <Marketplace t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={() => setTab("live-request")} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
@@ -10505,17 +11672,19 @@ function App() {
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
         {showTab === "owner-portal" && <OwnerPortal t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
-        {showTab === "live-request" && <LiveRequest t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
+        {showTab === "live-request" && <LiveRequest ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
         {showTab === "admin" && <AdminPanel bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
+        {showTab === "land" && <LandLease t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBooking} sendLead={sendLead} ecoActive={ecoActive} />}
+        {showTab === "govt" && <GovtPortal t={t} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}
       </main>
       <Footer t={t} setTab={setTab} />
       {bookingTarget && (
-        <BookingModal listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
+        <BookingModal ecoActive={ecoActive} listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
           onSubmit={(details) => { const id = createBooking(bookingTarget, details); setBookingTarget(null); setTab("bookings"); setTimeout(() => setVoucherId(id), 300); }} />
       )}
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
