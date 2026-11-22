@@ -389,6 +389,14 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    ask_rate_badge: "Owner's asking rate. Negotiate or send your own offer",
+    ask_make_offer: "Make Own Offer",
+    ask_choice_t: "How do you want to book?",
+    ask_choice_accept: "Accept asking rate",
+    ask_choice_offer: "Send my own offer",
+    ask_choice_offer_s: "Propose your price. The owner can accept or counter.",
+    ow_rate_ph: "Enter your asking rate in PKR (e.g. 2500)",
+    ow_rate_err: "Please enter your asking rate per hour",
     tour8_1_t: "All-in-One Kisan Super-App",
     tour8_1_s: "Everything a farmer or landowner needs in one trusted platform: machinery, land lease, crop market and offline booking.",
     tour8_2_t: "Apni Boli: Set Your Own Rate",
@@ -1600,6 +1608,14 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    ask_rate_badge: "مالک کا مانگا ہوا ریٹ۔ بات چیت کریں یا اپنی پیشکش بھیجیں",
+    ask_make_offer: "اپنی پیشکش دیں",
+    ask_choice_t: "آپ کیسے بکنگ کرنا چاہتے ہیں؟",
+    ask_choice_accept: "مانگا ہوا ریٹ قبول کریں",
+    ask_choice_offer: "اپنی پیشکش بھیجیں",
+    ask_choice_offer_s: "اپنی قیمت بتائیں۔ مالک قبول کر سکتا ہے یا جوابی پیشکش دے سکتا ہے۔",
+    ow_rate_ph: "اپنا مانگا ہوا ریٹ روپے میں لکھیں (مثلاً 2500)",
+    ow_rate_err: "براہ کرم فی گھنٹہ اپنا ریٹ لکھیں",
     tour8_1_t: "آل اِن ون کسان سپر ایپ",
     tour8_1_s: "کسان یا زمیندار کی ہر ضرورت ایک بھروسہ مند پلیٹ فارم پر: مشینری، زمین ٹھیکہ، فصل منڈی اور آف لائن بکنگ۔",
     tour8_2_t: "اپنی بولی: اپنا ریٹ خود لگائیں",
@@ -2811,6 +2827,14 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    ask_rate_badge: "مالک دا منگیا ریٹ۔ گل بات کرو یا اپنی آفر بھیجو",
+    ask_make_offer: "اپنی آفر دیو",
+    ask_choice_t: "تسیں کیویں بکنگ کرنا چاہندے او؟",
+    ask_choice_accept: "منگیا ریٹ منظور کرو",
+    ask_choice_offer: "اپنی آفر بھیجو",
+    ask_choice_offer_s: "اپنی قیمت دسو۔ مالک منظور کر سکدا اے یا جوابی آفر دے سکدا اے۔",
+    ow_rate_ph: "اپنا منگیا ریٹ روپیاں وچ لکھو (جیویں 2500)",
+    ow_rate_err: "مہربانی کر کے فی گھنٹہ اپنا ریٹ لکھو",
     tour8_1_t: "آل اِن ون کسان سپر ایپ",
     tour8_1_s: "کسان یا زمیندار دی ہر لوڑ اک بھروسے والے پلیٹ فارم تے: مشینری، زمین ٹھیکہ، فصل منڈی تے آف لائن بکنگ۔",
     tour8_2_t: "اپنی بولی: اپنا ریٹ آپ لاؤ",
@@ -3923,6 +3947,14 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    ask_rate_badge: "مالڪ جو گهريل ريٽ. ڳالهه ٻولهه ڪريو يا پنهنجي آڇ موڪليو",
+    ask_make_offer: "پنهنجي آڇ ڏيو",
+    ask_choice_t: "توهان ڪيئن بڪنگ ڪرڻ چاهيو ٿا؟",
+    ask_choice_accept: "گهريل ريٽ قبول ڪريو",
+    ask_choice_offer: "پنهنجي آڇ موڪليو",
+    ask_choice_offer_s: "پنهنجي قيمت ٻڌايو. مالڪ قبول ڪري سگهي ٿو يا جوابي آڇ ڏئي سگهي ٿو.",
+    ow_rate_ph: "پنهنجو گهريل ريٽ رپين ۾ لکو (مثال 2500)",
+    ow_rate_err: "مهرباني ڪري في ڪلاڪ پنهنجو ريٽ لکو",
     tour8_1_t: "آل اِن ون هاري سپر ايپ",
     tour8_1_s: "هاري يا زميندار جي هر ضرورت هڪ ڀروسي جوڳي پليٽ فارم تي: مشينري، زمين ٺيڪو، فصل منڊي ۽ آف لائن بڪنگ.",
     tour8_2_t: "پنهنجي ٻولي: پنهنجو اگهه پاڻ لڳايو",
@@ -5036,6 +5068,14 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    ask_rate_badge: "د مالک غوښتل شوې بیه. خبرې وکړئ یا خپل وړاندیز ولېږئ",
+    ask_make_offer: "خپل وړاندیز ورکړئ",
+    ask_choice_t: "څنګه بکنګ کول غواړئ؟",
+    ask_choice_accept: "غوښتل شوې بیه ومنئ",
+    ask_choice_offer: "خپل وړاندیز ولېږئ",
+    ask_choice_offer_s: "خپله بیه ووایاست. مالک یې منلی شي یا ځوابي وړاندیز ورکولی شي.",
+    ow_rate_ph: "خپله غوښتل شوې بیه په روپیو کې ولیکئ (لکه 2500)",
+    ow_rate_err: "مهرباني وکړئ په یو ساعت کې خپله بیه ولیکئ",
     tour8_1_t: "ټول په یو ځای د بزګر سوپر اېپ",
     tour8_1_s: "د بزګر یا ځمکوال هره اړتیا په یوه باوري پلیټ فارم: ماشینونه، د ځمکې اجاره، د فصل منډۍ او آفلاین بکنګ.",
     tour8_2_t: "اپني بولي: خپله بیه پخپله وټاکئ",
@@ -5863,6 +5903,14 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    ask_rate_badge: "واجہءِ لوٹتگیں ریٹ۔ گپ و تران کن یا وتی آپر دیم دئے",
+    ask_make_offer: "وتی آپر دئے",
+    ask_choice_t: "شما چوں بکنگ کنگ لوٹیت؟",
+    ask_choice_accept: "لوٹتگیں ریٹ منّ",
+    ask_choice_offer: "وتی آپر دیم دئے",
+    ask_choice_offer_s: "وتی بہا بگوش۔ واجہ منّت کنت یا پدا آپر دات کنت۔",
+    ow_rate_ph: "وتی لوٹتگیں ریٹ روپیا ءَ بنویس (درور 2500)",
+    ow_rate_err: "مہربانی کن، یک ساعتءِ ریٹ بنویس",
     tour8_1_t: "آل اِن ون بزگرءِ سپر ایپ",
     tour8_1_s: "بزگر یا زمینداریءِ هر لوٹ یک باوریں پلیٹ فارمءَ: مشین، زمین ٹھیکہ، فصلءِ منڈی و آف لائن بکنگ۔",
     tour8_2_t: "اپنی بولی: وتی نرخءَ وت بلگا",
@@ -8571,6 +8619,7 @@ function ListingCard({ l, t, dn, lang, onBook }) {
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wide text-soil/80">{t("rate_label")}</p>
           <p className="flex flex-wrap items-baseline font-display text-2xl font-extrabold text-forest"><span dir="ltr">{pkr(l.rate)}</span><span className="text-sm font-semibold text-soil/80">{t("per_hour")}</span></p>
+          <p className="mt-1.5 inline-flex items-start gap-1.5 rounded-lg bg-gold/15 px-2.5 py-1 text-[11px] font-bold leading-snug text-soil ring-1 ring-gold/40 rtl:leading-[2]"><Tag className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" aria-hidden="true" />{t("ask_rate_badge")}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-ivory px-2.5 py-1 text-sm font-bold text-soil ring-1 ring-soil/10">
@@ -8594,6 +8643,11 @@ function ListingCard({ l, t, dn, lang, onBook }) {
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory shadow-sm transition-all duration-200 hover:bg-[#0f4a28] hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-soil/20 disabled:text-soil/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2">
           <CalendarDays className="h-4 w-4" aria-hidden="true" />{l.available ? t("request") : t("unavailable")}
         </button>
+        {l.available && (
+          <button type="button" onClick={() => onBook(l, true)} className="-mt-1 inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl px-3 text-sm font-bold text-forest ring-1 ring-forest/25 transition hover:bg-forest/5">
+            <HandCoins className="h-4 w-4" aria-hidden="true" />{t("ask_make_offer")}
+          </button>
+        )}
       </div>
     </article>
   );
@@ -8775,7 +8829,7 @@ function ConsultBar({ t }) {
 /* ------------------------------------------------------------------ */
 /* Booking modal with transparent price calculator                     */
 /* ------------------------------------------------------------------ */
-function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = false, promoFor = () => null }) {
+function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = false, promoFor = () => null, startOffer = false }) {
   const [date, setDate] = useState(addDaysISO(1));
   const [hours, setHours] = useState(4);
   const [wantOp, setWantOp] = useState(false);
@@ -8786,7 +8840,7 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
   const [phone, setPhone] = useState(() => (session && session.phone) || store.get("agrishare.renter", {}).phone || "");
   const listedTr = transportFee(listing.distance);
   const minOffer = Math.ceil((listing.rate * MIN_OFFER_RATIO) / 50) * 50;
-  const [offerOn, setOfferOn] = useState(false);
+  const [offerOn, setOfferOn] = useState(!!startOffer);
   const [offerRate, setOfferRate] = useState(listing.rate);
   const [offerTr, setOfferTr] = useState(listedTr);
   const [note, setNote] = useState("");
@@ -8879,7 +8933,18 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
               checked={listing.transport === "included" ? true : wantTr} disabled={listing.transport !== "optional"} onChange={setWantTr} />
             <Toggle id="bk-small" label={t("bk_smallholder")} sub={t("bk_smallholder_sub")} checked={smallholder} onChange={setSmallholder} />
             <div className={`rounded-2xl p-1 ${offerOn ? "bg-gold/20 ring-1 ring-gold/60" : ""}`}>
-              <Toggle id="bk-offer" label={t("bk_offer_toggle")} sub={t("bk_offer_sub")} checked={offerOn} onChange={setOfferOn} />
+              <div role="radiogroup" aria-label={t("ask_choice_t")} className="p-1">
+                <p className="mb-1.5 text-sm font-bold text-forest rtl:leading-[2]">{t("ask_choice_t")}</p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {[[false, CircleCheck, "ask_choice_accept", `${pkr(listing.rate)}${t("per_hour")}`], [true, HandCoins, "ask_choice_offer", t("ask_choice_offer_s")]].map(([val, I, k, sub]) => (
+                    <button key={String(val)} type="button" role="radio" aria-checked={offerOn === val} onClick={() => setOfferOn(val)}
+                      className={`flex min-h-[52px] items-start gap-2 rounded-xl p-2.5 text-start ring-1 transition ${offerOn === val ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
+                      <I className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0"><span className="block text-sm font-bold rtl:leading-[2]">{t(k)}</span><span className={`block text-[11px] ${offerOn === val ? "text-ivory/80" : "text-soil/80"}`} dir="auto">{sub}</span></span>
+                    </button>
+                  ))}
+                </div>
+              </div>
               {offerOn && (
                 <div className="grid gap-3 p-2 pt-3">
                   <Field label={t("bk_offer_rate")} htmlFor="of-rate" error={errors.offer} hint={`${t("bk_listed")}: ${pkr(listing.rate)}${t("per_hour")} · min ${pkr(minOffer)}`}>
@@ -9198,7 +9263,7 @@ const shrinkPhoto = (file) => new Promise((resolve, reject) => {
 
 function ListMachineForm({ t, dn, lang, onAdd, session }) {
   const sessLoc = session && session.location && locCountry(session.location) === CUR.id ? session.location : null;
-  const blank = { name: "", category: "tractor", loc: sessLoc, distance: 5, rate: Math.round(askFor("tractor", 2500)), operator: "optional", transport: "optional", ownerName: (session && session.name) || "", ownerPhone: (session && session.phone) || "", spec: "" };
+  const blank = { name: "", category: "tractor", loc: sessLoc, distance: 5, rate: "", operator: "optional", transport: "optional", ownerName: (session && session.name) || "", ownerPhone: (session && session.phone) || "", spec: "" };
   const [f, setF] = useState(blank);
   const [tried, setTried] = useState(false);
   const [photoErr, setPhotoErr] = useState(false);
@@ -9218,7 +9283,8 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
     if (!f.ownerName.trim()) err.ownerName = "Required";
     if (!/^\+?\d{10,13}$/.test(f.ownerPhone.replace(/[\s-]/g, ""))) err.ownerPhone = t("err_phone");
     const rate = Number(f.rate);
-    if (!(rate >= 500 && rate <= 500000)) err.rate = `${pkr(500)} to ${pkr(500000)}`;
+    if (f.rate === "" || f.rate == null) err.rate = t("ow_rate_err");
+    else if (!(rate >= 500 && rate <= 500000)) err.rate = `${pkr(500)} to ${pkr(500000)}`;
     return err;
   };
   const errors = tried ? validate() : {};
@@ -9240,18 +9306,18 @@ function ListMachineForm({ t, dn, lang, onAdd, session }) {
       <Field label={t("ow_cat")} htmlFor="m-cat">
         <select id="m-cat" value={f.category} onChange={set("category")} className={inputCls}>{CATEGORIES.map((c) => <option key={c} value={c}>{t("one_" + c)}</option>)}</select>
       </Field>
-      <Field label={t("ow_rate")} htmlFor="m-rate" error={errors.rate}><MoneyInput id="m-rate" min={500} step="100" value={f.rate} onChange={(v) => setF((s) => ({ ...s, rate: v }))} className={inputCls} /></Field>
+      <Field label={t("ow_rate")} htmlFor="m-rate" error={errors.rate}><MoneyInput id="m-rate" min={500} step="100" value={f.rate} onChange={(v) => setF((s) => ({ ...s, rate: v }))} placeholder={t("ow_rate_ph")} className={inputCls} /></Field>
       {CUR.catalog.some((m) => m.cat === f.category) && (
         <div className="sm:col-span-2">
           <p className="mb-2 text-sm font-semibold text-soil">{t("ow_suggest").replace("{country}", t("country_" + CUR.id))}</p>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {CUR.catalog.filter((m) => m.cat === f.category).map((m) => (
-              <button type="button" key={m.name} onClick={() => setF((s) => ({ ...s, name: m.name, spec: m.spec, rate: Math.round(((m.min + m.max) / 2) / CUR.fx) }))} aria-pressed={f.name === m.name}
+              <button type="button" key={m.name} onClick={() => setF((s) => ({ ...s, name: m.name, spec: m.spec }))} aria-pressed={f.name === m.name}
                 className={`flex items-center gap-2 overflow-hidden rounded-xl text-start ring-1 transition ${f.name === m.name ? "bg-forest/5 ring-forest" : "bg-white ring-soil/15 hover:ring-leaf"}`}>
                 <MachinePhoto category={m.cat} name={m.name} className="h-14 w-16 shrink-0" alt={m.name} width={128} height={112} />
                 <span className="min-w-0 py-1 pe-2">
                   <span className="block truncate text-sm font-bold text-forest" dir="ltr">{m.name}</span>
-                  <span className="block truncate text-[11px] text-soil/80" dir="ltr">{m.spec} · {fmtLocal(m.min)} to {fmtLocal(m.max)}/hr</span>
+                  <span className="block truncate text-[11px] text-soil/80" dir="ltr">{m.spec}</span>
                 </span>
               </button>
             ))}
@@ -15534,6 +15600,7 @@ function App() {
   });
   const [filters, setFilters] = useState({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" });
   const [bookingTarget, setBookingTarget] = useState(null);
+  const [bookingOffer, setBookingOffer] = useState(false); // opened from "Make Own Offer"
   const [toasts, setToasts] = useState([]);
   const [helperOpen, setHelperOpen] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
@@ -16083,7 +16150,7 @@ function App() {
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} onLand={() => setTab("land")} />
             <TrustStrip t={t} />
             <ServicesHub t={t} setTab={setTab} />
-            <Marketplace toast={toast} fuel={fuel} t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l) => requireAuth(() => setBookingTarget(l))} filters={filters} setFilters={setFilters}
+            <Marketplace toast={toast} fuel={fuel} t={t} dn={dn} lang={lang} country={country} setCountry={setCountry} userLoc={userLoc} setUserLoc={setUserLoc} onLive={(cat) => { setLiveCat(typeof cat === "string" ? cat : null); setTab("live-request"); }} listings={publicListings} activeProvinces={settings.activeProvinces} onBook={(l, offer) => requireAuth(() => { setBookingOffer(!!offer); setBookingTarget(l); })} filters={filters} setFilters={setFilters}
               demoMode={demoMode} fallbackProps={{ t, dn, lang, session, requireAuth, saveDemand, toast, dieselPrice, onSendLead: sendLead }} />
             <KeypadBanner t={t} setTab={setTab} />
             <div className="h-20 lg:h-4" aria-hidden="true" />
@@ -16103,7 +16170,7 @@ function App() {
       </main>
       <Footer t={t} setTab={setTab} />
       {bookingTarget && (
-        <BookingModal promoFor={machinePromoFor} ecoActive={ecoActive} listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
+        <BookingModal startOffer={bookingOffer} promoFor={machinePromoFor} ecoActive={ecoActive} listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
           onSubmit={(details) => { const id = createBooking(bookingTarget, details); setBookingTarget(null); setTab("bookings"); setTimeout(() => setVoucherId(id), 300); }} />
       )}
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
