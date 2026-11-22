@@ -220,7 +220,7 @@ service cloud.firestore {
     function cropAt(cropId) { return get(/databases/$(database)/documents/mandi_crops/$(cropId)).data; }
     function offerOk() {
       let d = request.resource.data;
-      return d.keys().hasOnly(['cropId', 'crop', 'sellerUid', 'buyerUid', 'buyerName', 'buyerOrg', 'buyerType', 'buyerPhone', 'rate', 'qty', 'note', 'status', 'uids', 'createdAt', 'updatedAt'])
+      return d.keys().hasOnly(['cropId', 'crop', 'cropName', 'sellerUid', 'buyerUid', 'buyerName', 'buyerOrg', 'buyerType', 'buyerPhone', 'rate', 'qty', 'note', 'status', 'uids', 'createdAt', 'updatedAt'])
         && d.cropId is string && d.sellerUid is string && d.buyerUid is string
         && d.rate is number && d.rate > 0 && d.qty is number && d.qty > 0
         && d.buyerPhone is string && d.buyerPhone.size() <= 20
@@ -349,6 +349,31 @@ service cloud.firestore {
       allow read: if (signedIn() && request.auth.uid == uid) || isFounder();
       allow create, update: if ((signedIn() && request.auth.uid == uid) || isFounder()) && smallDoc();
       allow delete: if false;
+    }
+    // Prepaid Agri-Wallet, one per member. Only the founder adds money (after checking a top-up receipt).
+    // The member's own app may only take money out (commission on a confirmed deal), never below zero.
+    match /agri_wallets/{uid} {
+      allow read: if isFounder() || (signedIn() && request.auth.uid == uid);
+      allow create: if isFounder();
+      allow update: if isFounder() || (signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uid', 'balance', 'txns', 'updatedAt'])
+        && request.resource.data.uid == uid
+        && request.resource.data.balance is number && request.resource.data.balance >= 0
+        && request.resource.data.balance < resource.data.balance
+        && request.resource.data.txns is list && request.resource.data.txns.size() <= 50);
+      allow delete: if isFounder();
+    }
+    // Agri-Wallet top-up requests: the member sends amount + transaction ID + receipt photo; the founder credits or rejects.
+    match /wallet_topups/{id} {
+      allow read: if isFounder() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid', 'name', 'email', 'phone', 'amount', 'txnId', 'receipt', 'status', 'createdAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && request.resource.data.amount is int && request.resource.data.amount >= 100 && request.resource.data.amount <= 1000000
+        && request.resource.data.get('txnId', '') is string && request.resource.data.get('txnId', '').size() <= 60
+        && request.resource.data.get('receipt', '') is string && request.resource.data.get('receipt', '').size() <= 170000;
+      allow update, delete: if isFounder();
     }
   }
 }

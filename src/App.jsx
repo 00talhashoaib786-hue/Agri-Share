@@ -14,7 +14,7 @@ import imgTransplanter from "./assets/machines/transplanter.jpg";
 import imgDrone from "./assets/machines/drone.jpg";
 import imgImplement from "./assets/machines/implement.jpg";
 import {
-  FIREBASE_ENABLED, FIRESTORE_DATABASE_ID, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc,
+  FIREBASE_ENABLED, FIRESTORE_DATABASE_ID, COL, watchCollection, watchDoc, writeDoc, removeDoc, readDoc, walletApply,
   watchAuth, fbSignUp, fbSignIn, fbResetPassword, fbSignOut, fbStartPhone, fbConfirmPhone, fbSendVerification, fbRefreshUser, preloadFirebase, fbWipeLocalCache,
 } from "./firebase.js";
 
@@ -33,7 +33,7 @@ import {
   Plus, Trash2, Star, Info, ShieldCheck, Wallet, Calculator, Users, Sprout, Smartphone,
   Delete, PhoneCall, PhoneOff, CircleCheck, Hourglass, Ban, BadgeCheck, SlidersHorizontal,
   RotateCcw, Fan, Minus, GraduationCap, HandCoins, Signal, Battery, Eye, EyeOff, Handshake,
-  Coins, ArrowRight, Megaphone, LogIn, LogOut, UserPlus, KeyRound, Mail, Lock, UserCircle2, Copy, MessageSquareText, Tag, Repeat, Database, Radar, Gauge, Siren, TriangleAlert, Route, Zap, LocateFixed, Crosshair, Mic, MicOff, Volume2, VolumeX, AudioLines, PlayCircle, Drone, Ruler, Shovel, Globe, Droplets, Camera, Activity, Headphones, Percent, Printer, Download, Ticket, Inbox, Menu,
+  Coins, ArrowRight, Megaphone, LogIn, LogOut, UserPlus, KeyRound, Mail, Lock, UserCircle2, Copy, MessageSquareText, Tag, Gift, Carrot, Apple, Banknote, Repeat, Database, Radar, Gauge, Siren, TriangleAlert, Route, Zap, LocateFixed, Crosshair, Mic, MicOff, Volume2, VolumeX, AudioLines, PlayCircle, Drone, Ruler, Shovel, Globe, Droplets, Camera, Activity, Headphones, Percent, Printer, Download, Ticket, Inbox, Menu,
   Video, Play, Upload, Landmark, Receipt, ExternalLink, Pencil, ShoppingBag, Pointer, Compass,
   Archive as ArchiveIcon, History as HistoryIcon,
 } from "lucide-react";
@@ -46,11 +46,34 @@ const TRANSPORT_PER_KM = 100; // PKR per km, distance based (illustrative)
 const TRANSPORT_MIN = 500; // minimum transport charge
 const MIN_OFFER_RATIO = 0.6; // an offer must be at least 60% of the listed rate
 const transportFee = (km) => Math.max(trMin(), Math.round(((Number(km) || 0) * trKm()) / 50) * 50);
-const COMMISSION = 0.06; // standard platform commission (5% to 7% range)
-const SMALLHOLDER_COMMISSION = 0.04; // subsidised rate for smallholders farming under 5 acres
+const COMMISSION = 0.025; // machinery platform commission: the lowest rung of the 2.5% / 3.5% / 4.5% ladder
+const SMALLHOLDER_COMMISSION = 0.02; // subsidised machinery rate for smallholders under 5 acres (same as the 360° floor)
 const ADVANCE_SHARE = 0.3; // Harvest Now, Pay Later: 30% advance, 70% after harvest (credit by a third-party partner)
 const CREDIT_PARTNERS = ["JazzCash Credit", "EasyPaisa", "ZTBL"]; // proposed partners only, no agreement exists
-const pctLabel = (r) => Math.round(r * 100) + "%";
+const pctLabel = (r) => Math.round(r * 1000) / 10 + "%"; // 0.025 -> "2.5%"
+/* Launch promo: each owner's first deals per category carry 0% platform commission.
+   Deals closed before PROMO_START count as already used (no retroactive refunds). */
+const PROMO_START = Date.UTC(2026, 10, 22);
+const PROMO_FREE = { machinery: 5, crop: 3, land: 1 };
+const CROP_COMMISSION = 0.035; // Agri-Market crop and vegetable sales, after the free deals
+const promoSlot = (kind, used) => (used < PROMO_FREE[kind] ? { kind, n: used + 1, of: PROMO_FREE[kind] } : null);
+// zero the commission on a quote; the owner receives 100% of the total
+const withPromo = (q, slot) => {
+  if (!q || !slot) return q;
+  const c = Number(q.commission) || 0;
+  const r = { ...q, commission: 0, commissionRate: 0, stdCommissionRate: q.commissionRate, promo: slot };
+  ["total", "platformTotal", "grand"].forEach((k) => { if (typeof q[k] === "number") r[k] = q[k] - c; });
+  return r;
+};
+const promoText = (t, slot) => t("promo_free_n").replace("{n}", slot.n).replace("{of}", slot.of);
+// "Agri-Share Platform Commission (0% · Launch Promo: Free Deal 2 of 5)" or the normal "Platform commission (2.5%)"
+const commLabel = (t, q, fallbackRate = COMMISSION) => (q && q.promo ? t("promo_comm_line").replace("{x}", promoText(t, q.promo))
+  : t("bk_comm").replace("{p}", pctLabel((q && (q.commissionRate || (q.subtotal ? q.commission / q.subtotal : 0))) || fallbackRate)));
+// machinery: confirmed / completed bookings, plus requests already holding a free slot
+const machineryPromoUsed = (bookings, ownerUid) => (ownerUid ? bookings.filter((b) => b.ownerUid === ownerUid
+  && (["confirmed", "completed", "feedback"].includes(b.status) || (b.quote && b.quote.promo && ["sent", "countered"].includes(b.status)))).length : PROMO_FREE.machinery);
+const cropPromoUsed = (posts, sellerUid) => (sellerUid ? posts.filter((p) => p.sellerUid === sellerUid && p.status === "sold").length : PROMO_FREE.crop);
+const landPromoUsed = (landBookings, ownerUid) => (ownerUid ? landBookings.filter((b) => b.ownerUid === ownerUid && b.status === "accepted" && (b.promo || b.promoChecked || (b.acceptedAt || b.createdAt || 0) < PROMO_START)).length : PROMO_FREE.land);
 const DEFAULT_RADIUS = 15; // proposed in-app search boundary
 const MAX_RADIUS = 40; // marketplace slider maximum
 const MATCH_RADIUS_KM = 40; // max automatic matching radius (machinery + land); 0 owners inside it -> consultant escalation
@@ -366,6 +389,78 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    crop_sugarcane: "Sugarcane",
+    crop_potato: "Potato",
+    crop_onion: "Onion",
+    crop_tomato: "Tomato",
+    crop_mango: "Mango",
+    crop_kinnow: "Kinnow / Citrus",
+    crop_mustard: "Mustard / Canola",
+    crop_chickpea: "Chickpea / Gram",
+    crop_chilli: "Green / Red Chilli",
+    crop_garlic: "Garlic & Ginger",
+    crop_other: "Other crop / vegetable",
+    am_more_card: "All Crops & Vegetables",
+    am_more_card_s: "Sugarcane, potato, onion, mango, chilli and more, or your own crop name",
+    am_more_select: "More crops & vegetables",
+    am_more_pick: "Choose another crop or vegetable",
+    am_custom_name: "Crop / vegetable name",
+    am_custom_ph: "For example: Peas, Okra, Guava",
+    am_err_custom: "Write the crop or vegetable name.",
+    aw_balance: "Agri-Wallet Balance",
+    aw_sub: "Prepaid balance for platform commission. After your free launch deals, the commission (machinery 2.5%, crops 3.5%, land 4.5%) is taken from here when you confirm or accept a deal.",
+    aw_topup: "Top Up Agri-Wallet",
+    aw_ledger: "Agri-Wallet transactions",
+    aw_none: "No transactions yet.",
+    aw_low: "Low Agri-Wallet Balance. Top up to accept orders",
+    aw_low_need: "This deal needs {need} commission, your balance is {bal}.",
+    aw_paid: "Commission paid from Agri-Wallet",
+    aw_from_wallet: "(from Agri-Wallet)",
+    aw_st_pending: "Under review",
+    aw_st_credited: "Credited",
+    aw_st_rejected: "Rejected",
+    aw_tx_topup_req: "Top-up request",
+    aw_tx_topup: "Top-up credited",
+    aw_tx_booking: "Machinery commission",
+    aw_tx_land: "Land lease commission",
+    aw_tx_crop: "Crop sale commission",
+    aw_tx_other: "Wallet change",
+    aw_tu_title: "Top Up Agri-Wallet",
+    aw_tu_step1: "1. Send money to the Agri-Share Official Collection Account",
+    aw_tu_amount: "2. Amount you sent (PKR)",
+    aw_tu_custom: "Other amount (PKR 100 to 1,000,000)",
+    aw_tu_txn: "Transaction ID",
+    aw_tu_receipt: "3. Receipt photo",
+    aw_tu_add_photo: "Add receipt photo",
+    aw_tu_remove: "Remove",
+    aw_tu_submit: "Submit top-up",
+    aw_tu_note: "Our team checks the receipt against the collection account and credits your wallet, usually the same day. Help: 0322-4729249 or 0370-0318574.",
+    aw_tu_sent: "Top-up sent. Your wallet is credited after our team checks the receipt.",
+    aw_tu_err_amount: "Enter an amount between PKR 100 and PKR 1,000,000.",
+    aw_tu_err_receipt: "Add the receipt photo or the transaction ID.",
+    aw_tu_err: "Could not send the top-up. Check your internet and try again.",
+    aw_tu_err_photo: "This photo could not be read. Try another one.",
+    adw_tab: "Wallet Top-Ups",
+    adw_title: "Agri-Wallet Top-Ups",
+    adw_sub: "Check each receipt against the official collection account, then credit the member's Agri-Wallet with one click.",
+    adw_none: "No top-up requests yet.",
+    adw_approve: "Verify & Credit",
+    adw_reject: "Reject",
+    adw_done: "{amt} credited to {name}'s Agri-Wallet.",
+    adw_err: "Could not update the wallet. Please try again.",
+    adw_rejected: "Top-up rejected.",
+    adw_txn: "Txn ID",
+    adw_founder_only: "Only the founder can credit wallets.",
+    promo_free_n: "Launch Promo: Free Deal {n} of {of}",
+    promo_comm_line: "Agri-Share Platform Commission (0% · {x})",
+    promo_net_s: "Launch Promo: 100% of the total goes directly to the owner / seller",
+    promo_title: "Launch Offer: Free Commission Remaining",
+    promo_cat_machinery: "Machinery",
+    promo_cat_crop: "Crop Market",
+    promo_cat_land: "Zameen Thaika",
+    promo_free_word: "free",
+    promo_note: "0% platform commission on your first 5 machinery bookings, 3 crop sales and 1 land lease. After that the standard rate applies: machinery 2.5% (2% smallholder), crops 3.5%, land 4.5%.",
+    promo_used_up: "All free launch deals are used. Standard commission now applies: machinery 2.5% (2% smallholder), crops 3.5%, land 4.5%.",
     tour_btn_s: "Guide",
     am_own_offer_pill: "Farmer's asking rate. Make your own offer · Apni boli lagayein",
     reset_done: "Filters & location reset",
@@ -562,8 +657,8 @@ const T = {
     hero_bookings: "bookings made on this device",
     tr1_t: "Verified / Unverified badges",
     tr1_s: "Listings go live immediately with clear Verified / Unverified badges and direct consultant support",
-    tr2_t: "4% to 6% fair commission",
-    tr2_s: "Only 4% for smallholders under 5 acres",
+    tr2_t: "2.5% to 4.5% fair commission",
+    tr2_s: "Only 2% for smallholders under 5 acres",
     tr3_t: "30/70 harvest credit",
     tr3_s: "Pay 30% now, 70% after harvest (proposed partners)",
     tr4_t: "Real consultant support",
@@ -963,7 +1058,7 @@ const T = {
     ow_no_req: "No pending requests right now.", ow_pending: "Pending", ow_history: "Responded", ow_available: "Available", ow_hidden: "Hidden", ow_remove: "Remove",
     es_machine: "Machine", es_hours: "Idle hours available per day", es_days: "Rental days per season", es_util: "Expected booking rate",
     es_result: "Estimated seasonal rental income", es_month: "per season", es_confirmed: "From confirmed bookings so far",
-    es_note: "The 6% commission (4% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
+    es_note: "The 2.5% commission (2% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
     ag_title: "Agri-Agent & USSD Offline Booking", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
     ag1_t: "Who is an Agri-Agent?", ag1_d: "An existing village grocery or mobile-load shop, trained as a local booking point.",
     ag2_t: "What do they do?", ag2_d: "Explain the service, register farmers, show available machines and submit booking requests.",
@@ -1123,7 +1218,7 @@ const T = {
     lr_diesel_admin: "National diesel benchmark: {v}/L",
     lr_recent: "Your recent requests",
     bk_smallholder: "Smallholder farmer (under 5 acres)",
-    bk_smallholder_sub: "Subsidised 4% commission instead of the standard 6%.",
+    bk_smallholder_sub: "Subsidised 2% commission instead of the standard 2.5%.",
     pay_paylater: "Harvest Now, Pay Later (30% now + 70% after harvest)",
     pl_now: "Pay now (30%)",
     pl_later: "After harvest (70%)",
@@ -1364,7 +1459,7 @@ const T = {
     cm_sub: "A flat one-time facilitation fee of 4.5% on the total lease value, whatever the lease length.",
     cm_total: "Total commission",
     eco_title: "Agri-Share 360° Ecosystem Benefit",
-    eco_sub: "Lease land on Agri-Share and also rent machinery or sell your harvest here: you get a 0.50% commission rebate on your next machinery booking (commission never goes below 3.50%).",
+    eco_sub: "Lease land on Agri-Share and also rent machinery or sell your harvest here: you get a 0.50% commission rebate on your next machinery booking (commission never goes below 2.0%).",
     eco_active: "360° benefit active: 0.50% off machinery commission",
     ag_stamp: "Attach E-Stamp Paper here",
     ag_date: "Date",
@@ -1488,6 +1583,78 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    crop_sugarcane: "گنا",
+    crop_potato: "آلو",
+    crop_onion: "پیاز",
+    crop_tomato: "ٹماٹر",
+    crop_mango: "آم",
+    crop_kinnow: "کینو / ترشاوہ پھل",
+    crop_mustard: "سرسوں / کینولا",
+    crop_chickpea: "چنا",
+    crop_chilli: "ہری / لال مرچ",
+    crop_garlic: "لہسن اور ادرک",
+    crop_other: "دوسری فصل / سبزی",
+    am_more_card: "تمام فصلیں اور سبزیاں",
+    am_more_card_s: "گنا، آلو، پیاز، آم، مرچ اور بہت کچھ، یا اپنی فصل کا نام",
+    am_more_select: "مزید فصلیں اور سبزیاں",
+    am_more_pick: "کوئی اور فصل یا سبزی چنیں",
+    am_custom_name: "فصل / سبزی کا نام",
+    am_custom_ph: "مثال: مٹر، بھنڈی، امرود",
+    am_err_custom: "فصل یا سبزی کا نام لکھیں۔",
+    aw_balance: "ایگری والٹ بیلنس",
+    aw_sub: "پلیٹ فارم کمیشن کے لیے پیشگی بیلنس۔ مفت لانچ ڈیلز کے بعد کمیشن (مشینری 2.5%، فصل 3.5%، زمین 4.5%) ڈیل کی تصدیق یا منظوری پر یہیں سے کٹتا ہے۔",
+    aw_topup: "ایگری والٹ ٹاپ اپ کریں",
+    aw_ledger: "ایگری والٹ لین دین",
+    aw_none: "ابھی کوئی لین دین نہیں۔",
+    aw_low: "ایگری والٹ بیلنس کم ہے۔ آرڈر قبول کرنے کے لیے ٹاپ اپ کریں",
+    aw_low_need: "اس ڈیل کے لیے {need} کمیشن چاہیے، آپ کا بیلنس {bal} ہے۔",
+    aw_paid: "کمیشن ایگری والٹ سے ادا ہو گیا",
+    aw_from_wallet: "(ایگری والٹ سے)",
+    aw_st_pending: "جانچ جاری ہے",
+    aw_st_credited: "رقم ڈال دی گئی",
+    aw_st_rejected: "مسترد",
+    aw_tx_topup_req: "ٹاپ اپ کی درخواست",
+    aw_tx_topup: "ٹاپ اپ موصول",
+    aw_tx_booking: "مشینری کمیشن",
+    aw_tx_land: "زمین ٹھیکہ کمیشن",
+    aw_tx_crop: "فصل فروخت کمیشن",
+    aw_tx_other: "والٹ میں تبدیلی",
+    aw_tu_title: "ایگری والٹ ٹاپ اپ",
+    aw_tu_step1: "1. ایگری شیئر کے سرکاری وصولی اکاؤنٹ میں رقم بھیجیں",
+    aw_tu_amount: "2. بھیجی گئی رقم (روپے)",
+    aw_tu_custom: "کوئی اور رقم (100 سے 10,00,000 روپے)",
+    aw_tu_txn: "ٹرانزیکشن آئی ڈی",
+    aw_tu_receipt: "3. رسید کی تصویر",
+    aw_tu_add_photo: "رسید کی تصویر لگائیں",
+    aw_tu_remove: "ہٹائیں",
+    aw_tu_submit: "ٹاپ اپ بھیجیں",
+    aw_tu_note: "ہماری ٹیم رسید کو وصولی اکاؤنٹ سے ملا کر عموماً اسی دن آپ کے والٹ میں رقم ڈال دیتی ہے۔ مدد: 0322-4729249 یا 0370-0318574۔",
+    aw_tu_sent: "ٹاپ اپ بھیج دیا گیا۔ رسید کی جانچ کے بعد رقم آپ کے والٹ میں آ جائے گی۔",
+    aw_tu_err_amount: "100 سے 10,00,000 روپے کے درمیان رقم لکھیں۔",
+    aw_tu_err_receipt: "رسید کی تصویر یا ٹرانزیکشن آئی ڈی لگائیں۔",
+    aw_tu_err: "ٹاپ اپ نہیں بھیجا جا سکا۔ انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔",
+    aw_tu_err_photo: "یہ تصویر نہیں کھل سکی۔ کوئی اور تصویر لگائیں۔",
+    adw_tab: "والٹ ٹاپ اپ",
+    adw_title: "ایگری والٹ ٹاپ اپ",
+    adw_sub: "ہر رسید کو سرکاری وصولی اکاؤنٹ سے ملائیں، پھر ایک کلک میں ممبر کے ایگری والٹ میں رقم ڈالیں۔",
+    adw_none: "ابھی کوئی ٹاپ اپ درخواست نہیں۔",
+    adw_approve: "تصدیق کریں اور رقم ڈالیں",
+    adw_reject: "مسترد کریں",
+    adw_done: "{amt} {name} کے ایگری والٹ میں ڈال دیے گئے۔",
+    adw_err: "والٹ اپ ڈیٹ نہیں ہو سکا۔ دوبارہ کوشش کریں۔",
+    adw_rejected: "ٹاپ اپ مسترد کر دیا گیا۔",
+    adw_txn: "ٹرانزیکشن آئی ڈی",
+    adw_founder_only: "صرف بانی والٹ میں رقم ڈال سکتا ہے۔",
+    promo_free_n: "لانچ آفر: مفت ڈیل {n} از {of}",
+    promo_comm_line: "ایگری شیئر پلیٹ فارم کمیشن (0% · {x})",
+    promo_net_s: "لانچ آفر: پوری رقم کا 100% براہ راست مالک / فروخت کنندہ کو",
+    promo_title: "لانچ آفر: باقی مفت کمیشن ڈیلز",
+    promo_cat_machinery: "مشینری",
+    promo_cat_crop: "فصل منڈی",
+    promo_cat_land: "زمین ٹھیکہ",
+    promo_free_word: "مفت",
+    promo_note: "پہلی 5 مشینری بکنگز، 3 فصل فروخت اور 1 زمین ٹھیکے پر 0% پلیٹ فارم کمیشن۔ اس کے بعد عام ریٹ: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
+    promo_used_up: "تمام مفت لانچ ڈیلز استعمال ہو چکیں۔ اب عام کمیشن: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
     tour_btn_s: "رہنمائی",
     am_own_offer_pill: "یہ کسان کا مانگا ہوا ریٹ ہے۔ اپنی بولی لگائیں، جو مناسب لگے پیشکش کریں",
     reset_done: "فلٹر اور مقام ری سیٹ ہو گئے",
@@ -1684,8 +1851,8 @@ const T = {
     hero_bookings: "اس ڈیوائس پر بکنگز",
     tr1_t: "تصدیق شدہ / غیر تصدیق شدہ نشان",
     tr1_s: "فہرستیں فوراً لائیو ہوتی ہیں، واضح تصدیق شدہ / غیر تصدیق شدہ نشان اور کنسلٹنٹ کی براہ راست مدد کے ساتھ",
-    tr2_t: "4% سے 6% منصفانہ کمیشن",
-    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 4%",
+    tr2_t: "2.5% سے 4.5% منصفانہ کمیشن",
+    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 2%",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "حقیقی کنسلٹنٹ مدد",
@@ -1958,7 +2125,7 @@ const T = {
     ow_no_req: "ابھی کوئی زیر التوا درخواست نہیں۔", ow_pending: "زیر التوا", ow_history: "جواب دیا گیا", ow_available: "دستیاب", ow_hidden: "پوشیدہ", ow_remove: "ہٹائیں",
     es_machine: "مشین", es_hours: "روزانہ فارغ گھنٹے", es_days: "سیزن میں کرائے کے دن", es_util: "متوقع بکنگ کی شرح",
     es_result: "سیزن کی تخمینی کرایہ آمدنی", es_month: "فی سیزن", es_confirmed: "اب تک کی تصدیق شدہ بکنگز سے",
-    es_note: "6٪ کمیشن (چھوٹے کسانوں کے لیے 4٪) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
+    es_note: "2.5٪ کمیشن (چھوٹے کسانوں کے لیے 2٪) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
     ag_title: "ایگری ایجنٹ اور USSD آف لائن بکنگ", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
     ag1_t: "ایگری ایجنٹ کون ہے؟", ag1_d: "گاؤں کی کریانہ یا موبائل لوڈ کی دکان، جسے بکنگ پوائنٹ کے طور پر تربیت دی جاتی ہے۔",
     ag2_t: "وہ کیا کرتے ہیں؟", ag2_d: "سروس سمجھاتے ہیں، کسانوں کو رجسٹر کرتے ہیں، مشینیں دکھاتے ہیں اور بکنگ بھیجتے ہیں۔",
@@ -2111,7 +2278,7 @@ const T = {
     lr_diesel_admin: "قومی ڈیزل ریٹ: {v} فی لیٹر",
     lr_recent: "آپ کی حالیہ درخواستیں",
     bk_smallholder: "چھوٹا کسان (5 ایکڑ سے کم)",
-    bk_smallholder_sub: "عام 6% کی بجائے رعایتی 4% کمیشن۔",
+    bk_smallholder_sub: "عام 2.5% کی بجائے رعایتی 2% کمیشن۔",
     pay_paylater: "ابھی کٹائی، بعد میں ادائیگی (30% ابھی + 70% کٹائی کے بعد)",
     pl_now: "ابھی ادائیگی (30%)",
     pl_later: "کٹائی کے بعد (70%)",
@@ -2486,7 +2653,7 @@ const T = {
     cm_sub: "کل ٹھیکہ رقم پر 4.5٪ کا ایک ہی مقررہ ریٹ، ایک بار، ٹھیکے کی مدت چاہے جتنی بھی ہو۔",
     cm_total: "کل کمیشن",
     eco_title: "ایگری شیئر 360° فائدہ",
-    eco_sub: "ایگری شیئر پر زمین ٹھیکے پر لیں اور یہاں مشینری کرائے پر لیں یا فصل بیچیں: اگلی مشینری بکنگ پر 0.50٪ کمیشن کی چھوٹ (کمیشن 3.50٪ سے کم نہیں ہوگا)۔",
+    eco_sub: "ایگری شیئر پر زمین ٹھیکے پر لیں اور یہاں مشینری کرائے پر لیں یا فصل بیچیں: اگلی مشینری بکنگ پر 0.50٪ کمیشن کی چھوٹ (کمیشن 2.0٪ سے کم نہیں ہوگا)۔",
     eco_active: "360° فائدہ فعال: مشینری کمیشن پر 0.50٪ چھوٹ",
     ag_stamp: "ای اسٹامپ پیپر یہاں لگائیں",
     ag_date: "تاریخ",
@@ -2610,6 +2777,78 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    crop_sugarcane: "کماد",
+    crop_potato: "آلو",
+    crop_onion: "گنڈا",
+    crop_tomato: "ٹماٹر",
+    crop_mango: "انب",
+    crop_kinnow: "کینو / کھٹے پھل",
+    crop_mustard: "سرہوں / کینولا",
+    crop_chickpea: "چھولے",
+    crop_chilli: "ہری / لال مرچ",
+    crop_garlic: "تھوم تے ادرک",
+    crop_other: "ہور فصل / سبزی",
+    am_more_card: "ساریاں فصلاں تے سبزیاں",
+    am_more_card_s: "کماد، آلو، گنڈا، انب، مرچ تے ہور بہت کجھ، یا اپنی فصل دا ناں",
+    am_more_select: "ہور فصلاں تے سبزیاں",
+    am_more_pick: "کوئی ہور فصل یا سبزی چنو",
+    am_custom_name: "فصل / سبزی دا ناں",
+    am_custom_ph: "مثال: مٹر، بھنڈی، امرود",
+    am_err_custom: "فصل یا سبزی دا ناں لکھو۔",
+    aw_balance: "ایگری والٹ بیلنس",
+    aw_sub: "پلیٹ فارم کمیشن لئی اگاؤں جمع بیلنس۔ مفت لانچ ڈیلاں مگروں کمیشن (مشینری 2.5%، فصل 3.5%، زمین 4.5%) ڈیل پکی کرن یا منن تے ایتھوں کٹدا اے۔",
+    aw_topup: "ایگری والٹ ٹاپ اپ کرو",
+    aw_ledger: "ایگری والٹ لین دین",
+    aw_none: "حالے کوئی لین دین نئیں۔",
+    aw_low: "ایگری والٹ بیلنس گھٹ اے۔ آرڈر منن لئی ٹاپ اپ کرو",
+    aw_low_need: "ایس ڈیل لئی {need} کمیشن چاہیدا اے، تہاڈا بیلنس {bal} اے۔",
+    aw_paid: "کمیشن ایگری والٹ وچوں ادا ہو گیا",
+    aw_from_wallet: "(ایگری والٹ وچوں)",
+    aw_st_pending: "جانچ جاری اے",
+    aw_st_credited: "رقم پا دتی گئی",
+    aw_st_rejected: "رد",
+    aw_tx_topup_req: "ٹاپ اپ دی درخواست",
+    aw_tx_topup: "ٹاپ اپ مل گیا",
+    aw_tx_booking: "مشینری کمیشن",
+    aw_tx_land: "زمین ٹھیکہ کمیشن",
+    aw_tx_crop: "فصل ویچ کمیشن",
+    aw_tx_other: "والٹ وچ تبدیلی",
+    aw_tu_title: "ایگری والٹ ٹاپ اپ",
+    aw_tu_step1: "1. ایگری شیئر دے سرکاری وصولی اکاؤنٹ وچ رقم گھلو",
+    aw_tu_amount: "2. گھلی ہوئی رقم (روپے)",
+    aw_tu_custom: "کوئی ہور رقم (100 توں 10,00,000 روپے)",
+    aw_tu_txn: "ٹرانزیکشن آئی ڈی",
+    aw_tu_receipt: "3. رسید دی تصویر",
+    aw_tu_add_photo: "رسید دی تصویر لاؤ",
+    aw_tu_remove: "ہٹاؤ",
+    aw_tu_submit: "ٹاپ اپ گھلو",
+    aw_tu_note: "ساڈی ٹیم رسید نوں وصولی اکاؤنٹ نال ملا کے عام طور تے اوسے دن والٹ وچ رقم پا دیندی اے۔ مدد: 0322-4729249 یا 0370-0318574۔",
+    aw_tu_sent: "ٹاپ اپ گھل دتا۔ رسید دی جانچ مگروں رقم تہاڈے والٹ وچ آ جاوے گی۔",
+    aw_tu_err_amount: "100 توں 10,00,000 روپے وچکار رقم لکھو۔",
+    aw_tu_err_receipt: "رسید دی تصویر یا ٹرانزیکشن آئی ڈی لاؤ۔",
+    aw_tu_err: "ٹاپ اپ نئیں گھلیا جا سکیا۔ انٹرنیٹ ویکھ کے فیر کوشش کرو۔",
+    aw_tu_err_photo: "ایہہ تصویر نئیں کھلی۔ کوئی ہور تصویر لاؤ۔",
+    adw_tab: "والٹ ٹاپ اپ",
+    adw_title: "ایگری والٹ ٹاپ اپ",
+    adw_sub: "ہر رسید نوں سرکاری وصولی اکاؤنٹ نال ملاؤ، فیر اک کلک وچ ممبر دے والٹ وچ رقم پاؤ۔",
+    adw_none: "حالے کوئی ٹاپ اپ درخواست نئیں۔",
+    adw_approve: "تصدیق کرو تے رقم پاؤ",
+    adw_reject: "رد کرو",
+    adw_done: "{amt} {name} دے ایگری والٹ وچ پا دتے گئے۔",
+    adw_err: "والٹ اپ ڈیٹ نئیں ہو سکیا۔ فیر کوشش کرو۔",
+    adw_rejected: "ٹاپ اپ رد کر دتا گیا۔",
+    adw_txn: "ٹرانزیکشن آئی ڈی",
+    adw_founder_only: "صرف بانی والٹ وچ رقم پا سکدا اے۔",
+    promo_free_n: "لانچ آفر: مفت ڈیل {n} وچوں {of}",
+    promo_comm_line: "ایگری شیئر پلیٹ فارم کمیشن (0% · {x})",
+    promo_net_s: "لانچ آفر: پوری رقم دا 100% سدھا مالک / ویچن والے نوں",
+    promo_title: "لانچ آفر: باقی مفت کمیشن ڈیلاں",
+    promo_cat_machinery: "مشینری",
+    promo_cat_crop: "فصل منڈی",
+    promo_cat_land: "زمین ٹھیکہ",
+    promo_free_word: "مفت",
+    promo_note: "پہلیاں 5 مشینری بکنگاں، 3 فصل ویچاں تے 1 زمین ٹھیکے تے 0% پلیٹ فارم کمیشن۔ ایہدے مگروں عام ریٹ: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
+    promo_used_up: "ساریاں مفت لانچ ڈیلاں ورت لئیاں۔ ہُن عام کمیشن: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
     al_view: "ویکھو",
     tour_btn_s: "رہنمائی",
     am_own_offer_pill: "ایہہ کسان دا منگیا ریٹ اے۔ اپنی بولی لاؤ، جیہڑی مناسب لگے پیشکش کرو",
@@ -2807,8 +3046,8 @@ const T = {
     hero_bookings: "اس ڈیوائس پر بکنگز",
     tr1_t: "تصدیق شدہ / غیر تصدیق شدہ نشان",
     tr1_s: "لسٹاں فوراً لائیو ہوندیاں نیں، صاف تصدیق شدہ / غیر تصدیق شدہ نشان تے کنسلٹنٹ دی سدھی مدد نال",
-    tr2_t: "4% سے 6% منصفانہ کمیشن",
-    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 4%",
+    tr2_t: "2.5% سے 4.5% منصفانہ کمیشن",
+    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 2%",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "اصل کنسلٹنٹ مدد",
@@ -3081,7 +3320,7 @@ const T = {
     ow_no_req: "ہن کوئی رکی ہوئی درخواست نئیں۔", ow_pending: "رکی ہوئی", ow_history: "جواب دتا گیا", ow_available: "دستیاب", ow_hidden: "لکی ہوئی", ow_remove: "ہٹاؤ",
     es_machine: "مشین", es_hours: "روزانہ ویہلے گھنٹے", es_days: "سیزن وچ کرائے دے دن", es_util: "اندازاً بکنگ دی شرح",
     es_result: "سیزن دی اندازاً کرایہ کمائی", es_month: "فی سیزن", es_confirmed: "ہن تک پکیاں بکنگاں توں",
-    es_note: "6٪ کمیشن (نکے کساناں لئی 4٪) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
+    es_note: "2.5٪ کمیشن (نکے کساناں لئی 2٪) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
     ag_title: "ایگری ایجنٹ تے USSD آف لائن بکنگ", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
     ag1_t: "ایگری ایجنٹ کون اے؟", ag1_d: "پنڈ دی کریانے یا موبائل لوڈ دی ہٹی، جنہوں بکنگ پوائنٹ وجوں سکھایا جاندا اے۔",
     ag2_t: "اوہ کی کردے نیں؟", ag2_d: "سروس سمجھاندے، کساناں نوں رجسٹر کردے، مشیناں وکھاندے تے بکنگ گھلدے نیں۔",
@@ -3234,7 +3473,7 @@ const T = {
     lr_diesel_admin: "قومی ڈیزل ریٹ: {v} فی لیٹر",
     lr_recent: "تہاڈیاں تازہ درخواستاں",
     bk_smallholder: "نکا کسان (5 ایکڑ توں گھٹ)",
-    bk_smallholder_sub: "عام 6% دی تھاں رعایتی 4% کمیشن۔",
+    bk_smallholder_sub: "عام 2.5% دی تھاں رعایتی 2% کمیشن۔",
     pay_paylater: "ہن وڈھی، بعد وچ ادائیگی (30% ہن + 70% وڈھی توں بعد)",
     pl_now: "ہن ادائیگی (30%)",
     pl_later: "وڈھی توں بعد (70%)",
@@ -3509,7 +3748,7 @@ const T = {
     cm_sub: "کُل ٹھیکہ رقم تے 4.5٪ دا اکو مقرر ریٹ، اک واری، ٹھیکے دی مدت بھاویں جنی وی ہووے۔",
     cm_total: "کُل کمیشن",
     eco_title: "ایگری شیئر 360° فائدہ",
-    eco_sub: "ایگری شیئر تے زمین ٹھیکے تے لؤ تے ایتھے مشینری کرائے تے لؤ یا فصل ویچو: اگلی مشینری بکنگ تے 0.50٪ کمیشن دی چھوٹ (کمیشن 3.50٪ توں گھٹ نئیں ہووے گا)۔",
+    eco_sub: "ایگری شیئر تے زمین ٹھیکے تے لؤ تے ایتھے مشینری کرائے تے لؤ یا فصل ویچو: اگلی مشینری بکنگ تے 0.50٪ کمیشن دی چھوٹ (کمیشن 2.0٪ توں گھٹ نئیں ہووے گا)۔",
     eco_active: "360° فائدہ چالو: مشینری کمیشن تے 0.50٪ چھوٹ",
     ag_stamp: "ای اسٹامپ پیپر ایتھے لاؤ",
     ag_date: "تاریخ",
@@ -3633,6 +3872,78 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    crop_sugarcane: "ڪمند",
+    crop_potato: "پٽاٽا",
+    crop_onion: "بصر",
+    crop_tomato: "ٽماٽا",
+    crop_mango: "انب",
+    crop_kinnow: "ڪينو / کٽا ميوا",
+    crop_mustard: "سرنهن / ڪينولا",
+    crop_chickpea: "چڻا",
+    crop_chilli: "سائي / ڳاڙهي مرچ",
+    crop_garlic: "ٿوم ۽ ادرڪ",
+    crop_other: "ٻيو فصل / ڀاڄي",
+    am_more_card: "سڀ فصل ۽ ڀاڄيون",
+    am_more_card_s: "ڪمند، پٽاٽا، بصر، انب، مرچ ۽ گهڻو ڪجهه، يا پنهنجي فصل جو نالو",
+    am_more_select: "وڌيڪ فصل ۽ ڀاڄيون",
+    am_more_pick: "ٻيو فصل يا ڀاڄي چونڊيو",
+    am_custom_name: "فصل / ڀاڄي جو نالو",
+    am_custom_ph: "مثال: مٽر، ڀينڊي، زيتون",
+    am_err_custom: "فصل يا ڀاڄي جو نالو لکو.",
+    aw_balance: "ايگري والٽ بيلنس",
+    aw_sub: "پليٽ فارم ڪميشن لاءِ اڳواٽ جمع بيلنس. مفت لانچ ڊيلن کان پوءِ ڪميشن (مشينري 2.5%، فصل 3.5%، زمين 4.5%) ڊيل پڪي يا قبول ڪرڻ تي هتان ڪٽجي ٿي.",
+    aw_topup: "ايگري والٽ ٽاپ اپ ڪريو",
+    aw_ledger: "ايگري والٽ ليڻ ڏيڻ",
+    aw_none: "اڃا ڪا به ليڻ ڏيڻ ناهي.",
+    aw_low: "ايگري والٽ بيلنس گهٽ آهي. آرڊر قبول ڪرڻ لاءِ ٽاپ اپ ڪريو",
+    aw_low_need: "هن ڊيل لاءِ {need} ڪميشن گهرجي، توهان جو بيلنس {bal} آهي.",
+    aw_paid: "ڪميشن ايگري والٽ مان ادا ٿي وئي",
+    aw_from_wallet: "(ايگري والٽ مان)",
+    aw_st_pending: "جانچ جاري",
+    aw_st_credited: "رقم وڌي وئي",
+    aw_st_rejected: "رد",
+    aw_tx_topup_req: "ٽاپ اپ جي درخواست",
+    aw_tx_topup: "ٽاپ اپ ملي ويو",
+    aw_tx_booking: "مشينري ڪميشن",
+    aw_tx_land: "زمين ٺيڪي ڪميشن",
+    aw_tx_crop: "فصل وڪري ڪميشن",
+    aw_tx_other: "والٽ ۾ تبديلي",
+    aw_tu_title: "ايگري والٽ ٽاپ اپ",
+    aw_tu_step1: "1. ايگري شيئر جي سرڪاري وصولي اڪائونٽ ۾ رقم موڪليو",
+    aw_tu_amount: "2. موڪليل رقم (رپيا)",
+    aw_tu_custom: "ٻي رقم (100 کان 10,00,000 رپيا)",
+    aw_tu_txn: "ٽرانزيڪشن آءِ ڊي",
+    aw_tu_receipt: "3. رسيد جي تصوير",
+    aw_tu_add_photo: "رسيد جي تصوير لڳايو",
+    aw_tu_remove: "هٽايو",
+    aw_tu_submit: "ٽاپ اپ موڪليو",
+    aw_tu_note: "اسان جي ٽيم رسيد کي وصولي اڪائونٽ سان ملائي عام طور ساڳئي ڏينهن والٽ ۾ رقم وجهي ٿي. مدد: 0322-4729249 يا 0370-0318574.",
+    aw_tu_sent: "ٽاپ اپ موڪليو ويو. رسيد جي جانچ کان پوءِ رقم توهان جي والٽ ۾ ايندي.",
+    aw_tu_err_amount: "100 کان 10,00,000 رپين وچ ۾ رقم لکو.",
+    aw_tu_err_receipt: "رسيد جي تصوير يا ٽرانزيڪشن آءِ ڊي لڳايو.",
+    aw_tu_err: "ٽاپ اپ موڪلي نه سگهياسين. انٽرنيٽ ڏسي ٻيهر ڪوشش ڪريو.",
+    aw_tu_err_photo: "هي تصوير کلي نه سگهي. ٻي تصوير لڳايو.",
+    adw_tab: "والٽ ٽاپ اپ",
+    adw_title: "ايگري والٽ ٽاپ اپ",
+    adw_sub: "هر رسيد کي سرڪاري وصولي اڪائونٽ سان ملايو، پوءِ هڪ ڪلڪ ۾ ميمبر جي والٽ ۾ رقم وجهو.",
+    adw_none: "اڃا ڪا ٽاپ اپ درخواست ناهي.",
+    adw_approve: "تصديق ڪريو ۽ رقم وجهو",
+    adw_reject: "رد ڪريو",
+    adw_done: "{amt} {name} جي ايگري والٽ ۾ وڌا ويا.",
+    adw_err: "والٽ تازو نه ٿي سگهيو. ٻيهر ڪوشش ڪريو.",
+    adw_rejected: "ٽاپ اپ رد ڪيو ويو.",
+    adw_txn: "ٽرانزيڪشن آءِ ڊي",
+    adw_founder_only: "صرف باني والٽ ۾ رقم وجهي سگهي ٿو.",
+    promo_free_n: "لانچ آڇ: مفت ڊيل {n} مان {of}",
+    promo_comm_line: "ايگري شيئر پليٽ فارم ڪميشن (0% · {x})",
+    promo_net_s: "لانچ آڇ: سڄي رقم جو 100% سڌو مالڪ / وڪڻندڙ کي",
+    promo_title: "لانچ آڇ: باقي مفت ڪميشن ڊيلون",
+    promo_cat_machinery: "مشينري",
+    promo_cat_crop: "فصل منڊي",
+    promo_cat_land: "زمين ٺيڪو",
+    promo_free_word: "مفت",
+    promo_note: "پهرين 5 مشينري بڪنگن، 3 فصل وڪري ۽ 1 زمين ٺيڪي تي 0% پليٽ فارم ڪميشن. ان کان پوءِ عام اگهه: مشينري 2.5% (ننڍا هاري 2%)، فصل 3.5%، زمين 4.5%.",
+    promo_used_up: "سڀ مفت لانچ ڊيلون استعمال ٿي ويون. هاڻي عام ڪميشن: مشينري 2.5% (ننڍا هاري 2%)، فصل 3.5%، زمين 4.5%.",
     al_view: "ڏسو",
     tour_btn_s: "رهنمائي",
     am_own_offer_pill: "هي هاري جو گهريل ريٽ آهي. پنهنجي بولي لڳايو، جيڪا مناسب لڳي آڇ ڪريو",
@@ -3830,8 +4141,8 @@ const T = {
     hero_bookings: "اس ڈیوائس پر بکنگز",
     tr1_t: "تصديق ٿيل / غير تصديق ٿيل نشان",
     tr1_s: "لسٽون فوري لائيو ٿين ٿيون، صاف تصديق ٿيل / غير تصديق ٿيل نشان ۽ ڪنسلٽنٽ جي سڌي مدد سان",
-    tr2_t: "4% سے 6% منصفانہ کمیشن",
-    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 4%",
+    tr2_t: "2.5% سے 4.5% منصفانہ کمیشن",
+    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 2%",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "حقيقي ڪنسلٽنٽ مدد",
@@ -4104,7 +4415,7 @@ const T = {
     ow_no_req: "هن وقت ڪا التوا ۾ درخواست ناهي۔", ow_pending: "التوا ۾", ow_history: "جواب ڏنو ويو", ow_available: "موجود", ow_hidden: "لڪيل", ow_remove: "هٽايو",
     es_machine: "مشين", es_hours: "روزانو واندا ڪلاڪ", es_days: "موسم ۾ ڪرائي جا ڏينهن", es_util: "متوقع بڪنگ جي شرح",
     es_result: "موسم جي اندازي ڪرائي ڪمائي", es_month: "في موسم", es_confirmed: "اڃا تائين تصديق ٿيل بڪنگن مان",
-    es_note: "6٪ ڪميشن (ننڍن هارين لاءِ 4٪) هاري جي بل ۾ شامل ٿئي ٿي، تنهنڪري مالڪ کي پورو مسواڙ ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
+    es_note: "2.5٪ ڪميشن (ننڍن هارين لاءِ 2٪) هاري جي بل ۾ شامل ٿئي ٿي، تنهنڪري مالڪ کي پورو مسواڙ ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
     ag_title: "ايگري ايجنٽ ۽ USSD آف لائن بڪنگ", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
     ag1_t: "ايگري ايجنٽ ڪير آهي؟", ag1_d: "ڳوٺ جو ڪرياني يا موبائل لوڊ جو دڪان، جنهن کي بڪنگ پوائنٽ طور سکيا ڏني وڃي ٿي۔",
     ag2_t: "اهي ڇا ٿا ڪن؟", ag2_d: "سروس سمجهائين ٿا، هارين کي رجسٽر ڪن ٿا، مشينون ڏيکارين ٿا ۽ بڪنگ موڪلين ٿا۔",
@@ -4257,7 +4568,7 @@ const T = {
     lr_diesel_admin: "قومي ڊيزل اگهه: {v} في ليٽر",
     lr_recent: "توهان جون تازيون درخواستون",
     bk_smallholder: "ننڍو هاري (5 ايڪڙ کان گهٽ)",
-    bk_smallholder_sub: "عام 6% بدران رعايتي 4% ڪميشن۔",
+    bk_smallholder_sub: "عام 2.5% بدران رعايتي 2% ڪميشن۔",
     pay_paylater: "هاڻي لابارو، پوءِ ادائيگي (30% هاڻي + 70% لاباري کان پوءِ)",
     pl_now: "هاڻي ادائيگي (30%)",
     pl_later: "لاباري کان پوءِ (70%)",
@@ -4533,7 +4844,7 @@ const T = {
     cm_sub: "ڪل ٺيڪي جي رقم تي 4.5٪ جو هڪ ئي مقرر اگهه، هڪ ڀيرو، ٺيڪي جي مدت ڀلي ڪيتري به هجي۔",
     cm_total: "ڪل ڪميشن",
     eco_title: "ايگري شيئر 360° فائدو",
-    eco_sub: "ايگري شيئر تي زمين ٺيڪي تي وٺو ۽ هتي مشينري ڪرائي تي وٺو يا فصل وڪڻو: ايندڙ مشينري بڪنگ تي 0.50٪ ڪميشن جي رعايت (ڪميشن 3.50٪ کان گهٽ نه ٿيندو)۔",
+    eco_sub: "ايگري شيئر تي زمين ٺيڪي تي وٺو ۽ هتي مشينري ڪرائي تي وٺو يا فصل وڪڻو: ايندڙ مشينري بڪنگ تي 0.50٪ ڪميشن جي رعايت (ڪميشن 2.0٪ کان گهٽ نه ٿيندو)۔",
     eco_active: "360° فائدو فعال: مشينري ڪميشن تي 0.50٪ رعايت",
     ag_stamp: "اي اسٽامپ پيپر هتي لڳايو",
     ag_date: "تاريخ",
@@ -4657,6 +4968,78 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    crop_sugarcane: "ګنې",
+    crop_potato: "کچالو",
+    crop_onion: "پیاز",
+    crop_tomato: "رومی بانجان",
+    crop_mango: "آم",
+    crop_kinnow: "کینو / ترشې مېوې",
+    crop_mustard: "شرشم / کینولا",
+    crop_chickpea: "نخود",
+    crop_chilli: "شنه / سره مرچ",
+    crop_garlic: "هوږه او ادرک",
+    crop_other: "بل فصل / سبزي",
+    am_more_card: "ټول فصلونه او سبزیجات",
+    am_more_card_s: "ګنې، کچالو، پیاز، آم، مرچ او نور، یا د خپل فصل نوم",
+    am_more_select: "نور فصلونه او سبزیجات",
+    am_more_pick: "بل فصل یا سبزي وټاکئ",
+    am_custom_name: "د فصل / سبزۍ نوم",
+    am_custom_ph: "بېلګه: مټر، بنډۍ، امرود",
+    am_err_custom: "د فصل یا سبزۍ نوم ولیکئ.",
+    aw_balance: "د اګري والټ بیلنس",
+    aw_sub: "د پلیټ فارم کمیشن لپاره مخکې جمع بیلنس. د وړیا معاملو وروسته کمیشن (ماشین 2.5%، فصل 3.5%، ځمکه 4.5%) د معاملې د تایید یا منلو پر مهال له دې ځایه کمېږي.",
+    aw_topup: "اګري والټ ټاپ اپ کړئ",
+    aw_ledger: "د اګري والټ راکړه ورکړه",
+    aw_none: "تر اوسه راکړه ورکړه نشته.",
+    aw_low: "د اګري والټ بیلنس کم دی. د امرونو منلو لپاره ټاپ اپ کړئ",
+    aw_low_need: "دې معاملې ته {need} کمیشن پکار دی، ستاسو بیلنس {bal} دی.",
+    aw_paid: "کمیشن له اګري والټ څخه ورکړل شو",
+    aw_from_wallet: "(له اګري والټ څخه)",
+    aw_st_pending: "د کتنې لاندې",
+    aw_st_credited: "پیسې واچول شوې",
+    aw_st_rejected: "رد شو",
+    aw_tx_topup_req: "د ټاپ اپ غوښتنه",
+    aw_tx_topup: "ټاپ اپ ترلاسه شو",
+    aw_tx_booking: "د ماشین کمیشن",
+    aw_tx_land: "د ځمکې اجارې کمیشن",
+    aw_tx_crop: "د فصل پلور کمیشن",
+    aw_tx_other: "په والټ کې بدلون",
+    aw_tu_title: "اګري والټ ټاپ اپ",
+    aw_tu_step1: "1. د اګري شېئر رسمي وصولي حساب ته پیسې ولېږئ",
+    aw_tu_amount: "2. لېږل شوې اندازه (روپۍ)",
+    aw_tu_custom: "بله اندازه (له 100 تر 10,00,000 روپۍ)",
+    aw_tu_txn: "د راکړې ورکړې آی ډي",
+    aw_tu_receipt: "3. د رسید انځور",
+    aw_tu_add_photo: "د رسید انځور ورزیات کړئ",
+    aw_tu_remove: "لرې کړئ",
+    aw_tu_submit: "ټاپ اپ ولېږئ",
+    aw_tu_note: "زموږ ټیم رسید له وصولي حساب سره پرتله کوي او معمولاً په هماغه ورځ والټ ته پیسې اچوي. مرسته: 0322-4729249 یا 0370-0318574.",
+    aw_tu_sent: "ټاپ اپ ولېږل شو. د رسید له کتنې وروسته پیسې ستاسو والټ ته راځي.",
+    aw_tu_err_amount: "له 100 تر 10,00,000 روپیو پورې اندازه ولیکئ.",
+    aw_tu_err_receipt: "د رسید انځور یا د راکړې ورکړې آی ډي ورزیات کړئ.",
+    aw_tu_err: "ټاپ اپ ونه لېږل شو. انټرنېټ وګورئ او بیا هڅه وکړئ.",
+    aw_tu_err_photo: "دا انځور ونه لوستل شو. بل انځور وازمایئ.",
+    adw_tab: "والټ ټاپ اپونه",
+    adw_title: "د اګري والټ ټاپ اپونه",
+    adw_sub: "هر رسید له رسمي وصولي حساب سره پرتله کړئ، بیا په یوه کلیک د غړي والټ ته پیسې واچوئ.",
+    adw_none: "تر اوسه د ټاپ اپ غوښتنه نشته.",
+    adw_approve: "تایید او پیسې واچوئ",
+    adw_reject: "رد کړئ",
+    adw_done: "{amt} د {name} اګري والټ ته واچول شول.",
+    adw_err: "والټ تازه نه شو. بیا هڅه وکړئ.",
+    adw_rejected: "ټاپ اپ رد شو.",
+    adw_txn: "د راکړې ورکړې آی ډي",
+    adw_founder_only: "یوازې بنسټګر والټ ته پیسې اچولی شي.",
+    promo_free_n: "د پیل وړاندیز: وړیا معامله {n} له {of}",
+    promo_comm_line: "د اګري شېئر پلیټ فارم کمیشن (0% · {x})",
+    promo_net_s: "د پیل وړاندیز: د ټولې پیسې 100% مستقیم مالک / پلورونکي ته",
+    promo_title: "د پیل وړاندیز: پاتې وړیا کمیشن معاملې",
+    promo_cat_machinery: "ماشینونه",
+    promo_cat_crop: "د فصل منډۍ",
+    promo_cat_land: "د ځمکې اجاره",
+    promo_free_word: "وړیا",
+    promo_note: "په لومړیو 5 ماشین بکنګونو، 3 فصل پلور او 1 ځمکې اجارې 0% پلیټ فارم کمیشن. له هغې وروسته عادي نرخ: ماشین 2.5% (کوچني بزګر 2%)، فصل 3.5%، ځمکه 4.5%.",
+    promo_used_up: "ټولې وړیا معاملې وکارول شوې. اوس عادي کمیشن: ماشین 2.5% (کوچني بزګر 2%)، فصل 3.5%، ځمکه 4.5%.",
     al_view: "وګورئ",
     ad_pending: "د تصدیق په تمه",
     tour_btn_s: "لارښود",
@@ -4973,7 +5356,7 @@ const T = {
     role_agent: "اګري اېجنټ",
     nav_admin: "اډمن پینل",
     bk_smallholder: "کوچنی بزګر (له 5 ایکړو کم)",
-    bk_smallholder_sub: "د عام 6% پر ځای 4% رعایتي کمیشن.",
+    bk_smallholder_sub: "د عام 2.5% پر ځای 2% رعایتي کمیشن.",
     pay_paylater: "اوس لو، وروسته تادیه (اوس 30% + له لو وروسته 70%)",
     pl_now: "اوس تادیه (30%)",
     pl_later: "له لو وروسته (70%)",
@@ -5262,7 +5645,7 @@ const T = {
     cm_sub: "د اجارې پر ټوله پیسه د 4.5٪ یو ثابت نرخ، یوازې یو ځل، که د اجارې موده هر څومره وي.",
     cm_total: "ټول کمیسیون",
     eco_title: "د اګري شېئر 360° ګټه",
-    eco_sub: "په اګري شېئر کې ځمکه په اجاره واخلئ او دلته ماشینونه په کرایه واخلئ یا فصل وپلورئ: د راتلونکي ماشین بکنګ پر کمیسیون 0.50٪ تخفیف (کمیسیون له 3.50٪ ټیټ نه کېږي).",
+    eco_sub: "په اګري شېئر کې ځمکه په اجاره واخلئ او دلته ماشینونه په کرایه واخلئ یا فصل وپلورئ: د راتلونکي ماشین بکنګ پر کمیسیون 0.50٪ تخفیف (کمیسیون له 2.0٪ ټیټ نه کېږي).",
     eco_active: "360° ګټه فعاله ده: د ماشین پر کمیسیون 0.50٪ تخفیف",
     ag_title: "اګري اېجنټ او USSD آفلاین بکنګ",
     ag_stamp: "اې سټامپ پاڼه دلته ونښلوئ",
@@ -5395,6 +5778,78 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    crop_sugarcane: "کماد",
+    crop_potato: "آلو",
+    crop_onion: "پیاز",
+    crop_tomato: "ٹماٹر",
+    crop_mango: "آمب",
+    crop_kinnow: "کینو / ترشیں میوگ",
+    crop_mustard: "سرسوں / کینولا",
+    crop_chickpea: "نخود",
+    crop_chilli: "سبزیں / سُہریں مرچ",
+    crop_garlic: "سیر و ادرک",
+    crop_other: "دگہ فصل / سبزی",
+    am_more_card: "سجّیں فصل و سبزی",
+    am_more_card_s: "کماد، آلو، پیاز، آمب، مرچ و دگہ، یا وتی فصلءِ نام",
+    am_more_select: "گیشتریں فصل و سبزی",
+    am_more_pick: "دگہ فصلے یا سبزیے گچین کن",
+    am_custom_name: "فصل / سبزیءِ نام",
+    am_custom_ph: "درور: مٹر، بھنڈی، امرود",
+    am_err_custom: "فصل یا سبزیءِ نامءَ نبشتہ کن۔",
+    aw_balance: "ایگری والٹءِ بیلنس",
+    aw_sub: "پلیٹ فارم کمیشنءِ واستا پیسرا جمع کتگیں بیلنس۔ مُفتیں لانچ ڈیلانءِ رندا کمیشن (مشین 2.5%، فصل 3.5%، زمین 4.5%) ڈیل پکّا کنگ یا منّگءِ وہدءَ ادا چہ گِرگ بیت۔",
+    aw_topup: "ایگری والٹءَ ٹاپ اپ کن",
+    aw_ledger: "ایگری والٹءِ دئیگ گرگ",
+    aw_none: "انگت هچ دئیگ گرگ نیست۔",
+    aw_low: "ایگری والٹءِ بیلنس کم انت۔ آرڈر منّگءِ واستا ٹاپ اپ کن",
+    aw_low_need: "اے ڈیلءِ واستا {need} کمیشن لوٹیت، تئی بیلنس {bal} انت۔",
+    aw_paid: "کمیشن ایگری والٹءَ چہ ادا بوت",
+    aw_from_wallet: "(ایگری والٹءَ چہ)",
+    aw_st_pending: "چارگ بوہگءَ انت",
+    aw_st_credited: "زر کنگ بوت",
+    aw_st_rejected: "رد",
+    aw_tx_topup_req: "ٹاپ اپءِ درخواست",
+    aw_tx_topup: "ٹاپ اپ رست",
+    aw_tx_booking: "مشینءِ کمیشن",
+    aw_tx_land: "زمین ٹھیکہءِ کمیشن",
+    aw_tx_crop: "فصلءِ بہاءِ کمیشن",
+    aw_tx_other: "والٹءَ بدلی",
+    aw_tu_title: "ایگری والٹ ٹاپ اپ",
+    aw_tu_step1: "1. ایگری شیئرءِ سرکاری وصولی اکاؤنٹءَ زر راہ دئے",
+    aw_tu_amount: "2. راہ داتگیں زر (روپیہ)",
+    aw_tu_custom: "دگہ کچ (100 چہ 10,00,000 روپیہ)",
+    aw_tu_txn: "ٹرانزیکشن آئی ڈی",
+    aw_tu_receipt: "3. رسیدءِ عکس",
+    aw_tu_add_photo: "رسیدءِ عکسءَ لگا",
+    aw_tu_remove: "در کن",
+    aw_tu_submit: "ٹاپ اپءَ راہ دئے",
+    aw_tu_note: "مئے ٹیم رسیدءَ وصولی اکاؤنٹءَ گوں چاریت و گیشتر هما روچءَ تئی والٹءَ زر کنت۔ کمک: 0322-4729249 یا 0370-0318574۔",
+    aw_tu_sent: "ٹاپ اپ راہ دیگ بوت۔ رسیدءِ چارگءَ رندا زر تئی والٹءَ کئیت۔",
+    aw_tu_err_amount: "100 چہ 10,00,000 روپیہءِ نیامءَ زرّءِ کچءَ نبشتہ کن۔",
+    aw_tu_err_receipt: "رسیدءِ عکس یا ٹرانزیکشن آئی ڈیءَ لگا۔",
+    aw_tu_err: "ٹاپ اپ راہ دیگ نہ بوت۔ انٹرنیٹءَ بچار و پدا جُہد کن۔",
+    aw_tu_err_photo: "اے عکس پچ نہ بوت۔ دگہ عکسے لگا۔",
+    adw_tab: "والٹ ٹاپ اپ",
+    adw_title: "ایگری والٹ ٹاپ اپ",
+    adw_sub: "هر رسیدءَ سرکاری وصولی اکاؤنٹءَ گوں چار، رندا یک کلکءَ ممبرءِ والٹءَ زر کن۔",
+    adw_none: "انگت هچ ٹاپ اپ درخواست نیست۔",
+    adw_approve: "تصدیق کن و زر کن",
+    adw_reject: "رد کن",
+    adw_done: "{amt} {name}ءِ ایگری والٹءَ کنگ بوت۔",
+    adw_err: "والٹ نوک کنگ نہ بوت۔ پدا جُہد کن۔",
+    adw_rejected: "ٹاپ اپ رد کنگ بوت۔",
+    adw_txn: "ٹرانزیکشن آئی ڈی",
+    adw_founder_only: "تہنا بنگیج کنوک والٹءَ زر کرت کنت۔",
+    promo_free_n: "لانچ آفر: مُفتیں ڈیل {n} چہ {of}",
+    promo_comm_line: "ایگری شیئر پلیٹ فارم کمیشن (0% · {x})",
+    promo_net_s: "لانچ آفر: سجّیں زرّءِ 100% راستیں واہند / بہا کنوکءَ",
+    promo_title: "لانچ آفر: پشت کپتگیں مُفتیں کمیشن ڈیل",
+    promo_cat_machinery: "مشین",
+    promo_cat_crop: "فصلءِ منڈی",
+    promo_cat_land: "زمین ٹھیکہ",
+    promo_free_word: "مُفت",
+    promo_note: "اولی 5 مشین بکنگ، 3 فصلءِ بہا و 1 زمین ٹھیکہءَ 0% پلیٹ فارم کمیشن۔ رندا عامیں ریٹ: مشین 2.5% (کسانیں بزگر 2%)، فصل 3.5%، زمین 4.5%۔",
+    promo_used_up: "سجّیں مُفتیں لانچ ڈیل کارمرز بوتگ انت۔ نوں عامیں کمیشن: مشین 2.5% (کسانیں بزگر 2%)، فصل 3.5%، زمین 4.5%۔",
     al_view: "بچار",
     ad_pending: "تصدیقءِ ودارا",
     tour_btn_s: "رہشونی",
@@ -5699,7 +6154,7 @@ const T = {
     role_agent: "ایگری ایجنٹ",
     nav_admin: "ایڈمن پینل",
     bk_smallholder: "کسانیں بزگر (5 ایکڑ ءَ کم)",
-    bk_smallholder_sub: "عام 6% ءِ بدل ءَ 4% رعایتی کمیشن۔",
+    bk_smallholder_sub: "عام 2.5% ءِ بدل ءَ 2% رعایتی کمیشن۔",
     pay_paylater: "انّوں رونگ، رند ءَ زرّ (انّوں 30% + رونگ ءَ رند 70%)",
     pl_now: "انّوں زرّ (30%)",
     pl_later: "رونگ ءَ رند (70%)",
@@ -5990,7 +6445,7 @@ const T = {
     cm_sub: "سجّہیں ٹھیکہ ءِ زرّ ءِ سرا 4.5٪ ءِ یک گیشینتگیں نرخ، یک بر، ٹھیکہ ءِ مدّت ہر چنت بہ بیت۔",
     cm_total: "سجّہیں کمیشن",
     eco_title: "ایگری شیئر 360° پائدگ",
-    eco_sub: "ایگری شیئر ءَ زمین ءَ ٹھیکہ ءَ گِر و ادا مشین ءَ کرایہ ءَ گِر یا کِشت ءَ بہا کن: آیوکیں مشین بکنگ ءَ کمیشن ءِ سرا 0.50٪ کمّی (کمیشن 3.50٪ چہ کم نہ بیت)۔",
+    eco_sub: "ایگری شیئر ءَ زمین ءَ ٹھیکہ ءَ گِر و ادا مشین ءَ کرایہ ءَ گِر یا کِشت ءَ بہا کن: آیوکیں مشین بکنگ ءَ کمیشن ءِ سرا 0.50٪ کمّی (کمیشن 2.0٪ چہ کم نہ بیت)۔",
     eco_active: "360° پائدگ چالو: مشین ءِ کمیشن ءِ سرا 0.50٪ کمّی",
     ag_title: "ایگری ایجنٹ و USSD آف لائن بکنگ",
     ag_stamp: "ای اسٹامپ پیپر ءَ ادا لگئے",
@@ -7146,8 +7601,8 @@ const useDeals = () => React.useContext(DealsCtx);
 const PROOF_STAGES = ["before", "after", "meter", "land"];
 const PROOF_VIDEO_MAX = 650 * 1024; // short clips only: a Firestore document holds at most 1 MiB
 const dealKeyOf = (deal) => `${deal.kind}_${deal.id}`;
-const bookingDeal = (b) => ({ kind: "booking", id: b.id, title: b.listingName, amount: Math.round((b.quote && b.quote.commission) || 0), uids: [b.renterUid, b.ownerUid].filter(Boolean), farmerUid: b.renterUid || "", ownerUid: b.ownerUid || "" });
-const landDeal = (b) => ({ kind: "land", id: b.id, title: uniqPlaces(b.village, b.district) || b.id, amount: landCommission(b.total).amount, uids: [b.tenantUid, b.ownerUid].filter(Boolean), farmerUid: b.tenantUid || "", ownerUid: b.ownerUid || "" });
+const bookingDeal = (b) => ({ kind: "booking", id: b.id, title: b.listingName, amount: b.walletPaid ? 0 : Math.round((b.quote && b.quote.commission) || 0), uids: [b.renterUid, b.ownerUid].filter(Boolean), farmerUid: b.renterUid || "", ownerUid: b.ownerUid || "" });
+const landDeal = (b) => ({ kind: "land", id: b.id, title: uniqPlaces(b.village, b.district) || b.id, amount: b.walletPaid ? 0 : landCommFor(b).amount, uids: [b.tenantUid, b.ownerUid].filter(Boolean), farmerUid: b.tenantUid || "", ownerUid: b.ownerUid || "" });
 const isDealParty = (ctx, deal) => !!(ctx && ctx.session && ctx.session.uid && deal && !deal.sample && (ctx.isFounder || deal.uids.includes(ctx.session.uid)));
 const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
   const r = new FileReader();
@@ -7156,8 +7611,220 @@ const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
   r.readAsDataURL(file);
 });
 
+// Launch offer: free-commission deals left per category for the signed-in owner / seller
+function PromoPill({ t, used, className = "" }) {
+  if (!used) return null;
+  const items = [["machinery", "promo_cat_machinery"], ["crop", "promo_cat_crop"], ["land", "promo_cat_land"]].map(([k, label]) => {
+    const of = PROMO_FREE[k], left = Math.max(0, of - (used[k] || 0));
+    return { k, label: t(label), left, of };
+  });
+  const any = items.some((x) => x.left > 0);
+  return (
+    <div className={`rounded-2xl bg-gradient-to-r from-leaf/15 via-gold/10 to-leaf/10 p-3 ring-1 ring-leaf/30 ${className}`} role="status">
+      <p className="flex flex-wrap items-center gap-2 text-sm font-extrabold text-forest rtl:leading-[2]">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-forest text-gold"><Gift className="h-4 w-4" aria-hidden="true" /></span>
+        {t("promo_title")}
+      </p>
+      <ul className="mt-2 flex flex-wrap gap-1.5">
+        {items.map((x) => (
+          <li key={x.k} className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ring-1 rtl:leading-[2] ${x.left > 0 ? "bg-white text-forest ring-leaf/40" : "bg-soil/5 text-soil/70 ring-soil/15"}`}>
+            {x.label}: <span dir="ltr" className="tabular-nums">{x.left}/{x.of}</span> {t("promo_free_word")}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-1.5 text-[11px] leading-snug text-soil/80 rtl:leading-[2]">{t(any ? "promo_note" : "promo_used_up")}</p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Prepaid Agri-Wallet (agri_wallets/{uid}): the member tops up through */
+/* the official collection account; the founder checks the receipt and  */
+/* credits it; commission on confirmed deals is taken from it.          */
+/* ------------------------------------------------------------------ */
+const TOPUP_PRESETS = [500, 1000, 2500, 5000, 10000];
+const TOPUP_MIN = 100, TOPUP_MAX = 1000000;
+const walletTxLabel = (t, x) => t({ topup: "aw_tx_topup", booking: "aw_tx_booking", land: "aw_tx_land", crop: "aw_tx_crop" }[x.kind] || "aw_tx_other");
+const topupTone = { pending: "bg-gold/20 text-soil ring-gold/40", credited: "bg-leaf/15 text-forest ring-leaf/30", rejected: "bg-red-50 text-red-700 ring-red-200" };
+
+function AgriWalletCard({ t, wallet, topups = [], need = 0, onTopUp, className = "" }) {
+  const bal = wallet ? Math.round(Number(wallet.balance) || 0) : 0;
+  const txns = (wallet && Array.isArray(wallet.txns) ? wallet.txns : []).slice(0, 12);
+  const pending = topups.filter((x) => x.status === "pending").sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const recent = topups.filter((x) => x.status !== "pending").sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 3);
+  const low = need > 0 && bal < need;
+  return (
+    <div className={`grid gap-4 lg:grid-cols-[1fr_1.2fr] ${className}`}>
+      <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(150deg,#14532d,#0f3d23_55%,#052e16)] p-5 text-ivory shadow-md">
+        <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_35%,rgba(255,255,255,0.12)_48%,transparent_60%)]" aria-hidden="true" />
+        <p className="relative flex items-center gap-2 text-sm font-bold text-gold rtl:leading-[2]"><Wallet className="h-4 w-4" aria-hidden="true" />{t("aw_balance")}</p>
+        <p className="relative mt-2 font-display text-3xl font-extrabold tabular-nums" dir="ltr">{pkr(bal)}</p>
+        <p className="relative mt-2 text-xs leading-snug text-ivory/80 rtl:leading-[2]">{t("aw_sub")}</p>
+        {low && <p className="relative mt-3 rounded-xl bg-red-600/90 p-2.5 text-xs font-bold text-white rtl:leading-[2]" role="alert">{t("aw_low")} · {t("aw_low_need").replace("{need}", pkr(need)).replace("{bal}", pkr(bal))}</p>}
+        <button type="button" onClick={onTopUp} className="relative mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-gold px-4 text-sm font-extrabold text-soil shadow transition hover:brightness-105"><Plus className="h-4 w-4" aria-hidden="true" />{t("aw_topup")}</button>
+      </div>
+      <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <h3 className="flex items-center gap-2 font-bold text-forest rtl:leading-[2]"><Banknote className="h-4 w-4 text-gold" aria-hidden="true" />{t("aw_ledger")}</h3>
+        {pending.length > 0 && (
+          <ul className="mt-2 space-y-1.5">
+            {pending.map((x) => (
+              <li key={x.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-gold/10 px-3 py-2 text-xs ring-1 ring-gold/30">
+                <span className="font-semibold text-soil rtl:leading-[2]">{t("aw_tx_topup_req")} · <span dir="ltr">{fmtStamp(x.createdAt)}</span></span>
+                <span className="flex items-center gap-2"><b className="tabular-nums" dir="ltr">+{pkr(x.amount)}</b><span className={`rounded-full px-2 py-0.5 font-bold ring-1 ${topupTone.pending}`}>{t("aw_st_pending")}</span></span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {txns.length === 0 && pending.length === 0 ? <p className="mt-2 rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("aw_none")}</p> : (
+          <ul className="mt-2 divide-y divide-soil/10">
+            {txns.map((x, i) => (
+              <li key={(x.id || "") + i} className="flex items-center justify-between gap-3 py-2 text-sm">
+                <span className="min-w-0">
+                  <span className="block font-semibold text-soil rtl:leading-[2]">{walletTxLabel(t, x)}</span>
+                  <span className="block truncate text-[11px] text-soil/70" dir="ltr">{[x.note, fmtStamp(x.at)].filter(Boolean).join(" · ")}</span>
+                </span>
+                <b className={`shrink-0 tabular-nums ${x.amount >= 0 ? "text-forest" : "text-red-800"}`} dir="ltr">{x.amount >= 0 ? "+" : "−"}{pkr(Math.abs(x.amount || 0))}</b>
+              </li>
+            ))}
+          </ul>
+        )}
+        {recent.filter((x) => x.status === "rejected").map((x) => (
+          <p key={x.id} className={`mt-2 rounded-lg px-3 py-2 text-xs font-semibold ring-1 ${topupTone.rejected}`}>{t("aw_tx_topup_req")} <span dir="ltr">{pkr(x.amount)}</span> · {t("aw_st_rejected")}</p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TopUpModal({ t, session, toast, onClose }) {
+  const [amount, setAmount] = useState(1000);
+  const [custom, setCustom] = useState("");
+  const [txnId, setTxnId] = useState("");
+  const [receipt, setReceipt] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const amt = custom ? Math.round(Number(custom) || 0) : amount;
+  const pickFile = async (e) => {
+    const file = e.target.files && e.target.files[0]; e.target.value = "";
+    if (!file) return;
+    try { setReceipt(await shrinkPhoto(file)); setErr(""); } catch (x) { setErr(t("aw_tu_err_photo")); }
+  };
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!(amt >= TOPUP_MIN && amt <= TOPUP_MAX)) { setErr(t("aw_tu_err_amount")); return; }
+    if (!receipt && !txnId.trim()) { setErr(t("aw_tu_err_receipt")); return; }
+    setBusy(true); setErr("");
+    const id = "TU-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+    try {
+      await writeDoc(COL.walletTopups, id, { uid: session.uid, name: String(session.name || "").slice(0, 80), email: session.email || "", phone: session.phone || "", amount: amt, txnId: txnId.trim().slice(0, 60), receipt: receipt || "", status: "pending", createdAt: Date.now() });
+      toast(t("aw_tu_sent"), { title: t("aw_tu_title") });
+      onClose();
+    } catch (x) { setErr(t("aw_tu_err")); setBusy(false); }
+  };
+  return (
+    <SheetModal title={t("aw_tu_title")} onClose={onClose} labelledBy="aw-tu-h">
+      <form onSubmit={submit} noValidate className="space-y-4">
+        <div>
+          <p className="mb-1.5 text-sm font-bold text-forest rtl:leading-[2]">{t("aw_tu_step1")}</p>
+          <CompanyAccountCard t={t} deal={null} />
+        </div>
+        <fieldset>
+          <legend className="mb-1.5 text-sm font-bold text-forest rtl:leading-[2]">{t("aw_tu_amount")}</legend>
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+            {TOPUP_PRESETS.map((v) => (
+              <button key={v} type="button" onClick={() => { setAmount(v); setCustom(""); }} aria-pressed={!custom && amount === v}
+                className={`min-h-[44px] rounded-xl text-sm font-bold ring-1 tabular-nums ${!custom && amount === v ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`} dir="ltr">{pkr(v)}</button>
+            ))}
+          </div>
+          <label htmlFor="aw-custom" className="mt-2 block text-xs font-semibold text-soil/80">{t("aw_tu_custom")}</label>
+          <input id="aw-custom" type="number" inputMode="numeric" min={TOPUP_MIN} max={TOPUP_MAX} value={custom} onChange={(e) => setCustom(e.target.value)} className={`${inputCls} mt-1`} dir="ltr" />
+        </fieldset>
+        <div>
+          <label htmlFor="aw-txn" className="mb-1 block text-sm font-bold text-forest rtl:leading-[2]">{t("aw_tu_txn")}</label>
+          <input id="aw-txn" type="text" maxLength={60} value={txnId} onChange={(e) => setTxnId(e.target.value)} className={inputCls} dir="ltr" />
+        </div>
+        <div>
+          <p className="mb-1 text-sm font-bold text-forest rtl:leading-[2]">{t("aw_tu_receipt")}</p>
+          {receipt ? (
+            <div className="flex items-center gap-3"><img src={receipt} alt={t("aw_tu_receipt")} className="h-20 w-20 rounded-lg object-cover ring-1 ring-soil/15" /><button type="button" onClick={() => setReceipt("")} className="rounded-lg border border-soil/20 px-3 py-2 text-xs font-bold text-soil">{t("aw_tu_remove")}</button></div>
+          ) : (
+            <label className="flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-forest/30 bg-ivory px-3 text-sm font-bold text-forest"><Camera className="h-4 w-4" aria-hidden="true" />{t("aw_tu_add_photo")}<input type="file" accept="image/*" className="sr-only" onChange={pickFile} /></label>
+          )}
+        </div>
+        {err && <p className="rounded-lg bg-red-50 p-2.5 text-sm font-semibold text-red-800 ring-1 ring-red-200 rtl:leading-[2]" role="alert">{err}</p>}
+        <button type="submit" disabled={busy} className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 text-sm font-extrabold text-ivory disabled:opacity-60">{busy ? <Hourglass className="h-4 w-4 animate-pulse" aria-hidden="true" /> : <Upload className="h-4 w-4" aria-hidden="true" />}{t("aw_tu_submit")} · <span dir="ltr">{pkr(amt || 0)}</span></button>
+        <p className="text-[11px] leading-snug text-soil/80 rtl:leading-[2]">{t("aw_tu_note")}</p>
+      </form>
+    </SheetModal>
+  );
+}
+
+// Founder: check each top-up receipt, then credit the member's wallet with one click
+function WalletTopupsAdmin({ t, toast, isFounder }) {
+  const [list, setList] = useState(null);
+  const [busy, setBusy] = useState("");
+  const [view, setView] = useState(null); // receipt being viewed
+  useEffect(() => (isFounder ? watchCollection(COL.walletTopups, (l) => setList(l), () => setList([])) : undefined), [isFounder]);
+  if (!isFounder) return <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("adw_founder_only")}</p>;
+  const rows = (list || []).slice().sort((a, b) => (a.status === "pending" ? 0 : 1) - (b.status === "pending" ? 0 : 1) || (b.createdAt || 0) - (a.createdAt || 0));
+  const credit = async (x) => {
+    if (busy || x.status !== "pending") return;
+    setBusy(x.id);
+    try {
+      try { await walletApply(x.uid, Math.round(Number(x.amount) || 0), { id: "topup_" + x.id, kind: "topup", ref: x.id, note: x.txnId || x.id }); }
+      catch (e) { if (!e || e.code !== "duplicate") throw e; } // already credited earlier: just close the request
+      await writeDoc(COL.walletTopups, x.id, { ...x, status: "credited", decidedAt: Date.now() });
+      toast(t("adw_done").replace("{amt}", pkr(x.amount)).replace("{name}", x.name || "·"));
+    } catch (e) { toast(t("adw_err"), { type: "error" }); }
+    setBusy("");
+  };
+  const reject = async (x) => {
+    if (busy) return;
+    setBusy(x.id);
+    try { await writeDoc(COL.walletTopups, x.id, { ...x, status: "rejected", decidedAt: Date.now() }); toast(t("adw_rejected")); }
+    catch (e) { toast(t("adw_err"), { type: "error" }); }
+    setBusy("");
+  };
+  return (
+    <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+      <h3 className="flex items-center gap-2 font-bold text-forest rtl:leading-[2]"><Wallet className="h-4 w-4 text-gold" aria-hidden="true" />{t("adw_title")}</h3>
+      <p className="mt-1 text-xs text-soil/80 rtl:leading-[2]">{t("adw_sub")}</p>
+      {list === null ? <p className="mt-3 text-sm text-soil/80"><Hourglass className="me-1 inline h-4 w-4 animate-pulse" aria-hidden="true" /></p>
+        : rows.length === 0 ? <p className="mt-3 rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("adw_none")}</p> : (
+        <ul className="mt-3 grid gap-3 md:grid-cols-2">
+          {rows.map((x) => (
+            <li key={x.id} className={`rounded-xl p-3 ring-1 ${x.status === "pending" ? "bg-gold/5 ring-gold/40" : "bg-ivory/60 ring-soil/10"}`}>
+              <div className="flex items-start gap-3">
+                {x.receipt ? <button type="button" onClick={() => setView(x)} className="shrink-0" aria-label={t("aw_tu_receipt")}><img src={x.receipt} alt="" className="h-16 w-16 rounded-lg object-cover ring-1 ring-soil/15" /></button>
+                  : <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-white text-soil/50 ring-1 ring-soil/15"><Banknote className="h-6 w-6" aria-hidden="true" /></span>}
+                <div className="min-w-0 flex-1 text-sm">
+                  <p className="flex flex-wrap items-center justify-between gap-2"><b className="break-words text-forest">{x.name || "·"}</b><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ring-1 ${topupTone[x.status] || ""}`}>{t("aw_st_" + (x.status || "pending"))}</span></p>
+                  <p className="font-display text-lg font-extrabold text-forest tabular-nums" dir="ltr">{pkr(x.amount)}</p>
+                  <p className="break-all text-xs text-soil/80" dir="ltr">{t("adw_txn")}: {x.txnId || "·"} · {fmtStamp(x.createdAt)}</p>
+                  {(x.phone || x.email) && <p className="break-all text-xs text-soil/80" dir="ltr">{[x.phone, x.email].filter(Boolean).join(" · ")}</p>}
+                </div>
+              </div>
+              {x.status === "pending" && (
+                <div className="mt-3 flex gap-2">
+                  <button type="button" disabled={!!busy} onClick={() => credit(x)} className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-lg bg-forest px-3 text-sm font-bold text-ivory disabled:opacity-60">{busy === x.id ? <Hourglass className="h-4 w-4 animate-pulse" aria-hidden="true" /> : <BadgeCheck className="h-4 w-4" aria-hidden="true" />}{t("adw_approve")}</button>
+                  <button type="button" disabled={!!busy} onClick={() => reject(x)} className="min-h-[44px] rounded-lg border border-red-300 px-3 text-sm font-bold text-red-800 disabled:opacity-60">{t("adw_reject")}</button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+      {view && (
+        <SheetModal title={`${t("aw_tu_receipt")} · ${view.name || ""}`} onClose={() => setView(null)} labelledBy="adw-rc-h">
+          <img src={view.receipt} alt={t("aw_tu_receipt")} className="w-full rounded-xl object-contain ring-1 ring-soil/15" />
+        </SheetModal>
+      )}
+    </div>
+  );
+}
+
 // Two clear lines: what goes to Agri-Share, what goes to the owner. They always add up to the bill total.
-function CommissionSplit({ t, commission, total, className = "" }) {
+function CommissionSplit({ t, commission, total, promo = null, className = "" }) {
   const c = Math.max(0, Math.round(Number(commission) || 0));
   const net = Math.max(0, Math.round(Number(total) || 0) - c);
   const line = (Icon, tone, title, sub, value) => (
@@ -7172,8 +7839,8 @@ function CommissionSplit({ t, commission, total, className = "" }) {
   );
   return (
     <div className={`divide-y divide-soil/10 overflow-hidden rounded-xl bg-white ring-1 ring-soil/15 ${className}`}>
-      {line(Landmark, "bg-gold/20 text-soil", t("cs_comm_t"), t("cs_comm_s"), c)}
-      {line(HandCoins, "bg-leaf/15 text-forest", t("cs_net_t"), t("cs_net_s"), net)}
+      {line(Landmark, promo ? "bg-leaf/20 text-forest" : "bg-gold/20 text-soil", promo ? `${t("cs_comm_t")} · 0%` : t("cs_comm_t"), promo ? promoText(t, promo) : t("cs_comm_s"), c)}
+      {line(HandCoins, "bg-leaf/15 text-forest", t("cs_net_t"), promo ? t("promo_net_s") : t("cs_net_s"), net)}
     </div>
   );
 }
@@ -7199,7 +7866,7 @@ function CompanyAccountCard({ t, deal, className = "" }) {
       ) : (
         <p className="mt-2 rounded-lg bg-white p-2.5 text-xs text-soil ring-1 ring-soil/10 rtl:leading-[2]">{t("ca_none")} <a href={`tel:${CONSULTANT.primary.tel}`} className="font-bold text-forest underline" dir="ltr">{CONSULTANT.primary.label}</a></p>
       )}
-      {deal && <div className="no-print mt-3"><ReceiptButton t={t} deal={deal} /></div>}
+      {deal && deal.amount > 0 && <div className="no-print mt-3"><ReceiptButton t={t} deal={deal} /></div>}
     </div>
   );
 }
@@ -7595,7 +8262,7 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
     q.operator ? [t("bk_op"), q.operator] : null,
     q.transport ? [t("bk_tr"), q.transport] : null,
     q.fuel ? [t("vo_fuel"), q.fuel] : null,
-    [t("bk_comm").replace("{p}", pctLabel(q.commissionRate || COMMISSION)), q.commission],
+    [commLabel(t, q), q.commission],
   ].filter(Boolean).filter((r) => r[1] != null);
   const print = () => {
     document.body.classList.add("print-voucher");
@@ -7673,8 +8340,9 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
               </tbody></table>
               {b.financing && <p className="mt-2 text-xs text-soil/80" dir="ltr">{t("pay_paylater")}: {t("pl_now")} <b>{pkr(b.financing.advance)}</b> · {t("pl_later")} <b>{pkr(b.financing.balance)}</b> ({b.financing.partner})</p>}
             </div>
-            <CommissionSplit t={t} commission={q.commission} total={q.total} />
-            {!stopped && <CompanyAccountCard t={t} deal={bookingDeal(b)} />}
+            <CommissionSplit t={t} commission={q.commission} total={q.total} promo={q.promo} />
+            {b.walletPaid ? <p className="flex items-center gap-2 rounded-xl bg-leaf/10 p-3 text-sm font-bold text-forest ring-1 ring-leaf/30 rtl:leading-[2]"><Wallet className="h-4 w-4 shrink-0" aria-hidden="true" />{t("aw_paid")}</p>
+              : !stopped && !q.promo && <CompanyAccountCard t={t} deal={bookingDeal(b)} />}
             {!stopped && <div className="no-print"><ProofStrip t={t} deal={bookingDeal(b)} /></div>}
             <p className="muted text-[11px] leading-snug text-soil/80">{t("vo_note")} {t("vo_pattern_note")}</p>
           </div>
@@ -7754,7 +8422,7 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
             <button key={p.id} onClick={() => go("agri-mandi")} className="flex w-full items-center gap-3 rounded-2xl bg-white p-3 text-start shadow-sm ring-1 ring-soil/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold/20 text-soil"><Wheat className="h-6 w-6" aria-hidden="true" /></span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-bold text-forest">{t("crop_" + p.crop) !== "crop_" + p.crop ? t("crop_" + p.crop) : p.crop} · {p.qty} {t("am_mann")}</span>
+                <span className="block truncate font-bold text-forest">{cropName(t, p)} · {p.qty} {t("am_mann")}</span>
                 <span className="block truncate text-xs text-soil/80" dir="ltr">{p.id} · {pkr(p.rate)} / {t("am_mann")}{p.sale ? ` · ${pkr(p.sale.gross || 0)}` : ""}</span>
               </span>
               <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${p.status === "sold" ? "bg-leaf/15 text-forest" : "bg-gold/25 text-soil"}`}>{p.status === "sold" ? t("act_sold") : t("act_open")}</span>
@@ -8005,7 +8673,7 @@ function ConsultBar({ t }) {
 /* ------------------------------------------------------------------ */
 /* Booking modal with transparent price calculator                     */
 /* ------------------------------------------------------------------ */
-function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = false }) {
+function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = false, promoFor = () => null }) {
   const [date, setDate] = useState(addDaysISO(1));
   const [hours, setHours] = useState(4);
   const [wantOp, setWantOp] = useState(false);
@@ -8038,8 +8706,9 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
 
   const terms = offerOn ? { rate: Number(offerRate) || listing.rate, transport: Number(offerTr) >= 0 ? Number(offerTr) : listedTr } : null;
   const commissionRate = ecoCommission(smallholder ? SMALLHOLDER_COMMISSION : COMMISSION, ecoActive);
-  const q = quote(listing, hours, wantOp, wantTr, terms, commissionRate);
-  const listedQ = quote(listing, hours, wantOp, wantTr, null, commissionRate);
+  const slot = promoFor(listing.ownerUid);
+  const q = withPromo(quote(listing, hours, wantOp, wantTr, terms, commissionRate), slot);
+  const listedQ = withPromo(quote(listing, hours, wantOp, wantTr, null, commissionRate), slot);
   const payLater = payment === "paylater";
   const advance = Math.round(q.total * ADVANCE_SHARE);
   const balance = q.total - advance;
@@ -8141,7 +8810,7 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
               <Row label={t("bk_tr")} value={listing.transport === "included" ? t("included_word") : q.transport ? pkr(q.transport) : t("not_added")} muted={!q.transport} />
               <div className="my-1 border-t border-dashed border-soil/20" />
               <Row label={t("bk_sub")} value={pkr(q.subtotal)} />
-              <Row label={t("bk_comm").replace("{p}", pctLabel(q.commissionRate))} value={pkr(q.commission)} />
+              <Row label={commLabel(t, q)} value={pkr(q.commission)} />
               <div className="my-1 border-t border-soil/20" />
               <Row label={t("bk_total")} value={pkr(q.total)} strong />
               {offerOn && q.total !== listedQ.total && <p className="text-end text-xs text-soil/80" dir="ltr">{t("bk_listed")}: <s>{pkr(listedQ.total)}</s> · −{pkr(listedQ.total - q.total)}</p>}
@@ -8254,7 +8923,7 @@ function FeedbackForm({ t, onSubmit }) {
 function CounterOfferBox({ b, t, updateBooking }) {
   const c = b.counter;
   const snap = b.listingSnap || { rate: b.quote.listedRate || b.quote.rate, operator: "included", transport: "optional", distance: 0 };
-  const nq = quote(snap, b.quote.hours, b.operator, b.transport && b.quote.transport > 0, { rate: c.rate, transport: c.transport }, b.smallholder ? SMALLHOLDER_COMMISSION : COMMISSION);
+  const nq = withPromo(quote(snap, b.quote.hours, b.operator, b.transport && b.quote.transport > 0, { rate: c.rate, transport: c.transport }, b.smallholder ? SMALLHOLDER_COMMISSION : COMMISSION), b.quote.promo || null);
   return (
     <div className="mt-3 rounded-xl border border-gold/60 bg-gold/10 p-3">
       <p className="flex items-center gap-2 text-sm font-bold text-soil"><Repeat className="h-4 w-4" aria-hidden="true" />{t("mb_counter")}</p>
@@ -8351,7 +9020,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
                 <span>{t("bk_base")}: <b dir="ltr">{pkr(b.quote.base)}</b></span>
                 <span>{t("bk_op")}: <b>{b.quote.operator ? pkr(b.quote.operator) : b.operator ? t("included_word") : t("not_added")}</b></span>
                 <span>{t("bk_tr")}: <b>{b.quote.transport ? pkr(b.quote.transport) : b.transport ? t("included_word") : t("not_added")}</b></span>
-                <span>{t("bk_comm").replace("{p}", pctLabel(b.quote.commissionRate || (b.quote.subtotal ? b.quote.commission / b.quote.subtotal : COMMISSION)))}: <b dir="ltr">{pkr(b.quote.commission)}</b></span>
+                <span>{commLabel(t, b.quote)}: <b dir="ltr">{pkr(b.quote.commission)}</b></span>
                 <span>{t("bk_pay")}: <b>{t("pay_" + b.payment)}</b></span>
                 <span>{t("owner")}: <b dir="ltr">{b.ownerId}</b></span>
               </div>
@@ -8733,7 +9402,7 @@ function PendingRequest({ b, t, updateBooking, contact, onClear }) {
   );
 }
 
-function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast, archive, landBookings = [], landRequests = [] }) {
+function OwnerPortal({ wallet = null, walletTopups = [], walletNeed = 0, onTopUp = () => {}, promoUsed = null, bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast, archive, landBookings = [], landRequests = [] }) {
   const [sub, setSub] = useState(initialSub || "requests");
   useEffect(() => { if (initialSub) setSub(initialSub); }, [initialSub]);
   // Clear -> History: cleared items leave the active lists but are never deleted
@@ -8773,6 +9442,8 @@ function OwnerPortal({ bookingContacts = {}, t, dn, lang, listings, bookings, ad
         <h2 id="ow-h" className="font-display text-2xl font-extrabold text-forest">{t("ow_title")}</h2>
         <p className="mt-1 text-sm text-soil/80"><Coins className="me-1.5 inline h-4 w-4 align-[-2px] text-gold" aria-hidden="true" /><span className="font-semibold">{t("hero_owner")}</span><span className="mt-0.5 block">{t("ow_sub")}</span></p>
       </div>
+      {session && session.uid && <PromoPill t={t} used={promoUsed} className="mb-4" />}
+      {session && session.uid && <AgriWalletCard t={t} wallet={wallet} topups={walletTopups} need={walletNeed} onTopUp={onTopUp} className="mb-5" />}
       <div className="relative mb-5">
       <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto scroll-smooth px-4 pe-10 sm:mx-0 sm:px-0 sm:pe-0" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
@@ -8879,7 +9550,7 @@ const U = {
   pa: {
     type: "Machine di qisam chuno:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chuno:\n1. Kal ({d1})\n2. Parson ({d2})\n3. {d3}", hours: "Kinne ghante? (1-16)\nNumber likh ke bhejo", loc: "Nazdeeki ilaqa chuno:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Machinan:", none: "Is qisam di koi machine nahi labhi.\n0. Wapis", operator: "Operator chahida? (+Rs500/ghanta)\n1. Haan\n2. Nahi", transport: "Transport chahidi? (+Rs{fee})\n1. Haan\n2. Nahi",
-    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 6% Rs{comm}\nDiesel: tusi dena (dry rent)\nVadh time: maalik naal tay\n1. Confirm  2. Cancel",
+    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 2.5% Rs{comm}\nDiesel: tusi dena (dry rent)\nVadh time: maalik naal tay\n1. Confirm  2. Cancel",
     pending: "Maalik {owner} nu request ghal ditti.\nTasdeeq di udeek...", confirmed: "SMS: Agri-Share booking {id} PAKKI.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal",
     complete: "Kya kiraya mukammal hoya?\n1. Haan\n2. Masla report karo", rating: "Rating dio (1-5):", done: "Shukriya! Feedback record ho gaya.\nEnd dabao.", issue: "Shikayat record. Agri-Agent rabta karega.\nEnd dabao.",
     cancelled: "Booking cancel. End dabao.", invalid: "Ghalat input. Dobara koshish karo.",
@@ -8887,7 +9558,7 @@ const U = {
   ur: {
     type: "Machine ki qisam chunein:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chunein:\n1. Kal ({d1})\n2. Parson ({d2})\n3. {d3}", hours: "Kitne ghante? (1-16)\nNumber likh kar bhejein", loc: "Qareebi ilaqa chunein:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Machines:", none: "Is qisam ki koi machine nahi mili.\n0. Wapis", operator: "Operator chahiye? (+Rs500/ghanta)\n1. Haan\n2. Nahi", transport: "Transport chahiye? (+Rs{fee})\n1. Haan\n2. Nahi",
-    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 6% Rs{comm}\nDiesel: aap ka (dry rent)\nZaid waqt: maalik se tay\n1. Confirm  2. Cancel",
+    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 2.5% Rs{comm}\nDiesel: aap ka (dry rent)\nZaid waqt: maalik se tay\n1. Confirm  2. Cancel",
     pending: "Maalik {owner} ko request bhej di.\nTasdeeq ka intezar...", confirmed: "SMS: Agri-Share booking {id} CONFIRMED.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal",
     complete: "Kya kiraya mukammal hua?\n1. Haan\n2. Masla report karein", rating: "Rating dein (1-5):", done: "Shukriya! Feedback record ho gaya.\nEnd dabayein.", issue: "Shikayat record. Agri-Agent rabta karega.\nEnd dabayein.",
     cancelled: "Booking cancel. End dabayein.", invalid: "Ghalat input. Dobara koshish karein.",
@@ -8895,7 +9566,7 @@ const U = {
   sd: {
     type: "Mashin jo qisam chundiyo:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chundiyo:\n1. Subhaane ({d1})\n2. Pareenh ({d2})\n3. {d3}", hours: "Ketra kalak? (1-16)\nNumber likhi moklyo", loc: "Wejho ilaiqo chundiyo:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Mashinoon:", none: "Hin qisam ji ka mashin na mili.\n0. Wapas", operator: "Operator khape? (+Rs500/kalak)\n1. Ha\n2. Na", transport: "Transport khape? (+Rs{fee})\n1. Ha\n2. Na",
-    review: "Kul: Rs{total}\nKirayo Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 6% Rs{comm}\nDiesel: awhan jo (dry rent)\nWadheek waqt: malik san tay\n1. Confirm  2. Cancel",
+    review: "Kul: Rs{total}\nKirayo Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 2.5% Rs{comm}\nDiesel: awhan jo (dry rent)\nWadheek waqt: malik san tay\n1. Confirm  2. Cancel",
     pending: "Malik {owner} khe darkhwast moklee wai.\nTasdeeq jo intezar...", confirmed: "SMS: Agri-Share booking {id} CONFIRMED.\n{machine}, {date}, {h} kalak, Rs{total}.\n1. Kirayo mukammal",
     complete: "Chha kirayo mukammal thyo?\n1. Ha\n2. Masilo report karyo", rating: "Rating dyo (1-5):", done: "Meharbani! Rai record thi wai.\nEnd dabayo.", issue: "Shikayat record. Agri-Agent rabto kando.\nEnd dabayo.",
     cancelled: "Booking cancel. End dabayo.", invalid: "Ghalat input. Wari koshish karyo.",
@@ -8906,7 +9577,7 @@ U.urS = {
   type: "مشین کی قسم چنیں:\n1. ٹریکٹر\n2. تھریشر\n3. ہارویسٹر", date: "تاریخ چنیں:\n1. کل ({d1})\n2. پرسوں ({d2})\n3. {d3}", hours: "کتنے گھنٹے؟ (1 سے 16)\nنمبر لکھ کر بھیجیں",
   loc: "قریبی علاقہ چنیں:\n1. لاہور دیہی\n2. قصور\n3. شیخوپورہ\n4. اوکاڑہ\n5. فیصل آباد\n6. ساہیوال",
   options: "مشینیں:", none: "اس قسم کی کوئی مشین نہیں ملی۔\n0. واپس", operator: "آپریٹر چاہیے؟ (+500 روپے فی گھنٹہ)\n1. ہاں\n2. نہیں", transport: "ٹرانسپورٹ چاہیے؟ (+{fee} روپے)\n1. ہاں\n2. نہیں",
-  review: "کل: {total} روپے\nکرایہ {base} + آپریٹر {op} + ٹرانسپورٹ {tr} + فیس 6% {comm}\nڈیزل: آپ کا (ڈرائی رینٹ)\nزائد وقت: مالک سے طے\n1. تصدیق  2. منسوخ",
+  review: "کل: {total} روپے\nکرایہ {base} + آپریٹر {op} + ٹرانسپورٹ {tr} + فیس 2.5% {comm}\nڈیزل: آپ کا (ڈرائی رینٹ)\nزائد وقت: مالک سے طے\n1. تصدیق  2. منسوخ",
   pending: "مالک {owner} کو درخواست بھیج دی۔\nتصدیق کا انتظار...", confirmed: "SMS: ایگری شیئر بکنگ {id} پکی۔\n{machine}، {date}، {h} گھنٹے، {total} روپے۔\n1. کرایہ مکمل",
   complete: "کیا کرایہ مکمل ہوا؟\n1. ہاں\n2. مسئلہ بتائیں", rating: "درجہ بندی دیں (1 سے 5):", done: "شکریہ! رائے محفوظ ہو گئی۔\nختم دبائیں۔", issue: "شکایت درج۔ ایگری ایجنٹ رابطہ کرے گا۔\nختم دبائیں۔",
   cancelled: "بکنگ منسوخ۔ ختم دبائیں۔", invalid: "غلط اندراج۔ دوبارہ کوشش کریں۔",
@@ -9164,7 +9835,7 @@ function scriptLang(text, uiLang) {
 }
 const normDigits = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
 
-const HELPER_EXTRA = {"register": {"pa": "ایگری شیئر تے رجسٹر ہون دا طریقہ:\n1. اُتے \"سائن اپ\" دباؤ۔\n2. پورا ناں، ای میل، موبائل تے ضلع لکھو۔\n3. اپنا کردار چنو: کسان، مشینری مالک یا ایگری ایجنٹ۔\n4. پاس ورڈ (گھٹ توں گھٹ 6 حرف) دو واری لکھو تے پرائیویسی نوٹ منو۔\n5. \"اکاؤنٹ بناؤ\" دباؤ۔", "sd": "ايگري شيئر تي رجسٽر ٿيڻ جو طريقو:\n1. مٿي \"سائن اپ\" دٻايو۔\n2. پورو نالو، اي ميل، موبائل ۽ ضلعو لکو۔\n3. پنهنجو ڪردار چونڊيو: هاري، مشينري مالڪ يا ايگري ايجنٽ۔\n4. پاس ورڊ (گهٽ ۾ گهٽ 6 اکر) ٻه ڀيرا لکو ۽ پرائيويسي نوٽ قبول ڪريو۔\n5. \"کاتو ٺاهيو\" دٻايو۔", "ps": "په اګري شېئر کې د نوم لیکنې طریقه:\n1. پورته \"نوم لیکنه\" کېکاږئ.\n2. بشپړ نوم، ای میل، موبایل او ضلع ولیکئ.\n3. خپل رول وټاکئ: بزګر، د ماشین مالک یا اګري اېجنټ.\n4. پاسورډ (لږ تر لږه 6 توري) دوه ځله ولیکئ او د محرمیت یادونه ومنئ.\n5. \"حساب جوړ کړئ\" کېکاږئ.", "bal": "ایگری شیئر ءَ رجسٹر بیگ ءِ راہ:\n1. سرا \"سائن اپ\" ءَ جن۔\n2. پوریں نام، ای میل، موبائل و ضلع نبشتہ کن۔\n3. وتی کار گچین کن: بزگر، مشین ءِ واھند یا ایگری ایجنٹ۔\n4. پاس ورڈ (کمّ ءِ کمّ 6 حرف) دو بر نبشتہ کن و پرائیویسی ءِ نوٹ ءَ بمنّ۔\n5. \"اکاؤنٹ جوڑ کن\" ءَ جن۔"}, "offer": {"pa": "کرایہ ودھ لگدا اے؟ اپنی قیمت دسو:\n1. مشین تے \"بکنگ دی درخواست\" دباؤ۔\n2. \"اپنی قیمت دسو\" چالو کرو۔\n3. فی گھنٹہ پیشکش (لکھے ریٹ دا گھٹ توں گھٹ 60%) تے ٹرانسپورٹ دی پیشکش لکھو۔\n4. سنیہا لکھ کے گھلو۔ مالک منے گا، جوابی پیشکش دیوے گا یا انکار کرے گا۔ ٹرانسپورٹ فاصلے دے حساب نال اے (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)۔", "sd": "ڪرايو وڌيڪ لڳي ٿو؟ پنهنجي قيمت ٻڌايو:\n1. مشين تي \"بڪنگ جي درخواست\" دٻايو۔\n2. \"پنهنجي قيمت ٻڌايو\" چالو ڪريو۔\n3. في ڪلاڪ آڇ (لکيل اگهه جو گهٽ ۾ گهٽ 60%) ۽ ٽرانسپورٽ جي آڇ لکو۔\n4. پيغام لکي موڪليو۔ مالڪ قبول، جوابي آڇ يا انڪار ڪري سگهي ٿو۔ ٽرانسپورٽ فاصلي موجب آهي (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)۔", "ps": "کرایه ډېره ښکاري؟ خپله بیه وړاندې کړئ:\n1. پر ماشین \"د بکنګ غوښتنه\" کېکاږئ.\n2. \"خپله بیه وړاندې کړئ\" چالان کړئ.\n3. فی ساعت وړاندیز (د ثبت شوې بیې لږ تر لږه 60%) او د ټرانسپورټ وړاندیز ولیکئ.\n4. پیغام ولیکئ او ولېږئ. مالک یې منلی، بل وړاندیز ورکولی یا ردولی شي. ټرانسپورټ د واټن له مخې دی (100 روپۍ فی کیلومتر، لږ تر لږه 500).", "bal": "کرایہ گیش اِنت؟ وتی بہا ءَ پیش کن:\n1. مشین ءِ سرا \"بکنگ ءِ درخواست\" ءَ جن۔\n2. \"وتی بہا ءَ پیش کن\" ءَ روشن کن۔\n3. ساعت ءِ پیشکش (نبشتہ کتگیں نرخ ءِ کمّ ءِ کمّ 60%) و ٹرانسپورٹ ءِ پیشکش نبشتہ کن۔\n4. کلہو نبشتہ کن و دیم دئے۔ واھند منّیت، دومی پیشکش دنت یا نہ منّیت۔ ٹرانسپورٹ دوری ءِ ہساب ءَ اِنت (100 کلدار فی کلومیٹر، کمّ ءِ کمّ 500)۔"}, "paylater": {"pa": "ہن وڈھی، بعد وچ ادائیگی: بکنگ فارم وچ ایہہ ادائیگی چنو۔ تسیں ہن صرف 30% دیو؛ باقی 70% تیجی دھر مائیکروفنانس پارٹنر (تجویز: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) دا قرض اے جو وڈھی توں بعد (60 توں 180 دن) دینا اے۔ خطرہ پارٹنر دا اے، ایگری شیئر دا نئیں۔ سوکھا طریقہ: ایگری منڈی تے فصل ویچو، 70% آپے کٹ جاوے گا۔", "sd": "هاڻي لابارو، پوءِ ادائيگي: بڪنگ فارم ۾ هي ادائيگي چونڊيو۔ توهان هاڻي صرف 30% ڏيو؛ باقي 70% ٽئين ڌر مائڪروفنانس پارٽنر (تجويز: جاز ڪيش ڪريڊٽ، ايزي پيسا يا ZTBL) جو قرض آهي جيڪو لاباري کان پوءِ (60 کان 180 ڏينهن) ڏيڻو آهي۔ خطرو پارٽنر جو آهي، ايگري شيئر جو ناهي۔ سولو طريقو: ايگري منڊي تي فصل وڪڻو، 70% پاڻمرادو ڪٽجي ويندو۔", "ps": "اوس لو، وروسته تادیه: د بکنګ په فورمه کې دا تادیه وټاکئ. تاسو اوس یوازې 30% ورکوئ؛ پاتې 70% د دریم اړخ مایکروفنانس شریک (وړاندیز: جاز کیش کریډټ، ایزي پیسه یا ZTBL) پور دی چې له لو وروسته (60 تر 180 ورځو) ورکول کېږي. خطر د شریک دی، د اګري شېئر نه. اسانه لاره: په اګري منډۍ کې فصل وپلورئ، 70% به په خپله پرې شي.", "bal": "انّوں رونگ، رند ءَ زرّ: بکنگ ءِ فارم ءَ اے راہ ءَ گچین کن۔ شما انّوں تهنا 30% دئیت؛ پشت کپتگیں 70% سیمی دَپ ءِ مائیکروفنانس ہمراہ (پیشنهاد: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) ءِ وام اِنت کہ رونگ ءَ رند (60 تا 180 روچ) دئیگ بیت۔ خطر ہمراہ ءِ اِنت، ایگری شیئر ءِ نہ۔ آسانیں راہ: ایگری منڈی ءَ کِشت ءَ بہا کن، 70% وت ءَ کٹ بیت۔"}, "mandi": {"pa": "ایگری منڈی:\n1. فصل (کنک، چول، مکئی، کپاہ)، مقدار من وچ، معیار تے پنڈ چنو۔\n2. فی من متوقع قیمت تے جاز کیش یا ایزی پیسہ نمبر لکھو۔\n3. پوسٹ کرو: آٹا ملاں، رائس ملاں تے وڈے خریدار لائیو بولی لاندے نیں۔\n4. سب توں چنگی بولی منو: ویچ دی رقم وچوں باقی 70% مشینری قرض کٹ کے خالص منافع تہاڈے والٹ وچ۔", "sd": "ايگري منڊي:\n1. فصل (ڪڻڪ، چانور، مڪئي، ڪپهه)، مقدار مڻن ۾، معيار ۽ ڳوٺ چونڊيو۔\n2. في مڻ متوقع قيمت ۽ جاز ڪيش يا ايزي پيسا نمبر لکو۔\n3. پوسٽ ڪريو: اٽي ۽ چانورن جون ملون ۽ وڏا خريدار لائيو بولي ڏين ٿا۔\n4. بهترين بولي قبول ڪريو: وڪري مان باقي 70% مشينري قرض ڪٽجي خالص منافعو توهان جي والٽ ۾۔", "ps": "اګري منډۍ:\n1. فصل (غنم، وريجې، جوار، پنبه)، مقدار په من، کیفیت او کلی وټاکئ.\n2. فی من تمه‌لرونکې بیه او د جاز کیش یا ایزي پیسه شمېره ولیکئ.\n3. ثبت یې کړئ: د اوړو او وريجو ملونه او لوی پېرودونکي ژوندۍ داوطلبي کوي.\n4. غوره داوطلبي ومنئ: له پلور څخه پاتې 70% د ماشین پور پرې کېږي او خالصه ګټه ستاسو والټ ته ځي.", "bal": "ایگری منڈی:\n1. کِشت (گندم، برنج، جُوار، کپاس)، کچ من ءَ، جوانی و میتگ گچین کن۔\n2. فی من امیتیں بہا و جاز کیش یا ایزی پیسہ ءِ نمبر نبشتہ کن۔\n3. دیم دئے: آرت و برنج ءِ مِل و مزنیں گِروک زندگیں بولی جن اَنت۔\n4. گہتریں بولی ءَ بمنّ: بہا ءَ چہ پشت کپتگیں 70% مشین ءِ وام کٹ بیت و خالصیں کٹّ شمئے والٹ ءَ رَوت۔"}, "keypad": {"pa": "سمارٹ فون نئیں؟ کسے وی سادے فون توں ساڈے ایگری شیئر کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔ اوہ نیڑے مشین لبھ کے بکنگ دی تصدیق SMS تے گھلن گے۔ پنڈ دا ایگری ایجنٹ وی تہاڈی بکنگ کر سکدا اے۔", "sd": "سمارٽ فون ناهي؟ ڪنهن به سادي فون مان اسان جي ايگري شيئر ڪنسلٽنٽ کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو۔ اهي ويجهي مشين ڳولي بڪنگ جي تصديق SMS تي موڪليندا۔ ڳوٺ جو ايگري ايجنٽ به توهان جي بڪنگ ڪري سگهي ٿو۔", "ps": "سمارټ فون نه لرئ؟ له هر ساده ټیلیفون څخه زموږ د اګري شېئر مشاور ته 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ. هغوی به نږدې ماشین ومومي او بکنګ به په SMS تایید کړي. د کلي اګري اېجنټ هم ستاسو بکنګ کولی شي.", "bal": "سمارٹ فون نیست؟ ہر سادگیں فون ءَ چہ مئے ایگری شیئر کنسلٹنٹ ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔ آ نزیکیں مشین ءَ شوہاز کنت و بکنگ ءِ منّگ ءَ SMS ءَ دیم دنت۔ میتگ ءِ ایگری ایجنٹ ہم شمئے بکنگ ءَ کت کنت۔"}, "menu": {"pa": "میں ایہناں وچ مدد کر سکدا آں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، قیمت دی پیشکش، مشین لکھانا\n• ہن وڈھی، بعد وچ ادائیگی (30% / 70%)\n• ایگری منڈی تے فصل ویچنا\n• ڈیزل، آپریٹر، ٹرانسپورٹ تے کمیشن (6%)\n• زمین ٹھیکہ، زمین دی بولی تے اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل وچ کمیشن دی ونڈ، سرکاری وصولی کھاتہ تے رسید\n• کم / حوالگی دے تصویر تے ویڈیو ثبوت\n• اپنی بولی (اپنا ریٹ آپ)، 15 / 25 / 40 کلومیٹر دائرہ تے اج دے ڈیزل / پیٹرول ریٹ\n• کنسلٹنٹ: 0322-4729249 یا 0370-0318574", "sd": "مان انهن ۾ مدد ڪري سگهان ٿو:\n• ويب سائيٽ: سائن اپ، سائن ان، بڪنگ، قيمت جي آڇ، مشين لکرائڻ\n• هاڻي لابارو، پوءِ ادائيگي (30% / 70%)\n• ايگري منڊي تي فصل وڪڻڻ\n• ڊيزل، آپريٽر، ٽرانسپورٽ ۽ ڪميشن (6%)\n• زمين ٺيڪو، زمين جي ٻولي ۽ اسٽامپ پيپر اقرار نامو (4.5% في)\n• بل ۾ ڪميشن جي ورهاست، سرڪاري وصولي کاتو ۽ رسيد\n• ڪم / حوالگي جا تصوير ۽ وڊيو ثبوت\n• پنهنجي ٻولي (پنهنجو اگهه پاڻ)، 15 / 25 / 40 ڪلوميٽر دائرو ۽ اڄ جا ڊيزل / پيٽرول اگهه\n• صلاحڪار: 0322-4729249 يا 0370-0318574", "ps": "زه په دې کې مرسته کولی شم:\n• ویب پاڼه: نوم لیکنه، ننوتل، بکنګ، د بیې وړاندیز، د ماشین ثبتول\n• اوس لو، وروسته تادیه (30% / 70%)\n• په اګري منډۍ کې د فصل پلورل\n• ډیزل، چلوونکی، ټرانسپورټ او کمیشن (6%)\n• د ځمکې اجاره، د ځمکې بولي او د سټامپ پېپر اقرار نامه (4.5% فیس)\n• په بل کې د کمیشن وېش، رسمي حساب او رسیدونه\n• د کار / سپارلو انځور او ویډیو ثبوتونه\n• اپني بولي (خپله بیه پخپله)، 15 / 25 / 40 کیلومتره واټن او د نن ورځې د ډیزلو / پټرولو نرخ\n• سلاکار: 0322-4729249 یا 0370-0318574", "bal": "من اے کاراں کمک کت کناں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، بہا ءِ پیشکش، مشین ءِ نبشتہ کنگ\n• انّوں رونگ، رند ءَ زرّ (30% / 70%)\n• ایگری منڈی ءَ کِشت ءِ بہا کنگ\n• ڈیزل، چلائوک، ٹرانسپورٹ و کمیشن (6%)\n• زمین ٹھیکہ، زمین ءِ بولی و اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل ءَ کمیشن ءِ بہر، سرکاری اکاؤنٹ و رسید\n• کار / سپارگ ءِ عکس و ویڈیو ثبوت\n• اپنی بولی (وتی نرخ وت)، 15 / 25 / 40 کلومیٹر دائرہ و مرچی ءِ ڈیزل / پیٹرول نرخ\n• صلاحکار: 0322-4729249 یا 0370-0318574"}, "land": {"pa": "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین دے مالک: اپنی زمین لکھاؤ: پنڈ، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی، سڑک، ٹھیکے دے مہینے تے اپنا ریٹ۔ ساڈی ٹیم تصدیق کردی اے۔\n2. کسان: فاصلے، ایکڑ تے بجٹ نال زمین لبھو تے ٹھیکے دی درخواست گھلو۔ یا \"زمین دی بولی\" لاؤ: جنی زمین چاہیدی اے تے اپنا ریٹ، مالک پیشکش گھلدے نیں۔\n3. مالک دے منن مگروں دو زباناں وچ اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ تے دستخط لئی تیار ہوندا اے۔\n4. فیس: ٹھیکے دی کل رقم تے صرف اک وار 4.5% سہولت کمیشن، پکا کرن توں پہلاں دسیا جاندا اے۔\n5. 360° فائدہ: ٹھیکہ چلدا ہووے تے مشینری کمیشن 0.50% گھٹ (کدی 3.50% توں تھلے نئیں)۔", "sd": "زمين ٺيڪو (ٺيڪي تي زمين ٽيب):\n1. زمين جا مالڪ: پنهنجي زمين لکرايو: ڳوٺ، ضلعو، ايڪڙ يا ڪنال، پاڻي (نهري، سولر ٽيوب ويل، بجلي يا ڊيزل ٽيوب ويل، يا باراني)، مٽي، رستو، ٺيڪي جا مهينا ۽ پنهنجو اگهه. اسان جي ٽيم تصديق ڪري ٿي.\n2. هاري: فاصلي، ايڪڙن ۽ بجيٽ سان زمين ڳوليو ۽ ٺيڪي جي درخواست موڪليو. يا \"زمين جي ٻولي\" لڳايو: جيتري زمين گهرجي ۽ پنهنجو اگهه، مالڪ آڇون موڪليندا.\n3. مالڪ جي قبول ڪرڻ کانپوءِ ٻن ٻولين ۾ اسٽامپ پيپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٽ ۽ صحيح لاءِ تيار ٿئي ٿو.\n4. في: ٺيڪي جي ڪل رقم تي صرف هڪ ڀيرو 4.5% سهولت ڪميشن، تصديق کان اڳ ڏيکاري وڃي ٿي.\n5. 360° فائدو: هلندڙ ٺيڪي دوران مشينري ڪميشن 0.50% گهٽ (ڪڏهن به 3.50% کان هيٺ نه).", "ps": "د ځمکې ټیکه (ځمکه په اجاره ټب):\n1. د ځمکې مالکان: خپله ځمکه ثبت کړئ: کلی، ضلع، ایکړ یا کنال، اوبه (نهري، سولر ټیوب ویل، برقي یا ډیزل ټیوب ویل، یا للمي/بارانی)، خاوره، سړک، د اجارې میاشتې او خپله بیه. زموږ ټیم یې تاییدوي.\n2. بزګران: د واټن، ایکړ او بودیجې له مخې ځمکه ولټوئ او د اجارې غوښتنه ولېږئ. یا \"د ځمکې بولي\" پوسټ کړئ: څومره ځمکه غواړئ او خپله بیه، مالکان وړاندیزونه لېږي.\n3. د مالک له منلو وروسته دوه ژبی سټامپ پېپر \"اقرار نامہ ٹھیکہ اراضی\" د چاپ او لاسلیک لپاره چمتو کېږي.\n4. فیس: د اجارې په ټولې پیسو یوازې یو ځل 4.5% اسانتیا کمیشن، له تایید نه مخکې ښودل کېږي.\n5. 360° ګټه: د فعالې اجارې پر مهال د ماشینونو کمیشن 0.50% کمېږي (هېڅکله له 3.50% نه کم نه).", "bal": "زمین ٹھیکہ (ٹھیکہ ءَ زمین ٹیب):\n1. زمین ءِ واجہ: وتی زمین ءَ نبشتہ کن: میتگ، ضلع، ایکڑ یا کنال، آپ (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، ہاک، راہ، ٹھیکہ ءِ ماہ و وتی نرخ۔ مئے ٹیم تصدیق کنت۔\n2. کشاورز: دوری، ایکڑ و بجٹ ءَ گوں زمین ءَ شوہاز کن و ٹھیکہ ءِ درخواست ءَ دیم دے۔ یا \"زمین ءِ بولی\" بِل: چنچو زمین لوٹئے و وتی نرخ، واجہ پیشکش دیم دینت۔\n3. واجہ ءِ منّگ ءَ رند دو زبانیں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ و دستخط ءِ واستہ تیار بیت۔\n4. فیس: ٹھیکہ ءِ کُلیں زرّ ءِ سرا تہنا یک بر 4.5% کمیشن، تصدیق ءَ پیسر پیش دارگ بیت۔\n5. 360° پائدگ: ٹھیکہ ءِ وہد ءَ مشینری کمیشن 0.50% کم بیت (ہچبر 3.50% ءَ کمتر نہ)۔"}, "split": {"pa": "بل دی ونڈ: ہر مشینری بل تے زمین دے اقرار نامے وچ دو وکھریاں لائناں نیں: ایگری شیئر پلیٹ فارم کمیشن تے مالک نوں خالص ادائیگی۔\n• مشینری: کمیشن 6% (5 ایکڑ توں گھٹ والے نکے کسان 4%)، کرائے دے اُتے۔\n• زمین ٹھیکہ: صرف اک وار 4.5% فیس، ٹھیکے دی کل رقم وچوں۔\nکمیشن کیویں جمع کرو: بل اُتے ایگری شیئر دا سرکاری وصولی کھاتہ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھیا اے۔ ادائیگی مگروں \"کمیشن ادائیگی دی رسید اپ لوڈ کرو\" دباؤ تے رسید دی تصویر تے ٹرانزیکشن آئی ڈی لکھو۔ ٹیم دی تصدیق تیک \"جانچ ہو رہی اے\"، فیر \"کمیشن وصول ہو گیا\"۔ مالک سارے واجبات اونر پورٹل > کمیشن وچ ویکھدے نیں۔", "sd": "بل جي ورهاست: هر مشينري بل ۽ زمين جي اقرار نامي ۾ ٻه الڳ سٽون آهن: ايگري شيئر پليٽ فارم ڪميشن ۽ مالڪ کي خالص ادائيگي.\n• مشينري: ڪميشن 6% (5 ايڪڙن کان گهٽ وارا ننڍا هاري 4%)، ڪرائي جي مٿان.\n• زمين ٺيڪو: صرف هڪ ڀيرو 4.5% في، ٺيڪي جي ڪل رقم مان.\nڪميشن ڪيئن جمع ڪجي: بل تي ايگري شيئر جو سرڪاري وصولي کاتو (بئنڪ، IBAN، راسٽ، جاز ڪيش، ايزي پيسا) لکيل آهي. ادائيگي کانپوءِ \"ڪميشن ادائيگي جي رسيد اپ لوڊ ڪريو\" دٻايو ۽ رسيد جي تصوير ۽ ٽرانزيڪشن آئي ڊي لکو. ٽيم جي تصديق تائين \"جانچ ٿي رهي آهي\"، پوءِ \"ڪميشن وصول ٿي وئي\". مالڪ سڀ واجبات اونر پورٽل > ڪميشن ۾ ڏسن ٿا.", "ps": "د بل وېش: په هر ماشیني بل او د ځمکې اقرار نامه کې دوه جلا کرښې دي: د ایګري شیئر د پلیټ فارم کمیشن او مالک ته خالص تادیه.\n• ماشینونه: کمیشن 6% (له 5 ایکړو کم کوچني بزګران 4%)، د کرایې پر سر.\n• د ځمکې اجاره: یوازې یو ځل 4.5% فیس، د اجارې له ټولو پیسو څخه.\nکمیشن څنګه ورکړئ: په بل کې د ایګري شیئر رسمي د راټولولو حساب (بانک، IBAN، راسټ، جاز کېش، ایزي پېسه) لیکل شوی. له تادیې وروسته \"د کمیشن د تادیې رسید پورته کړئ\" کېکاږئ او د رسید انځور او د معاملې شمېره ولیکئ. د ټیم تر تایید پورې \"د کتنې لاندې\"، بیا \"کمیشن ترلاسه شو\". مالکان ټول پاتې پیسې په اونر پورټل > کمیشن کې ګوري.", "bal": "بل ءِ بہر: ہر مشینری بل و زمین ءِ اقرار نامہ ءَ دو جتائیں لائن ہست: ایگری شیئر ءِ پلیٹ فارم کمیشن و واجہ ءَ را خالص زر۔\n• مشینری: کمیشن 6% (5 ایکڑ ءَ کمتریں کسانی کشاورز 4%)، کرایہ ءِ سرا۔\n• زمین ٹھیکہ: تہنا یک بر 4.5% فیس، ٹھیکہ ءِ کُلیں زرّ ءَ چہ۔\nکمیشن ءَ چون دیئے: بل ءِ سرا ایگری شیئر ءِ سرکاری مچ کنگ ءِ اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) نبشتہ اِنت۔ زر دیگ ءَ رند \"کمیشن ءِ زر ءِ رسید ءَ اپ لوڈ کن\" ءَ جن و رسید ءِ عکس و ٹرانزیکشن آئی ڈی ءَ نبشتہ کن۔ ٹیم ءِ تصدیق ءَ تان \"چارگ بیگ ءَ اِنت\"، رند ءَ \"کمیشن رسِت\"۔ واجہ کُلیں دیگی زرّاں اونر پورٹل > کمیشن ءَ گندنت۔"}, "proof": {"pa": "تصویر تے ویڈیو ثبوت دوہاں دھراں دی حفاظت کردا اے۔ معاملہ میریاں بکنگاں، اونر پورٹل (پکے کم) یا ٹھیکے تے زمین > میرے زمین دے معاملے وچ کھولو تے \"تصویر / ویڈیو ثبوت لاؤ\" دباؤ۔\n1. مرحلہ چنو: کم توں پہلاں / حوالگی، کم توں بعد، میٹر یا ڈیزل ریڈنگ، یا زمین دی حالت۔\n2. تصویر، نکی ویڈیو (650 KB تیک) یا یوٹیوب / گوگل ڈرائیو لنک تے نکا نوٹ لاؤ۔\n3. سانبھو: ایہہ گیلری وچ کس نے تے کدوں لایا دے نال دسدا اے۔\nصرف اوسے معاملے دا کسان، مالک تے ایگری شیئر ٹیم ایہہ ثبوت ویکھ سکدے نیں، تے مگروں بدلیا نئیں جا سکدا۔", "sd": "تصوير ۽ وڊيو ثبوت ٻنهي ڌرين جي حفاظت ڪري ٿو. معاملو منهنجون بڪنگون، اونر پورٽل (تصديق ٿيل ڪم) يا ٺيڪي تي زمين > منهنجا زمين جا معاملا ۾ کوليو ۽ \"تصوير / وڊيو ثبوت لڳايو\" دٻايو.\n1. مرحلو چونڊيو: ڪم کان اڳ / حوالگي، ڪم کانپوءِ، ميٽر يا ڊيزل ريڊنگ، يا زمين جي حالت.\n2. تصوير، ننڍي وڊيو (650 KB تائين) يا يوٽيوب / گوگل ڊرائيو لنڪ ۽ ننڍو نوٽ لڳايو.\n3. محفوظ ڪريو: اهو گيلري ۾ ڪنهن ۽ ڪڏهن لڳايو سان گڏ نظر اچي ٿو.\nصرف ان معاملي جو هاري، مالڪ ۽ ايگري شيئر ٽيم اهي ثبوت ڏسي سگهن ٿا، ۽ پوءِ بدلائي نٿا سگهجن.", "ps": "انځور او ویډیو ثبوت د دواړو خواوو ساتنه کوي. معامله په زما بکنګونه، اونر پورټل (تایید شوي کارونه) یا ځمکه په اجاره > زما د ځمکې معاملې کې پرانیزئ او \"انځور / ویډیو ثبوت ورزیات کړئ\" کېکاږئ.\n1. پړاو وټاکئ: له کار مخکې / سپارل، له کار وروسته، د میټر یا ډیزلو لوستنه، یا د ځمکې حالت.\n2. انځور، لنډه ویډیو (تر 650 KB پورې) یا د یوټیوب / ګوګل ډرایو لینک او لنډ یادښت ورزیات کړئ.\n3. خوندي یې کړئ: په ګالرۍ کې د دې سره ښکاري چې چا او کله ورزیات کړ.\nیوازې د همدې معاملې بزګر، مالک او د ایګري شیئر ټیم دا ثبوتونه لیدلی شي، او وروسته نه بدلېږي.", "bal": "عکس و ویڈیو ثبوت دوئیں نیمگاں ءِ نگہپانی کنت۔ معاملہ ءَ منی بکنگ، اونر پورٹل (تصدیق بوتگیں کار) یا ٹھیکہ ءَ زمین > منی زمین ءِ معاملہ ءَ پچ کن و \"عکس / ویڈیو ثبوت لگا\" ءَ جن۔\n1. پڑاو ءَ گچین کن: کار ءَ پیسر / سپارگ، کار ءَ رند، میٹر یا ڈیزل ءِ ریڈنگ، یا زمین ءِ حال۔\n2. عکس، کسانیں ویڈیو (650 KB تان) یا یوٹیوب / گوگل ڈرائیو لنک و کسانیں نوٹ لگا۔\n3. سمبال: اے گیلری ءَ گوں اے ءَ گندگ بیت کہ کئے و کدی لگاتگ۔\nتہنا ہمے معاملہ ءِ کشاورز، واجہ و ایگری شیئر ٹیم اے ثبوتاں گندت کننت، و رند ءَ بدل کنگ نہ بنت۔"}, "govt": {"pa": "سرکاری پورٹل چھیتی آ رہیا اے۔ ایہدے وچ سرکاری قرضے تے سبسڈی دی مدد اک تھاں لیاون دا منصوبہ اے، پر ایہہ ہلے چالو نئیں، ایس لئی ہلے کسے اسکیم دی درخواست نئیں ہو سکدی۔ ہن مدد لئی ساڈے کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔", "sd": "سرڪاري پورٽل جلد اچي رهيو آهي. ان ۾ سرڪاري قرض ۽ سبسڊي جي مدد هڪ هنڌ آڻڻ جو رٿ آهي، پر اهو اڃا هلندڙ ناهي، تنهن ڪري اڃا ڪنهن به اسڪيم جي درخواست نٿي ٿي سگهي. هاڻي مدد لاءِ اسان جي صلاحڪار کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو.", "ps": "دولتي پورټل ژر راځي. پلان دا دی چې د حکومت پورونه او د سبسایډۍ مرسته په یو ځای کې راټوله کړي، خو لا فعال نه دی، نو اوس د هېڅ پروګرام غوښتنه نه شي کېدای. اوس د مرستې لپاره زموږ سلاکار ته په 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ.", "bal": "سرکاری پورٹل زوت کئیت۔ اشیء تہا سرکاری وام و سبسڈی ءِ کمک ءَ یک جاہ ءَ آرگ ءِ منصوبہ ہست، بلے انگت چالو نہ اِنت، پمیشکا انّوں ہچ اسکیم ءِ درخواست نہ بیت۔ انّوں کمک ءِ واستہ مئے صلاحکار ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔"}, "fuel": {"pa": "اج پاکستان وچ تیل دے ریٹ: ڈیزل {d} روپے فی لیٹر{pp}۔ ایہہ سرکاری نوٹیفائیڈ قیمتاں توں دن وچ لگ بھگ دو وار آپے اپڈیٹ ہوندے نیں تے ایپ دے اُتے دسدے نیں۔ مشینری دا کرایہ ڈرائی اے (ڈیزل شامل نئیں)، سوائے اپنی بولی وچ ویٹ رینٹ دے، جتھے مالک ایسے ریٹ تے ڈیزل پاندا اے۔", "sd": "اڄ پاڪستان ۾ تيل جا اگهه: ڊيزل {d} رپيا في ليٽر{pp}. اهي سرڪاري نوٽيفائيڊ قيمتن مان ڏينهن ۾ لڳ ڀڳ ٻه ڀيرا پاڻمرادو اپڊيٽ ٿين ٿا ۽ ايپ جي مٿي نظر اچن ٿا. مشينري جو ڪرايو ڊرائي آهي (ڊيزل شامل ناهي)، سواءِ پنهنجي ٻولي ۾ ويٽ رينٽ جي، جتي مالڪ ساڳئي اگهه تي ڊيزل وجهي ٿو.", "ps": "نن په پاکستان کې د تېلو نرخونه: ډیزل {d} روپۍ په لیټر{pp}. دا د حکومت له خبر شوو بیو څخه په ورځ کې نږدې دوه ځله پخپله تازه کېږي او د اپ په سر کې ښکاري. د ماشینونو کرایه وچه ده (ډیزل پکې نه دی)، پرته له اپني بولي کې د لوند کرایې (Wet rent)، چې مالک په همدې نرخ ډیزل اچوي.", "bal": "مرچی پاکستان ءَ تیل ءِ نرخ: ڈیزل {d} کلدار لیٹر ءَ{pp}۔ اے سرکاری نوٹیفائیڈ بہاں چہ روچ ءَ دو بر وت اپڈیٹ بنت و ایپ ءِ سرا گندگ بنت۔ مشینری ءِ کرایہ ڈرائی اِنت (ڈیزل ہور نہ اِنت)، بیدن اپنی بولی ءِ ویٹ رینٹ ءَ، ہمودا واجہ ہمے نرخ ءَ ڈیزل ءَ دنت۔"}, "boli": {"pa": "اپنی بولی (درخواست پوسٹ کرو ٹیب):\n1. مشین، پنڈ، گھنٹے تے تاریخ چنو۔\n2. اپنا ریٹ آپ لاؤ (اپنی بولی لاؤ): کوئی پکی قیمت نئیں، فی گھنٹہ جنا دینا چاہو لکھو۔\n3. ڈرائی رینٹ (ڈیزل تہاڈا) یا ویٹ رینٹ (ڈیزل مالک دا، لگ بھگ {d} روپے فی لیٹر) چنو۔\n4. پوسٹ کرو: نیڑے دے مالک ریڈار تے آ کے من لیندے نیں یا جوابی پیشکش (اکثر +200 روپے) دیندے نیں۔\n5. کوئی ویہلا نہ ہووے تے دائرہ ودھاؤ: درجہ 1 پنڈ 15 کلومیٹر تیک، درجہ 2 15 توں 25 کلومیٹر (60 روپے فی کلومیٹر ہر پاسے)، درجہ 3 بیک اپ 40 کلومیٹر تیک۔\n6. پیشکش منو، پورا خرچہ ویکھو تے پکا کرو۔", "sd": "پنهنجي ٻولي (درخواست پوسٽ ڪريو ٽيب):\n1. مشين، ڳوٺ، ڪلاڪ ۽ تاريخ چونڊيو.\n2. پنهنجو اگهه پاڻ لڳايو (پنهنجي ٻولي لڳايو): ڪا مقرر قيمت ناهي، في ڪلاڪ جيترو ڏيڻ چاهيو لکو.\n3. ڊرائي رينٽ (ڊيزل توهان جو) يا ويٽ رينٽ (ڊيزل مالڪ جو، لڳ ڀڳ {d} رپيا في ليٽر) چونڊيو.\n4. پوسٽ ڪريو: ويجها مالڪ ريڊار تي اچي قبول ڪن ٿا يا جوابي آڇ (اڪثر +200 رپيا) ڏين ٿا.\n5. ڪو فارغ نه هجي ته دائرو وڌايو: درجو 1 ڳوٺ 15 ڪلوميٽر تائين، درجو 2 15 کان 25 ڪلوميٽر (60 رپيا في ڪلوميٽر هر طرف)، درجو 3 بيڪ اپ 40 ڪلوميٽر تائين.\n6. آڇ قبول ڪريو، پورو خرچ ڏسو ۽ تصديق ڪريو.", "ps": "اپني بولي (غوښتنه پوسټ کړئ ټب):\n1. ماشین، کلی، ساعتونه او نېټه وټاکئ.\n2. خپله بیه پخپله وټاکئ (اپني بولي): هېڅ ټاکلې بیه نشته، په ساعت کې څومره ورکول غواړئ هغه ولیکئ.\n3. وچه کرایه (ډیزل ستاسو) یا لونده کرایه (ډیزل د مالک، نږدې {d} روپۍ په لیټر) وټاکئ.\n4. پوسټ یې کړئ: نږدې مالکان په ریډار راځي او مني یې یا مقابل وړاندیز (اکثر +200 روپۍ) ورکوي.\n5. که څوک وزګار نه وي، واټن پراخ کړئ: لومړی پړاو کلی تر 15 کیلومتره، دوهم پړاو 15 تر 25 کیلومتره (60 روپۍ په کیلومتر هره خوا)، درېیم پړاو بیک اپ تر 40 کیلومتره.\n6. وړاندیز ومنئ، ټول لګښت وګورئ او تایید یې کړئ.", "bal": "اپنی بولی (درخواست پوسٹ کن ٹیب):\n1. مشین، میتگ، ساعت و تاریخ ءَ گچین کن۔\n2. وتی نرخ ءَ وت لگا (اپنی بولی): ہچ مقرریں بہا نیست، ساعت ءَ چنچو دیگ لوٹئے نبشتہ کن۔\n3. ڈرائی رینٹ (ڈیزل شمئیگ) یا ویٹ رینٹ (ڈیزل واجہ ءِ، نزیک {d} کلدار لیٹر ءَ) گچین کن۔\n4. پوسٹ کن: نزیکیں واجہ ریڈار ءَ کاینت و منّنت یا پدی پیشکش (باز وہد +200 کلدار) دینت۔\n5. اگاں کس واندہ مہ بیت دائرہ ءَ مزن کن: درجہ 1 میتگ 15 کلومیٹر تان، درجہ 2 15 چہ 25 کلومیٹر (60 کلدار کلومیٹر ءَ ہر نیمگ)، درجہ 3 بیک اپ 40 کلومیٹر تان۔\n6. پیشکش ءَ منّ، کُلیں خرچ ءَ بگند و تصدیق کن۔"}};
+const HELPER_EXTRA = {"wallet": {"pa": "ایگری والٹ، کمیشن لئی اگاؤں جمع بیلنس (اِن ڈرائیو یا فوڈ پانڈا وانگ):\n1. اونر پورٹل کھولو: سب توں اُتے تہاڈا ایگری والٹ بیلنس تے لین دین اے۔\n2. \"ایگری والٹ ٹاپ اپ کرو\" دباؤ۔ اوتھے لکھے ایگری شیئر دے سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) وچ رقم گھلو۔\n3. رقم چنو (500 توں 10,000 روپے، یا 100 توں اُتے کوئی وی رقم)، ٹرانزیکشن آئی ڈی لکھو، رسید دی تصویر لاؤ تے گھل دیو۔\n4. ساڈی ٹیم رسید ویکھ کے والٹ وچ رقم پا دیندی اے۔\nمفت لانچ ڈیلاں مُکن مگروں کمیشن آپے والٹ وچوں کٹدا اے: بکنگ پکی کرن تے 2.5%، فصل ویچن تے 3.5%، زمین ٹھیکہ منن تے 4.5%۔ بیلنس گھٹ ہووے تے \"ایگری والٹ بیلنس گھٹ اے، آرڈر منن لئی ٹاپ اپ کرو\" دسے گا۔ مدد: 0322-4729249 یا 0370-0318574۔", "sd": "ايگري والٽ، ڪميشن لاءِ اڳواٽ جمع بيلنس (اِن ڊرائيو يا فوڊ پانڊا وانگر):\n1. اونر پورٽل کوليو: سڀ کان مٿي توهان جو ايگري والٽ بيلنس ۽ ليڻ ڏيڻ آهي.\n2. \"ايگري والٽ ٽاپ اپ ڪريو\" دٻايو. اتي لکيل ايگري شيئر جي سرڪاري وصولي اڪائونٽ (بئنڪ، IBAN، راسٽ، جاز ڪيش يا ايزي پيسا) ۾ رقم موڪليو.\n3. رقم چونڊيو (500 کان 10,000 رپيا، يا 100 کان مٿي ڪا به رقم)، ٽرانزيڪشن آءِ ڊي لکو، رسيد جي تصوير لڳايو ۽ موڪليو.\n4. اسان جي ٽيم رسيد ڏسي والٽ ۾ رقم وجهي ٿي.\nمفت لانچ ڊيلون پوريون ٿيڻ کان پوءِ ڪميشن پاڻمرادو والٽ مان ڪٽجي ٿي: بڪنگ پڪي ڪرڻ تي 2.5%، فصل وڪري تي 3.5%، زمين ٺيڪو قبول ڪرڻ تي 4.5%. بيلنس گهٽ هجي ته \"ايگري والٽ بيلنس گهٽ آهي، آرڊر قبول ڪرڻ لاءِ ٽاپ اپ ڪريو\" ڏيکاريو ويندو. مدد: 0322-4729249 يا 0370-0318574.", "ps": "اګري والټ، د کمیشن لپاره مخکې جمع شوی بیلنس (لکه اِن ډرایو یا فوډ پانډا):\n1. اونر پورټل پرانیزئ: تر ټولو پورته ستاسو د اګري والټ بیلنس او راکړه ورکړه ده.\n2. \"اګري والټ ټاپ اپ کړئ\" کېکاږئ. هلته لیکل شوي د اګري شېئر رسمي وصولي حساب (بانک، IBAN، راسټ، جاز کېش یا ایزي پیسه) ته پیسې ولېږئ.\n3. اندازه وټاکئ (له 500 تر 10,000 روپۍ، یا له 100 پورته هره اندازه)، د راکړې ورکړې آی ډي ولیکئ، د رسید انځور ورزیات کړئ او یې ولېږئ.\n4. زموږ ټیم رسید ګوري او ستاسو والټ ته پیسې اچوي.\nد وړیا معاملو تر پای ته رسېدو وروسته کمیشن پخپله له والټ څخه کمېږي: د بکنګ تایید 2.5%، د فصل پلور 3.5%، د ځمکې اجاره منل 4.5%. که بیلنس کم وي، \"د اګري والټ بیلنس کم دی، د امرونو منلو لپاره ټاپ اپ کړئ\" ښکاري. مرسته: 0322-4729249 یا 0370-0318574.", "bal": "ایگری والٹ، کمیشنءِ واستا پیسرا جمع کتگیں بیلنس (اِن ڈرائیو یا فوڈ پانڈاءِ وڑا):\n1. اونر پورٹلءَ پچ کن: سجّیءَ چہ سرا تئی ایگری والٹءِ بیلنس و دئیگ گرگ است۔\n2. \"ایگری والٹءَ ٹاپ اپ کن\" ءَ جن۔ اودا نبشتگیں ایگری شیئرءِ سرکاری وصولی اکاؤنٹءَ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) زر راہ دئے۔\n3. زرّءِ کچ گچین کن (500 چہ 10,000 روپیہ، یا 100ءَ چہ گیشتر هر کچ)، ٹرانزیکشن آئی ڈی نبشتہ کن، رسیدءِ عکسءَ لگا و راہ دئے۔\n4. مئے ٹیم رسیدءَ چاریت و تئی والٹءَ زر کنت۔\nمُفتیں لانچ ڈیل هلاس بئیگءَ رندا کمیشن وت والٹءَ چہ گِرگ بیت: بکنگ پکّا کنگءَ 2.5%، فصلءِ بہاءَ 3.5%، زمین ٹھیکہ منّگءَ 4.5%۔ اگاں بیلنس کم بیت، \"ایگری والٹءِ بیلنس کم انت، آرڈر منّگءِ واستا ٹاپ اپ کن\" پیش دارگ بیت۔ کمک: 0322-4729249 یا 0370-0318574۔"}, "promo": {"pa": "لانچ آفر، پہلیاں ڈیلاں تے 0% کمیشن:\n• مشینری مالک: پہلیاں 5 پکیاں بکنگاں تے کوئی کمیشن نئیں۔ ایہدے مگروں 2.5% (5 ایکڑ توں گھٹ والے چھوٹے کسان 2%)۔\n• فصل منڈی وچ ویچن والے: پہلیاں 3 فصل ویچاں مفت۔ ایہدے مگروں ویچ دی رقم دا 3.5%۔\n• زمین ٹھیکہ مالک: پہلا منیا ہویا ٹھیکہ مفت۔ ایہدے مگروں اک واری 4.5% فیس۔\nمفت ڈیل تے بل وچ \"ایگری شیئر پلیٹ فارم کمیشن 0 روپے (0% · لانچ آفر: مفت ڈیل 2 وچوں 5)\" لکھیا ہوندا اے تے پوری رقم دا 100% مالک یا ویچن والے نوں ملدا اے، کجھ جمع یا رسید اپ لوڈ نئیں کرنی۔ باقی مفت ڈیلاں اونر پورٹل تے فصل منڈی وچ \"لانچ آفر\" کارڈ تے ویکھو۔", "sd": "لانچ آڇ، پهرين ڊيلن تي 0% ڪميشن:\n• مشينري مالڪ: پهرين 5 پڪين بڪنگن تي ڪو ڪميشن ناهي. ان کان پوءِ 2.5% (5 ايڪڙ کان گهٽ وارا ننڍا هاري 2%).\n• فصل منڊي ۾ وڪڻندڙ: پهريان 3 فصل وڪرا مفت. ان کان پوءِ وڪري جي رقم جو 3.5%.\n• زمين ٺيڪي جا مالڪ: پهريون قبول ٿيل ٺيڪو مفت. ان کان پوءِ هڪ ڀيرو 4.5% فيس.\nمفت ڊيل تي بل ۾ \"ايگري شيئر پليٽ فارم ڪميشن 0 رپيا (0% · لانچ آڇ: مفت ڊيل 2 مان 5)\" لکيل هوندو آهي ۽ سڄي رقم جو 100% مالڪ يا وڪڻندڙ کي ملي ٿو، ڪجهه جمع يا رسيد اپلوڊ نه ڪرڻي. باقي مفت ڊيلون اونر پورٽل ۽ فصل منڊي ۾ \"لانچ آڇ\" ڪارڊ تي ڏسو.", "ps": "د پیل وړاندیز، په لومړیو معاملو 0% کمیشن:\n• د ماشین مالکان: په لومړیو 5 تایید شویو بکنګونو هېڅ کمیشن نشته. وروسته 2.5% (له 5 جریبو کم کوچني بزګر 2%).\n• په فصل منډۍ کې پلورونکي: لومړي 3 فصل پلور وړیا. وروسته د پلور د پیسو 3.5%.\n• د ځمکې اجارې مالکان: لومړۍ منل شوې اجاره وړیا. وروسته یو ځل 4.5% فیس.\nپه وړیا معامله کې بل لیکي \"د اګري شېئر پلیټ فارم کمیشن 0 روپۍ (0% · د پیل وړاندیز: وړیا معامله 2 له 5)\" او د ټولې پیسې 100% مالک یا پلورونکي ته ځي، هېڅ ورکړه یا رسید نه غواړي. پاتې وړیا معاملې په اونر پورټل او فصل منډۍ کې د \"د پیل وړاندیز\" کارت کې وګورئ.", "bal": "لانچ آفر، اولی ڈیلانءَ 0% کمیشن:\n• مشینءِ واہند: اولی 5 پکّائیں بکنگءَ هچ کمیشن نیست۔ رندا 2.5% (5 ایکڑءَ کمتر کسانیں بزگر 2%)۔\n• فصلءِ منڈیءَ بہا کنوک: اولی 3 فصلءِ بہا مُفت۔ رندا بہاءِ زرّءِ 3.5%۔\n• زمین ٹھیکہءِ واہند: اولی منّتگیں ٹھیکہ مُفت۔ رندا یک بر 4.5% فیس۔\nمُفتیں ڈیلءَ بلءَ \"ایگری شیئر پلیٹ فارم کمیشن 0 روپیہ (0% · لانچ آفر: مُفتیں ڈیل 2 چہ 5)\" نبشتہ انت و سجّیں زرّءِ 100% واہند یا بہا کنوکءَ رسیت، هچ جمع یا رسید اپ لوڈ کنگ نہ لوٹیت۔ پشت کپتگیں مُفتیں ڈیل اونر پورٹل و فصلءِ منڈیءَ \"لانچ آفر\" کارڈءَ بچار۔"}, "register": {"pa": "ایگری شیئر تے رجسٹر ہون دا طریقہ:\n1. اُتے \"سائن اپ\" دباؤ۔\n2. پورا ناں، ای میل، موبائل تے ضلع لکھو۔\n3. اپنا کردار چنو: کسان، مشینری مالک یا ایگری ایجنٹ۔\n4. پاس ورڈ (گھٹ توں گھٹ 6 حرف) دو واری لکھو تے پرائیویسی نوٹ منو۔\n5. \"اکاؤنٹ بناؤ\" دباؤ۔", "sd": "ايگري شيئر تي رجسٽر ٿيڻ جو طريقو:\n1. مٿي \"سائن اپ\" دٻايو۔\n2. پورو نالو، اي ميل، موبائل ۽ ضلعو لکو۔\n3. پنهنجو ڪردار چونڊيو: هاري، مشينري مالڪ يا ايگري ايجنٽ۔\n4. پاس ورڊ (گهٽ ۾ گهٽ 6 اکر) ٻه ڀيرا لکو ۽ پرائيويسي نوٽ قبول ڪريو۔\n5. \"کاتو ٺاهيو\" دٻايو۔", "ps": "په اګري شېئر کې د نوم لیکنې طریقه:\n1. پورته \"نوم لیکنه\" کېکاږئ.\n2. بشپړ نوم، ای میل، موبایل او ضلع ولیکئ.\n3. خپل رول وټاکئ: بزګر، د ماشین مالک یا اګري اېجنټ.\n4. پاسورډ (لږ تر لږه 6 توري) دوه ځله ولیکئ او د محرمیت یادونه ومنئ.\n5. \"حساب جوړ کړئ\" کېکاږئ.", "bal": "ایگری شیئر ءَ رجسٹر بیگ ءِ راہ:\n1. سرا \"سائن اپ\" ءَ جن۔\n2. پوریں نام، ای میل، موبائل و ضلع نبشتہ کن۔\n3. وتی کار گچین کن: بزگر، مشین ءِ واھند یا ایگری ایجنٹ۔\n4. پاس ورڈ (کمّ ءِ کمّ 6 حرف) دو بر نبشتہ کن و پرائیویسی ءِ نوٹ ءَ بمنّ۔\n5. \"اکاؤنٹ جوڑ کن\" ءَ جن۔"}, "offer": {"pa": "کرایہ ودھ لگدا اے؟ اپنی قیمت دسو:\n1. مشین تے \"بکنگ دی درخواست\" دباؤ۔\n2. \"اپنی قیمت دسو\" چالو کرو۔\n3. فی گھنٹہ پیشکش (لکھے ریٹ دا گھٹ توں گھٹ 60%) تے ٹرانسپورٹ دی پیشکش لکھو۔\n4. سنیہا لکھ کے گھلو۔ مالک منے گا، جوابی پیشکش دیوے گا یا انکار کرے گا۔ ٹرانسپورٹ فاصلے دے حساب نال اے (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)۔", "sd": "ڪرايو وڌيڪ لڳي ٿو؟ پنهنجي قيمت ٻڌايو:\n1. مشين تي \"بڪنگ جي درخواست\" دٻايو۔\n2. \"پنهنجي قيمت ٻڌايو\" چالو ڪريو۔\n3. في ڪلاڪ آڇ (لکيل اگهه جو گهٽ ۾ گهٽ 60%) ۽ ٽرانسپورٽ جي آڇ لکو۔\n4. پيغام لکي موڪليو۔ مالڪ قبول، جوابي آڇ يا انڪار ڪري سگهي ٿو۔ ٽرانسپورٽ فاصلي موجب آهي (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)۔", "ps": "کرایه ډېره ښکاري؟ خپله بیه وړاندې کړئ:\n1. پر ماشین \"د بکنګ غوښتنه\" کېکاږئ.\n2. \"خپله بیه وړاندې کړئ\" چالان کړئ.\n3. فی ساعت وړاندیز (د ثبت شوې بیې لږ تر لږه 60%) او د ټرانسپورټ وړاندیز ولیکئ.\n4. پیغام ولیکئ او ولېږئ. مالک یې منلی، بل وړاندیز ورکولی یا ردولی شي. ټرانسپورټ د واټن له مخې دی (100 روپۍ فی کیلومتر، لږ تر لږه 500).", "bal": "کرایہ گیش اِنت؟ وتی بہا ءَ پیش کن:\n1. مشین ءِ سرا \"بکنگ ءِ درخواست\" ءَ جن۔\n2. \"وتی بہا ءَ پیش کن\" ءَ روشن کن۔\n3. ساعت ءِ پیشکش (نبشتہ کتگیں نرخ ءِ کمّ ءِ کمّ 60%) و ٹرانسپورٹ ءِ پیشکش نبشتہ کن۔\n4. کلہو نبشتہ کن و دیم دئے۔ واھند منّیت، دومی پیشکش دنت یا نہ منّیت۔ ٹرانسپورٹ دوری ءِ ہساب ءَ اِنت (100 کلدار فی کلومیٹر، کمّ ءِ کمّ 500)۔"}, "paylater": {"pa": "ہن وڈھی، بعد وچ ادائیگی: بکنگ فارم وچ ایہہ ادائیگی چنو۔ تسیں ہن صرف 30% دیو؛ باقی 70% تیجی دھر مائیکروفنانس پارٹنر (تجویز: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) دا قرض اے جو وڈھی توں بعد (60 توں 180 دن) دینا اے۔ خطرہ پارٹنر دا اے، ایگری شیئر دا نئیں۔ سوکھا طریقہ: ایگری منڈی تے فصل ویچو، 70% آپے کٹ جاوے گا۔", "sd": "هاڻي لابارو، پوءِ ادائيگي: بڪنگ فارم ۾ هي ادائيگي چونڊيو۔ توهان هاڻي صرف 30% ڏيو؛ باقي 70% ٽئين ڌر مائڪروفنانس پارٽنر (تجويز: جاز ڪيش ڪريڊٽ، ايزي پيسا يا ZTBL) جو قرض آهي جيڪو لاباري کان پوءِ (60 کان 180 ڏينهن) ڏيڻو آهي۔ خطرو پارٽنر جو آهي، ايگري شيئر جو ناهي۔ سولو طريقو: ايگري منڊي تي فصل وڪڻو، 70% پاڻمرادو ڪٽجي ويندو۔", "ps": "اوس لو، وروسته تادیه: د بکنګ په فورمه کې دا تادیه وټاکئ. تاسو اوس یوازې 30% ورکوئ؛ پاتې 70% د دریم اړخ مایکروفنانس شریک (وړاندیز: جاز کیش کریډټ، ایزي پیسه یا ZTBL) پور دی چې له لو وروسته (60 تر 180 ورځو) ورکول کېږي. خطر د شریک دی، د اګري شېئر نه. اسانه لاره: په اګري منډۍ کې فصل وپلورئ، 70% به په خپله پرې شي.", "bal": "انّوں رونگ، رند ءَ زرّ: بکنگ ءِ فارم ءَ اے راہ ءَ گچین کن۔ شما انّوں تهنا 30% دئیت؛ پشت کپتگیں 70% سیمی دَپ ءِ مائیکروفنانس ہمراہ (پیشنهاد: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) ءِ وام اِنت کہ رونگ ءَ رند (60 تا 180 روچ) دئیگ بیت۔ خطر ہمراہ ءِ اِنت، ایگری شیئر ءِ نہ۔ آسانیں راہ: ایگری منڈی ءَ کِشت ءَ بہا کن، 70% وت ءَ کٹ بیت۔"}, "mandi": {"pa": "ایگری منڈی:\n1. فصل (کنک، چول، مکئی، کپاہ)، مقدار من وچ، معیار تے پنڈ چنو۔\n2. فی من متوقع قیمت تے جاز کیش یا ایزی پیسہ نمبر لکھو۔\n3. پوسٹ کرو: آٹا ملاں، رائس ملاں تے وڈے خریدار لائیو بولی لاندے نیں۔\n4. سب توں چنگی بولی منو: ویچ دی رقم وچوں باقی 70% مشینری قرض کٹ کے خالص منافع تہاڈے والٹ وچ۔", "sd": "ايگري منڊي:\n1. فصل (ڪڻڪ، چانور، مڪئي، ڪپهه)، مقدار مڻن ۾، معيار ۽ ڳوٺ چونڊيو۔\n2. في مڻ متوقع قيمت ۽ جاز ڪيش يا ايزي پيسا نمبر لکو۔\n3. پوسٽ ڪريو: اٽي ۽ چانورن جون ملون ۽ وڏا خريدار لائيو بولي ڏين ٿا۔\n4. بهترين بولي قبول ڪريو: وڪري مان باقي 70% مشينري قرض ڪٽجي خالص منافعو توهان جي والٽ ۾۔", "ps": "اګري منډۍ:\n1. فصل (غنم، وريجې، جوار، پنبه)، مقدار په من، کیفیت او کلی وټاکئ.\n2. فی من تمه‌لرونکې بیه او د جاز کیش یا ایزي پیسه شمېره ولیکئ.\n3. ثبت یې کړئ: د اوړو او وريجو ملونه او لوی پېرودونکي ژوندۍ داوطلبي کوي.\n4. غوره داوطلبي ومنئ: له پلور څخه پاتې 70% د ماشین پور پرې کېږي او خالصه ګټه ستاسو والټ ته ځي.", "bal": "ایگری منڈی:\n1. کِشت (گندم، برنج، جُوار، کپاس)، کچ من ءَ، جوانی و میتگ گچین کن۔\n2. فی من امیتیں بہا و جاز کیش یا ایزی پیسہ ءِ نمبر نبشتہ کن۔\n3. دیم دئے: آرت و برنج ءِ مِل و مزنیں گِروک زندگیں بولی جن اَنت۔\n4. گہتریں بولی ءَ بمنّ: بہا ءَ چہ پشت کپتگیں 70% مشین ءِ وام کٹ بیت و خالصیں کٹّ شمئے والٹ ءَ رَوت۔"}, "keypad": {"pa": "سمارٹ فون نئیں؟ کسے وی سادے فون توں ساڈے ایگری شیئر کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔ اوہ نیڑے مشین لبھ کے بکنگ دی تصدیق SMS تے گھلن گے۔ پنڈ دا ایگری ایجنٹ وی تہاڈی بکنگ کر سکدا اے۔", "sd": "سمارٽ فون ناهي؟ ڪنهن به سادي فون مان اسان جي ايگري شيئر ڪنسلٽنٽ کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو۔ اهي ويجهي مشين ڳولي بڪنگ جي تصديق SMS تي موڪليندا۔ ڳوٺ جو ايگري ايجنٽ به توهان جي بڪنگ ڪري سگهي ٿو۔", "ps": "سمارټ فون نه لرئ؟ له هر ساده ټیلیفون څخه زموږ د اګري شېئر مشاور ته 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ. هغوی به نږدې ماشین ومومي او بکنګ به په SMS تایید کړي. د کلي اګري اېجنټ هم ستاسو بکنګ کولی شي.", "bal": "سمارٹ فون نیست؟ ہر سادگیں فون ءَ چہ مئے ایگری شیئر کنسلٹنٹ ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔ آ نزیکیں مشین ءَ شوہاز کنت و بکنگ ءِ منّگ ءَ SMS ءَ دیم دنت۔ میتگ ءِ ایگری ایجنٹ ہم شمئے بکنگ ءَ کت کنت۔"}, "menu": {"pa": "میں ایہناں وچ مدد کر سکدا آں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، قیمت دی پیشکش، مشین لکھانا\n• ہن وڈھی، بعد وچ ادائیگی (30% / 70%)\n• ایگری منڈی تے فصل ویچنا\n• ڈیزل، آپریٹر، ٹرانسپورٹ تے کمیشن (2.5%)\n• زمین ٹھیکہ، زمین دی بولی تے اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل وچ کمیشن دی ونڈ، سرکاری وصولی کھاتہ تے رسید\n• کم / حوالگی دے تصویر تے ویڈیو ثبوت\n• اپنی بولی (اپنا ریٹ آپ)، 15 / 25 / 40 کلومیٹر دائرہ تے اج دے ڈیزل / پیٹرول ریٹ\n• کنسلٹنٹ: 0322-4729249 یا 0370-0318574", "sd": "مان انهن ۾ مدد ڪري سگهان ٿو:\n• ويب سائيٽ: سائن اپ، سائن ان، بڪنگ، قيمت جي آڇ، مشين لکرائڻ\n• هاڻي لابارو، پوءِ ادائيگي (30% / 70%)\n• ايگري منڊي تي فصل وڪڻڻ\n• ڊيزل، آپريٽر، ٽرانسپورٽ ۽ ڪميشن (2.5%)\n• زمين ٺيڪو، زمين جي ٻولي ۽ اسٽامپ پيپر اقرار نامو (4.5% في)\n• بل ۾ ڪميشن جي ورهاست، سرڪاري وصولي کاتو ۽ رسيد\n• ڪم / حوالگي جا تصوير ۽ وڊيو ثبوت\n• پنهنجي ٻولي (پنهنجو اگهه پاڻ)، 15 / 25 / 40 ڪلوميٽر دائرو ۽ اڄ جا ڊيزل / پيٽرول اگهه\n• صلاحڪار: 0322-4729249 يا 0370-0318574", "ps": "زه په دې کې مرسته کولی شم:\n• ویب پاڼه: نوم لیکنه، ننوتل، بکنګ، د بیې وړاندیز، د ماشین ثبتول\n• اوس لو، وروسته تادیه (30% / 70%)\n• په اګري منډۍ کې د فصل پلورل\n• ډیزل، چلوونکی، ټرانسپورټ او کمیشن (2.5%)\n• د ځمکې اجاره، د ځمکې بولي او د سټامپ پېپر اقرار نامه (4.5% فیس)\n• په بل کې د کمیشن وېش، رسمي حساب او رسیدونه\n• د کار / سپارلو انځور او ویډیو ثبوتونه\n• اپني بولي (خپله بیه پخپله)، 15 / 25 / 40 کیلومتره واټن او د نن ورځې د ډیزلو / پټرولو نرخ\n• سلاکار: 0322-4729249 یا 0370-0318574", "bal": "من اے کاراں کمک کت کناں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، بہا ءِ پیشکش، مشین ءِ نبشتہ کنگ\n• انّوں رونگ، رند ءَ زرّ (30% / 70%)\n• ایگری منڈی ءَ کِشت ءِ بہا کنگ\n• ڈیزل، چلائوک، ٹرانسپورٹ و کمیشن (2.5%)\n• زمین ٹھیکہ، زمین ءِ بولی و اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل ءَ کمیشن ءِ بہر، سرکاری اکاؤنٹ و رسید\n• کار / سپارگ ءِ عکس و ویڈیو ثبوت\n• اپنی بولی (وتی نرخ وت)، 15 / 25 / 40 کلومیٹر دائرہ و مرچی ءِ ڈیزل / پیٹرول نرخ\n• صلاحکار: 0322-4729249 یا 0370-0318574"}, "land": {"pa": "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین دے مالک: اپنی زمین لکھاؤ: پنڈ، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی، سڑک، ٹھیکے دے مہینے تے اپنا ریٹ۔ ساڈی ٹیم تصدیق کردی اے۔\n2. کسان: فاصلے، ایکڑ تے بجٹ نال زمین لبھو تے ٹھیکے دی درخواست گھلو۔ یا \"زمین دی بولی\" لاؤ: جنی زمین چاہیدی اے تے اپنا ریٹ، مالک پیشکش گھلدے نیں۔\n3. مالک دے منن مگروں دو زباناں وچ اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ تے دستخط لئی تیار ہوندا اے۔\n4. فیس: ٹھیکے دی کل رقم تے صرف اک وار 4.5% سہولت کمیشن، پکا کرن توں پہلاں دسیا جاندا اے۔\n5. 360° فائدہ: ٹھیکہ چلدا ہووے تے مشینری کمیشن 0.50% گھٹ (کدی 2.0% توں تھلے نئیں)۔", "sd": "زمين ٺيڪو (ٺيڪي تي زمين ٽيب):\n1. زمين جا مالڪ: پنهنجي زمين لکرايو: ڳوٺ، ضلعو، ايڪڙ يا ڪنال، پاڻي (نهري، سولر ٽيوب ويل، بجلي يا ڊيزل ٽيوب ويل، يا باراني)، مٽي، رستو، ٺيڪي جا مهينا ۽ پنهنجو اگهه. اسان جي ٽيم تصديق ڪري ٿي.\n2. هاري: فاصلي، ايڪڙن ۽ بجيٽ سان زمين ڳوليو ۽ ٺيڪي جي درخواست موڪليو. يا \"زمين جي ٻولي\" لڳايو: جيتري زمين گهرجي ۽ پنهنجو اگهه، مالڪ آڇون موڪليندا.\n3. مالڪ جي قبول ڪرڻ کانپوءِ ٻن ٻولين ۾ اسٽامپ پيپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٽ ۽ صحيح لاءِ تيار ٿئي ٿو.\n4. في: ٺيڪي جي ڪل رقم تي صرف هڪ ڀيرو 4.5% سهولت ڪميشن، تصديق کان اڳ ڏيکاري وڃي ٿي.\n5. 360° فائدو: هلندڙ ٺيڪي دوران مشينري ڪميشن 0.50% گهٽ (ڪڏهن به 2.0% کان هيٺ نه).", "ps": "د ځمکې ټیکه (ځمکه په اجاره ټب):\n1. د ځمکې مالکان: خپله ځمکه ثبت کړئ: کلی، ضلع، ایکړ یا کنال، اوبه (نهري، سولر ټیوب ویل، برقي یا ډیزل ټیوب ویل، یا للمي/بارانی)، خاوره، سړک، د اجارې میاشتې او خپله بیه. زموږ ټیم یې تاییدوي.\n2. بزګران: د واټن، ایکړ او بودیجې له مخې ځمکه ولټوئ او د اجارې غوښتنه ولېږئ. یا \"د ځمکې بولي\" پوسټ کړئ: څومره ځمکه غواړئ او خپله بیه، مالکان وړاندیزونه لېږي.\n3. د مالک له منلو وروسته دوه ژبی سټامپ پېپر \"اقرار نامہ ٹھیکہ اراضی\" د چاپ او لاسلیک لپاره چمتو کېږي.\n4. فیس: د اجارې په ټولې پیسو یوازې یو ځل 4.5% اسانتیا کمیشن، له تایید نه مخکې ښودل کېږي.\n5. 360° ګټه: د فعالې اجارې پر مهال د ماشینونو کمیشن 0.50% کمېږي (هېڅکله له 2.0% نه کم نه).", "bal": "زمین ٹھیکہ (ٹھیکہ ءَ زمین ٹیب):\n1. زمین ءِ واجہ: وتی زمین ءَ نبشتہ کن: میتگ، ضلع، ایکڑ یا کنال، آپ (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، ہاک، راہ، ٹھیکہ ءِ ماہ و وتی نرخ۔ مئے ٹیم تصدیق کنت۔\n2. کشاورز: دوری، ایکڑ و بجٹ ءَ گوں زمین ءَ شوہاز کن و ٹھیکہ ءِ درخواست ءَ دیم دے۔ یا \"زمین ءِ بولی\" بِل: چنچو زمین لوٹئے و وتی نرخ، واجہ پیشکش دیم دینت۔\n3. واجہ ءِ منّگ ءَ رند دو زبانیں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ و دستخط ءِ واستہ تیار بیت۔\n4. فیس: ٹھیکہ ءِ کُلیں زرّ ءِ سرا تہنا یک بر 4.5% کمیشن، تصدیق ءَ پیسر پیش دارگ بیت۔\n5. 360° پائدگ: ٹھیکہ ءِ وہد ءَ مشینری کمیشن 0.50% کم بیت (ہچبر 2.0% ءَ کمتر نہ)۔"}, "split": {"pa": "بل دی ونڈ: ہر مشینری بل تے زمین دے اقرار نامے وچ دو وکھریاں لائناں نیں: ایگری شیئر پلیٹ فارم کمیشن تے مالک نوں خالص ادائیگی۔\n• مشینری: کمیشن 2.5% (5 ایکڑ توں گھٹ والے نکے کسان 2%)، کرائے دے اُتے۔\n• زمین ٹھیکہ: صرف اک وار 4.5% فیس، ٹھیکے دی کل رقم وچوں۔\nکمیشن کیویں جمع کرو: بل اُتے ایگری شیئر دا سرکاری وصولی کھاتہ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھیا اے۔ ادائیگی مگروں \"کمیشن ادائیگی دی رسید اپ لوڈ کرو\" دباؤ تے رسید دی تصویر تے ٹرانزیکشن آئی ڈی لکھو۔ ٹیم دی تصدیق تیک \"جانچ ہو رہی اے\"، فیر \"کمیشن وصول ہو گیا\"۔ مالک سارے واجبات اونر پورٹل > کمیشن وچ ویکھدے نیں۔", "sd": "بل جي ورهاست: هر مشينري بل ۽ زمين جي اقرار نامي ۾ ٻه الڳ سٽون آهن: ايگري شيئر پليٽ فارم ڪميشن ۽ مالڪ کي خالص ادائيگي.\n• مشينري: ڪميشن 2.5% (5 ايڪڙن کان گهٽ وارا ننڍا هاري 2%)، ڪرائي جي مٿان.\n• زمين ٺيڪو: صرف هڪ ڀيرو 4.5% في، ٺيڪي جي ڪل رقم مان.\nڪميشن ڪيئن جمع ڪجي: بل تي ايگري شيئر جو سرڪاري وصولي کاتو (بئنڪ، IBAN، راسٽ، جاز ڪيش، ايزي پيسا) لکيل آهي. ادائيگي کانپوءِ \"ڪميشن ادائيگي جي رسيد اپ لوڊ ڪريو\" دٻايو ۽ رسيد جي تصوير ۽ ٽرانزيڪشن آئي ڊي لکو. ٽيم جي تصديق تائين \"جانچ ٿي رهي آهي\"، پوءِ \"ڪميشن وصول ٿي وئي\". مالڪ سڀ واجبات اونر پورٽل > ڪميشن ۾ ڏسن ٿا.", "ps": "د بل وېش: په هر ماشیني بل او د ځمکې اقرار نامه کې دوه جلا کرښې دي: د ایګري شیئر د پلیټ فارم کمیشن او مالک ته خالص تادیه.\n• ماشینونه: کمیشن 2.5% (له 5 ایکړو کم کوچني بزګران 2%)، د کرایې پر سر.\n• د ځمکې اجاره: یوازې یو ځل 4.5% فیس، د اجارې له ټولو پیسو څخه.\nکمیشن څنګه ورکړئ: په بل کې د ایګري شیئر رسمي د راټولولو حساب (بانک، IBAN، راسټ، جاز کېش، ایزي پېسه) لیکل شوی. له تادیې وروسته \"د کمیشن د تادیې رسید پورته کړئ\" کېکاږئ او د رسید انځور او د معاملې شمېره ولیکئ. د ټیم تر تایید پورې \"د کتنې لاندې\"، بیا \"کمیشن ترلاسه شو\". مالکان ټول پاتې پیسې په اونر پورټل > کمیشن کې ګوري.", "bal": "بل ءِ بہر: ہر مشینری بل و زمین ءِ اقرار نامہ ءَ دو جتائیں لائن ہست: ایگری شیئر ءِ پلیٹ فارم کمیشن و واجہ ءَ را خالص زر۔\n• مشینری: کمیشن 2.5% (5 ایکڑ ءَ کمتریں کسانی کشاورز 2%)، کرایہ ءِ سرا۔\n• زمین ٹھیکہ: تہنا یک بر 4.5% فیس، ٹھیکہ ءِ کُلیں زرّ ءَ چہ۔\nکمیشن ءَ چون دیئے: بل ءِ سرا ایگری شیئر ءِ سرکاری مچ کنگ ءِ اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) نبشتہ اِنت۔ زر دیگ ءَ رند \"کمیشن ءِ زر ءِ رسید ءَ اپ لوڈ کن\" ءَ جن و رسید ءِ عکس و ٹرانزیکشن آئی ڈی ءَ نبشتہ کن۔ ٹیم ءِ تصدیق ءَ تان \"چارگ بیگ ءَ اِنت\"، رند ءَ \"کمیشن رسِت\"۔ واجہ کُلیں دیگی زرّاں اونر پورٹل > کمیشن ءَ گندنت۔"}, "proof": {"pa": "تصویر تے ویڈیو ثبوت دوہاں دھراں دی حفاظت کردا اے۔ معاملہ میریاں بکنگاں، اونر پورٹل (پکے کم) یا ٹھیکے تے زمین > میرے زمین دے معاملے وچ کھولو تے \"تصویر / ویڈیو ثبوت لاؤ\" دباؤ۔\n1. مرحلہ چنو: کم توں پہلاں / حوالگی، کم توں بعد، میٹر یا ڈیزل ریڈنگ، یا زمین دی حالت۔\n2. تصویر، نکی ویڈیو (650 KB تیک) یا یوٹیوب / گوگل ڈرائیو لنک تے نکا نوٹ لاؤ۔\n3. سانبھو: ایہہ گیلری وچ کس نے تے کدوں لایا دے نال دسدا اے۔\nصرف اوسے معاملے دا کسان، مالک تے ایگری شیئر ٹیم ایہہ ثبوت ویکھ سکدے نیں، تے مگروں بدلیا نئیں جا سکدا۔", "sd": "تصوير ۽ وڊيو ثبوت ٻنهي ڌرين جي حفاظت ڪري ٿو. معاملو منهنجون بڪنگون، اونر پورٽل (تصديق ٿيل ڪم) يا ٺيڪي تي زمين > منهنجا زمين جا معاملا ۾ کوليو ۽ \"تصوير / وڊيو ثبوت لڳايو\" دٻايو.\n1. مرحلو چونڊيو: ڪم کان اڳ / حوالگي، ڪم کانپوءِ، ميٽر يا ڊيزل ريڊنگ، يا زمين جي حالت.\n2. تصوير، ننڍي وڊيو (650 KB تائين) يا يوٽيوب / گوگل ڊرائيو لنڪ ۽ ننڍو نوٽ لڳايو.\n3. محفوظ ڪريو: اهو گيلري ۾ ڪنهن ۽ ڪڏهن لڳايو سان گڏ نظر اچي ٿو.\nصرف ان معاملي جو هاري، مالڪ ۽ ايگري شيئر ٽيم اهي ثبوت ڏسي سگهن ٿا، ۽ پوءِ بدلائي نٿا سگهجن.", "ps": "انځور او ویډیو ثبوت د دواړو خواوو ساتنه کوي. معامله په زما بکنګونه، اونر پورټل (تایید شوي کارونه) یا ځمکه په اجاره > زما د ځمکې معاملې کې پرانیزئ او \"انځور / ویډیو ثبوت ورزیات کړئ\" کېکاږئ.\n1. پړاو وټاکئ: له کار مخکې / سپارل، له کار وروسته، د میټر یا ډیزلو لوستنه، یا د ځمکې حالت.\n2. انځور، لنډه ویډیو (تر 650 KB پورې) یا د یوټیوب / ګوګل ډرایو لینک او لنډ یادښت ورزیات کړئ.\n3. خوندي یې کړئ: په ګالرۍ کې د دې سره ښکاري چې چا او کله ورزیات کړ.\nیوازې د همدې معاملې بزګر، مالک او د ایګري شیئر ټیم دا ثبوتونه لیدلی شي، او وروسته نه بدلېږي.", "bal": "عکس و ویڈیو ثبوت دوئیں نیمگاں ءِ نگہپانی کنت۔ معاملہ ءَ منی بکنگ، اونر پورٹل (تصدیق بوتگیں کار) یا ٹھیکہ ءَ زمین > منی زمین ءِ معاملہ ءَ پچ کن و \"عکس / ویڈیو ثبوت لگا\" ءَ جن۔\n1. پڑاو ءَ گچین کن: کار ءَ پیسر / سپارگ، کار ءَ رند، میٹر یا ڈیزل ءِ ریڈنگ، یا زمین ءِ حال۔\n2. عکس، کسانیں ویڈیو (650 KB تان) یا یوٹیوب / گوگل ڈرائیو لنک و کسانیں نوٹ لگا۔\n3. سمبال: اے گیلری ءَ گوں اے ءَ گندگ بیت کہ کئے و کدی لگاتگ۔\nتہنا ہمے معاملہ ءِ کشاورز، واجہ و ایگری شیئر ٹیم اے ثبوتاں گندت کننت، و رند ءَ بدل کنگ نہ بنت۔"}, "govt": {"pa": "سرکاری پورٹل چھیتی آ رہیا اے۔ ایہدے وچ سرکاری قرضے تے سبسڈی دی مدد اک تھاں لیاون دا منصوبہ اے، پر ایہہ ہلے چالو نئیں، ایس لئی ہلے کسے اسکیم دی درخواست نئیں ہو سکدی۔ ہن مدد لئی ساڈے کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔", "sd": "سرڪاري پورٽل جلد اچي رهيو آهي. ان ۾ سرڪاري قرض ۽ سبسڊي جي مدد هڪ هنڌ آڻڻ جو رٿ آهي، پر اهو اڃا هلندڙ ناهي، تنهن ڪري اڃا ڪنهن به اسڪيم جي درخواست نٿي ٿي سگهي. هاڻي مدد لاءِ اسان جي صلاحڪار کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو.", "ps": "دولتي پورټل ژر راځي. پلان دا دی چې د حکومت پورونه او د سبسایډۍ مرسته په یو ځای کې راټوله کړي، خو لا فعال نه دی، نو اوس د هېڅ پروګرام غوښتنه نه شي کېدای. اوس د مرستې لپاره زموږ سلاکار ته په 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ.", "bal": "سرکاری پورٹل زوت کئیت۔ اشیء تہا سرکاری وام و سبسڈی ءِ کمک ءَ یک جاہ ءَ آرگ ءِ منصوبہ ہست، بلے انگت چالو نہ اِنت، پمیشکا انّوں ہچ اسکیم ءِ درخواست نہ بیت۔ انّوں کمک ءِ واستہ مئے صلاحکار ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔"}, "fuel": {"pa": "اج پاکستان وچ تیل دے ریٹ: ڈیزل {d} روپے فی لیٹر{pp}۔ ایہہ سرکاری نوٹیفائیڈ قیمتاں توں دن وچ لگ بھگ دو وار آپے اپڈیٹ ہوندے نیں تے ایپ دے اُتے دسدے نیں۔ مشینری دا کرایہ ڈرائی اے (ڈیزل شامل نئیں)، سوائے اپنی بولی وچ ویٹ رینٹ دے، جتھے مالک ایسے ریٹ تے ڈیزل پاندا اے۔", "sd": "اڄ پاڪستان ۾ تيل جا اگهه: ڊيزل {d} رپيا في ليٽر{pp}. اهي سرڪاري نوٽيفائيڊ قيمتن مان ڏينهن ۾ لڳ ڀڳ ٻه ڀيرا پاڻمرادو اپڊيٽ ٿين ٿا ۽ ايپ جي مٿي نظر اچن ٿا. مشينري جو ڪرايو ڊرائي آهي (ڊيزل شامل ناهي)، سواءِ پنهنجي ٻولي ۾ ويٽ رينٽ جي، جتي مالڪ ساڳئي اگهه تي ڊيزل وجهي ٿو.", "ps": "نن په پاکستان کې د تېلو نرخونه: ډیزل {d} روپۍ په لیټر{pp}. دا د حکومت له خبر شوو بیو څخه په ورځ کې نږدې دوه ځله پخپله تازه کېږي او د اپ په سر کې ښکاري. د ماشینونو کرایه وچه ده (ډیزل پکې نه دی)، پرته له اپني بولي کې د لوند کرایې (Wet rent)، چې مالک په همدې نرخ ډیزل اچوي.", "bal": "مرچی پاکستان ءَ تیل ءِ نرخ: ڈیزل {d} کلدار لیٹر ءَ{pp}۔ اے سرکاری نوٹیفائیڈ بہاں چہ روچ ءَ دو بر وت اپڈیٹ بنت و ایپ ءِ سرا گندگ بنت۔ مشینری ءِ کرایہ ڈرائی اِنت (ڈیزل ہور نہ اِنت)، بیدن اپنی بولی ءِ ویٹ رینٹ ءَ، ہمودا واجہ ہمے نرخ ءَ ڈیزل ءَ دنت۔"}, "boli": {"pa": "اپنی بولی (درخواست پوسٹ کرو ٹیب):\n1. مشین، پنڈ، گھنٹے تے تاریخ چنو۔\n2. اپنا ریٹ آپ لاؤ (اپنی بولی لاؤ): کوئی پکی قیمت نئیں، فی گھنٹہ جنا دینا چاہو لکھو۔\n3. ڈرائی رینٹ (ڈیزل تہاڈا) یا ویٹ رینٹ (ڈیزل مالک دا، لگ بھگ {d} روپے فی لیٹر) چنو۔\n4. پوسٹ کرو: نیڑے دے مالک ریڈار تے آ کے من لیندے نیں یا جوابی پیشکش (اکثر +200 روپے) دیندے نیں۔\n5. کوئی ویہلا نہ ہووے تے دائرہ ودھاؤ: درجہ 1 پنڈ 15 کلومیٹر تیک، درجہ 2 15 توں 25 کلومیٹر (60 روپے فی کلومیٹر ہر پاسے)، درجہ 3 بیک اپ 40 کلومیٹر تیک۔\n6. پیشکش منو، پورا خرچہ ویکھو تے پکا کرو۔", "sd": "پنهنجي ٻولي (درخواست پوسٽ ڪريو ٽيب):\n1. مشين، ڳوٺ، ڪلاڪ ۽ تاريخ چونڊيو.\n2. پنهنجو اگهه پاڻ لڳايو (پنهنجي ٻولي لڳايو): ڪا مقرر قيمت ناهي، في ڪلاڪ جيترو ڏيڻ چاهيو لکو.\n3. ڊرائي رينٽ (ڊيزل توهان جو) يا ويٽ رينٽ (ڊيزل مالڪ جو، لڳ ڀڳ {d} رپيا في ليٽر) چونڊيو.\n4. پوسٽ ڪريو: ويجها مالڪ ريڊار تي اچي قبول ڪن ٿا يا جوابي آڇ (اڪثر +200 رپيا) ڏين ٿا.\n5. ڪو فارغ نه هجي ته دائرو وڌايو: درجو 1 ڳوٺ 15 ڪلوميٽر تائين، درجو 2 15 کان 25 ڪلوميٽر (60 رپيا في ڪلوميٽر هر طرف)، درجو 3 بيڪ اپ 40 ڪلوميٽر تائين.\n6. آڇ قبول ڪريو، پورو خرچ ڏسو ۽ تصديق ڪريو.", "ps": "اپني بولي (غوښتنه پوسټ کړئ ټب):\n1. ماشین، کلی، ساعتونه او نېټه وټاکئ.\n2. خپله بیه پخپله وټاکئ (اپني بولي): هېڅ ټاکلې بیه نشته، په ساعت کې څومره ورکول غواړئ هغه ولیکئ.\n3. وچه کرایه (ډیزل ستاسو) یا لونده کرایه (ډیزل د مالک، نږدې {d} روپۍ په لیټر) وټاکئ.\n4. پوسټ یې کړئ: نږدې مالکان په ریډار راځي او مني یې یا مقابل وړاندیز (اکثر +200 روپۍ) ورکوي.\n5. که څوک وزګار نه وي، واټن پراخ کړئ: لومړی پړاو کلی تر 15 کیلومتره، دوهم پړاو 15 تر 25 کیلومتره (60 روپۍ په کیلومتر هره خوا)، درېیم پړاو بیک اپ تر 40 کیلومتره.\n6. وړاندیز ومنئ، ټول لګښت وګورئ او تایید یې کړئ.", "bal": "اپنی بولی (درخواست پوسٹ کن ٹیب):\n1. مشین، میتگ، ساعت و تاریخ ءَ گچین کن۔\n2. وتی نرخ ءَ وت لگا (اپنی بولی): ہچ مقرریں بہا نیست، ساعت ءَ چنچو دیگ لوٹئے نبشتہ کن۔\n3. ڈرائی رینٹ (ڈیزل شمئیگ) یا ویٹ رینٹ (ڈیزل واجہ ءِ، نزیک {d} کلدار لیٹر ءَ) گچین کن۔\n4. پوسٹ کن: نزیکیں واجہ ریڈار ءَ کاینت و منّنت یا پدی پیشکش (باز وہد +200 کلدار) دینت۔\n5. اگاں کس واندہ مہ بیت دائرہ ءَ مزن کن: درجہ 1 میتگ 15 کلومیٹر تان، درجہ 2 15 چہ 25 کلومیٹر (60 کلدار کلومیٹر ءَ ہر نیمگ)، درجہ 3 بیک اپ 40 کلومیٹر تان۔\n6. پیشکش ءَ منّ، کُلیں خرچ ءَ بگند و تصدیق کن۔"}};
 const HELPER_CHIPS = {"en": ["How do I lease farmland?", "How is commission split on my bill?", "How do I add a work photo or video proof?", "Apni Boli: can I set my own rate?", "Today's diesel and petrol rate?", "How do I sell my wheat?", "I only have a basic phone", "When is the Govt Portal coming?"], "ur": ["زمین ٹھیکے پر کیسے لوں؟", "بل میں کمیشن کیسے الگ ہوتا ہے؟", "کام کی تصویر یا ویڈیو ثبوت کیسے لگاؤں؟", "اپنی بولی: کیا اپنا ریٹ خود لگا سکتا ہوں؟", "آج ڈیزل اور پیٹرول کا ریٹ؟", "اپنی گندم کیسے بیچوں؟", "سادہ فون سے بکنگ؟ ہیلپ لائن", "سرکاری پورٹل کب آئے گا؟"], "pa": ["زمین ٹھیکے تے کیویں لواں؟", "بل وچ کمیشن کیویں وکھرا ہوندا اے؟", "کم دی تصویر یا ویڈیو ثبوت کیویں لاواں؟", "اپنی بولی: کی اپنا ریٹ آپ لا سکدا آں؟", "اج ڈیزل تے پیٹرول دا ریٹ؟", "اپنی کنک منڈی وچ کیویں ویچاں؟", "سادے فون نال بکنگ؟ ہیلپ لائن", "سرکاری پورٹل کدوں آوے گا؟"], "sd": ["زمين ٺيڪي تي ڪيئن وٺان؟", "بل ۾ ڪميشن ڪيئن الڳ ٿئي ٿي؟", "ڪم جي تصوير يا وڊيو ثبوت ڪيئن لڳايان؟", "پنهنجي ٻولي: ڇا پنهنجو اگهه پاڻ لڳائي سگهان ٿو؟", "اڄ ڊيزل ۽ پيٽرول جو اگهه؟", "پنهنجي ڪڻڪ منڊي ۾ ڪيئن وڪڻان؟", "سادي فون سان بڪنگ؟ هيلپ لائن", "سرڪاري پورٽل ڪڏهن ايندو؟"], "ps": ["ځمکه په اجاره څنګه واخلم؟", "په بل کې کمیشن څنګه جلا کېږي؟", "د کار انځور یا ویډیو ثبوت څنګه ورزیات کړم؟", "اپني بولي: ایا خپله بیه پخپله ټاکلی شم؟", "نن د ډیزلو او پټرولو نرخ؟", "خپل غنم په منډۍ کې څنګه وپلورم؟", "ساده ټیلیفون لرم، هېلپ لاین؟", "دولتي پورټل کله راځي؟"], "bal": ["زمین ءَ ٹھیکہ ءَ چون گراں؟", "بل ءَ کمیشن چون جتا بیت؟", "کار ءِ عکس یا ویڈیو ثبوت ءَ چون لگاں؟", "اپنی بولی: وتی نرخ ءَ وت لگت کناں؟", "مرچی ڈیزل و پیٹرول ءِ نرخ؟", "وتی گندم ءَ منڈی ءَ چون بہا کناں؟", "سادگیں فون ہست، ہیلپ لائن؟", "سرکاری پورٹل کدی کئیت؟"]};
 const HELPER_FUEL_PP = {"en": ", Petrol (Super) Rs {p} per litre", "ro": ", Petrol (Super) Rs {p} fi litre", "ur": "، پیٹرول (سپر) {p} روپے فی لیٹر", "pa": "، پیٹرول (سپر) {p} روپے فی لیٹر", "sd": "، پيٽرول (سپر) {p} رپيا في ليٽر", "ps": "، پټرول (سوپر) {p} روپۍ په لیټر", "bal": "، پیٹرول (سپر) {p} کلدار لیٹر ءَ"};
 // petrol price for the helper (set by KisanHelper from the live fuel feed)
@@ -9284,9 +9955,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
     const rate = avgRate(c);
     const base = rate * hrs, comm = Math.round(base * COMMISSION), total = base + comm, litres = Math.round(DIESEL_L_PER_HR[c] * hrs);
     return L({
-      en: `• ${name(c)}: about ${hrs} h × ${money(rate)}/hr = ${money(base)}\n• + 6% platform commission ${money(comm)} → total about ${money(total)}\n• Dry rent: diesel is extra, roughly ${litres} litres (rule of thumb)\n• Operator, if optional, adds Rs 500/hr; transport, if optional, adds Rs 1,500`,
-      ur: `• ${name(c)}: تقریباً ${hrs} گھنٹے × ${money(rate)} فی گھنٹہ = ${money(base)}\n• + 6% پلیٹ فارم کمیشن ${money(comm)} → کل تقریباً ${money(total)}\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres} لیٹر\n• اختیاری آپریٹر 500 روپے فی گھنٹہ، اختیاری ٹرانسپورٹ 1,500 روپے`,
-      ro: `• ${name(c)}: taqreeban ${hrs} ghante × ${money(rate)}/ghanta = ${money(base)}\n• + 6% platform commission ${money(comm)} → kul taqreeban ${money(total)}\n• Dry rent: diesel alag hai, andazan ${litres} litre\n• Optional operator Rs 500/ghanta, optional transport Rs 1,500`,
+      en: `• ${name(c)}: about ${hrs} h × ${money(rate)}/hr = ${money(base)}\n• + 2.5% platform commission ${money(comm)} → total about ${money(total)}\n• Dry rent: diesel is extra, roughly ${litres} litres (rule of thumb)\n• Operator, if optional, adds Rs 500/hr; transport, if optional, adds Rs 1,500`,
+      ur: `• ${name(c)}: تقریباً ${hrs} گھنٹے × ${money(rate)} فی گھنٹہ = ${money(base)}\n• + 2.5% پلیٹ فارم کمیشن ${money(comm)} → کل تقریباً ${money(total)}\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres} لیٹر\n• اختیاری آپریٹر 500 روپے فی گھنٹہ، اختیاری ٹرانسپورٹ 1,500 روپے`,
+      ro: `• ${name(c)}: taqreeban ${hrs} ghante × ${money(rate)}/ghanta = ${money(base)}\n• + 2.5% platform commission ${money(comm)} → kul taqreeban ${money(total)}\n• Dry rent: diesel alag hai, andazan ${litres} litre\n• Optional operator Rs 500/ghanta, optional transport Rs 1,500`,
     });
   };
 
@@ -9315,8 +9986,10 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   const negotiating = /kam kar|kam kai?s|kam ke?s|kum kar|kam ho|zya?ada lag|ziada lag|zya?ada h[ae]i?\b|bohat zya?ada|bahut zya?ada|zya?da|کم کیسے|کم کر|کم ہو|زیادہ لگ|زیادہ ہے|بہت زیادہ|negotiat|bargain|discount|sasta|سستا|رعایت|mehe?n?ga|مہنگا|too (high|much)/i.test(text);
   // New features (land lease, split bill, proofs, Govt Portal, fuel rates): checked before rate questions
   if (has(/proof|sab+[ou]+t|ثبوت|handover|hand over|before.{0,6}after|meter reading|\bvideo|ویڈیو|ويڊيو|ویډیو|وڈیو/i)) return LX("proof", { en: "Photo and video proof protects both sides. Open the deal in My Bookings, in Owner Portal (your confirmed jobs) or in Thaikay Te Zameen > My land deals, and tap Add Photo / Video Proof.\n1. Choose the stage: Before work / handover, After work / completion, Meter or fuel reading, or Land condition.\n2. Add a photo, a short video (up to 650 KB) or a YouTube / Google Drive link, plus a short note.\n3. Save: it appears in the Verified Work & Handover Proofs gallery with who added it and when.\nOnly that deal's farmer, owner and the Agri-Share team can see these proofs, and they cannot be edited later.", ur: "تصویر اور ویڈیو ثبوت دونوں فریقوں کی حفاظت کرتا ہے۔ معاملہ میری بکنگز، اونر پورٹل (کنفرم کام) یا ٹھیکے تے زمین > میرے زمین کے معاملات میں کھولیں اور \"تصویر / ویڈیو ثبوت لگائیں\" دبائیں۔\n1. مرحلہ چنیں: کام سے پہلے / حوالگی، کام کے بعد، میٹر یا ڈیزل ریڈنگ، یا زمین کی حالت۔\n2. تصویر، چھوٹی ویڈیو (650 KB تک) یا یوٹیوب / گوگل ڈرائیو لنک اور مختصر نوٹ لگائیں۔\n3. محفوظ کریں: یہ گیلری میں کس نے اور کب لگایا کے ساتھ نظر آتا ہے۔\nصرف اسی معاملے کا کسان، مالک اور ایگری شیئر ٹیم یہ ثبوت دیکھ سکتے ہیں، اور بعد میں بدلا نہیں جا سکتا۔", ro: "Photo aur video saboot dono taraf ki hifazat karta hai. Deal ko My Bookings, Owner Portal (confirmed kaam) ya Thaikay Te Zameen > My land deals mein kholein aur \"Add Photo / Video Proof\" dabayein.\n1. Marhala chunein: kaam se pehle / handover, kaam ke baad, meter ya diesel reading, ya zameen ki halat.\n2. Photo, chhoti video (650 KB tak) ya YouTube / Google Drive link aur chhota note dalein.\n3. Save karein: ye gallery mein kis ne aur kab dala ke saath nazar aata hai.\nSirf us deal ka kisan, maalik aur Agri-Share team ye saboot dekh sakte hain, aur baad mein badla nahi ja sakta." });
-  if (has(/receipt|raseed|rasid|رسید|رسيد|collection account|official account|company account|\biban\b|raast|راسٹ|payout|split|ledger|net owner|commission.{0,20}(due|kahan|kidhar|jama|deposit|bill)|bill.{0,12}commission|کمیشن.{0,20}(جمع|ادا|کہاں|رسید|بل)|بل.{0,15}(کمیشن|ڪميشن)|ڪميشن.{0,20}(جمع|ادا|بل)/i)) return LX("split", { en: "Split bill: every machinery bill and land lease agreement shows two separate lines, Agri-Share Platform Commission and Net Owner Payout (what the owner keeps).\n• Machinery: commission is 6% (4% for smallholders under 5 acres), added on top of the rent.\n• Land lease: the one-time 4.5% fee comes out of the lease total.\nPaying the commission: the bill shows the Agri-Share Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa). After paying, tap Upload Commission Payment Receipt and add the receipt photo and transaction ID. It shows Receipt under review until our team verifies it, then Commission received. Owners see every due amount in Owner Portal > Commission.", ur: "بل کی تقسیم: ہر مشینری بل اور زمین کے اقرار نامے میں دو الگ لائنیں ہیں: ایگری شیئر پلیٹ فارم کمیشن اور مالک کو خالص ادائیگی (جو مالک کو ملتی ہے)۔\n• مشینری: کمیشن 6% (5 ایکڑ سے کم والے چھوٹے کسان 4%)، کرائے کے اوپر۔\n• زمین ٹھیکہ: صرف ایک بار 4.5% فیس، ٹھیکے کی کل رقم میں سے۔\nکمیشن کیسے جمع کریں: بل پر ایگری شیئر کا سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھا ہے۔ ادائیگی کے بعد \"کمیشن ادائیگی کی رسید اپ لوڈ کریں\" دبائیں اور رسید کی تصویر اور ٹرانزیکشن آئی ڈی لکھیں۔ ٹیم کی تصدیق تک \"رسید کی جانچ جاری ہے\"، پھر \"کمیشن وصول ہو گیا\"۔ مالکان تمام واجبات اونر پورٹل > کمیشن میں دیکھتے ہیں۔", ro: "Split bill: har machinery bill aur zameen ke iqrarnama mein do alag lines hain: Agri-Share Platform Commission aur Net Owner Payout (jo maalik ko milta hai).\n• Machinery: commission 6% (5 acre se kam wale chhote kisan 4%), kiraye ke upar.\n• Zameen ka thaika: sirf ek dafa 4.5% fees, thaike ki kul raqam mein se.\nCommission kaise jama karein: bill par Agri-Share Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa) likha hai. Payment ke baad \"Upload Commission Payment Receipt\" dabayein aur raseed ki photo aur transaction ID dalein. Team ke verify karne tak \"Receipt under review\", phir \"Commission received\". Maalik saare baqaya Owner Portal > Commission mein dekhte hain." });
-  if (has(/\b(thaika|thaikay|thaike|theka|thekay|theeka)\b|ٹھیکہ|ٹھیکے|ٹھیکا|ٺيڪو|ٺيڪي|ټیکه|اجاره|\blease|iqrar|اقرار|stamp ?paper|اسٹامپ|barani|بارانی|باراني|للمي|nehri|نہری|نهري|farm ?land|ecosystem|\b360\b|rebate/i) || (has(/zameen|zamin|زمین|زمين|ځمکه|ځمکې|\bland\b/i) && !machine && !/prep|tayy?ar|تیار|تيار/i.test(text))) return LX("land", { en: "Zameen Thaika, farmland lease (Thaikay Te Zameen tab):\n1. Landowners: tap List my land and enter village, district, acres or kanals, water source (Canal / Nehri, Solar tubewell, Electric or diesel tubewell, or Barani rain-fed), soil type (fertile loam, laser leveled, sandy, saline), road access, lease months and your expected rate. Our team verifies the listing.\n2. Farmers: tap Find land, filter by radius, acres and budget, then Request lease. Or post Zameen Ki Boli: the land you need and your own rate, and owners send offers.\n3. When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is ready to print and sign.\n4. Fee: a one-time 4.5% facilitation commission on the total lease value, shown before you confirm. No hidden charges.\n5. 360° Ecosystem Benefit: while you hold an active land lease, your machinery commission drops by 0.50% (never below 3.50%).", ur: "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین کے مالک: اپنی زمین درج کریں اور گاؤں، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی (میرا، لیزر لیول، ریتلی، کلر)، سڑک، ٹھیکے کے مہینے اور اپنا ریٹ لکھیں۔ ہماری ٹیم تصدیق کرتی ہے۔\n2. کسان: فاصلے، ایکڑ اور بجٹ سے زمین تلاش کریں اور ٹھیکے کی درخواست بھیجیں۔ یا \"زمین کی بولی\" لگائیں: جتنی زمین چاہیے اور اپنا ریٹ، مالکان پیشکش بھیجتے ہیں۔\n3. مالک کے قبول کرنے پر دو زبانوں میں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ اور دستخط کے لیے تیار ہوتا ہے۔\n4. فیس: ٹھیکے کی کل رقم پر صرف ایک بار 4.5% سہولت کمیشن، تصدیق سے پہلے دکھایا جاتا ہے۔ کوئی چھپی فیس نہیں۔\n5. 360° فائدہ: فعال ٹھیکہ ہونے پر مشینری کمیشن میں 0.50% کمی (کبھی 3.50% سے کم نہیں)۔", ro: "Zameen Thaika (Thaikay Te Zameen tab):\n1. Zameen ke maalik: \"List my land\" mein gaon, zila, acre ya kanal, pani ka zariya (Nehri / canal, Solar tubewell, bijli ya diesel tubewell, ya Barani), mitti (mera, laser level, retli, kallar), sarak, thaike ke mahine aur apna rate likhein. Team listing verify karti hai.\n2. Kisan: \"Find land\" mein radius, acre aur budget se zameen dhoondein aur Request lease karein. Ya \"Zameen Ki Boli\" post karein: jitni zameen chahiye aur apna rate, maalik offer bhejte hain.\n3. Maalik ke accept karne par do-zabani stamp paper Iqrarnama Thaika Arazi print aur sign ke liye tayyar hota hai.\n4. Fees: thaike ki kul raqam par sirf ek dafa 4.5% facilitation commission, confirm se pehle dikhaya jata hai.\n5. 360° faida: active thaika hone par machinery commission 0.50% kam (kabhi 3.50% se neeche nahi)." });
+  if (has(/agri.?wallet|\bwall?et\b|top.?up|recharge|wallet balance|balance (kam|low|kaise|kese|kitna)|والٹ|ٹاپ اپ|ری چارج|بیلنس|والٽ|ٽاپ اپ|بيلنس|والټ|ټاپ اپ|بیلانس/i)) return LX("wallet", {"en": "Agri-Wallet, prepaid balance for commission (like inDrive or Foodpanda):\n1. Open Owner Portal: your Agri-Wallet balance and transactions are at the top.\n2. Tap Top Up Agri-Wallet. Send money to the Agri-Share Official Collection Account shown there (bank, IBAN, Raast, JazzCash or EasyPaisa).\n3. Choose the amount (PKR 500 to 10,000, or any amount from 100), enter the transaction ID and add the receipt photo, then submit.\n4. Our team checks the receipt and credits your wallet.\nAfter your free launch deals are used, the commission is taken from the wallet automatically when you confirm a booking (2.5%), confirm a crop sale (3.5%) or accept a land lease (4.5%). If the balance is too low you will see \"Low Agri-Wallet Balance. Top up to accept orders\". Help: 0322-4729249 or 0370-0318574.", "ur": "ایگری والٹ، کمیشن کے لیے پیشگی بیلنس (اِن ڈرائیو یا فوڈ پانڈا کی طرح):\n1. اونر پورٹل کھولیں: سب سے اوپر آپ کا ایگری والٹ بیلنس اور لین دین ہے۔\n2. \"ایگری والٹ ٹاپ اپ کریں\" دبائیں۔ وہاں لکھے ایگری شیئر کے سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) میں رقم بھیجیں۔\n3. رقم چنیں (500 سے 10,000 روپے، یا 100 سے اوپر کوئی بھی رقم)، ٹرانزیکشن آئی ڈی لکھیں، رسید کی تصویر لگائیں اور بھیج دیں۔\n4. ہماری ٹیم رسید دیکھ کر آپ کے والٹ میں رقم ڈال دیتی ہے۔\nمفت لانچ ڈیلز ختم ہونے کے بعد کمیشن خود بخود والٹ سے کٹتا ہے: بکنگ کی تصدیق پر 2.5%، فصل کی فروخت پر 3.5%، زمین ٹھیکہ قبول کرنے پر 4.5%۔ بیلنس کم ہو تو \"ایگری والٹ بیلنس کم ہے، آرڈر قبول کرنے کے لیے ٹاپ اپ کریں\" نظر آئے گا۔ مدد: 0322-4729249 یا 0370-0318574۔", "ro": "Agri-Wallet, commission ke liye pehle se jama balance (inDrive ya Foodpanda ki tarah):\n1. Owner Portal kholein: sab se upar aap ka Agri-Wallet balance aur len-den hai.\n2. \"Top Up Agri-Wallet\" dabayein. Wahan likhe Agri-Share Official Collection Account (bank, IBAN, Raast, JazzCash ya EasyPaisa) mein paise bhejein.\n3. Raqam chunein (Rs 500 se 10,000, ya 100 se upar koi bhi raqam), transaction ID likhein, raseed ki photo lagayein aur bhej dein.\n4. Team raseed check kar ke wallet mein raqam daal deti hai.\nMuft launch deals khatam hone ke baad commission khud wallet se katta hai: booking confirm par 2.5%, fasal sale par 3.5%, zameen thaika accept par 4.5%. Balance kam ho to \"Low Agri-Wallet Balance, top up to accept orders\" nazar aayega. Madad: 0322-4729249 ya 0370-0318574."});
+  if (has(/launch|promo|free (deal|commission|booking|lease|sale)|commission.{0,25}(free|muft|maaf|zero)|(zero|0 ?%) ?commission|muft (deal|commission|booking)|bina commission|first (5|3|deal)|مفت.{0,15}(ڈیل|کمیشن|بکنگ|ٹھیک)|(کمیشن|ڈیل).{0,15}مفت|بغیر کمیشن|لانچ|مفت ڊيل|ڪميشن.{0,15}مفت|وړیا|مُفت/i)) return LX("promo", {"en": "Launch Offer, 0% commission on your first deals:\n• Machinery owners: first 5 confirmed bookings are free of commission. After that 2.5% (2% for smallholders under 5 acres).\n• Agri-Market sellers: first 3 crop sales are free. After that 3.5% of the sale amount, taken from your Agri-Wallet.\n• Zameen Thaika landowners: the first accepted lease is free. After that the one-time 4.5% fee.\nOn a free deal the bill shows Agri-Share Platform Commission PKR 0 (0% · Launch Promo: Free Deal 2 of 5, for example) and 100% of the total goes to the owner or seller, so there is nothing to pay or upload. See how many free deals you have left on the Launch Offer card in Owner Portal and Agri-Market.", "ur": "لانچ آفر، پہلی ڈیلز پر 0% کمیشن:\n• مشینری مالکان: پہلی 5 تصدیق شدہ بکنگز پر کوئی کمیشن نہیں۔ اس کے بعد 2.5% (5 ایکڑ سے کم والے چھوٹے کسان 2%)۔\n• فصل منڈی میں فروخت کنندہ: پہلی 3 فصل فروخت مفت۔ اس کے بعد فروخت کی رقم کا 3.5%، ایگری والٹ سے۔\n• زمین ٹھیکہ مالکان: پہلا منظور شدہ ٹھیکہ مفت۔ اس کے بعد ایک بار 4.5% فیس۔\nمفت ڈیل پر بل میں \"ایگری شیئر پلیٹ فارم کمیشن 0 روپے (0% · لانچ آفر: مفت ڈیل 2 از 5)\" لکھا ہوتا ہے اور پوری رقم کا 100% مالک یا فروخت کنندہ کو ملتا ہے، کچھ جمع یا رسید اپ لوڈ نہیں کرنی۔ باقی مفت ڈیلز اونر پورٹل اور فصل منڈی میں \"لانچ آفر\" کارڈ پر دیکھیں۔", "ro": "Launch Offer, pehli deals par 0% commission:\n• Machinery maalik: pehli 5 confirmed bookings par koi commission nahi. Uske baad 2.5% (5 acre se kam wale chhote kisan 2%).\n• Agri-Market mein fasal bechne wale: pehli 3 fasal sales muft. Uske baad sale ki raqam ka 3.5%, Agri-Wallet se.\n• Zameen Thaika ke maalik: pehla accept hua thaika muft. Uske baad ek dafa 4.5% fees.\nMuft deal par bill mein \"Agri-Share Platform Commission PKR 0 (0% · Launch Promo: Free Deal 2 of 5)\" likha hota hai aur poori raqam ka 100% maalik ya bechne wale ko milta hai, kuch jama ya raseed upload nahi karni. Baqi muft deals Owner Portal aur Agri-Market mein \"Launch Offer\" card par dekhein."});
+  if (has(/receipt|raseed|rasid|رسید|رسيد|collection account|official account|company account|\biban\b|raast|راسٹ|payout|split|ledger|net owner|commission.{0,20}(due|kahan|kidhar|jama|deposit|bill)|bill.{0,12}commission|کمیشن.{0,20}(جمع|ادا|کہاں|رسید|بل)|بل.{0,15}(کمیشن|ڪميشن)|ڪميشن.{0,20}(جمع|ادا|بل)/i)) return LX("split", { en: "Split bill: every machinery bill and land lease agreement shows two separate lines, Agri-Share Platform Commission and Net Owner Payout (what the owner keeps).\n• Machinery: commission is 2.5% (2% for smallholders under 5 acres), added on top of the rent.\n• Land lease: the one-time 4.5% fee comes out of the lease total.\nPaying the commission: the bill shows the Agri-Share Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa). After paying, tap Upload Commission Payment Receipt and add the receipt photo and transaction ID. It shows Receipt under review until our team verifies it, then Commission received. Owners see every due amount in Owner Portal > Commission.", ur: "بل کی تقسیم: ہر مشینری بل اور زمین کے اقرار نامے میں دو الگ لائنیں ہیں: ایگری شیئر پلیٹ فارم کمیشن اور مالک کو خالص ادائیگی (جو مالک کو ملتی ہے)۔\n• مشینری: کمیشن 2.5% (5 ایکڑ سے کم والے چھوٹے کسان 2%)، کرائے کے اوپر۔\n• زمین ٹھیکہ: صرف ایک بار 4.5% فیس، ٹھیکے کی کل رقم میں سے۔\nکمیشن کیسے جمع کریں: بل پر ایگری شیئر کا سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھا ہے۔ ادائیگی کے بعد \"کمیشن ادائیگی کی رسید اپ لوڈ کریں\" دبائیں اور رسید کی تصویر اور ٹرانزیکشن آئی ڈی لکھیں۔ ٹیم کی تصدیق تک \"رسید کی جانچ جاری ہے\"، پھر \"کمیشن وصول ہو گیا\"۔ مالکان تمام واجبات اونر پورٹل > کمیشن میں دیکھتے ہیں۔", ro: "Split bill: har machinery bill aur zameen ke iqrarnama mein do alag lines hain: Agri-Share Platform Commission aur Net Owner Payout (jo maalik ko milta hai).\n• Machinery: commission 2.5% (5 acre se kam wale chhote kisan 2%), kiraye ke upar.\n• Zameen ka thaika: sirf ek dafa 4.5% fees, thaike ki kul raqam mein se.\nCommission kaise jama karein: bill par Agri-Share Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa) likha hai. Payment ke baad \"Upload Commission Payment Receipt\" dabayein aur raseed ki photo aur transaction ID dalein. Team ke verify karne tak \"Receipt under review\", phir \"Commission received\". Maalik saare baqaya Owner Portal > Commission mein dekhte hain." });
+  if (has(/\b(thaika|thaikay|thaike|theka|thekay|theeka)\b|ٹھیکہ|ٹھیکے|ٹھیکا|ٺيڪو|ٺيڪي|ټیکه|اجاره|\blease|iqrar|اقرار|stamp ?paper|اسٹامپ|barani|بارانی|باراني|للمي|nehri|نہری|نهري|farm ?land|ecosystem|\b360\b|rebate/i) || (has(/zameen|zamin|زمین|زمين|ځمکه|ځمکې|\bland\b/i) && !machine && !/prep|tayy?ar|تیار|تيار/i.test(text))) return LX("land", { en: "Zameen Thaika, farmland lease (Thaikay Te Zameen tab):\n1. Landowners: tap List my land and enter village, district, acres or kanals, water source (Canal / Nehri, Solar tubewell, Electric or diesel tubewell, or Barani rain-fed), soil type (fertile loam, laser leveled, sandy, saline), road access, lease months and your expected rate. Our team verifies the listing.\n2. Farmers: tap Find land, filter by radius, acres and budget, then Request lease. Or post Zameen Ki Boli: the land you need and your own rate, and owners send offers.\n3. When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is ready to print and sign.\n4. Fee: a one-time 4.5% facilitation commission on the total lease value, shown before you confirm. No hidden charges.\n5. 360° Ecosystem Benefit: while you hold an active land lease, your machinery commission drops by 0.50% (never below 2.0%).", ur: "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین کے مالک: اپنی زمین درج کریں اور گاؤں، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی (میرا، لیزر لیول، ریتلی، کلر)، سڑک، ٹھیکے کے مہینے اور اپنا ریٹ لکھیں۔ ہماری ٹیم تصدیق کرتی ہے۔\n2. کسان: فاصلے، ایکڑ اور بجٹ سے زمین تلاش کریں اور ٹھیکے کی درخواست بھیجیں۔ یا \"زمین کی بولی\" لگائیں: جتنی زمین چاہیے اور اپنا ریٹ، مالکان پیشکش بھیجتے ہیں۔\n3. مالک کے قبول کرنے پر دو زبانوں میں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ اور دستخط کے لیے تیار ہوتا ہے۔\n4. فیس: ٹھیکے کی کل رقم پر صرف ایک بار 4.5% سہولت کمیشن، تصدیق سے پہلے دکھایا جاتا ہے۔ کوئی چھپی فیس نہیں۔\n5. 360° فائدہ: فعال ٹھیکہ ہونے پر مشینری کمیشن میں 0.50% کمی (کبھی 2.0% سے کم نہیں)۔", ro: "Zameen Thaika (Thaikay Te Zameen tab):\n1. Zameen ke maalik: \"List my land\" mein gaon, zila, acre ya kanal, pani ka zariya (Nehri / canal, Solar tubewell, bijli ya diesel tubewell, ya Barani), mitti (mera, laser level, retli, kallar), sarak, thaike ke mahine aur apna rate likhein. Team listing verify karti hai.\n2. Kisan: \"Find land\" mein radius, acre aur budget se zameen dhoondein aur Request lease karein. Ya \"Zameen Ki Boli\" post karein: jitni zameen chahiye aur apna rate, maalik offer bhejte hain.\n3. Maalik ke accept karne par do-zabani stamp paper Iqrarnama Thaika Arazi print aur sign ke liye tayyar hota hai.\n4. Fees: thaike ki kul raqam par sirf ek dafa 4.5% facilitation commission, confirm se pehle dikhaya jata hai.\n5. 360° faida: active thaika hone par machinery commission 0.50% kam (kabhi 2.0% se neeche nahi)." });
   if (has(/govt|government|sarkar|سرکار|سرڪار|حکومت|دولتي|subsidy|سبسڈی|سبسڊي|kis+an card|کسان کارڈ/i)) return LX("govt", { en: "The Govt Portal is coming soon. It is planned to bring government loans and subsidy support into one place on Agri-Share, but it is not live yet, so we cannot apply for any scheme for you today. For help now, call or WhatsApp our consultants on 0322-4729249 or 0370-0318574.", ur: "سرکاری پورٹل جلد آ رہا ہے۔ اس میں سرکاری قرض اور سبسڈی کی مدد ایک جگہ لانے کا منصوبہ ہے، لیکن یہ ابھی فعال نہیں، اس لیے ابھی کسی اسکیم کی درخواست نہیں ہو سکتی۔ ابھی مدد کے لیے ہمارے کنسلٹنٹ کو 0322-4729249 یا 0370-0318574 پر کال یا واٹس ایپ کریں۔", ro: "Govt Portal jald aa raha hai (coming soon). Is mein sarkari qarzon aur subsidy ki madad ek jagah lane ka mansooba hai, lekin abhi live nahi, is liye abhi kisi scheme ki darkhwast nahi ho sakti. Abhi madad ke liye hamare consultant ko 0322-4729249 ya 0370-0318574 par call ya WhatsApp karein." });
   if (CUR.id === "PK" && has(/petrol|diesel|ڈیزل|پیٹرول|ڊيزل|پيٽرول|ډیزل|پټرول/i) && has(/rate|price|qeemat|keemat|bha+o|aaj|today|kitn|کتن|قیمت|ریٹ|نرخ|اگهه|بہا|بھاؤ|آج|اڄ/i)) {
     const num = (n) => String(Math.round(Number(n) * 100) / 100);
@@ -9347,7 +10020,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/apni boli|\bboli\b|name your price|own rate|اپنی بولی|بولی|اپني بولي|پنهنجي ٻولي|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|40 ?km|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
     return (HELPER_EXTRA.boli[lang] ? HELPER_EXTRA.boli[lang].replace("{d}", String(dieselPrice)) : null) || steps({
-      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Set your own rate (Apni boli lagayein): there are no fixed prices, enter what you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 15 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 40 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 6% commission, grand total) and confirm.`,
+      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Set your own rate (Apni boli lagayein): there are no fixed prices, enter what you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 15 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 40 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 2.5% commission, grand total) and confirm.`,
       ur: `اپنی بولی (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. اپنا ریٹ خود لگائیں (اپنی بولی لگائیں): کوئی مقررہ قیمت نہیں، فی گھنٹہ جتنا دینا چاہیں لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 15 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 40 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
       ro: `Apni Boli (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Apna rate khud lagayein (Apni boli lagayein): koi fixed qeemat nahi, ghante ka jitna dena chahein likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 15 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 40 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
     });
@@ -9451,10 +10124,10 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
     });
   }
   if (/commission|fee|charges|کمیشن|فیس/i.test(text)) {
-    return L({
-      en: "The platform commission is 6% (5% to 7% range). Smallholders farming under 5 acres pay a subsidised 4%: tick the smallholder box in the booking form. It is shown as a separate line and added to the renter's bill before confirmation, so there are no hidden charges. The bill shows it as Agri-Share Platform Commission next to Net Owner Payout. Land leases have a separate one-time 4.5% fee.",
-      ur: "پلیٹ فارم کمیشن 6% ہے (5 سے 7% حد)۔ 5 ایکڑ سے کم والے چھوٹے کسانوں کے لیے رعایتی 4%، بکنگ فارم میں چھوٹے کسان کا خانہ منتخب کریں۔ یہ تصدیق سے پہلے الگ لائن میں دکھایا جاتا ہے اور کسان کے بل میں شامل ہوتا ہے، کوئی چھپی فیس نہیں۔ بل میں یہ ایگری شیئر پلیٹ فارم کمیشن کے نام سے مالک کی خالص ادائیگی کے ساتھ الگ دکھایا جاتا ہے۔ زمین ٹھیکے پر الگ سے صرف ایک بار 4.5% فیس ہے۔",
-      ro: "Platform commission 6% hai (5 se 7% range). 5 acre se kam wale chhote kisanon ke liye riayati 4%, booking form mein smallholder box tick karein. Ye confirm se pehle alag line mein dikhaya jata hai aur kisan ke bill mein shamil hota hai, koi chhupi fees nahi. Bill mein ye Agri-Share Platform Commission ke naam se Net Owner Payout ke saath alag dikhta hai. Zameen ke thaike par alag se sirf ek dafa 4.5% fees hai.",
+    return L({ en: "Launch Offer: your first 5 machinery bookings, first 3 crop sales and first land lease carry 0% commission (ask me about the launch offer for details).", ur: "لانچ آفر: پہلی 5 مشینری بکنگز، پہلی 3 فصل فروخت اور پہلا زمین ٹھیکہ 0% کمیشن پر (تفصیل کے لیے لانچ آفر کا پوچھیں)۔", ro: "Launch Offer: pehli 5 machinery bookings, pehli 3 fasal sales aur pehla zameen thaika 0% commission par (tafseel ke liye launch offer ka poochein)." }) + "\n\n" + L({
+      en: "The platform commission is 2.5%. Smallholders farming under 5 acres pay a subsidised 2%: tick the smallholder box in the booking form. It is shown as a separate line and added to the renter's bill before confirmation, so there are no hidden charges. The bill shows it as Agri-Share Platform Commission next to Net Owner Payout. Land leases have a separate one-time 4.5% fee.",
+      ur: "پلیٹ فارم کمیشن 2.5% ہے۔ 5 ایکڑ سے کم والے چھوٹے کسانوں کے لیے رعایتی 2%، بکنگ فارم میں چھوٹے کسان کا خانہ منتخب کریں۔ یہ تصدیق سے پہلے الگ لائن میں دکھایا جاتا ہے اور کسان کے بل میں شامل ہوتا ہے، کوئی چھپی فیس نہیں۔ بل میں یہ ایگری شیئر پلیٹ فارم کمیشن کے نام سے مالک کی خالص ادائیگی کے ساتھ الگ دکھایا جاتا ہے۔ زمین ٹھیکے پر الگ سے صرف ایک بار 4.5% فیس ہے۔",
+      ro: "Platform commission 2.5% hai. 5 acre se kam wale chhote kisanon ke liye riayati 2%, booking form mein smallholder box tick karein. Ye confirm se pehle alag line mein dikhaya jata hai aur kisan ke bill mein shamil hota hai, koi chhupi fees nahi. Bill mein ye Agri-Share Platform Commission ke naam se Net Owner Payout ke saath alag dikhta hai. Zameen ke thaike par alag se sirf ek dafa 4.5% fees hai.",
     });
   }
   if (/operator|driver|ڈرائیور|آپریٹر|chalane/i.test(text)) {
@@ -9519,13 +10192,13 @@ function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK,
 LANGUAGE RULE (most important): mirror the language of the farmer's LATEST message only, never the language of the greeting or of earlier messages. English message (for example "what is meant by zameen thaika") -> reply in clean, natural English; Pakistani terms such as Zameen Thaika, Apni Boli or Nehri may stay as names, but explain them in English. Roman Urdu message (for example "zameen thaika kya hota hai" or "tractor kitne ka milega") -> reply only in Roman Urdu with Pakistani vocabulary (pani ka zariya, zameen, kisan, shukriya, meharbani, waqt), never Hindi words such as srot, jal, dhanyavaad, kripya or samay. Urdu, Punjabi, Sindhi, Pashto or Balochi script -> reply in that language and script. SCRIPT PURITY: write ONLY in plain Latin letters (English / Roman Urdu) or ONLY in Urdu Nastaliq / Perso-Arabic script; never mix in Devanagari, Bengali, Gurmukhi, Malayalam or any other Indic characters. Do not use markdown symbols such as ** or #. Urdu script in, Urdu script out; Roman Urdu in, Roman Urdu out; English in, English out; Punjabi in Shahmukhi, Sindhi, Pashto and Balochi in their Perso-Arabic scripts. If unclear, use the app language (${langName}). Never write Hindi / Devanagari.
 CURRENT RATE CARD (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; quote these when asked about rent, rates or prices, give the hourly range first):
 ${rateCardText()}
-Platform fee: 6% standard, 4% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
+Platform fee: 2.5% standard, 2% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
   const base = `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}${persona}
 Rules of the platform:
 - Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 40 km catchment; Apni Boli requests search up to 40 km.
 - Dry rent: hourly rate EXCLUDES diesel/fuel; renter supplies fuel. Overtime and late-return terms agreed with owner before confirmation.
 - Operator terms = who drives the machine: "included" (owner's driver, already in rate), "optional" (+PKR 500/hr for the owner's driver), "none" (renter brings own driver).
-- Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform commission 6% standard (5 to 7% range), 4% subsidised for smallholders under 5 acres, added to the subtotal.
+- Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform commission 2.5% standard, 2% subsidised for smallholders under 5 acres, added to the subtotal (except the owner's first 5 bookings under the Launch Offer, which carry 0%).
 - Price offers: in the booking form the renter can turn on "Suggest your own price" (hourly offer at least 60% of listed rate, plus a transport offer and a note). The owner can Accept, Counter or Decline in Owner Portal > Requests; counters appear in My Bookings to accept or decline.
 - Payments: EasyPaisa, JazzCash, cash via local Agri-Agent. Do not promise escrow or insurance cover.
 - Rough rules of thumb: tractor about 1 h/acre for land prep; combine harvester about 0.8 h/acre; thresher about 1.5 h/acre of crop. Diesel roughly tractor 4 L/h, thresher 3 L/h, harvester 10 L/h.
@@ -9536,8 +10209,8 @@ How to use the website (guide users step by step when they ask):
 - Sign out: click your name/initials at top right > Sign out.
 - Book: Marketplace > filters (category, district, radius 15 km default up to 40 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
 - List a machine: Owner Portal > "List Available Machinery" > name, category, hourly rate, district, village, distance, operator and transport terms > "Add to marketplace". Earnings Estimator in Owner Portal.
-- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 6% commission, grand total). "No match, expand search" button moves to the next tier.
-- Commission: 6% standard (5 to 7% range); smallholders under 5 acres tick a box for a subsidised 4%.
+- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 2.5% commission, grand total). "No match, expand search" button moves to the next tier.
+- Commission: 2.5% standard; smallholders under 5 acres tick a box for a subsidised 2%.
 - Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, Agri-Share carries none.
 - Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Real buyers and mills are still being onboarded: say so honestly and never claim live bids from registered mills (simulated buyer bids appear only in the founder's Sample Demo Data mode). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
 - Keypad phones: call or WhatsApp the Agri-Share consultants on 0322-4729249 or 0370-0318574 (there is no toll-free helpline or 24/7 line; never mention 0800 numbers). A USSD short code is not allocated yet ("coming soon"): never give out a USSD code.
@@ -9545,13 +10218,17 @@ How to use the website (guide users step by step when they ask):
 - Language menu at top right: English, Urdu, Punjabi, Sindhi, Pashto, Balochi.
 - Privacy: only name, email, mobile and district are collected, with consent; passwords are handled by Firebase Authentication; only Agri-Share administrators see member details.
 NEW AGRI-SHARE FEATURES (explain these accurately when asked; never invent features that are not listed here):
-- Zameen Thaika / Thaikay Te Zameen (farmland lease tab): landowners tap "List my land" and enter village, district, tehsil, acres or kanals, water source (Canal / Nehri + tubewell, Solar tubewell, Electric or diesel tubewell, Barani rain-fed), soil type (fertile loam / Mera, laser leveled, sandy / Retli, saline / Kallar), road access (paved or kacha), lease months, rate per acre per month or a total, payment schedule and an optional Featured boost (PKR 999 per acre). The Agri-Share team verifies listings. Farmers use "Find land" (radius, minimum acres, budget) and "Request lease", or post "Zameen Ki Boli" (the land they need plus their own rate) so owners send offers; both sides follow deals in "My land deals". When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is generated to print and sign. Fee: a transparent one-time 4.5% facilitation commission on the total lease value, whatever the lease length, shown before confirmation. 360° Ecosystem Benefit: a tenant with an accepted land lease gets 0.50% off the machinery commission, never below a 3.50% floor (6% becomes 5.5%; the smallholder 4% becomes 3.5%).
+- Zameen Thaika / Thaikay Te Zameen (farmland lease tab): landowners tap "List my land" and enter village, district, tehsil, acres or kanals, water source (Canal / Nehri + tubewell, Solar tubewell, Electric or diesel tubewell, Barani rain-fed), soil type (fertile loam / Mera, laser leveled, sandy / Retli, saline / Kallar), road access (paved or kacha), lease months, rate per acre per month or a total, payment schedule and an optional Featured boost (PKR 999 per acre). The Agri-Share team verifies listings. Farmers use "Find land" (radius, minimum acres, budget) and "Request lease", or post "Zameen Ki Boli" (the land they need plus their own rate) so owners send offers; both sides follow deals in "My land deals". When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is generated to print and sign. Fee: a transparent one-time 4.5% facilitation commission on the total lease value, whatever the lease length, shown before confirmation. 360° Ecosystem Benefit: a tenant with an accepted land lease gets 0.50% off the machinery commission, never below a 2.0% floor (2.5% becomes 2.0%; the smallholder 2% already sits at the floor).
 - Split-bill commission: every machinery bill (booking voucher) and land lease agreement automatically shows two lines, "Agri-Share Platform Commission" and "Net Owner Payout". Machinery: the commission is added on top of the rent, so the owner keeps his full rate. Land: the 4.5% fee is taken out of the lease total, so the owner receives 95.5%. The commission is paid into the "Agri-Share Official Collection Account" shown on the bill (bank, account title, IBAN, Raast, JazzCash, EasyPaisa; set by the founder; if not set yet, the card says to call a consultant). Then the farmer or owner taps "Upload Commission Payment Receipt" (receipt photo plus optional transaction ID). Status is "Receipt under review" until the Agri-Share team ticks "Verify Commission Received", then "Commission received". Owners see Due / Under review / Paid totals in Owner Portal > Commission (Commission Due Wallet).
 - Photo & Video Work / Handover Proofs: on confirmed or completed bookings in My Bookings, on responded jobs in Owner Portal, on the booking voucher, and on accepted leases in Thaikay Te Zameen > My land deals, tap "Add Photo / Video Proof". Stages: Before work / handover, After work / completion, Meter or fuel reading, Land condition. Attach a photo, a short video up to 650 KB, or a YouTube / Google Drive link, plus a note. Proofs appear in the "Verified Work & Handover Proofs" gallery. Only that deal's farmer, owner and the Agri-Share founder admin can see or add them, and proofs cannot be edited afterwards.
 - Apni Boli has NO fixed prices: its machine cards say "Set your own rate · Apni boli lagayein"; the farmer names his own hourly rate and owners accept or counter. Smart matching radius 15 / 25 / 40 km (Tier 1 village up to 15 km, Tier 2 15 to 25 km, Tier 3 backup up to 40 km); never promise matches beyond 40 km.
 - Live Pakistan fuel rates: diesel and petrol prices update automatically about twice a day from the official notified prices and show at the top of the app. Today: diesel Rs ${dieselPrice}/L${HELPER_FUEL.petrol ? `, petrol Rs ${HELPER_FUEL.petrol}/L` : ""}.
+- COMMISSION LADDER (lowest on daily services, highest on yearly land deals): machinery rentals 2.5% (smallholders under 5 acres 2%), Agri-Market crop and vegetable sales 3.5%, Zameen Thaika land lease 4.5% one-time facilitation fee. 360° benefit: a tenant with an accepted land lease gets 0.50% off machinery commission, never below 2.0%.
+- Prepaid Agri-Wallet (like inDrive / Foodpanda): every owner and seller has an Agri-Wallet balance in PKR in Owner Portal with a transaction list. Top Up Agri-Wallet: send money to the Agri-Share Official Collection Account shown in the top-up screen (bank, IBAN, Raast, JazzCash, EasyPaisa), choose the amount (PKR 500, 1,000, 2,500, 5,000, 10,000 or any amount from 100), enter the transaction ID and add the receipt photo. The founder checks the receipt and credits the wallet, usually the same day. After the free launch deals are used, the commission (2.5% machinery, 3.5% crops, 4.5% land) is taken from the wallet automatically when the owner confirms a booking, accepts a lease or confirms a crop sale, and the bill then says "Commission paid from Agri-Wallet" (no separate receipt needed). If the balance is too low, the app shows "Low Agri-Wallet Balance. Top up to accept orders" and the deal cannot be accepted until the wallet is topped up.
+- Agri-Market crops and vegetables: farmers can sell Wheat (Gandum), Rice (Chawal), Maize (Makai), Cotton (Kapas), Sugarcane (Ganna), Potato (Aloo), Onion (Pyaz), Tomato (Tamatar), Mango (Aam), Kinnow / citrus, Mustard / canola (Sarson), Chickpea / gram (Chana), green or red chilli (Mirch), garlic and ginger (Lehsan / Adrak), or "Other crop / vegetable" with their own crop name. Buyers can filter Buy Crops by any of these.
 - Agri-Market (Sell Crop): after posting, the farmer sees a confirmation card with a reference ID (AM-...), crop, quantity, rate and total payout; the listing is live for verified buyers and the team aims to respond within 2 to 6 hours.
 - Agri-Agent & USSD tab: offline booking through a village Agri-Agent; the USSD short code is not allocated yet (coming soon), so never quote a code.
+- Launch Offer (0% commission on first deals, per user): machinery owners pay no commission on their first 5 confirmed bookings (then 2.5%, or 2% for smallholders); Agri-Market sellers pay none on their first 3 crop sales (then 3.5% of the sale amount, taken from the seller's Agri-Wallet); landowners pay none on their first accepted Zameen Thaika lease (then the one-time 4.5%). Deals confirmed before the offer started count as already used. On a free deal the bill reads "Agri-Share Platform Commission PKR 0 (0% · Launch Promo: Free Deal X of Y)" and 100% of the total goes to the owner or seller, with nothing to pay or upload. Owner Portal and Agri-Market show a "Launch Offer: Free Commission Remaining" card, for example "Machinery: 5/5 free · Crop Market: 3/3 free · Zameen Thaika: 1/1 free".
 - Govt Portal: Coming Soon (loans and subsidy support). It is not live; never say users can apply through it today.
 - Direct consultant support: call or WhatsApp 0322-4729249 or 0370-0318574.
 ${session ? `The farmer is signed in as ${session.name} (${session.role}).` : "The farmer is not signed in."}
@@ -10657,7 +11334,7 @@ function CostBreakdown({ t, q, rentType, dieselPrice, category, strong }) {
       <Row label={`${t("lr_base")} (${pkr(q.rate)} × ${q.hours}h)`} value={pkr(q.base)} />
       <Row label={q.tier === 1 ? `${t("lr_transport_local")} (${q.km} km)` : t("lr_transport").replace("{km}", q.km).replace("{rate}", pkr(trLong()))} value={q.transport ? pkr(q.transport) : t("lr_free")} />
       {rentType === "wet" && <Row label={`${t("lr_fuel_wet")} (~${q.litres} L × ${pkr(dieselPrice)})`} value={pkr(q.fuel)} />}
-      <Row label={t("bk_comm").replace("{p}", pctLabel(q.commissionRate))} value={pkr(q.commission)} />
+      <Row label={commLabel(t, q)} value={pkr(q.commission)} />
       <div className="my-1 border-t border-dashed border-soil/20" />
       <Row label={t("lr_platform_bill")} value={pkr(q.platformTotal)} />
       {rentType === "dry" && <Row label={`${t("lr_fuel_dry")} (~${q.litres} L × ${pkr(dieselPrice)})`} value={pkr(q.fuel)} muted />}
@@ -10931,7 +11608,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
 
 const startRateFor = (cat) => (CUR.id === "PK" ? round50(askFor(cat, BASE_ASK[cat] || 2000) * 0.92) : fromLocal(Math.round(toLocal(askFor(cat, BASE_ASK[cat] || 2000) * 0.92))));
 
-function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
+function LiveRequest({ promoFor = () => null, fuel = null, initialCat = null, ecoActive = false, t, dn, lang, listings, session, requireAuth, createBooking, setTab, toast, dieselPrice, userLoc, liveRequests, saveRequest, country = "PK", setCountry, onVoucher, demoMode = false, saveDemand, sendLead }) {
   const [autoLeadFor, setAutoLeadFor] = useState(null); // request id whose lead was sent automatically
   const startLoc = () => {
     const cand = userLoc || (session && session.location);
@@ -11095,7 +11772,7 @@ function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn,
   const noMatch = req && !scanning && offersInTier.length === 0;
   const pickedOffer = offersInTier.find((o) => o.key === picked);
   const lrCommission = ecoCommission((req || f).smallholder ? SMALLHOLDER_COMMISSION : COMMISSION, ecoActive);
-  const qFor = (o) => liveQuote({ rate: o.rate, hours: req.hours, km: o.owner.distance, category: req.category, rentType: req.rentType, dieselPrice, commissionRate: lrCommission });
+  const qFor = (o) => withPromo(liveQuote({ rate: o.rate, hours: req.hours, km: o.owner.distance, category: req.category, rentType: req.rentType, dieselPrice, commissionRate: lrCommission }), promoFor(o.owner.ownerUid));
 
   const confirm = () => {
     const o = pickedOffer; if (!o) return;
@@ -11105,7 +11782,7 @@ function LiveRequest({ fuel = null, initialCat = null, ecoActive = false, t, dn,
       date: req.date, hours: q.hours, operator: null, transport: q.transport > 0, payment: lrPayLater ? "paylater" : "direct", // nothing pre-selected for the farmer smallholder: !!req.smallholder,
       financing: lrPayLater ? (() => { const adv = Math.round(q.platformTotal * ADVANCE_SHARE); const d = new Date(req.date + "T00:00:00"); d.setDate(d.getDate() + 120); return { partner: lrPartner, advance: adv, balance: q.platformTotal - adv, dueDate: d.toISOString().slice(0, 10), status: "pending" }; })() : null,
       renterName: session ? session.name : "Farmer", renterPhone: session ? session.phone : "",
-      quote: { hours: q.hours, rate: o.rate, listedRate: o.owner.ask, base: q.base, operator: 0, transport: q.transport, subtotal: q.billable, commission: q.commission, commissionRate: q.commissionRate, total: q.platformTotal, fuel: q.fuel, rentType: req.rentType, tier: q.tier },
+      quote: { hours: q.hours, rate: o.rate, listedRate: o.owner.ask, base: q.base, operator: 0, transport: q.transport, subtotal: q.billable, commission: q.commission, commissionRate: q.commissionRate, total: q.platformTotal, fuel: q.fuel, rentType: req.rentType, tier: q.tier, ...(q.promo ? { promo: q.promo, stdCommissionRate: q.stdCommissionRate } : {}) },
       // a real owner confirms from the Owner Portal; only simulated demo owners auto-confirm
       channel: "live", status: o.kind === "listed" ? "sent" : "confirmed",
     }, true);
@@ -11462,18 +12139,21 @@ function landCommission(total) {
   const pct = LAND_COMMISSION_PCT;
   return { pct, amount: Math.round(((Number(total) || 0) * pct) / 100) };
 }
+// a lease stamped with the launch promo: 0%, the owner keeps 100%
+const landCommFor = (b) => (b && b.promo ? { pct: 0, amount: 0, promo: b.promo } : landCommission(b && b.total));
 
-/* 360° ecosystem rebate: tenants with an accepted land lease get 0.50% off machinery commission, never below 3.50% */
-const ECO_REBATE = 0.005, ECO_FLOOR = 0.035;
+/* 360° ecosystem rebate: tenants with an accepted land lease get 0.50% off machinery commission, never below 2.0% */
+const ECO_REBATE = 0.005, ECO_FLOOR = 0.02;
 const ecoCommission = (base, eligible) => (eligible ? Math.max(ECO_FLOOR, base - ECO_REBATE) : base);
 
-function CommissionCard({ t, total }) {
-  const c = landCommission(total);
+function CommissionCard({ t, total, promo = null }) {
+  const c = promo ? { pct: 0, amount: 0 } : landCommission(total);
   return (
     <div className="rounded-xl bg-ivory p-3 ring-1 ring-soil/10">
       <p className="text-sm font-bold text-forest">{t("cm_title")}</p>
       <p className="mt-0.5 text-[11px] text-soil/80">{t("cm_sub")}</p>
       <p className="mt-2 flex justify-between border-t border-soil/15 pt-1 text-sm font-extrabold text-forest" dir="ltr"><span dir="auto">{t("cm_total")} · {c.pct.toFixed(2)}%</span><span className="tabular-nums">{pkr(c.amount)}</span></p>
+      {promo && <p className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-leaf/15 px-2 py-0.5 text-[11px] font-bold text-forest rtl:leading-[2]"><Gift className="h-3 w-3" aria-hidden="true" />{promoText(t, promo)}</p>}
     </div>
   );
 }
@@ -11542,9 +12222,10 @@ function LandAgreementModal({ t, b, dn, onClose }) {
               </li>
             ))}
           </ol>
-          <div className="mt-4"><CommissionCard t={t} total={b.total} /></div>
-          <CommissionSplit t={t} commission={landCommission(b.total).amount} total={b.total} className="mt-3" />
-          <CompanyAccountCard t={t} deal={b.sample ? null : landDeal(b)} className="mt-3" />
+          <div className="mt-4"><CommissionCard t={t} total={b.total} promo={b.promo || null} /></div>
+          <CommissionSplit t={t} commission={landCommFor(b).amount} total={b.total} promo={b.promo || null} className="mt-3" />
+          {b.walletPaid ? <p className="mt-3 flex items-center gap-2 rounded-xl bg-leaf/10 p-3 text-sm font-bold text-forest ring-1 ring-leaf/30 rtl:leading-[2]"><Wallet className="h-4 w-4 shrink-0" aria-hidden="true" />{t("aw_paid")}</p>
+            : !b.promo && <CompanyAccountCard t={t} deal={b.sample ? null : landDeal(b)} className="mt-3" />}
           <div className="mt-6 flex gap-4"><Sign label={`${t("ag_first")} · ${t("ag_sign")}`} /><Sign label={`${t("ag_second")} · ${t("ag_sign")}`} /></div>
           <div className="mt-4 flex gap-4"><Sign label={`${t("ag_witness1")} / گواہ نمبر 1`} /><Sign label={`${t("ag_witness2")} / گواہ نمبر 2`} /></div>
         </div>
@@ -12028,12 +12709,38 @@ const CROPS = {
   maize: { bench: 2900, sourced: false },
   cotton: { bench: 8900, sourced: true },
 };
+// every crop / vegetable a farmer can list (the 4 photo cards above, then the rest, then a custom name)
+// bench: illustrative Rs per 40 kg mann, only used for the founder's sample-buyer demo
+const MORE_CROPS = {
+  sugarcane: { bench: 450, local: "Ganna" }, potato: { bench: 2200, local: "Aloo" }, onion: { bench: 3200, local: "Pyaz" },
+  tomato: { bench: 3600, local: "Tamatar" }, mango: { bench: 6000, local: "Aam" }, kinnow: { bench: 3000, local: "Kinnow" },
+  mustard: { bench: 9500, local: "Sarson" }, chickpea: { bench: 10000, local: "Chana" }, chilli: { bench: 14000, local: "Mirch" },
+  garlic: { bench: 16000, local: "Lehsan / Adrak" }, other: { bench: 3000, local: "" },
+};
+const ALL_CROP_KEYS = [...Object.keys(CROPS), ...Object.keys(MORE_CROPS)];
+const cropBench = (c) => ((CROPS[c] || MORE_CROPS[c] || MORE_CROPS.other).bench);
+// "Wheat", or the farmer's own name for an "Other crop / vegetable" post
+const cropName = (t, o) => {
+  if (!o || !o.crop) return "";
+  if (o.crop === "other" && o.cropName) return o.cropName;
+  const k = "crop_" + o.crop;
+  return t(k) !== k ? t(k) : o.crop;
+};
+// bank-card colours for the crop cards: [from, via, to]
+const CROP_CARD = {
+  wheat: ["#f59e0b", "#d97706", "#92400e"],
+  rice: ["#059669", "#0f766e", "#134e4a"],
+  maize: ["#65a30d", "#3f6212", "#14532d"],
+  cotton: ["#475569", "#4338ca", "#1e1b4b"],
+  more: ["#be123c", "#9f1239", "#4c0519"],
+};
 const MANDI_BUYERS = {
   wheat: [["Kasur Roller Flour Mills", "flour"], ["Raiwind Atta Mills", "flour"], ["Sheikhupura Grain Traders", "bulk"], ["Okara Flour & General Mills", "flour"]],
   rice: [["Muridke Rice Mills", "rice"], ["Ferozewala Rice Processing", "rice"], ["Sheikhupura Paddy Exporters", "bulk"], ["Chunian Paddy Buyers", "bulk"]],
   maize: [["Okara Poultry Feed Mills", "feed"], ["Sahiwal Feed Company", "feed"], ["Faisalabad Starch Works", "feed"], ["Depalpur Grain Arhti", "bulk"]],
   cotton: [["Sahiwal Ginning Factory", "ginning"], ["Chichawatni Cotton Ginners", "ginning"], ["Faisalabad Textile Buyers", "bulk"], ["Okara Ginning & Pressing", "ginning"]],
 };
+const MANDI_BUYERS_GENERIC = [["Lahore Sabzi & Fruit Mandi Arhti", "bulk"], ["Faisalabad Ghalla Mandi Traders", "bulk"], ["Multan Fruit & Vegetable Market", "bulk"], ["Karachi Wholesale Produce Buyers", "bulk"]];
 const round10 = (n) => Math.round(n / 10) * 10;
 const CROP_LOCAL = { wheat: "Gandum", rice: "Chawal", maize: "Makai", cotton: "Kapas" };
 // Real crop photos from Wikimedia Commons (freely licensed). If one cannot load (offline, renamed file),
@@ -12089,7 +12796,7 @@ function CropListingConfirm({ t, p, innerRef, onView, onAnother }) {
       </div>
       <dl className="mt-4 rounded-xl bg-ivory px-3 text-sm">
         {row(t("am_ok_ref"), <span dir="ltr" className="font-mono">{p.id}</span>)}
-        {row(t("am_ok_crop"), t("crop_" + p.crop))}
+        {row(t("am_ok_crop"), cropName(t, p))}
         {row(t("am_ok_qty"), <span dir="ltr">{p.qty.toLocaleString("en-PK")} {t("am_mann")}</span>)}
         {row(t("am_ok_rate"), <span dir="ltr">{pkr(p.rate)}{t("am_per_maund")}</span>)}
         {row(t("am_ok_total"), <span dir="ltr" className="text-base text-leafink">{pkr(total)}</span>)}
@@ -12223,7 +12930,7 @@ function CropMediaViewer({ t, post, local, onClose }) {
       {loading && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("am_media_loading")}</p>}
       {!loading && (
         <div className="space-y-3">
-          {photos.map((src, i) => <img key={i} src={src} alt={t("crop_" + post.crop)} className="w-full rounded-xl object-contain ring-1 ring-soil/15" />)}
+          {photos.map((src, i) => <img key={i} src={src} alt={cropName(t, post)} className="w-full rounded-xl object-contain ring-1 ring-soil/15" />)}
           {video && <video src={video} controls playsInline className="w-full rounded-xl bg-black" />}
           {link && <a href={link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-forest/30 px-3 text-sm font-bold text-forest"><ExternalLink className="h-4 w-4" aria-hidden="true" />{t("am_media_open_link")}</a>}
           {!photos.length && !video && !link && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{failed ? t("pf_err") : t("am_media_none")}</p>}
@@ -12292,13 +12999,13 @@ function CropOfferModal({ t, post, session, toast, onClose }) {
     const now = Date.now();
     const id = `${post.id}_${session.uid.slice(0, 10)}_${now.toString(36)}`;
     writeDoc(COL.cropOffers, id, {
-      cropId: post.id, crop: post.crop, sellerUid: post.sellerUid, buyerUid: session.uid, buyerName: String(session.name || "").slice(0, 80),
+      cropId: post.id, crop: post.crop, ...(post.crop === "other" && post.cropName ? { cropName: String(post.cropName).slice(0, 40) } : {}), sellerUid: post.sellerUid, buyerUid: session.uid, buyerName: String(session.name || "").slice(0, 80),
       buyerOrg: String(f.org || "").trim().slice(0, 80), buyerType: f.type, buyerPhone: phone.slice(0, 16), rate: Math.round(rate), qty: Math.round(qty),
       note: String(f.note || "").trim().slice(0, 280), status: "pending", uids: [session.uid, post.sellerUid], createdAt: now, updatedAt: now,
     }).then(() => { toast(t("am_offer_sent")); onClose(); }).catch(() => { setBusy(false); toast(t("am_offer_err"), { type: "error" }); });
   };
   return (
-    <SheetModal title={t("am_offer_t").replace("{crop}", t("crop_" + post.crop))} onClose={onClose} labelledBy="am-offer-h">
+    <SheetModal title={t("am_offer_t").replace("{crop}", cropName(t, post))} onClose={onClose} labelledBy="am-offer-h">
       <form onSubmit={submit} noValidate className="space-y-3">
         <p className="rounded-xl bg-ivory p-2.5 text-sm text-soil"><span dir="ltr" className="font-mono">{post.id}</span> · {t("am_asking")}: <b dir="ltr">{pkr(post.rate)}{t("am_per_maund")}</b> · <span dir="ltr">{Number(post.qty).toLocaleString("en-PK")}</span> {t("am_mann")}</p>
         <div className="grid grid-cols-2 gap-3">
@@ -12361,7 +13068,7 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
         <h3 className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("am_buy_t")}</h3>
         <p className="mt-1 text-sm text-soil/80 rtl:leading-[2]">{t("am_buy_s")}</p>
         <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={t("am_crop")}>
-          {["all", ...Object.keys(CROPS)].map((c) => (
+          {["all", ...ALL_CROP_KEYS].map((c) => (
             <button key={c} type="button" onClick={() => setCrop(c)} aria-pressed={crop === c}
               className={`min-h-[40px] rounded-full px-3.5 text-sm font-bold ring-1 ${crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{c === "all" ? t("am_buy_all") : t("crop_" + c)}</button>
           ))}
@@ -12373,10 +13080,10 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
             const mine = myOfferBy.get(p.id);
             return (
               <li key={p.id} className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-soil/10">
-                {p.thumb ? <img src={p.thumb} alt={t("crop_" + p.crop)} className="aspect-[16/10] w-full object-cover" /> : <CropPhoto crop={p.crop} alt={t("crop_" + p.crop)} className="aspect-[16/10] w-full" />}
+                {p.thumb ? <img src={p.thumb} alt={cropName(t, p)} className="aspect-[16/10] w-full object-cover" /> : <CropPhoto crop={p.crop} alt={cropName(t, p)} className="aspect-[16/10] w-full" />}
                 <div className="flex flex-1 flex-col gap-2 p-3.5">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="font-extrabold text-forest rtl:leading-[2]">{t("crop_" + p.crop)} · {t(p.grade === "B" ? "am_grade_b" : "am_grade_a")}</p>
+                    <p className="font-extrabold text-forest rtl:leading-[2]">{cropName(t, p)} · {t(p.grade === "B" ? "am_grade_b" : "am_grade_a")}</p>
                     <span className="shrink-0 text-[11px] text-soil/70" dir="ltr">{ago(p.createdAt)}</span>
                   </div>
                   <p className="flex items-center gap-1 text-xs text-soil/80"><MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" /><span className="truncate">{p.village || locLabel(p.loc) || "-"}</span></p>
@@ -12413,7 +13120,7 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
             {myOffers.map((o) => (
               <li key={o.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span><span dir="ltr" className="font-mono text-xs">{o.cropId}</span> · {t("crop_" + o.crop)} · <b dir="ltr">{pkr(o.rate)}</b>{t("am_per_maund")} × <span dir="ltr">{o.qty}</span> {t("am_mann")}</span>
+                  <span><span dir="ltr" className="font-mono text-xs">{o.cropId}</span> · {cropName(t, o)} · <b dir="ltr">{pkr(o.rate)}</b>{t("am_per_maund")} × <span dir="ltr">{o.qty}</span> {t("am_mann")}</span>
                   <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${offerStatusTone[o.status] || ""}`}>{t("am_of_" + o.status)}</span>
                 </div>
                 {o.status === "pending" && <button type="button" onClick={() => withdraw(o)} className="mt-2 min-h-[40px] rounded-lg border border-soil/20 px-3 text-xs font-bold text-soil">{t("am_withdraw")}</button>}
@@ -12507,7 +13214,7 @@ function GuidedTour({ t, onClose }) {
   );
 }
 
-function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, saveMandi, settleFinancing, userLoc, setTab, toast, demoMode = false }) {
+function AgriMandi({ walletBal = 0, onLowWallet = () => {}, promoUsed = null, t, dn, lang, session, requireAuth, bookings, mandiPosts, saveMandi, settleFinancing, userLoc, setTab, toast, demoMode = false }) {
   const startLoc = userLoc || (session && session.location) || null; // no sample village pre-filled
   const [errs, setErrs] = useState({});
   const [f, setF] = useState(() => ({ crop: "wheat", qty: 100, grade: "A", loc: startLoc, village: locLabel(startLoc), rate: "", wallet: "jazzcash", walletNo: (session && session.phone) || "" }));
@@ -12539,9 +13246,9 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
   const startBidding = (p) => {
     clearTimers(); setBids([]); setScanning(true); setPicked(null);
     const rnd = seededRandom(p.crop + "|" + p.village + "|" + p.qty);
-    const bench = CROPS[p.crop].bench * (p.grade === "A" ? 1.02 : 0.97);
+    const bench = cropBench(p.crop) * (p.grade === "A" ? 1.02 : 0.97);
     let delay = 800, latest = 0;
-    MANDI_BUYERS[p.crop].forEach(([name, type], i) => {
+    (MANDI_BUYERS[p.crop] || MANDI_BUYERS_GENERIC).forEach(([name, type], i) => {
       const bid = round10(bench * (0.94 + rnd() * 0.12));
       const distance = Math.round((6 + rnd() * 50) * 10) / 10;
       const at = delay + Math.round(rnd() * 500);
@@ -12562,6 +13269,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
   const validateCrop = () => {
     const er = {};
     if (!(Number(f.qty) >= 1)) er.qty = t("am_err_qty");
+    if (f.crop === "other" && String(f.cropName || "").trim().length < 2) er.cropName = t("am_err_custom");
     if (!f.loc) er.loc = t("loc_err");
     if (!(Number(f.rate) >= 100)) er.rate = t("am_err_rate");
     if (!/^(\+92|0)?3\d{9}$/.test(String(f.walletNo || "").replace(/[\s-]/g, ""))) er.walletNo = t("am_err_wallet");
@@ -12572,7 +13280,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
     const er = validateCrop(); setErrs(er);
     if (Object.keys(er).length) return;
     requireAuth(() => {
-      const p = { ...f, id: "AM-" + Math.floor(10000 + Math.random() * 89999), qty: Math.max(1, Number(f.qty) || 1), rate: Math.max(100, Number(f.rate) || 0), status: "open", createdAt: Date.now(), sellerUid: session ? session.uid : null, sellerName: session ? session.name : "" };
+      const p = { ...f, cropName: f.crop === "other" ? String(f.cropName || "").trim().slice(0, 40) : "", id: "AM-" + Math.floor(10000 + Math.random() * 89999), qty: Math.max(1, Number(f.qty) || 1), rate: Math.max(100, Number(f.rate) || 0), status: "open", createdAt: Date.now(), sellerUid: session ? session.uid : null, sellerName: session ? session.name : "" };
       const vlink = safeHttps(media.videoUrl);
       const thumb = (media.photos[0] && media.photos[0].thumb) || "";
       Object.assign(p, { photoCount: media.photos.length, hasVideo: !!media.video, ...(thumb ? { thumb } : {}), ...(vlink ? { videoUrl: vlink } : {}) });
@@ -12635,13 +13343,22 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
     pendingCredit.forEach((b) => { if (b.financing.balance <= left) { left -= b.financing.balance; settled += b.financing.balance; ids.push(b.id); } });
     return { ids, settled, net: gross - settled, unsettled: creditTotal - settled };
   };
+  // 3.5% Agri-Market commission from the seller's proceeds, 0% on the seller's first 3 sales (launch promo)
+  const cropComm = (gross) => {
+    const slot = promoSlot("crop", cropPromoUsed(mandiPosts, uid));
+    return slot ? { amount: 0, pct: 0, promo: slot } : { amount: Math.round(gross * CROP_COMMISSION), pct: CROP_COMMISSION, promo: null };
+  };
+  const cropCommLabel = (cc) => (cc.promo ? t("promo_comm_line").replace("{x}", promoText(t, cc.promo)) : t("bk_comm").replace("{p}", pctLabel(cc.pct)));
   const confirmSale = () => {
     if (!pickedBid || !post) return;
     const gross = pickedBid.rate * bidQty(pickedBid);
+    const cc = cropComm(gross);
+    // real buyers only: the commission is taken from the seller's Agri-Wallet, so it must cover it first
+    if (pickedBid.real && uid && cc.amount > walletBal) { onLowWallet(cc.amount); return; }
     const pl = plan(gross);
     settleFinancing(pl.ids, post.id);
-    const rec = { saleId: post.id, buyer: pickedBid.name, rate: pickedBid.rate, qty: bidQty(pickedBid), gross, ...pl, wallet: post.wallet, walletNo: post.walletNo };
-    saveMandi({ id: post.id, status: "sold", soldTo: pickedBid.name, soldRate: pickedBid.rate, gross, creditSettled: pl.settled, net: pl.net, settledBookings: pl.ids, soldAt: Date.now() });
+    const rec = { saleId: post.id, buyer: pickedBid.name, rate: pickedBid.rate, qty: bidQty(pickedBid), gross, commission: cc.amount, commissionRate: cc.pct, promo: cc.promo, ...pl, wallet: post.wallet, walletNo: post.walletNo };
+    saveMandi({ id: post.id, status: "sold", soldTo: pickedBid.name, soldRate: pickedBid.rate, gross, commission: cc.amount, commissionRate: cc.pct, ...(cc.promo ? { promo: cc.promo } : {}), realBuyer: !!pickedBid.real, creditSettled: pl.settled, net: pl.net, settledBookings: pl.ids, soldAt: Date.now() });
     clearTimers(); setScanning(false); setReceipt(rec);
     toast(t("toast_sold").replace("{net}", pkr(pl.net)));
   };
@@ -12667,6 +13384,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
         </div>
       </div>
 
+      {uid && <PromoPill t={t} used={promoUsed} className="mb-4" />}
       <div role="tablist" aria-label={t("nav_mandi")} className="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-soil/10">
         {[["sell", HandCoins, t("am_tab_sell")], ["buy", ShoppingBag, t("am_tab_buy")]].map(([k, Icon, label]) => (
           <button key={k} type="button" role="tab" aria-selected={view === k} onClick={() => setView(k)}
@@ -12682,17 +13400,55 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
         <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
           <h3 className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("am_tiles_t2")}</h3>
         </div>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {Object.keys(CROPS).map((c) => (
-            <button type="button" key={c} onClick={() => { if (!post) set("crop", c); }} aria-pressed={f.crop === c}
-              className={`overflow-hidden rounded-2xl bg-white text-start shadow-sm ring-1 transition hover:-translate-y-0.5 hover:shadow-md ${f.crop === c ? "ring-2 ring-forest" : "ring-soil/10"}`}>
-              <CropPhoto crop={c} alt={t("crop_" + c)} className="aspect-[16/10] w-full" />
-              <span className="block p-3">
-                <span className="block text-sm font-extrabold text-forest">{t("crop_" + c)}{lang === "en" ? <span className="font-semibold text-soil/80"> / {CROP_LOCAL[c]}</span> : null}</span>
-                <span className="mt-0.5 flex items-center gap-1 text-xs font-bold text-leafink rtl:leading-[2]"><Tag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{t("pop_own_rate")}</span>
-              </span>
-            </button>
-          ))}
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+          {Object.keys(CROPS).map((c) => {
+            const [c1, c2, c3] = CROP_CARD[c];
+            const on = f.crop === c;
+            return (
+              <button type="button" key={c} onClick={() => { if (!post) set("crop", c); }} aria-pressed={on}
+                className={`group relative overflow-hidden rounded-2xl text-start text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-xl ${on ? "ring-4 ring-gold ring-offset-2" : "ring-1 ring-black/5"}`}
+                style={{ backgroundImage: `linear-gradient(150deg, ${c1}, ${c2} 55%, ${c3})` }}>
+                <span className="relative block">
+                  <CropPhoto crop={c} alt={t("crop_" + c)} className="aspect-[16/10] w-full" />
+                  {/* the photo melts into the card colour */}
+                  <span className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3" style={{ backgroundImage: `linear-gradient(to bottom, transparent, ${c2})` }} aria-hidden="true" />
+                </span>
+                {/* bank-card sheen */}
+                <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_35%,rgba(255,255,255,0.22)_48%,transparent_60%)] opacity-70 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+                <span className="relative -mt-6 block px-3 pb-3">
+                  <span className="flex items-center justify-between gap-2">
+                    <span className="block text-base font-extrabold drop-shadow-sm rtl:leading-[2]">{t("crop_" + c)}</span>
+                    <span className="h-5 w-7 shrink-0 rounded-md bg-gradient-to-br from-yellow-200 to-amber-400 ring-1 ring-white/40" aria-hidden="true" />
+                  </span>
+                  {lang === "en" && <span className="block text-xs font-semibold tracking-wider text-white/80">{CROP_LOCAL[c]}</span>}
+                  <span className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-white/90 rtl:leading-[2]"><Tag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{t("pop_own_rate")}</span>
+                </span>
+              </button>
+            );
+          })}
+          {(() => {
+            const [c1, c2, c3] = CROP_CARD.more;
+            const on = !!MORE_CROPS[f.crop];
+            const pick = () => {
+              if (post) return;
+              if (!on) set("crop", "sugarcane");
+              requestAnimationFrame(() => { const el = document.getElementById("am-more-crop"); if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.focus({ preventScroll: true }); } });
+            };
+            return (
+              <button type="button" onClick={pick} aria-pressed={on}
+                className={`group relative col-span-2 flex min-h-[150px] flex-col justify-between overflow-hidden rounded-2xl p-4 text-start text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-xl lg:col-span-1 ${on ? "ring-4 ring-gold ring-offset-2" : "ring-1 ring-black/5"}`}
+                style={{ backgroundImage: `linear-gradient(150deg, ${c1}, ${c2} 55%, ${c3})` }}>
+                <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_35%,rgba(255,255,255,0.22)_48%,transparent_60%)] opacity-70 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+                <span className="relative flex gap-1.5" aria-hidden="true">
+                  {[Carrot, Apple, Sprout, Wheat].map((I, i) => <span key={i} className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25"><I className="h-5 w-5" /></span>)}
+                </span>
+                <span className="relative mt-3 block">
+                  <span className="block text-base font-extrabold drop-shadow-sm rtl:leading-[2]">{t("am_more_card")}</span>
+                  <span className="mt-0.5 block text-[11px] font-semibold text-white/85 rtl:leading-[2]">{on ? cropName(t, f) : t("am_more_card_s")}</span>
+                </span>
+              </button>
+            );
+          })()}
         </div>
         <p className="mt-2 text-[11px] text-soil/80 rtl:leading-[2]">{t("am_tiles_note2")}</p>
       </div>
@@ -12720,6 +13476,19 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                     className={`min-h-[44px] rounded-xl px-1 py-2.5 text-xs font-bold ring-1 ${f.crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t("crop_" + c)}</button>
                 ))}
               </div>
+              <label htmlFor="am-more-crop" className="mt-2 block text-xs font-semibold text-soil/80 rtl:leading-[2]">{t("am_more_select")}</label>
+              <select id="am-more-crop" value={MORE_CROPS[f.crop] ? f.crop : ""} onChange={(e) => { set("crop", e.target.value || "wheat"); setErrs((x) => ({ ...x, cropName: undefined })); }}
+                className={`${inputCls} mt-1 ${MORE_CROPS[f.crop] ? "ring-2 ring-forest" : ""}`}>
+                <option value="">{t("am_more_pick")}</option>
+                {Object.keys(MORE_CROPS).map((c) => <option key={c} value={c}>{t("crop_" + c)}{lang === "en" && MORE_CROPS[c].local ? ` (${MORE_CROPS[c].local})` : ""}</option>)}
+              </select>
+              {f.crop === "other" && (
+                <div className="mt-2">
+                  <Field label={t("am_custom_name")} htmlFor="am-cn" error={errs.cropName}>
+                    <input id="am-cn" type="text" maxLength={40} value={f.cropName || ""} onChange={(e) => { set("cropName", e.target.value); setErrs((x) => ({ ...x, cropName: undefined })); }} placeholder={t("am_custom_ph")} className={inputCls} aria-invalid={!!errs.cropName} />
+                  </Field>
+                </div>
+              )}
             </fieldset>
             <div className="grid grid-cols-2 items-end gap-3">
               <Field label={t("am_qty")} htmlFor="am-q" error={errs.qty}><input id="am-q" type="number" min="1" value={f.qty} onChange={(e) => { set("qty", e.target.value); setErrs((x) => ({ ...x, qty: undefined })); }} className={inputCls} dir="ltr" aria-invalid={!!errs.qty} /></Field>
@@ -12757,7 +13526,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                 {myPosts.map((p) => (
                   <li key={p.id} className="flex items-center gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
                     <CropMediaStrip t={t} post={p} compact />
-                    <span className="min-w-0 flex-1 truncate"><span dir="ltr" className="font-mono">{p.id}</span> · {t("crop_" + p.crop)} · {p.qty} {t("am_mann")}</span>
+                    <span className="min-w-0 flex-1 truncate"><span dir="ltr" className="font-mono">{p.id}</span> · {cropName(t, p)} · {p.qty} {t("am_mann")}</span>
                     <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${p.status === "sold" ? "bg-leaf/15 text-forest" : p.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("am_st_" + p.status)}</span>
                     {p.status === "open" && pendingOffersFor(p.id) > 0 && (!post || post.id !== p.id) && <button type="button" onClick={() => openOffers(p)} className="shrink-0 rounded-full bg-forest px-2 py-0.5 font-bold text-ivory">{t("am_offers_n").replace("{n}", pendingOffersFor(p.id))}</button>}
                   </li>
@@ -12808,7 +13577,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
           </div>
 
           {pickedBid && !receipt && (() => {
-            const gross = pickedBid.rate * bidQty(pickedBid); const pl = plan(gross);
+            const gross = pickedBid.rate * bidQty(pickedBid); const cc = cropComm(gross); const pl = plan(gross); const short = pickedBid.real && uid && cc.amount > walletBal;
             return (
               <div className="grid gap-4 rounded-2xl border-2 border-forest bg-white p-4 shadow-md md:grid-cols-[1fr_auto] md:items-start">
                 <div className="rounded-2xl bg-white p-4 ring-2 ring-gold">
@@ -12816,6 +13585,8 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
                     <span className="inline-flex items-center gap-1 rounded-full bg-forest px-2 py-0.5 text-[11px] text-gold"><Repeat className="h-3 w-3" aria-hidden="true" />{t("am_closed_loop")}</span></p>
                   <div className="space-y-1.5 text-sm text-soil" dir="ltr">
                     <div className="flex justify-between gap-3"><span>{t("am_gross")} ({bidQty(pickedBid)} × {pkr(pickedBid.rate)})</span><b>{pkr(gross)}</b></div>
+                    <div className={`flex justify-between gap-3 ${cc.promo ? "font-bold text-forest" : ""}`}><span dir="auto">{cropCommLabel(cc)}</span><b className={cc.promo ? "" : "text-soil"}>{cc.promo ? pkr(0) : <>{pkr(cc.amount)} <span className="text-[11px] font-semibold text-soil/80" dir="auto">{t("aw_from_wallet")}</span></>}</b></div>
+                    {short && <p className="rounded-lg bg-red-50 p-2 text-xs font-bold text-red-800 ring-1 ring-red-200 rtl:leading-[2]" dir="auto" role="alert">{t("aw_low")} · {t("aw_low_need").replace("{need}", pkr(cc.amount)).replace("{bal}", pkr(walletBal))}</p>}
                     <div className="flex justify-between gap-3"><span>{t("am_minus_credit")} ({pl.ids.length})</span><b className="text-red-800">− {pkr(pl.settled)}</b></div>
                     {pl.unsettled > 0 && <p className="text-xs text-soil/80">{t("am_unsettled").replace("{v}", pkr(pl.unsettled))}</p>}
                     <div className="flex justify-between gap-3 border-t border-soil/20 pt-1.5 text-base font-extrabold text-forest"><span>{t("am_net")}</span><span>{pkr(pl.net)}</span></div>
@@ -12838,6 +13609,7 @@ function AgriMandi({ t, dn, lang, session, requireAuth, bookings, mandiPosts, sa
               <dl className="mt-3 grid gap-2 text-sm text-soil sm:grid-cols-2" dir="ltr">
                 <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_sold_to")}</dt><dd className="font-bold">{receipt.buyer} · {receipt.qty} {t("am_mann")} × {pkr(receipt.rate)}</dd></div>
                 <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_gross")}</dt><dd className="font-bold">{pkr(receipt.gross)}</dd></div>
+                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80" dir="auto">{receipt.promo ? t("promo_comm_line").replace("{x}", promoText(t, receipt.promo)) : t("bk_comm").replace("{p}", pctLabel(receipt.commissionRate || CROP_COMMISSION))}</dt><dd className="font-bold">{pkr(receipt.commission || 0)}</dd></div>
                 <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_minus_credit")}</dt><dd className="font-bold">{pkr(receipt.settled)} ({receipt.ids.length})</dd></div>
                 <div className="rounded-xl bg-forest p-3 text-ivory"><dt className="text-xs text-ivory/80">{t("am_net")}</dt><dd className="font-display text-xl font-extrabold text-gold">{pkr(receipt.net)}</dd></div>
               </dl>
@@ -13285,6 +14057,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
   const subs = [
     { key: "verify", label: t("ad_verify"), icon: BadgeCheck, badge: counts.unverified },
     { key: "ledger", label: t("ad_ledger"), icon: Wallet },
+    ...(accounts.isFounder ? [{ key: "wallets", label: t("adw_tab"), icon: Banknote }] : []),
     { key: "settings", label: t("ad_settings"), icon: SlidersHorizontal },
     { key: "live", label: t("ad_live"), icon: Radar, badge: activeReqs.filter((r) => r.status === "open").length + activeBookings.filter((b) => b.status === "sent").length },
     { key: "demand", label: t("ad_demand"), icon: Inbox, badge: activeDemand.filter((d) => d.status === "waiting").length },
@@ -13456,6 +14229,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
         </div>
       )}
 
+      {sub === "wallets" && <WalletTopupsAdmin t={t} toast={toast} isFounder={!!accounts.isFounder} />}
       {sub === "ledger" && (
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-soil/10 p-4">
@@ -13597,7 +14371,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
                   {[...mandiPosts].sort((a, b) => b.createdAt - a.createdAt).map((m) => (
                     <tr key={m.id}>
                       <td className="px-4 py-3 font-mono text-xs" dir="ltr">{m.id}</td>
-                      <td className="px-4 py-3">{t("crop_" + m.crop)}</td>
+                      <td className="px-4 py-3">{cropName(t, m)}</td>
                       <td className="px-4 py-3" dir="ltr">{m.qty}</td>
                       <td className="px-4 py-3">{m.village}</td>
                       <td className="px-4 py-3" dir="ltr">{pkr(m.rate)}{m.soldRate ? ` → ${pkr(m.soldRate)}` : ""}</td>
@@ -14968,8 +15742,92 @@ function App() {
   const shownLand = useMemo(() => landListings.map(({ ownerEmail, ownerPhone, ...l }) => ({ ...l, mine: Boolean(uid && l.ownerUid === uid) })), [landListings, uid]); // eslint-disable-line
   const saveLandRequest = (patch) => setLandRequests((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
   const saveLandBooking = (patch) => setLandBookings((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
-  // 360° benefit: an accepted land lease as tenant -> 0.50% off machinery commission (floor 3.50%)
+  // 360° benefit: an accepted land lease as tenant -> 0.50% off machinery commission (floor 2.0%)
   const ecoActive = Boolean(uid && landBookings.some((b) => b.tenantUid === uid && b.status === "accepted"));
+  // launch promo (see PROMO_FREE): preview a free slot on bills, and show each owner what is left
+  const machinePromoFor = (ownerUid) => (ownerUid && ownerUid !== uid ? promoSlot("machinery", machineryPromoUsed(bookings, ownerUid)) : null);
+  const promoUsed = { machinery: machineryPromoUsed(bookings, uid), crop: cropPromoUsed(mandiPosts, uid), land: landPromoUsed(landBookings, uid) };
+  // land: the owner's first accepted lease (from launch day) is free; the owner's own app stamps it once
+  useEffect(() => {
+    if (!uid) return;
+    let used = landPromoUsed(landBookings, uid);
+    landBookings.filter((b) => b.ownerUid === uid && b.status === "accepted" && !b.promo && !b.promoChecked && (b.acceptedAt || b.createdAt || 0) >= PROMO_START)
+      .sort((a, b) => (a.acceptedAt || a.createdAt || 0) - (b.acceptedAt || b.createdAt || 0))
+      .forEach((b) => { const slot = promoSlot("land", used); used += 1; saveLandBooking(slot ? { id: b.id, promo: slot } : { id: b.id, promoChecked: true }); });
+  }, [uid, landBookings]); // eslint-disable-line
+
+  // Prepaid Agri-Wallet: balance + ledger (agri_wallets/{uid}) and my top-up requests (wallet_topups)
+  const [wallet, setWallet] = useState(null);
+  const [myTopups, setMyTopups] = useState([]);
+  const [topupOpen, setTopupOpen] = useState(false);
+  useEffect(() => {
+    if (!uid) { setWallet(null); return undefined; }
+    return watchDoc(COL.agriWallets, uid, (d) => setWallet({ uid, balance: 0, txns: [], ...(d || {}) }), () => setWallet({ uid, balance: 0, txns: [], err: true }));
+  }, [uid]);
+  useEffect(() => {
+    if (!uid) { setMyTopups([]); return undefined; }
+    return watchCollection(COL.walletTopups, (l) => setMyTopups(l), () => setMyTopups([]), [["uid", "==", uid]]);
+  }, [uid]);
+  const walletBal = wallet ? Math.round(Number(wallet.balance) || 0) : 0;
+  const lowWallet = (need) => toast(t("aw_low_need").replace("{need}", pkr(need)).replace("{bal}", pkr(walletBal)), { type: "error", title: t("aw_low"), action: { label: t("aw_topup"), run: () => setTopupOpen(true) } });
+  // commission owed on my confirmed deals once the free launch deals are used (deals from launch day on)
+  const walletDues = useMemo(() => {
+    if (!uid) return [];
+    const out = [];
+    bookings.forEach((b) => {
+      const q = b.quote || {};
+      if (b.ownerUid === uid && ACTIVE_STATUSES.includes(b.status) && !q.promo && (q.commission || 0) > 0 && !b.walletPaid && (b.createdAt || 0) >= PROMO_START)
+        out.push({ key: "booking_" + b.id, kind: "booking", id: b.id, amount: Math.round(q.commission), note: b.listingName || b.id });
+    });
+    landBookings.forEach((b) => {
+      if (b.ownerUid !== uid || b.status !== "accepted" || !b.promoChecked || b.promo || b.walletPaid || (b.acceptedAt || b.createdAt || 0) < PROMO_START) return;
+      const amount = landCommission(b.total).amount;
+      if (amount > 0) out.push({ key: "land_" + b.id, kind: "land", id: b.id, amount, note: uniqPlaces(b.village, b.district) || b.id });
+    });
+    mandiPosts.forEach((m) => {
+      if (m.sellerUid === uid && m.status === "sold" && m.realBuyer && !m.promo && (m.commission || 0) > 0 && !m.walletPaid && (m.soldAt || 0) >= PROMO_START)
+        out.push({ key: "crop_" + m.id, kind: "crop", id: m.id, amount: Math.round(m.commission), note: m.id });
+    });
+    return out;
+  }, [uid, bookings, landBookings, mandiPosts]);
+  const charging = useRef(new Set());
+  const markWalletPaid = (d) => {
+    if (d.kind === "booking") setBookings((bs) => bs.map((b) => (b.id === d.id ? { ...b, walletPaid: d.amount } : b)));
+    else if (d.kind === "land") saveLandBooking({ id: d.id, walletPaid: d.amount });
+    else saveMandi({ id: d.id, walletPaid: d.amount });
+  };
+  // take each due commission from the wallet once (the ledger id makes a repeat a no-op, even from a second phone)
+  useEffect(() => {
+    if (!uid || !wallet || wallet.err) return;
+    let bal = walletBal;
+    walletDues.forEach((d) => {
+      if (charging.current.has(d.key) || d.amount > bal) return;
+      bal -= d.amount; charging.current.add(d.key);
+      walletApply(uid, -d.amount, { id: d.key, kind: d.kind, ref: d.id, note: d.note })
+        .then(() => markWalletPaid(d))
+        .catch((e) => { if (e && e.code === "duplicate") markWalletPaid(d); else charging.current.delete(d.key); });
+    });
+  }, [uid, wallet, walletDues]); // eslint-disable-line
+  // what the owner's wallet must hold to accept the next waiting request (0 while a free deal is left)
+  const walletNeed = useMemo(() => {
+    if (!uid) return 0;
+    const owed = walletDues.reduce((a, d) => a + d.amount, 0);
+    const freeLeft = machineryPromoUsed(bookings, uid) < PROMO_FREE.machinery;
+    const nextReq = freeLeft ? 0 : Math.max(0, ...bookings.filter((b) => b.ownerUid === uid && ["sent", "countered"].includes(b.status) && !(b.quote && b.quote.promo)).map((b) => Math.round((b.quote && b.quote.commission) || 0)));
+    return owed + nextReq;
+  }, [uid, bookings, walletDues]);
+  // land: the owner accepting a lease needs the 4.5% in the wallet once the free lease is used
+  const saveLandBookingChecked = (patch) => {
+    if (patch.status === "accepted") {
+      const cur = landBookings.find((x) => x.id === patch.id);
+      if (cur && cur.ownerUid && cur.ownerUid === uid && !cur.sample) {
+        const need = landPromoUsed(landBookings, uid) < PROMO_FREE.land ? 0 : landCommission(cur.total).amount;
+        if (need > walletBal) { lowWallet(need); return false; }
+      }
+    }
+    saveLandBooking(patch);
+    return true;
+  };
   const saveDemand = (rec) => setDemand((list) => (list.some((d) => d.id === rec.id) ? list.map((d) => (d.id === rec.id ? { ...d, ...rec } : d)) : [...list, rec]));
   // Only admin-approved machines in switched-on pilot districts are visible to renters
   const publicListings = useMemo(() => marketListings
@@ -15004,9 +15862,12 @@ function App() {
     toast(t("toast_demo_reset"));
   };
 
-  const createBooking = (listing, details, silent) => {
+  const createBooking = (listing, details0, silent) => {
     const id = newBookingId();
     const now = Date.now();
+    // launch promo: the owner's first 5 machinery deals carry 0% commission
+    const slot = details0.quote && !details0.quote.promo && listing.ownerUid && listing.ownerUid !== uid ? promoSlot("machinery", machineryPromoUsed(bookings, listing.ownerUid)) : null;
+    const details = slot ? { ...details0, quote: withPromo(details0.quote, slot) } : details0;
     const b = {
       id, listingId: listing.id, listingName: listing.name, category: listing.category, district: listing.district, ownerId: listing.ownerId, ownerUid: listing.ownerUid || null,
       date: details.date, hours: details.quote.hours, operator: details.operator, transport: details.transport, quote: details.quote, payment: details.payment,
@@ -15028,7 +15889,28 @@ function App() {
   };
 
   const updateBooking = (id, status, extra, silent) => {
-    setBookings((bs) => bs.map((b) => (b.id === id ? { ...b, ...(extra || {}), status, history: [...(b.history || []), { status, at: Date.now() }] } : b)));
+    if (status === "confirmed") {
+      const cur = bookings.find((x) => x.id === id);
+      if (cur && cur.ownerUid && cur.ownerUid === uid && (cur.createdAt || 0) >= PROMO_START) {
+        const q = (extra && extra.quote) || cur.quote || {};
+        const free = q.promo || promoSlot("machinery", machineryPromoUsed(bookings.filter((x) => x.id !== id), uid));
+        const need = free ? 0 : Math.round(q.commission || 0);
+        if (need > walletBal) { lowWallet(need); return false; }
+      }
+    }
+    setBookings((bs) => bs.map((b) => {
+      if (b.id !== id) return b;
+      const next = { ...b, ...(extra || {}), status, history: [...(b.history || []), { status, at: Date.now() }] };
+      // a request confirmed while the owner still has free launch deals becomes one of them
+      if (status === "confirmed" && next.ownerUid && next.quote && !next.quote.promo && (next.quote.commission || 0) > 0) {
+        const slot = promoSlot("machinery", machineryPromoUsed(bs.filter((x) => x.id !== id), next.ownerUid));
+        if (slot) {
+          next.quote = withPromo(next.quote, slot);
+          if (next.financing) { const adv = Math.round(next.quote.total * ADVANCE_SHARE); next.financing = { ...next.financing, advance: adv, balance: next.quote.total - adv }; }
+        }
+      }
+      return next;
+    }));
     if (!silent) toast(t({ confirmed: "toast_confirmed", declined: "toast_declined", completed: "toast_completed", feedback: "toast_feedback", cancelled: "toast_cancelled", countered: "toast_countered" }[status]));
   };
 
@@ -15089,26 +15971,27 @@ function App() {
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
-        {showTab === "live-request" && <LiveRequest fuel={fuel} key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
+        {showTab === "owner-portal" && <OwnerPortal wallet={wallet} walletTopups={myTopups} walletNeed={walletNeed} onTopUp={() => setTopupOpen(true)} promoUsed={promoUsed} archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "live-request" && <LiveRequest promoFor={machinePromoFor} fuel={fuel} key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
-        {showTab === "agri-mandi" && <AgriMandi demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
+        {showTab === "agri-mandi" && <AgriMandi walletBal={walletBal} onLowWallet={lowWallet} promoUsed={promoUsed} demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
         {showTab === "admin" && <AdminPanel fuel={fuel} fuelOverride={fuelOverride} archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
-        {showTab === "land" && <LandLease archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBooking} sendLead={sendLead} ecoActive={ecoActive} />}
+        {showTab === "land" && <LandLease archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBookingChecked} sendLead={sendLead} ecoActive={ecoActive} />}
         {showTab === "govt" && <GovtPortal t={t} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab lang={lang} setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}
       </main>
       <Footer t={t} setTab={setTab} />
       {bookingTarget && (
-        <BookingModal ecoActive={ecoActive} listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
+        <BookingModal promoFor={machinePromoFor} ecoActive={ecoActive} listing={bookingTarget} t={t} dn={dn} session={session} onClose={() => setBookingTarget(null)}
           onSubmit={(details) => { const id = createBooking(bookingTarget, details); setBookingTarget(null); setTab("bookings"); setTimeout(() => setVoucherId(id), 300); }} />
       )}
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
       <KisanHelper t={t} lang={lang} listings={publicListings} open={helperOpen} setOpen={setHelperOpen} session={session} dieselPrice={dieselPrice} petrolPrice={country === "PK" && fuel ? fuel.petrol : null} />
       {!helperOpen && <ConsultBar t={t} lang={lang} />}
       {tourOpen && <GuidedTour t={t} onClose={closeTour} />}
+      {topupOpen && session && session.uid && <TopUpModal t={t} session={session} toast={toast} onClose={() => setTopupOpen(false)} />}
       <BottomNav t={t} adminCount={adminCount} tab={showTab} setTab={setTab} tabs={tabs} activeCount={activeCount} pendingCount={pendingCount} activityCount={activityCount} onActivity={() => setActivityOpen(true)} />
       <ActivityDrawer t={t} dn={dn} open={activityOpen} onClose={() => setActivityOpen(false)} bookings={myBookings} requests={myRequests} deals={myDeals} onVoucher={(id) => { setActivityOpen(false); setVoucherId(id); }} setTab={setTab} />
       {voucherBooking && <VoucherModal b={voucherBooking} t={t} dn={dn} onClose={() => setVoucherId(null)} updateBooking={updateBooking} />}

@@ -102,6 +102,8 @@ export const COL = {
   commissionReceipts: "commission_receipts", // one per deal ("booking_<id>" / "land_<id>"): receipt photo, founder verifies
   bookingProofs: "booking_proofs", // photo / video work proofs for a machinery booking (farmer, owner, founder only)
   landProofs: "land_proofs", // photo / video handover proofs for a land lease (tenant, owner, founder only)
+  agriWallets: "agri_wallets", // prepaid Agri-Wallet per member: { uid, balance, txns[] } (founder credits, member's deals debit)
+  walletTopups: "wallet_topups", // top-up requests with receipt; founder verifies and credits the wallet
 };
 
 let app = null, auth = null;
@@ -227,6 +229,34 @@ export async function readDoc(name, id) {
     const snap = await getDoc(doc(db, name, safeId(id)));
     return snap.exists() ? snap.data() : null;
   } catch (e) { logFs("read", `${name}/${id}`, e); throw e; }
+}
+
+/* Agri-Wallet: one atomic change to agri_wallets/{uid}.
+   delta > 0 credits (founder only, per the rules), delta < 0 debits (the member, never below zero).
+   txn = { id, kind, ref, note } is added to the newest-first ledger (kept to 50 entries).
+   Resolves to the new balance; rejects with code "insufficient" if a debit would go below zero
+   and "duplicate" if a txn with the same id is already in the ledger. */
+export async function walletApply(uid, delta, txn) {
+  if (!(await cloudAvailable())) throw unavailable();
+  const { runTransaction, doc } = sdk.fs;
+  const ref = doc(db, COL.agriWallets, safeId(uid));
+  try {
+    return await runTransaction(db, async (tx) => {
+      const snap = await tx.get(ref);
+      const cur = snap.exists() ? snap.data() : { uid, balance: 0, txns: [] };
+      const txns = Array.isArray(cur.txns) ? cur.txns : [];
+      if (txn && txn.id && txns.some((x) => x.id === txn.id)) { const e = new Error("duplicate"); e.code = "duplicate"; throw e; }
+      const balance = Math.round((Number(cur.balance) || 0) + delta);
+      if (balance < 0) { const e = new Error("insufficient"); e.code = "insufficient"; throw e; }
+      const now = Date.now();
+      const next = { uid, balance, updatedAt: now, txns: [{ ...(txn || {}), amount: Math.round(delta), at: now, balance }, ...txns].slice(0, 50) };
+      tx.set(ref, clean(next));
+      return balance;
+    });
+  } catch (e) {
+    if (e && (e.code === "insufficient" || e.code === "duplicate")) throw e;
+    logFs("wallet", `${COL.agriWallets}/${uid}`, e); throw e;
+  }
 }
 
 /* ---------------- Authentication (Email/Password) ---------------- */
