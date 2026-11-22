@@ -186,7 +186,8 @@ service cloud.firestore {
         || (resource.data.renterUid == request.auth.uid && request.resource.data.renterUid == request.auth.uid));
       allow delete: if isFounder();
     }
-    // Crop posts: members-only, and seller email / phone / wallet number live in crop_contacts (below).
+    // Crop posts: anyone may browse (Buy Crops works signed out); only members post. Seller email / phone /
+    // wallet number never go on this document: they live in crop_contacts (below), which stays private.
     // Listing card media: a small thumbnail (at most 60,000 characters) and a https video link; full photos / video live in crop_media.
     function cropMediaOk() {
       let d = request.resource.data;
@@ -195,15 +196,16 @@ service cloud.firestore {
         && (!('photoCount' in d) || (d.photoCount is int && d.photoCount >= 0 && d.photoCount <= 3));
     }
     match /mandi_crops/{id} {
-      allow read, delete: if signedIn();
+      allow get, list: if true;
+      allow delete: if isFounder() || (signedIn() && resource.data.get('sellerUid', '') == request.auth.uid);
       allow create: if signedIn() && smallDoc() && cropMediaOk() && !request.resource.data.keys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']);
       allow update: if signedIn() && smallDoc() && cropMediaOk()
         && (isFounder() || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['sellerEmail', 'sellerPhone', 'walletNo']));
     }
     // Crop photos / short video for one post: one item per document ({cropId}_p0..p2, {cropId}_v).
-    // Any signed-in member (buyers) may view; only the seller adds; never edited; seller or founder deletes.
+    // Anyone browsing Buy Crops may view; only the seller adds; never edited; seller or founder deletes.
     match /crop_media/{id} {
-      allow read: if signedIn();
+      allow get, list: if true;
       allow create: if signedIn()
         && request.resource.data.keys().hasOnly(['cropId', 'sellerUid', 'kind', 'data', 'createdAt'])
         && request.resource.data.sellerUid == request.auth.uid

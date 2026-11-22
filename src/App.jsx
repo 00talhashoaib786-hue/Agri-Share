@@ -389,6 +389,20 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    pub_promo_t: "0% Launch Promo",
+    pub_promo_s: "Your first deals are commission free: 5 machinery, 3 crop and 1 land deal.",
+    pub_ladder_t: "Commission ladder",
+    pub_ladder_s: "After your free deals, a small fee applies only on confirmed deals.",
+    pub_ladder_machinery: "Machinery rental",
+    pub_ladder_crop: "Crop sale",
+    pub_ladder_land: "Land lease (Zameen Thaika)",
+    pub_wallet_t: "Agri-Wallet",
+    pub_wallet_s: "Top up once and commission is paid automatically from your wallet. No receipts to upload for every deal.",
+    pub_signin_btn: "Sign in to view your wallet & free deals",
+    pub_promo_badge: "0% Launch Promo: 5 Machinery, 3 Crop, 1 Land Free",
+    am_buy_public: "You can browse all harvests freely. Sign in only when you want to make an offer.",
+    am_media_support: "Photos, short videos, or a YouTube / Google Drive link are all supported.",
+    ls_new_badge: "New",
     ask_rate_badge: "Owner's asking rate. Negotiate or send your own offer",
     ask_make_offer: "Make Own Offer",
     ask_choice_t: "How do you want to book?",
@@ -1355,7 +1369,7 @@ const T = {
     results_one: "1 machine found",
     toast_broadcast_one: "Sent to 1 nearby owner. The search widens automatically if they don't accept.",
     kp_ussd_soon: "Coming soon",
-    ai_fallback: "AI is temporarily busy — built-in Kisan Helper is answering",
+    ai_fallback: "AI is temporarily busy. Built-in Kisan Helper is answering",
     ai_offline_note: "AI advisor is offline — built-in Kisan Helper is answering",
     mb_open_requests: "Open Requests",
     mb_open_view: "View offers",
@@ -1608,6 +1622,20 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    pub_promo_t: "0% لانچ آفر",
+    pub_promo_s: "آپ کی پہلی ڈیلز پر کوئی کمیشن نہیں: 5 مشینری، 3 فصل اور 1 زمین کی ڈیل۔",
+    pub_ladder_t: "کمیشن کی شرح",
+    pub_ladder_s: "مفت ڈیلز کے بعد صرف تصدیق شدہ ڈیلز پر معمولی فیس لگتی ہے۔",
+    pub_ladder_machinery: "مشینری کرایہ",
+    pub_ladder_crop: "فصل کی فروخت",
+    pub_ladder_land: "زمین ٹھیکہ",
+    pub_wallet_t: "ایگری والٹ",
+    pub_wallet_s: "ایک بار ٹاپ اپ کریں، کمیشن خود بخود والٹ سے ادا ہو جائے گا۔ ہر ڈیل کی رسید اپ لوڈ کرنے کی ضرورت نہیں۔",
+    pub_signin_btn: "اپنا والٹ اور مفت ڈیلز دیکھنے کے لیے سائن ان کریں",
+    pub_promo_badge: "0% لانچ آفر: 5 مشینری، 3 فصل، 1 زمین مفت",
+    am_buy_public: "آپ تمام فصلیں آزادانہ دیکھ سکتے ہیں۔ پیشکش دینے کے وقت ہی سائن ان کریں۔",
+    am_media_support: "تصاویر، مختصر ویڈیوز یا یوٹیوب / گوگل ڈرائیو لنک، سب چلتے ہیں۔",
+    ls_new_badge: "نئی",
     ask_rate_badge: "مالک کا مانگا ہوا ریٹ۔ بات چیت کریں یا اپنی پیشکش بھیجیں",
     ask_make_offer: "اپنی پیشکش دیں",
     ask_choice_t: "آپ کیسے بکنگ کرنا چاہتے ہیں؟",
@@ -2827,6 +2855,20 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    pub_promo_t: "0% لانچ آفر",
+    pub_promo_s: "تہاڈیاں پہلیاں ڈیلاں تے کوئی کمیشن نہیں: 5 مشینری، 3 فصل تے 1 زمین دی ڈیل۔",
+    pub_ladder_t: "کمیشن دی شرح",
+    pub_ladder_s: "مفت ڈیلاں توں بعد صرف پکیاں ڈیلاں تے تھوڑی فیس لگدی اے۔",
+    pub_ladder_machinery: "مشینری کرایہ",
+    pub_ladder_crop: "فصل دی ویچ",
+    pub_ladder_land: "زمین ٹھیکہ",
+    pub_wallet_t: "ایگری والٹ",
+    pub_wallet_s: "اک واری ٹاپ اپ کرو، کمیشن آپے والٹ وچوں ادا ہو جائے گا۔ ہر ڈیل دی رسید اپ لوڈ کرن دی لوڑ نہیں۔",
+    pub_signin_btn: "اپنا والٹ تے مفت ڈیلاں ویکھن لئی سائن ان کرو",
+    pub_promo_badge: "0% لانچ آفر: 5 مشینری، 3 فصل، 1 زمین مفت",
+    am_buy_public: "تسیں ساریاں فصلاں کھل کے ویکھ سکدے او۔ آفر دین ویلے ای سائن ان کرو۔",
+    am_media_support: "تصویراں، چھوٹیاں ویڈیوز یا یوٹیوب / گوگل ڈرائیو لنک، سب چلدے نیں۔",
+    ls_new_badge: "نویں",
     ask_rate_badge: "مالک دا منگیا ریٹ۔ گل بات کرو یا اپنی آفر بھیجو",
     ask_make_offer: "اپنی آفر دیو",
     ask_choice_t: "تسیں کیویں بکنگ کرنا چاہندے او؟",
@@ -3947,6 +3989,20 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    pub_promo_t: "0% لانچ آڇ",
+    pub_promo_s: "توهان جي پهرين ڊيلن تي ڪو ڪميشن ناهي: 5 مشينري، 3 فصل ۽ 1 زمين جي ڊيل.",
+    pub_ladder_t: "ڪميشن جي شرح",
+    pub_ladder_s: "مفت ڊيلن کان پوءِ رڳو تصديق ٿيل ڊيلن تي ٿوري في لڳي ٿي.",
+    pub_ladder_machinery: "مشينري مسواڙ",
+    pub_ladder_crop: "فصل جو وڪرو",
+    pub_ladder_land: "زمين ٺيڪو",
+    pub_wallet_t: "ايگري والٽ",
+    pub_wallet_s: "هڪ ڀيرو ٽاپ اپ ڪريو، ڪميشن پاڻمرادو والٽ مان ادا ٿيندو. هر ڊيل جي رسيد اپلوڊ ڪرڻ جي ضرورت ناهي.",
+    pub_signin_btn: "پنهنجو والٽ ۽ مفت ڊيلون ڏسڻ لاءِ سائن ان ڪريو",
+    pub_promo_badge: "0% لانچ آڇ: 5 مشينري، 3 فصل، 1 زمين مفت",
+    am_buy_public: "توهان سڀ فصل آزاديءَ سان ڏسي سگهو ٿا. آڇ ڏيڻ وقت ئي سائن ان ڪريو.",
+    am_media_support: "تصويرون، ننڍيون وڊيوز يا يوٽيوب / گوگل ڊرائيو لنڪ، سڀ هلن ٿا.",
+    ls_new_badge: "نئين",
     ask_rate_badge: "مالڪ جو گهريل ريٽ. ڳالهه ٻولهه ڪريو يا پنهنجي آڇ موڪليو",
     ask_make_offer: "پنهنجي آڇ ڏيو",
     ask_choice_t: "توهان ڪيئن بڪنگ ڪرڻ چاهيو ٿا؟",
@@ -5068,6 +5124,20 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    pub_promo_t: "0% د پیل وړاندیز",
+    pub_promo_s: "ستاسو په لومړیو معاملو کمیشن نشته: 5 ماشینري، 3 فصل او 1 ځمکې معامله.",
+    pub_ladder_t: "د کمیشن کچه",
+    pub_ladder_s: "د وړیا معاملو وروسته یوازې په تایید شویو معاملو لږه فیس لګي.",
+    pub_ladder_machinery: "د ماشینرۍ کرایه",
+    pub_ladder_crop: "د فصل پلور",
+    pub_ladder_land: "د ځمکې اجاره",
+    pub_wallet_t: "ایګري والټ",
+    pub_wallet_s: "یو ځل ټاپ اپ وکړئ، کمیشن به پخپله له والټ څخه ورکړل شي. د هرې معاملې رسید پورته کولو ته اړتیا نشته.",
+    pub_signin_btn: "خپل والټ او وړیا معاملې لیدو لپاره ننوځئ",
+    pub_promo_badge: "0% د پیل وړاندیز: 5 ماشینري، 3 فصل، 1 ځمکه وړیا",
+    am_buy_public: "تاسو ټول فصلونه آزادانه لیدلی شئ. یوازې د وړاندیز ورکولو پر مهال ننوځئ.",
+    am_media_support: "انځورونه، لنډې ویډیوګانې یا یوټیوب / ګوګل ډرایو لینک، ټول منل کېږي.",
+    ls_new_badge: "نوی",
     ask_rate_badge: "د مالک غوښتل شوې بیه. خبرې وکړئ یا خپل وړاندیز ولېږئ",
     ask_make_offer: "خپل وړاندیز ورکړئ",
     ask_choice_t: "څنګه بکنګ کول غواړئ؟",
@@ -5903,6 +5973,20 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    pub_promo_t: "0% لانچ آپر",
+    pub_promo_s: "شمئے اولی ڈیلانی سرا هچ کمیشن نیست: 5 مشینری، 3 کِشت و 1 زمینءِ ڈیل۔",
+    pub_ladder_t: "کمیشنءِ نرخ",
+    pub_ladder_s: "مفتیں ڈیلانی رندا، بس منّتگیں ڈیلانی سرا کمّیں فیس کپیت۔",
+    pub_ladder_machinery: "مشینریءِ کرایہ",
+    pub_ladder_crop: "کِشتءِ بہا",
+    pub_ladder_land: "زمینءِ ٹھیکہ",
+    pub_wallet_t: "ایگری والٹ",
+    pub_wallet_s: "یک بر ٹاپ اپ کن، کمیشن وت والٹءَ چہ دیگ بیت۔ هر ڈیلءِ رسیدءِ اپ لوڈءِ هاجت نیست۔",
+    pub_signin_btn: "وتی والٹ و مفتیں ڈیلانی چارگءَ سائن ان کن",
+    pub_promo_badge: "0% لانچ آپر: 5 مشینری، 3 کِشت، 1 زمین مفت",
+    am_buy_public: "شما سجّہیں کِشتاں آزاتیءَ چارت کنت۔ بس آپر دئیگءِ وهدا سائن ان کن۔",
+    am_media_support: "عکس، کسانیں ویڈیو یا یوٹیوب / گوگل ڈرائیو لنک، سجّہ کار کننت۔",
+    ls_new_badge: "نوک",
     ask_rate_badge: "واجہءِ لوٹتگیں ریٹ۔ گپ و تران کن یا وتی آپر دیم دئے",
     ask_make_offer: "وتی آپر دئے",
     ask_choice_t: "شما چوں بکنگ کنگ لوٹیت؟",
@@ -8110,6 +8194,47 @@ function ReceiptModal({ t, deal, onClose }) {
 }
 
 // Owner Portal: commission owed on confirmed deals that were paid in cash to the owner
+// Signed-out view of the Commission tab: launch promo, commission ladder and Agri-Wallet, never a blank screen
+function PublicCommissionCard({ t, onSignIn }) {
+  const ladder = [["pub_ladder_machinery", pctLabel(COMMISSION)], ["pub_ladder_crop", pctLabel(CROP_COMMISSION)], ["pub_ladder_land", LAND_COMMISSION_PCT + "%"]];
+  const free = [["promo_cat_machinery", PROMO_FREE.machinery], ["promo_cat_crop", PROMO_FREE.crop], ["promo_cat_land", PROMO_FREE.land]];
+  return (
+    <div className="grid gap-4 lg:grid-cols-3">
+      <div className="rounded-2xl bg-gradient-to-br from-forest to-leafink p-4 text-ivory shadow-sm">
+        <p className="flex items-center gap-2 font-display text-lg font-extrabold rtl:leading-[2]"><Gift className="h-5 w-5 text-gold" aria-hidden="true" />{t("pub_promo_t")}</p>
+        <p className="mt-1 text-xs text-ivory/85 rtl:leading-[2]">{t("pub_promo_s")}</p>
+        <ul className="mt-3 grid grid-cols-3 gap-2">
+          {free.map(([k, n]) => (
+            <li key={k} className="rounded-xl bg-white/10 p-2 text-center ring-1 ring-white/20">
+              <p className="font-display text-2xl font-extrabold text-gold tabular-nums" dir="ltr">{n}</p>
+              <p className="text-[11px] font-bold rtl:leading-[2]">{t(k)}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <p className="flex items-center gap-2 font-bold text-forest rtl:leading-[2]"><Percent className="h-4 w-4 text-gold" aria-hidden="true" />{t("pub_ladder_t")}</p>
+        <p className="mt-1 text-xs text-soil/80 rtl:leading-[2]">{t("pub_ladder_s")}</p>
+        <ul className="mt-3 space-y-2">
+          {ladder.map(([k, pct]) => (
+            <li key={k} className="flex items-center justify-between gap-2 rounded-xl bg-ivory px-3 py-2 text-sm">
+              <span className="font-semibold text-soil rtl:leading-[2]">{t(k)}</span>
+              <span className="font-display font-extrabold text-forest tabular-nums" dir="ltr">{pct}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="flex flex-col rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
+        <p className="flex items-center gap-2 font-bold text-forest rtl:leading-[2]"><Wallet className="h-4 w-4 text-gold" aria-hidden="true" />{t("pub_wallet_t")}</p>
+        <p className="mt-1 flex-1 text-sm text-soil/80 rtl:leading-[2]">{t("pub_wallet_s")}</p>
+        <button type="button" onClick={onSignIn} className="mt-3 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory shadow-sm hover:bg-forest/90">
+          <LogIn className="h-4 w-4" aria-hidden="true" />{t("pub_signin_btn")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function CommissionLedger({ t, uid, bookings = [], landBookings = [] }) {
   const ctx = useDeals();
   if (!ctx || !uid) return null;
@@ -8637,7 +8762,9 @@ function ListingCard({ l, t, dn, lang, onBook }) {
         </ul>
         <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-soil/10 pt-3 text-xs text-soil/80">
           <span className="inline-flex items-center gap-1"><BadgeCheck className="h-4 w-4 text-forest" aria-hidden="true" />{t("owner")}: {l.ownerId}</span>
-          <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-gold text-gold" aria-hidden="true" />{l.rating.toFixed(1)}</span>
+          {!isSeedListing(l) && !(Number(l.reviews) > 0)
+            ? <span className="inline-flex items-center gap-1 rounded-full bg-leaf/15 px-2 py-0.5 text-[11px] font-extrabold text-forest ring-1 ring-leaf/30 rtl:leading-[2]"><Sparkles className="h-3.5 w-3.5 text-leafink" aria-hidden="true" />{t("ls_new_badge")}</span>
+            : <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-gold text-gold" aria-hidden="true" />{Number(l.rating || 0).toFixed(1)}</span>}
         </div>
         <button onClick={() => onBook(l)} disabled={!l.available}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory shadow-sm transition-all duration-200 hover:bg-[#0f4a28] hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-soil/20 disabled:text-soil/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2">
@@ -8831,7 +8958,9 @@ function ConsultBar({ t }) {
 /* ------------------------------------------------------------------ */
 function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = false, promoFor = () => null, startOffer = false }) {
   const [date, setDate] = useState(addDaysISO(1));
-  const [hours, setHours] = useState(4);
+  const [hours, setHours] = useState(4); // number, or "" while the farmer is retyping it
+  const MAX_HOURS = 500;
+  const hrs = Math.min(MAX_HOURS, Math.max(1, parseInt(hours, 10) || 1));
   const [wantOp, setWantOp] = useState(false);
   const [wantTr, setWantTr] = useState(false);
   const [ack, setAck] = useState(false);
@@ -8863,8 +8992,8 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
   const terms = offerOn ? { rate: Number(offerRate) || listing.rate, transport: Number(offerTr) >= 0 ? Number(offerTr) : listedTr } : null;
   const commissionRate = ecoCommission(smallholder ? SMALLHOLDER_COMMISSION : COMMISSION, ecoActive);
   const slot = promoFor(listing.ownerUid);
-  const q = withPromo(quote(listing, hours, wantOp, wantTr, terms, commissionRate), slot);
-  const listedQ = withPromo(quote(listing, hours, wantOp, wantTr, null, commissionRate), slot);
+  const q = withPromo(quote(listing, hrs, wantOp, wantTr, terms, commissionRate), slot);
+  const listedQ = withPromo(quote(listing, hrs, wantOp, wantTr, null, commissionRate), slot);
   const payLater = payment === "paylater";
   const advance = Math.round(q.total * ADVANCE_SHARE);
   const balance = q.total - advance;
@@ -8920,9 +9049,11 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
             </Field>
             <Field label={t("bk_hours")} htmlFor="bk-hours">
               <div className="flex items-center gap-2">
-                <button type="button" onClick={() => setHours((h) => Math.max(1, h - 1))} className="rounded-xl border border-soil/20 bg-white p-2.5 text-forest hover:bg-ivory" aria-label="Decrease hours"><Minus className="h-4 w-4" /></button>
-                <input id="bk-hours" type="number" min="1" max="16" value={hours} onChange={(e) => setHours(Math.min(16, Math.max(1, parseInt(e.target.value || "1", 10))))} className={inputCls + " text-center font-bold"} />
-                <button type="button" onClick={() => setHours((h) => Math.min(16, h + 1))} className="rounded-xl border border-soil/20 bg-white p-2.5 text-forest hover:bg-ivory" aria-label="Increase hours"><Plus className="h-4 w-4" /></button>
+                <button type="button" onClick={() => setHours(Math.max(1, hrs - 1))} className="rounded-xl border border-soil/20 bg-white p-2.5 text-forest hover:bg-ivory" aria-label="Decrease hours"><Minus className="h-4 w-4" /></button>
+                <input id="bk-hours" type="number" inputMode="numeric" min="1" max={MAX_HOURS} value={hours}
+                  onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ""); setHours(v === "" ? "" : Math.min(MAX_HOURS, parseInt(v, 10) || 0) || ""); }}
+                  onBlur={() => setHours(hrs)} className={inputCls + " text-center font-bold"} />
+                <button type="button" onClick={() => setHours(Math.min(MAX_HOURS, hrs + 1))} className="rounded-xl border border-soil/20 bg-white p-2.5 text-forest hover:bg-ivory" aria-label="Increase hours"><Plus className="h-4 w-4" /></button>
               </div>
             </Field>
             <Toggle id="bk-op" label={t("bk_operator") + " (+PKR 500/hr)"}
@@ -9212,7 +9343,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
               {b.status === "sent" && (
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <p className="flex flex-1 items-center gap-2 text-sm text-soil/80"><Hourglass className="h-4 w-4 text-gold" aria-hidden="true" />{t("mb_waiting")}</p>
-                  <button onClick={() => setTab("owner-portal")} className="rounded-xl bg-forest/5 px-3 py-2 text-sm font-bold text-forest hover:bg-forest/10">{t("mb_go_owner")}</button>
+                  {session && b.ownerUid && b.ownerUid === session.uid && <button onClick={() => setTab("owner-portal")} className="min-h-[44px] rounded-xl bg-forest/5 px-3 py-2 text-sm font-bold text-forest hover:bg-forest/10">{t("mb_go_owner")}</button>}
                   <button onClick={() => updateBooking(b.id, "cancelled")} className="rounded-xl border border-soil/20 px-3 py-2 text-sm font-bold text-soil hover:bg-ivory">{t("mb_cancel")}</button>
                 </div>
               )}
@@ -9570,7 +9701,7 @@ function PendingRequest({ b, t, updateBooking, contact, onClear }) {
   );
 }
 
-function OwnerPortal({ wallet = null, walletTopups = [], walletNeed = 0, onTopUp = () => {}, promoUsed = null, bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast, archive, landBookings = [], landRequests = [] }) {
+function OwnerPortal({ onSignIn = () => {}, wallet = null, walletTopups = [], walletNeed = 0, onTopUp = () => {}, promoUsed = null, bookingContacts = {}, t, dn, lang, listings, bookings, addListing, toggleListing, removeListing, updateBooking, initialSub, session, demand = [], liveRequests = [], saveRequest, toast, archive, landBookings = [], landRequests = [] }) {
   const [sub, setSub] = useState(initialSub || "requests");
   useEffect(() => { if (initialSub) setSub(initialSub); }, [initialSub]);
   // Clear -> History: cleared items leave the active lists but are never deleted
@@ -9609,26 +9740,29 @@ function OwnerPortal({ wallet = null, walletTopups = [], walletNeed = 0, onTopUp
       <div className="mb-5" data-tour="owner-head">
         <h2 id="ow-h" className="font-display text-2xl font-extrabold text-forest">{t("ow_title")}</h2>
         <p className="mt-1 text-sm text-soil/80"><Coins className="me-1.5 inline h-4 w-4 align-[-2px] text-gold" aria-hidden="true" /><span className="font-semibold">{t("hero_owner")}</span><span className="mt-0.5 block">{t("ow_sub")}</span></p>
+        {!(session && session.uid) && (
+          <button type="button" onClick={() => setSub("commission")} className="mt-2 inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-gold/20 px-3 py-1 text-xs font-extrabold text-soil ring-1 ring-gold/50 hover:bg-gold/30 rtl:leading-[2]">
+            <Gift className="h-3.5 w-3.5 text-forest" aria-hidden="true" />{t("pub_promo_badge")}
+          </button>
+        )}
       </div>
       {session && session.uid && <PromoPill t={t} used={promoUsed} className="mb-4" />}
       {session && session.uid && <AgriWalletCard data-tour="wallet" t={t} wallet={wallet} topups={walletTopups} need={walletNeed} onTopUp={onTopUp} className="mb-5" />}
-      <div className="relative mb-5">
-      <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto scroll-smooth px-4 pe-10 sm:mx-0 sm:px-0 sm:pe-0" role="tablist">
+      <div className="mb-5">
+      <div className="flex flex-wrap gap-2" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
           <button key={key} role="tab" aria-selected={sub === key} onClick={() => setSub(key)}
-            className={`flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
-            <Icon className="h-4 w-4" aria-hidden="true" />{label}{badge ? <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{badge}</span> : null}
+            className={`flex min-h-[44px] items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold ring-1 sm:gap-2 sm:px-4 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
+            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />{label}{badge ? <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{badge}</span> : null}
           </button>
         ))}
       </div>
-      {/* right-edge fade: there are more tabs to scroll to on small screens */}
-      <span className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-l from-ivory to-transparent sm:hidden rtl:bg-gradient-to-r" aria-hidden="true" />
       </div>
 
       {sub === "requests" && archive && <div className="mb-3 flex flex-wrap items-center justify-end gap-2"><span className="me-auto text-xs text-soil/80">{t("arc_clear_hint")}</span><ClearAllBtn t={t} count={readKeys.length} onClick={() => clearKeys(readKeys)} /></div>}
       {sub === "requests" && <WaitingDemand t={t} dn={dn} demand={demand} session={session} onList={() => setSub("list")} requests={liveRequests} myListings={listings} saveRequest={saveRequest} toast={toast} isCleared={isCl} onClear={archive ? clearKeys : null} />}
       {sub === "history" && <HistoryList t={t} items={histItems} onRestore={restore} />}
-      {sub === "commission" && <CommissionLedger t={t} uid={uid} bookings={bookings} landBookings={landBookings || []} />}
+      {sub === "commission" && (uid ? <CommissionLedger t={t} uid={uid} bookings={bookings} landBookings={landBookings || []} /> : <PublicCommissionCard t={t} onSignIn={onSignIn} />)}
       {sub === "requests" && (
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
@@ -10027,52 +10161,22 @@ const RATE_NAMES = {
   ps: { tractor: "ټراکټور", land: "کرنیزه ځمکه", harvester: "کمباین هارویسټر", thresher: "تریشر", leveler: "لېزر لیولر", drone: "سپرې ډرون", planter: "پلانټر", implement: "کرنیزه آله" },
   bal: { tractor: "ٹریکٹر", land: "کِشاری زمین", harvester: "کمبائن ہارویسٹر", thresher: "تھریشر", leveler: "لیزر لیولر", drone: "اسپرے ڈرون", planter: "پلانٹر", implement: "زراعتی اوزار" },
 };
-const RATE_TPL = {
-  en: { head: "Current hourly rental rates (dry rent, diesel extra):", item: (n, lo, hi) => `• ${n}: ${lo} – ${hi} per hour`, tip: "Tip: you can also name your own price with Apni Boli, and nearby owners will send you offers.",
-        one: (n, lo, hi) => `${n} rent is about ${lo} to ${hi} per hour right now, with diesel extra.`, many: (l) => `Right now, per hour: ${l}. Diesel is extra.`, part: (n, lo, hi) => `${n.toLowerCase()} ${lo} to ${hi}`, tipV: "You can also name your own price with Apni Boli." },
-  ro: { head: "Is waqt ghante ka kiraya (dry rent, diesel alag):", item: (n, lo, hi) => `• ${n}: ${lo} se ${hi} fi ghanta`, tip: "Mashwara: Apni Boli mein apna rate bhi de sakte hain, qareebi maalik offers bhejenge.",
-        one: (n, lo, hi) => `${n} ka kiraya is waqt taqreeban ${lo} se ${hi} fi ghanta hai, diesel alag.`, many: (l) => `Is waqt fi ghanta kiraya: ${l}. Diesel alag hai.`, part: (n, lo, hi) => `${n} ${lo} se ${hi}`, tipV: "Apni Boli mein apna rate bhi de sakte hain." },
-  ur: { head: "موجودہ فی گھنٹہ کرایہ (ڈرائی رینٹ، ڈیزل الگ):", item: (n, lo, hi) => `• ${n}: ${lo} سے ${hi} فی گھنٹہ`, tip: "مشورہ: آپ اپنی بولی میں اپنا ریٹ بھی بتا سکتے ہیں، قریبی مالکان آفرز بھیجیں گے۔",
-        one: (n, lo, hi) => `${n} کا کرایہ اس وقت تقریباً ${lo} سے ${hi} فی گھنٹہ ہے، ڈیزل الگ۔`, many: (l) => `اس وقت فی گھنٹہ کرایہ: ${l}۔ ڈیزل الگ ہے۔`, part: (n, lo, hi) => `${n} ${lo} سے ${hi}`, tipV: "آپ اپنی بولی میں اپنا ریٹ بھی دے سکتے ہیں۔" },
-  pa: { head: "اج کل دا فی گھنٹہ کرایہ (ڈرائی رینٹ، ڈیزل وکھرا):", item: (n, lo, hi) => `• ${n}: ${lo} توں ${hi} فی گھنٹہ`, tip: "مشورہ: تسیں اپنی بولی وچ اپنا ریٹ وی دس سکدے او، نیڑے دے مالک آفر گھلن گے۔",
-        one: (n, lo, hi) => `${n} دا کرایہ اج کل تقریباً ${lo} توں ${hi} فی گھنٹہ اے، ڈیزل وکھرا۔`, many: (l) => `اج کل فی گھنٹہ کرایہ: ${l}۔ ڈیزل وکھرا اے۔`, part: (n, lo, hi) => `${n} ${lo} توں ${hi}`, tipV: "تسیں اپنی بولی وچ اپنا ریٹ وی دس سکدے او۔" },
-  sd: { head: "هن وقت في ڪلاڪ مسواڙ (ڊرائي رينٽ، ڊيزل الڳ):", item: (n, lo, hi) => `• ${n}: ${lo} کان ${hi} في ڪلاڪ`, tip: "صلاح: توهان پنهنجي ٻولي ۾ پنهنجو اگهه به ٻڌائي سگهو ٿا، ويجهڙا مالڪ آڇون موڪليندا۔",
-        one: (n, lo, hi) => `${n} جو مسواڙ هن وقت لڳ ڀڳ ${lo} کان ${hi} في ڪلاڪ آهي، ڊيزل الڳ۔`, many: (l) => `هن وقت في ڪلاڪ مسواڙ: ${l}۔ ڊيزل الڳ آهي۔`, part: (n, lo, hi) => `${n} ${lo} کان ${hi}`, tipV: "توهان پنهنجي ٻولي ۾ پنهنجو اگهه به ٻڌائي سگهو ٿا۔" },
-  ps: { head: "اوسنۍ د ساعت کرایه (ډیزل جلا):", item: (n, lo, hi) => `• ${n}: ${lo} نه تر ${hi} په ساعت`, tip: "مشوره: تاسو په خپله بولي کې خپله بیه هم ویلای شئ، نږدې مالکان به وړاندیزونه درولېږي.",
-        one: (n, lo, hi) => `د ${n} کرایه اوس نږدې ${lo} نه تر ${hi} پورې په ساعت ده، ډیزل جلا.`, many: (l) => `اوس د ساعت کرایه: ${l}. ډیزل جلا دی.`, part: (n, lo, hi) => `${n} ${lo} نه تر ${hi}`, tipV: "تاسو په خپله بولي کې خپله بیه هم ویلای شئ." },
-  bal: { head: "اَنّوگیں ساعت ءِ کرایہ (ڈیزل جتا):", item: (n, lo, hi) => `• ${n}: ${lo} تا ${hi} ساعت ءَ`, tip: "سلاہ: شما وتی بولی ءَ وتی نرخ ءَ هم گوشت کن ات، نزّیکیں واہند آفر رَوان دئینت۔",
-        one: (n, lo, hi) => `${n} ءِ کرایہ اَنّوں نزّیک ${lo} تا ${hi} ساعت ءَ اِنت، ڈیزل جتا۔`, many: (l) => `اَنّوں ساعت ءِ کرایہ: ${l}۔ ڈیزل جتا اِنت۔`, part: (n, lo, hi) => `${n} ${lo} تا ${hi}`, tipV: "شما وتی بولی ءَ وتی نرخ ءَ هم گوشت کن ات۔" },
-};
 // specific rate words; "how much" words (kitna / کتنا) only count when a machine is named
 const RATE_RE = /\brates?\b|\brent\b|\brental|price|kiraya|kiraye|kiraaya|kiraa|qeemat|keemat|کرایہ|کرائے|کرایا|ریٹ|قیمت|مسواڙ|اگهه|کرایه|نرخ|किराया|रेट/i;
 const HOW_MUCH_RE = /kitne|kitna|kitni|kharcha|kharch|کتنے|کتنا|کتنی|خرچ|ڪيترو|څومره|چنچو/i;
+// Machinery rates are owner asking rates (set by each owner, always negotiable), so the helper never quotes a fixed price range.
+const RATE_FREE = {
+  en: { t: "There is no fixed price on Agri-Share. Each owner sets their own asking rate on their listing, and you can negotiate it or send your own offer.", tip: "You can also post your own price with Apni Boli, and nearby owners will send you offers. Diesel is extra (dry rent).", v: "There is no fixed price. Each owner sets an asking rate you can negotiate, or post your own price with Apni Boli." },
+  ro: { t: "Agri-Share par koi fixed qeemat nahi. Har maalik apni listing par apna maanga hua rate likhta hai, aap us par baat cheet kar sakte hain ya apni offer bhej sakte hain.", tip: "Aap Apni Boli mein apna rate khud bhi de sakte hain, qareebi maalik aap ko offers bhejenge. Diesel alag hai (dry rent).", v: "Koi fixed qeemat nahi. Har maalik apna rate likhta hai jis par baat ho sakti hai, ya Apni Boli mein apna rate dein." },
+  ur: { t: "ایگری شیئر پر کوئی مقررہ قیمت نہیں۔ ہر مالک اپنی لسٹنگ پر اپنا مانگا ہوا ریٹ لکھتا ہے، آپ اس پر بات چیت کر سکتے ہیں یا اپنی پیشکش بھیج سکتے ہیں۔", tip: "آپ اپنی بولی میں اپنا ریٹ خود بھی دے سکتے ہیں، قریبی مالکان آپ کو آفرز بھیجیں گے۔ ڈیزل الگ ہے (ڈرائی رینٹ)۔", v: "کوئی مقررہ قیمت نہیں۔ ہر مالک اپنا ریٹ لکھتا ہے جس پر بات ہو سکتی ہے، یا اپنی بولی میں اپنا ریٹ دیں۔" },
+  pa: { t: "ایگری شیئر تے کوئی پکی قیمت نہیں۔ ہر مالک اپنی لسٹنگ تے اپنا منگیا ریٹ لکھدا اے، تسیں اوہدے تے گل بات کر سکدے او یا اپنی آفر بھیج سکدے او۔", tip: "تسیں اپنی بولی وچ اپنا ریٹ آپ وی دے سکدے او، نیڑے دے مالک آفر بھیجن گے۔ ڈیزل وکھرا اے (ڈرائی رینٹ)۔", v: "کوئی پکی قیمت نہیں۔ ہر مالک اپنا ریٹ لکھدا اے جیہدے تے گل ہو سکدی اے، یا اپنی بولی وچ اپنا ریٹ دیو۔" },
+  sd: { t: "ايگري شيئر تي ڪا مقرر قيمت ناهي. هر مالڪ پنهنجي لسٽنگ تي پنهنجو گهريل ريٽ لکي ٿو، توهان ان تي ڳالهه ٻولهه ڪري سگهو ٿا يا پنهنجي آڇ موڪلي سگهو ٿا.", tip: "توهان پنهنجي ٻولي ۾ پنهنجو ريٽ پاڻ به ڏئي سگهو ٿا، ويجهڙا مالڪ آڇون موڪليندا. ڊيزل الڳ آهي (ڊرائي رينٽ).", v: "ڪا مقرر قيمت ناهي. هر مالڪ پنهنجو ريٽ لکي ٿو جنهن تي ڳالهه ٿي سگهي ٿي، يا پنهنجي ٻولي ۾ پنهنجو ريٽ ڏيو." },
+  ps: { t: "په ایګري شېئر کې ټاکلې بیه نشته. هر مالک په خپل لېست کې خپله غوښتل شوې بیه لیکي، تاسو پرې خبرې کولی شئ یا خپل وړاندیز لېږلی شئ.", tip: "تاسو په خپله بولي کې خپله بیه هم ورکولی شئ، نږدې مالکان به وړاندیزونه درولېږي. ډیزل جلا دی.", v: "ټاکلې بیه نشته. هر مالک خپله بیه لیکي چې خبرې پرې کېدی شي، یا په خپله بولي کې خپله بیه ورکړئ." },
+  bal: { t: "ایگری شیئرءَ هچ ٹاہینتگیں بہا نیست۔ هر واجہ وتی لسٹنگءَ وتی لوٹتگیں ریٹ نبیسیت، شما آئیءِ سرا گپ و تران کنت یا وتی آپر دیم دات کنت۔", tip: "شما وتی بولیءَ وتی ریٹ وت هم دات کنت، نزّیکیں واہند آپر دیم دئینت۔ ڈیزل جتا اِنت۔", v: "هچ ٹاہینتگیں بہا نیست۔ هر واجہ وتی ریٹ نبیسیت، یا وتی بولیءَ وتی ریٹ دئے۔" },
+};
 function rateAnswer(lang, cat, voice) {
-  const tpl = RATE_TPL[lang] || RATE_TPL.en;
-  const names = RATE_NAMES[lang] || RATE_NAMES.en;
-  const card = (CUR && CUR.catalog) || [];
-  const range = (c) => {
-    const ms = card.filter((m) => m.cat === c);
-    if (!ms.length) return null;
-    const hp = ms.map((m) => (String(m.spec).match(/(\d+)\s*HP/) || [])[1]).filter(Boolean).map(Number);
-    return { c, lo: fmtLocal(Math.min(...ms.map((m) => m.min))), hi: fmtLocal(Math.max(...ms.map((m) => m.max))), hp: hp.length > 1 ? `${Math.min(...hp)}–${Math.max(...hp)} HP` : "" };
-  };
-  const want = cat && range(cat) ? [cat] : ["tractor", "harvester", "thresher", "leveler", "drone"].filter((c) => range(c)).slice(0, 4);
-  // spoken: "1,800 to 3,500 rupees" instead of reading "PKR" letter by letter
-  const RUPEE = { en: "rupees", ro: "rupay", ur: "روپے", pa: "روپے", sd: "رپيا", ps: "روپۍ", bal: "کلدار" };
-  const spoken = (r) => {
-    if (CUR.id !== "PK") return r;
-    const ms = card.filter((m) => m.cat === r.c);
-    const n = (v) => Math.round(v).toLocaleString("en-PK");
-    return { ...r, lo: n(Math.min(...ms.map((m) => m.min))), hi: `${n(Math.max(...ms.map((m) => m.max)))} ${RUPEE[lang] || RUPEE.en}` };
-  };
-  const rows = want.map(range);
-  const label = (r) => names[r.c] + (r.hp && !voice ? ` (${r.hp})` : "");
-  if (voice) {
-    const rowsV = rows.map(spoken);
-    const body = rowsV.length === 1 ? tpl.one(names[rowsV[0].c], rowsV[0].lo, rowsV[0].hi) : tpl.many(rowsV.slice(0, 3).map((r) => tpl.part(names[r.c], r.lo, r.hi)).join(lang === "en" || lang === "ro" ? ", " : "، "));
-    return body + " " + tpl.tipV;
-  }
-  return tpl.head + "\n" + rows.map((r) => tpl.item(label(r), r.lo, r.hi)).join("\n") + "\n\n" + tpl.tip;
+  const r = RATE_FREE[lang] || RATE_FREE.en;
+  return voice ? r.v : r.t + "\n\n" + r.tip;
 }
 
 // Live voice call: turn any answer into 2-3 short spoken sentences (no lists, bullets or symbols)
@@ -10358,7 +10462,7 @@ function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK,
   const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec}, about ${fmtLocal(m.min)} to ${fmtLocal(m.max)}/hr)`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
   const persona = `You are "Agri-Share Kisan Advisor": a warm, respectful, intelligent Pakistani agricultural advisor for Agri-Share, a peer-to-peer agricultural machinery rental and crop marketplace (tagline "Sharing Resources, Growing Together"). Speak like a trusted elder brother or sister from the village who also knows the business: practical, kind, never condescending. Understand natural accents, slang, typos and mixed Urdu / Punjabi / English (for example "mujhay kiraya zyada lag raha ha kam kaisay krun" means "the rent feels too high, how can I reduce it"), and answer the real need behind the question.
 LANGUAGE RULE (most important): mirror the language of the farmer's LATEST message only, never the language of the greeting or of earlier messages. English message (for example "what is meant by zameen thaika") -> reply in clean, natural English; Pakistani terms such as Zameen Thaika, Apni Boli or Nehri may stay as names, but explain them in English. Roman Urdu message (for example "zameen thaika kya hota hai" or "tractor kitne ka milega") -> reply only in Roman Urdu with Pakistani vocabulary (pani ka zariya, zameen, kisan, shukriya, meharbani, waqt), never Hindi words such as srot, jal, dhanyavaad, kripya or samay. Urdu, Punjabi, Sindhi, Pashto or Balochi script -> reply in that language and script. SCRIPT PURITY: write ONLY in plain Latin letters (English / Roman Urdu) or ONLY in Urdu Nastaliq / Perso-Arabic script; never mix in Devanagari, Bengali, Gurmukhi, Malayalam or any other Indic characters. Do not use markdown symbols such as ** or #. Urdu script in, Urdu script out; Roman Urdu in, Roman Urdu out; English in, English out; Punjabi in Shahmukhi, Sindhi, Pashto and Balochi in their Perso-Arabic scripts. If unclear, use the app language (${langName}). Never write Hindi / Devanagari.
-CURRENT RATE CARD (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; quote these when asked about rent, rates or prices, give the hourly range first):
+CURRENT RATE CARD (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; rough market reference only. There are NO fixed prices on Agri-Share: every owner sets their own asking rate on their listing and it is always negotiable. When asked about rent, rates or prices, first explain that the farmer can negotiate the owner's asking rate, send their own offer, or post their own price with Apni Boli; mention live listing asking rates when relevant, and give a range only as a rough reference, never as a fixed price):
 ${rateCardText()}
 Platform fee: 2.5% standard, 2% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
   const base = `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}${persona}
@@ -13064,6 +13168,7 @@ function CropMediaPicker({ t, media, setMedia }) {
           )}
         </ul>
       )}
+      <p className="mt-1.5 flex items-start gap-1.5 text-[11px] font-semibold text-leafink rtl:leading-[2]"><Video className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />{t("am_media_support")}</p>
       <div className="mt-2 flex flex-wrap gap-2">
         <label className={btn + (full ? " pointer-events-none opacity-50" : "")}>
           <Camera className="h-4 w-4" aria-hidden="true" />{t("am_take_photo")}
@@ -13221,20 +13326,16 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
   const live = posts.filter((p) => p.status === "open" && !p.own && p.sellerUid && (crop === "all" || p.crop === crop)).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   const withdraw = (o) => writeDoc(COL.cropOffers, o.id, { ...o, status: "withdrawn", updatedAt: Date.now() }).catch(() => toast(t("am_offer_save_err"), { type: "error" }));
   const ago = (ms) => (ms ? new Date(ms).toLocaleDateString(lang === "en" ? "en-GB" : "en-GB", { day: "numeric", month: "short" }) : "");
-  if (!session) {
-    return (
-      <div className="rounded-2xl border border-soil/10 bg-white p-6 text-center shadow-sm">
-        <ShoppingBag className="mx-auto h-8 w-8 text-leafink" aria-hidden="true" />
-        <p className="mt-2 text-sm text-soil rtl:leading-[2]">{t("am_buy_signin")}</p>
-        <button type="button" onClick={() => requireAuth(() => {})} className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-forest px-4 text-sm font-bold text-ivory"><LogIn className="h-4 w-4" aria-hidden="true" />{t("auth_signin")}</button>
-      </div>
-    );
-  }
   return (
     <div className="space-y-5">
       <div className="rounded-2xl border border-soil/10 bg-white p-4 shadow-sm">
         <h3 className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("am_buy_t")}</h3>
         <p className="mt-1 text-sm text-soil/80 rtl:leading-[2]">{t("am_buy_s")}</p>
+        {!session && (
+          <p className="mt-2 flex items-start gap-2 rounded-xl bg-gold/15 px-3 py-2 text-xs font-semibold text-soil ring-1 ring-gold/40 rtl:leading-[2]">
+            <LogIn className="mt-0.5 h-3.5 w-3.5 shrink-0 text-forest" aria-hidden="true" />{t("am_buy_public")}
+          </p>
+        )}
         <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={t("am_crop")}>
           {["all", ...ALL_CROP_KEYS].map((c) => (
             <button key={c} type="button" onClick={() => setCrop(c)} aria-pressed={crop === c}
@@ -13325,7 +13426,8 @@ function GuidedTour({ t, onClose, goTab = () => {} }) {
   const [i, setI] = useState(0);
   const [rect, setRect] = useState(null);
   const [vp, setVp] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
-  const nextRef = useRef(null);
+  const nextRef = useRef(null), cardRef = useRef(null);
+  const [cardH, setCardH] = useState(230); // measured height of the tour card, used to keep it fully on screen
   const last = i === TOUR_STEPS.length - 1;
   useEffect(() => {
     let raf = 0, alive = true, scrolled = false;
@@ -13336,7 +13438,9 @@ function GuidedTour({ t, onClose, goTab = () => {} }) {
       if (!alive) return;
       const el = find();
       // the target may appear a frame later (after switching tab): scroll to it once it exists
-      if (el && !scrolled) { scrolled = true; el.scrollIntoView({ behavior: "smooth", block: "center" }); }
+      // a tall target (taller than half the screen, e.g. the Services Hub) scrolls to its top; the card then sits at the bottom
+      if (el && !scrolled) { scrolled = true; el.scrollIntoView({ behavior: "smooth", block: el.getBoundingClientRect().height > window.innerHeight / 2 ? "start" : "center" }); }
+      if (cardRef.current) { const h = cardRef.current.offsetHeight; setCardH((o) => (Math.abs(o - h) < 1 ? o : h)); }
       const r = el && el.getBoundingClientRect();
       const nr = r && r.width > 0 ? { top: r.top, left: r.left, width: r.width, height: r.height } : null;
       setRect((o) => (o && nr && Math.abs(o.top - nr.top) < 0.5 && Math.abs(o.left - nr.left) < 0.5 && Math.abs(o.width - nr.width) < 0.5 && Math.abs(o.height - nr.height) < 0.5 ? o : nr));
@@ -13358,12 +13462,16 @@ function GuidedTour({ t, onClose, goTab = () => {} }) {
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
   }, [onClose]);
-  const pad = 8, gap = 52, cardW = Math.min(340, vp.w - 24);
-  const below = rect ? rect.top + rect.height + gap + 190 < vp.h : true;
+  // card always stays fully inside the viewport: never above 72px (header), never below the bottom edge
+  const pad = 8, gap = 52, cardW = Math.min(340, vp.w - 24), TOP_MIN = 72, EDGE = 16;
+  const maxTop = Math.max(TOP_MIN, vp.h - cardH - EDGE);
+  const tall = !!rect && rect.height > vp.h / 2; // e.g. Step 1 All-Services Hub: pin the card near the bottom
+  const below = rect ? rect.top + rect.height + gap + cardH < vp.h : true;
   const left = rect ? Math.max(12, Math.min(vp.w - cardW - 12, rect.left + rect.width / 2 - cardW / 2)) : (vp.w - cardW) / 2;
-  const cardStyle = !rect ? { left, top: "50%", width: cardW, transform: "translateY(-50%)" }
-    : below ? { left, top: Math.min(vp.h - 200, rect.top + rect.height + gap), width: cardW }
-    : { left, bottom: Math.max(12, vp.h - rect.top + gap), width: cardW };
+  const rawTop = !rect ? (vp.h - cardH) / 2 : tall ? maxTop : below ? rect.top + rect.height + gap : rect.top - gap - cardH;
+  const cardTop = Math.min(maxTop, Math.max(TOP_MIN, rawTop));
+  const cardStyle = { left, top: cardTop, width: cardW, maxHeight: vp.h - TOP_MIN - EDGE, overflowY: "auto" };
+  const showHand = !!rect && !tall;
   const handX = rect ? Math.max(16, Math.min(vp.w - 48, rect.left + rect.width / 2 - 16)) : 0;
   const handY = rect ? (below ? rect.top + rect.height + 6 : rect.top - 42) : 0;
   return createPortal(
@@ -13371,12 +13479,12 @@ function GuidedTour({ t, onClose, goTab = () => {} }) {
       <div className={`absolute inset-0 ${rect ? "" : "bg-[rgba(16,32,24,0.62)]"}`} />
       {rect && <div className="pointer-events-none fixed rounded-2xl ring-4 ring-gold transition-all duration-300 ease-out"
         style={{ top: rect.top - pad, left: rect.left - pad, width: rect.width + pad * 2, height: rect.height + pad * 2, boxShadow: "0 0 0 9999px rgba(16,32,24,0.62)" }} />}
-      {rect && (
+      {showHand && (
         <span className="pointer-events-none fixed transition-all duration-300 ease-out" style={{ left: handX, top: handY }} aria-hidden="true">
           <span className="block animate-bounce"><Pointer className={`h-9 w-9 fill-white text-forest drop-shadow-lg ${below ? "" : "rotate-180"}`} strokeWidth={1.8} /></span>
         </span>
       )}
-      <div role="dialog" aria-modal="true" aria-labelledby="tour-h" aria-describedby="tour-d" className="fixed rounded-2xl bg-white p-4 shadow-2xl ring-1 ring-forest/10" style={cardStyle}>
+      <div ref={cardRef} role="dialog" aria-modal="true" aria-labelledby="tour-h" aria-describedby="tour-d" className="fixed rounded-2xl bg-white p-4 shadow-2xl ring-1 ring-forest/10 transition-[top] duration-300 ease-out" style={cardStyle}>
         <div className="flex items-center justify-between gap-2">
           <p className="text-[11px] font-bold uppercase tracking-wide text-leafink rtl:leading-[2]">{t("tour_step").replace("{n}", i + 1).replace("{total}", TOUR_STEPS.length)}</p>
           <span className="rounded-full bg-gold/25 px-2 py-0.5 text-[10px] font-extrabold text-soil" dir="ltr">{Math.round(((i + 1) / TOUR_STEPS.length) * 100)}%</span>
@@ -13685,7 +13793,7 @@ function AgriMandi({ walletBal = 0, onLowWallet = () => {}, promoUsed = null, t,
             <Field label={t("am_rate")} htmlFor="am-r" error={errs.rate} hint={t("pop_own_rate")}>
               <MoneyInput id="am-r" min={100} step="10" value={f.rate} onChange={(v) => set("rate", v)} className={inputCls + " text-center text-lg font-extrabold text-forest"} />
             </Field>
-            <p className="rounded-xl bg-ivory p-2.5 text-center text-sm font-semibold text-soil" dir="ltr">{t("am_expected_total")}: {pkr((Number(f.qty) || 0) * (Number(f.rate) || 0))}</p>
+            {Number(f.rate) > 0 && <p className="rounded-xl bg-ivory p-2.5 text-center text-sm font-semibold text-soil" dir="ltr">{t("am_expected_total")}: {pkr((Number(f.qty) || 0) * (Number(f.rate) || 0))}</p>}
             <CropMediaPicker t={t} media={media} setMedia={setMedia} />
             <fieldset>
               <legend className="mb-2 text-sm font-semibold text-soil">{t("am_wallet")}</legend>
@@ -15422,7 +15530,9 @@ const docKey = (id) => String(id).replace(/\//g, "_");
 
 // Collections the rules keep private to signed-in members (they hold names, phones and wallet numbers).
 // Signed-out visitors don't listen to them at all, so the console has no permission-denied noise.
-const PRIVATE_SYNC = new Set(["bookings", "requests", "mandi", "demand", "landRequests", "landBookings"]);
+const PRIVATE_SYNC = new Set(["bookings", "requests", "demand", "landRequests", "landBookings"]);
+// readable by signed-out visitors (Buy Crops browsing), but only signed-in members ever write
+const PUBLIC_READ_SYNC = new Set(["mandi"]);
 
 function useCollectionSync(key, items, setItems, authUid, report, queries) {
   const queryKey = queries ? JSON.stringify(queries) : "all";
@@ -15431,8 +15541,10 @@ function useCollectionSync(key, items, setItems, authUid, report, queries) {
   const itemsRef = useRef(items);
   itemsRef.current = items;
   const name = COL[key];
+  const readOnly = PUBLIC_READ_SYNC.has(key) && !authUid;
 
   const push = (it) => {
+    if (readOnly) return;
     const id = docKey(it.id);
     const json = stableJson(it);
     if (synced.current) synced.current.set(id, json);
@@ -15489,7 +15601,7 @@ function useCollectionSync(key, items, setItems, authUid, report, queries) {
   // Send local changes (new, edited, deleted) to Firestore
   useEffect(() => {
     const map = synced.current;
-    if (!FIREBASE_ENABLED || !map) return;
+    if (!FIREBASE_ENABLED || !map || readOnly) return;
     const ids = new Set();
     items.forEach((it) => {
       const id = docKey(it.id);
@@ -16157,7 +16269,7 @@ function App() {
           </>
         )}
         {showTab === "bookings" && <MyBookings requests={myRequests.filter((r) => r.status === "open")} t={t} dn={dn} onVoucher={setVoucherId} bookings={shownBookings} updateBooking={updateBooking} setTab={setTab} session={session} openAuth={(k) => openAuth(k)} />}
-        {showTab === "owner-portal" && <OwnerPortal wallet={wallet} walletTopups={myTopups} walletNeed={walletNeed} onTopUp={() => setTopupOpen(true)} promoUsed={promoUsed} archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
+        {showTab === "owner-portal" && <OwnerPortal onSignIn={() => openAuth("signin", t("pub_signin_btn"))} wallet={wallet} walletTopups={myTopups} walletNeed={walletNeed} onTopUp={() => setTopupOpen(true)} promoUsed={promoUsed} archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest promoFor={machinePromoFor} fuel={fuel} key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
         {showTab === "agri-mandi" && <AgriMandi walletBal={walletBal} onLowWallet={lowWallet} promoUsed={promoUsed} demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}

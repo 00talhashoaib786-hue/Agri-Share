@@ -10,7 +10,7 @@
   GET  /api/gemini  -> { ok: true, configured: boolean, model }   (health check, no Gemini call)
   POST /api/gemini  { system, contents, voice, json } -> { ok: true, text, model } or { ok: false, error, busy }
     Model chain: GEMINI_MODEL (default gemini-3.5-flash-lite) -> gemini-3.5-flash -> gemini-flash-latest (4 s per attempt).
-    Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 380, temperature: 0.4 }.
+    Every request is the minimal standard payload: systemInstruction + contents + { maxOutputTokens: 800, temperature: 0.4 }.
     on 503 / 429 / 404 from Google. busy: true means every model was temporarily unavailable.
     contents may include one voice clip: { inlineData: { mimeType: "audio/wav", data: "<base64>" } }
     json: true returns structured JSON text: { "heard": "...", "reply": "..." }
@@ -117,10 +117,12 @@ async function handle(req, res) {
 // One clean standard payload for every model: no thinkingConfig / responseSchema (they caused 400s and slow 504s).
 // For voice turns the JSON shape {heard, reply} is requested in the system instruction instead.
 function buildRequest(model, { system, contents }, recovery) {
-  const body = { contents, generationConfig: { maxOutputTokens: 380, temperature: 0.4 } };
-  if (system) body.systemInstruction = { parts: [{ text: String(system) }] };
+  const body = { contents, generationConfig: { maxOutputTokens: 800, temperature: 0.4 } };
+  // always end on a full sentence: short, complete answers instead of long ones cut off mid-sentence
+  const brevity = "\n\nReply style: answer in 2 to 3 short, complete sentences (a short numbered list only when steps are asked for). Always finish your last sentence. Never stop mid-sentence.";
+  if (system) body.systemInstruction = { parts: [{ text: String(system) + brevity }] };
   // recovery only: a "thinking" model spent the whole budget thinking and returned no text
-  if (recovery) body.generationConfig = { maxOutputTokens: 500, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } };
+  if (recovery) body.generationConfig = { maxOutputTokens: 800, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } };
   return body;
 }
 
