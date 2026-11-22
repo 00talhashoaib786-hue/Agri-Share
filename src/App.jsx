@@ -7556,7 +7556,7 @@ function LangToggle({ t, lang, setLang }) {
   const ur = lang === "ur";
   return (
     <button type="button" onClick={() => setLang(ur ? "en" : "ur")} aria-label={t("lt_toggle")} title={t("lt_toggle")}
-      className="inline-flex min-h-[44px] shrink-0 items-center rounded-full border border-forest/15 bg-white/80 p-1 text-[11px] font-bold shadow-sm transition hover:shadow-md min-[400px]:text-xs sm:text-sm">
+      className="hidden min-h-[44px] shrink-0 items-center rounded-full border border-forest/15 bg-white/80 p-1 text-[11px] font-bold shadow-sm transition hover:shadow-md min-[400px]:text-xs sm:inline-flex sm:text-sm">
       <span lang="ur" dir="rtl" className={`rounded-full px-1.5 py-1 font-urdu leading-none sm:px-2.5 ${ur ? "bg-forest text-ivory" : "text-forest"}`}>اردو</span>
       <span className="px-0.5 text-forest/40" aria-hidden="true">|</span>
       <span lang="en" className={`rounded-full px-1.5 py-1 leading-none sm:px-2.5 ${lang === "en" ? "bg-forest text-ivory" : "text-forest"}`}>English</span>
@@ -7611,10 +7611,23 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
       </nav>
     </header>
     {/* phones: country & language scroll away with the page so the sticky bar stays one compact row */}
-    <div className="flex w-full items-center gap-2 border-b border-forest/5 bg-white/80 px-4 py-2 md:hidden">
-      <div className="min-w-0 flex-1"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
+    <div className="flex w-full items-center justify-between gap-1.5 border-b border-forest/5 bg-white/80 px-4 py-2 md:hidden" title={t("fx_note")}>
+      <label className="flex min-h-[44px] min-w-0 flex-1 items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 shadow-sm">
+        <Globe className="h-4 w-4 shrink-0 text-forest" aria-hidden="true" />
+        <span className="sr-only">{t("country")}</span>
+        <select id="country-m" value={country} onChange={(e) => setCountry(e.target.value)} className="w-full min-w-0 cursor-pointer truncate bg-transparent text-xs font-semibold text-forest focus:outline-none">
+          {COUNTRY_IDS.map((cc) => <option key={cc} value={cc}>{t("country_" + cc)}</option>)}
+        </select>
+      </label>
+      <label className="flex min-h-[44px] min-w-0 flex-[1.3] items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 shadow-sm">
+        <Languages className="h-4 w-4 shrink-0 text-forest" aria-hidden="true" />
+        <span className="sr-only">Language</span>
+        <select id="lang-m" value={lang} onChange={(e) => setLang(e.target.value)} className="w-full min-w-0 cursor-pointer truncate bg-transparent text-xs font-semibold text-forest focus:outline-none">
+          {LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
+        </select>
+      </label>
       {onTour && (
-        <button type="button" onClick={onTour} className="inline-flex min-h-[44px] shrink-0 items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 py-1.5 text-xs font-bold text-forest shadow-sm transition hover:shadow-md" aria-label={t("tour_btn")} title={t("tour_btn")}>
+        <button type="button" onClick={onTour} className="inline-flex min-h-[44px] shrink-0 items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 text-xs font-bold text-forest shadow-sm transition hover:shadow-md" aria-label={t("tour_btn")} title={t("tour_btn")}>
           <Compass className="h-4 w-4" aria-hidden="true" /><span className="whitespace-nowrap rtl:leading-[2]">{t("tour_btn_s")}</span>
         </button>
       )}
