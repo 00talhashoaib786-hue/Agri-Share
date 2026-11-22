@@ -1,5 +1,5 @@
 /*
-  Agri-Share: current Pakistan fuel prices (PKR per litre) for diesel and transport estimates.
+  PakAgriShare: current Pakistan fuel prices (PKR per litre) for diesel and transport estimates.
   Vercel Serverless Function.
 
   GET /api/fuel-rates

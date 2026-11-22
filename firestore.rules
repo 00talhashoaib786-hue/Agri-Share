@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Agri-Share Firestore rules (production)
+// PakAgriShare Firestore rules (production)
 // - Anyone can browse approved machine listings and the diesel / province settings.
 // - Bookings, live requests, Agri-Market posts, waiting demand and member profiles contain
 //   names and phone numbers, so only signed-in members can read or write them.
@@ -48,7 +48,7 @@ service cloud.firestore {
     }
 
     // app_settings/fuel_rates       founder's manual fuel price override { override, diesel, petrol, updatedAt, updatedBy }
-    // app_settings/company_payment  Agri-Share official collection account shown on every bill
+    // app_settings/company_payment  PakAgriShare official collection account shown on every bill
     //   { bankName, accountTitle, iban, jazzcash, easypaisa, raast, updatedAt, updatedBy }
     // Everyone may read them (bills show the account before sign-in); only the founder may change them.
     function companyOk() {

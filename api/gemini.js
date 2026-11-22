@@ -1,5 +1,5 @@
 /*
-  Agri-Share Kisan Advisor: server-side Gemini proxy (Vercel Serverless Function).
+  PakAgriShare Kisan Advisor: server-side Gemini proxy (Vercel Serverless Function).
   The API key stays on the server, so it is never shipped in the public JavaScript bundle.
 
   Vercel > Project > Settings > Environment Variables:

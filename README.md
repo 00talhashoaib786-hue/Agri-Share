@@ -1,4 +1,4 @@
-# Agri-Share
+# PakAgriShare
 
 Peer-to-peer agricultural machinery rental marketplace for Pakistan.
 Principles of Marketing semester project (Section C), IBM, UET Lahore.

@@ -1,9 +1,9 @@
 /*
-  Agri-Share: instant email alert for an unmatched farmer lead (no machine or land owner within 40 km).
+  PakAgriShare: instant email alert for an unmatched farmer lead (no machine or land owner within 40 km).
   Vercel Serverless Function. Always answers JSON and never fails just because email isn't set up yet.
 
   Vercel > Project > Settings > Environment Variables (any ONE of these enables email):
-    RESEND_API_KEY          https://resend.com  (optional RESEND_FROM, default "Agri-Share <onboarding@resend.dev>";
+    RESEND_API_KEY          https://resend.com  (optional RESEND_FROM, default "PakAgriShare <onboarding@resend.dev>";
                             onboarding@resend.dev only delivers to the Resend account's own email until a domain is verified)
     WEB3FORMS_ACCESS_KEY    https://web3forms.com  (the access key is created for the receiving email address)
   LEAD_ALERT_EMAIL          optional, default the founder's address below
@@ -100,7 +100,7 @@ ${lead.farmerPhone ? `<p style="font-family:sans-serif"><a href="tel:${esc(lead.
       const r = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: `Bearer ${resend.value}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ from: process.env.RESEND_FROM || "Agri-Share <onboarding@resend.dev>", to: [to], subject, html, text, ...(lead.farmerEmail ? { reply_to: lead.farmerEmail } : {}) }),
+        body: JSON.stringify({ from: process.env.RESEND_FROM || "PakAgriShare <onboarding@resend.dev>", to: [to], subject, html, text, ...(lead.farmerEmail ? { reply_to: lead.farmerEmail } : {}) }),
       });
       if (r.ok) return res.status(200).json({ ok: true, sent: true, via: "resend" });
       const err = await r.json().catch(() => ({}));
@@ -111,8 +111,8 @@ ${lead.farmerPhone ? `<p style="font-family:sans-serif"><a href="tel:${esc(lead.
       try {
         const r = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json", "User-Agent": "Agri-Share-Lead-Alerts/1.0" },
-          body: JSON.stringify({ access_key: w3.value, subject, from_name: "Agri-Share Leads", message: text, ...(lead.farmerEmail ? { replyto: lead.farmerEmail } : {}) }),
+          headers: { "Content-Type": "application/json", Accept: "application/json", "User-Agent": "PakAgriShare-Lead-Alerts/1.0" },
+          body: JSON.stringify({ access_key: w3.value, subject, from_name: "PakAgriShare Leads", message: text, ...(lead.farmerEmail ? { replyto: lead.farmerEmail } : {}) }),
         });
         const raw = await r.text();
         let j = {}; try { j = JSON.parse(raw); } catch (e) { j = { message: `non-JSON reply: ${raw.replace(/\s+/g, " ").slice(0, 120)}` }; }

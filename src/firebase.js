@@ -1,5 +1,5 @@
 /*
-  Agri-Share: Firebase connection (Firestore + Email/Password Authentication)
+  PakAgriShare: Firebase connection (Firestore + Email/Password Authentication)
   ---------------------------------------------------------------------------
   Project: agri-share-70fb1 (Spark plan)
 
@@ -51,7 +51,7 @@ function loadSdk() {
     sdkPromise = idle()
       .then(() => Promise.all([import("firebase/app"), import("firebase/firestore"), import("firebase/auth")]))
       .then(([app, fs, au]) => { sdk = { app, fs, au }; return sdk; })
-      .catch((e) => { console.warn("[Agri-Share] Firebase SDK could not load. Using localStorage only.", e); sdkPromise = null; return null; });
+      .catch((e) => { console.warn("[PakAgriShare] Firebase SDK could not load. Using localStorage only.", e); sdkPromise = null; return null; });
   }
   return sdkPromise;
 }
@@ -127,10 +127,10 @@ async function init() {
       try { db = initializeFirestore(app, { ignoreUndefinedProperties: true, experimentalAutoDetectLongPolling: true, localCache: memoryLocalCache() }, FIRESTORE_DATABASE_ID); } catch (e2) { db = getFirestore(app, FIRESTORE_DATABASE_ID); }
     }
     auth = m.au.getAuth(app);
-    console.info(`[Agri-Share] Firestore connected: project ${firebaseConfig.projectId}, database "${FIRESTORE_DATABASE_ID}"`);
+    console.info(`[PakAgriShare] Firestore connected: project ${firebaseConfig.projectId}, database "${FIRESTORE_DATABASE_ID}"`);
     return true;
   } catch (e) {
-    console.warn("[Agri-Share] Firebase could not start. Using localStorage only.", e);
+    console.warn("[PakAgriShare] Firebase could not start. Using localStorage only.", e);
     app = null; db = null; auth = null;
     return false;
   }
@@ -204,7 +204,7 @@ export function watchDoc(name, id, onData, onError) {
 
 // One clean console line per Firestore failure: operation, path, database and error code
 function logFs(op, path, e) {
-  console.warn(`[Agri-Share] Firestore ${op} ${FIRESTORE_DATABASE_ID}/${path} failed: ${(e && e.code) || "error"}${e && e.message ? " · " + e.message : ""}`);
+  console.warn(`[PakAgriShare] Firestore ${op} ${FIRESTORE_DATABASE_ID}/${path} failed: ${(e && e.code) || "error"}${e && e.message ? " · " + e.message : ""}`);
 }
 
 export async function writeDoc(name, id, data) {
@@ -314,7 +314,7 @@ export async function fbWipeLocalCache() {
   try {
     await sdk.fs.terminate(db);
     await sdk.fs.clearIndexedDbPersistence(db);
-  } catch (e) { console.warn("[Agri-Share] Could not clear the Firestore offline cache:", e && (e.code || e.message)); }
+  } catch (e) { console.warn("[PakAgriShare] Could not clear the Firestore offline cache:", e && (e.code || e.message)); }
 }
 
 /* ---------------- Phone OTP ----------------
