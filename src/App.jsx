@@ -389,6 +389,23 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    tour8_1_t: "All-in-One Kisan Super-App",
+    tour8_1_s: "Everything a farmer or landowner needs in one trusted platform: machinery, land lease, crop market and offline booking.",
+    tour8_2_t: "Apni Boli: Set Your Own Rate",
+    tour8_2_s: "No forced rates or middlemen. Name your own hourly or per-acre offer and match directly with owners within 40 km.",
+    tour8_3_t: "Zameen Thaika & Stamp-Paper Iqrarnama",
+    tour8_3_s: "Lease or rent farmland safely with a bilingual stamp-paper Iqrarnama, plus an extra 0.50% machinery fee rebate.",
+    tour8_4_t: "Agri-Market: All Crops & Vegetables",
+    tour8_4_s: "Sell wheat, rice, cotton or any vegetable with real photo and video proof, directly to verified buyers.",
+    tour8_5_t: "0% Launch Promo for Owners",
+    tour8_5_s: "Turn idle tractors and land into steady income: 0% commission on your first 5 machinery, 3 crop and 1 land deals.",
+    tour8_6_t: "Agri-Wallet & Lowest 2.5% Fee",
+    tour8_6_s: "An industry-low 2.5% machinery fee, a prepaid Agri-Wallet you can track anytime, and photo / video work proofs.",
+    tour8_7_t: "Keypad Phone & Village Agent Access",
+    tour8_7_s: "No smartphone or internet? Book through your local village Agri-Agent. USSD booking is coming soon.",
+    tour8_8_t: "AI Kisan Helper in 6 Languages",
+    tour8_8_s: "Ask anything by voice or text in Urdu, Punjabi, Sindhi, Pashto, Balochi or English.",
+    tour_get_started: "Get Started",
     crop_sugarcane: "Sugarcane",
     crop_potato: "Potato",
     crop_onion: "Onion",
@@ -1583,6 +1600,23 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    tour8_1_t: "آل اِن ون کسان سپر ایپ",
+    tour8_1_s: "کسان یا زمیندار کی ہر ضرورت ایک بھروسہ مند پلیٹ فارم پر: مشینری، زمین ٹھیکہ، فصل منڈی اور آف لائن بکنگ۔",
+    tour8_2_t: "اپنی بولی: اپنا ریٹ خود لگائیں",
+    tour8_2_s: "نہ زبردستی کا ریٹ، نہ بچولیا۔ فی گھنٹہ یا فی ایکڑ اپنی پیشکش لگائیں اور 40 کلومیٹر کے اندر مالکان سے براہ راست ملیں۔",
+    tour8_3_t: "زمین ٹھیکہ اور اسٹامپ پیپر اقرار نامہ",
+    tour8_3_s: "دو زبانوں کے اسٹامپ پیپر اقرار نامے کے ساتھ محفوظ طریقے سے زمین ٹھیکے پر لیں یا دیں، اور مشینری فیس پر 0.50% اضافی چھوٹ پائیں۔",
+    tour8_4_t: "فصل منڈی: تمام فصلیں اور سبزیاں",
+    tour8_4_s: "گندم، چاول، کپاس یا کوئی بھی سبزی اصل تصویر اور ویڈیو ثبوت کے ساتھ براہ راست تصدیق شدہ خریداروں کو بیچیں۔",
+    tour8_5_t: "مالکان کے لیے 0% لانچ آفر",
+    tour8_5_s: "خالی کھڑے ٹریکٹر اور زمین کو مستقل آمدن بنائیں: پہلی 5 مشینری، 3 فصل اور 1 زمین ڈیل پر 0% کمیشن۔",
+    tour8_6_t: "ایگری والٹ اور سب سے کم 2.5% فیس",
+    tour8_6_s: "صرف 2.5% مشینری فیس، ہر وقت دیکھا جا سکنے والا پیشگی ایگری والٹ، اور کام کی تصویر / ویڈیو ثبوت۔",
+    tour8_7_t: "سادہ فون اور گاؤں کے ایجنٹ کی سہولت",
+    tour8_7_s: "اسمارٹ فون یا انٹرنیٹ نہیں؟ اپنے گاؤں کے ایگری ایجنٹ کے ذریعے بکنگ کریں۔ USSD بکنگ جلد آ رہی ہے۔",
+    tour8_8_t: "6 زبانوں میں AI کسان ہیلپر",
+    tour8_8_s: "اردو، پنجابی، سندھی، پشتو، بلوچی یا انگریزی میں آواز یا لکھ کر کچھ بھی پوچھیں۔",
+    tour_get_started: "شروع کریں",
     crop_sugarcane: "گنا",
     crop_potato: "آلو",
     crop_onion: "پیاز",
@@ -2777,6 +2811,23 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    tour8_1_t: "آل اِن ون کسان سپر ایپ",
+    tour8_1_s: "کسان یا زمیندار دی ہر لوڑ اک بھروسے والے پلیٹ فارم تے: مشینری، زمین ٹھیکہ، فصل منڈی تے آف لائن بکنگ۔",
+    tour8_2_t: "اپنی بولی: اپنا ریٹ آپ لاؤ",
+    tour8_2_s: "نہ دھکے دا ریٹ، نہ وچولا۔ فی گھنٹہ یا فی ایکڑ اپنی پیشکش لاؤ تے 40 کلومیٹر اندر مالکاں نال سدھا ملو۔",
+    tour8_3_t: "زمین ٹھیکہ تے اسٹامپ پیپر اقرار نامہ",
+    tour8_3_s: "دو بولیاں دے اسٹامپ پیپر اقرار نامے نال محفوظ طریقے نال زمین ٹھیکے تے لؤ یا دیو، تے مشینری فیس تے 0.50% ہور چھوٹ لؤ۔",
+    tour8_4_t: "فصل منڈی: ساریاں فصلاں تے سبزیاں",
+    tour8_4_s: "کنک، چول، کپاہ یا کوئی وی سبزی اصلی تصویر تے ویڈیو ثبوت نال سدھی تصدیق شدہ خریداراں نوں ویچو۔",
+    tour8_5_t: "مالکاں لئی 0% لانچ آفر",
+    tour8_5_s: "ویہلے کھلوتے ٹریکٹر تے زمین نوں پکی آمدن بناؤ: پہلیاں 5 مشینری، 3 فصل تے 1 زمین ڈیل تے 0% کمیشن۔",
+    tour8_6_t: "ایگری والٹ تے سب توں گھٹ 2.5% فیس",
+    tour8_6_s: "صرف 2.5% مشینری فیس، ہر ویلے ویکھیا جان والا اگاؤں ایگری والٹ، تے کم دی تصویر / ویڈیو ثبوت۔",
+    tour8_7_t: "سادہ فون تے پنڈ دے ایجنٹ دی سہولت",
+    tour8_7_s: "اسمارٹ فون یا انٹرنیٹ نئیں؟ اپنے پنڈ دے ایگری ایجنٹ راہیں بکنگ کرو۔ USSD بکنگ چھیتی آ رہی اے۔",
+    tour8_8_t: "6 بولیاں وچ AI کسان ہیلپر",
+    tour8_8_s: "اردو، پنجابی، سندھی، پشتو، بلوچی یا انگریزی وچ آواز یا لکھ کے کجھ وی پچھو۔",
+    tour_get_started: "شروع کرو",
     crop_sugarcane: "کماد",
     crop_potato: "آلو",
     crop_onion: "گنڈا",
@@ -3872,6 +3923,23 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    tour8_1_t: "آل اِن ون هاري سپر ايپ",
+    tour8_1_s: "هاري يا زميندار جي هر ضرورت هڪ ڀروسي جوڳي پليٽ فارم تي: مشينري، زمين ٺيڪو، فصل منڊي ۽ آف لائن بڪنگ.",
+    tour8_2_t: "پنهنجي ٻولي: پنهنجو اگهه پاڻ لڳايو",
+    tour8_2_s: "نه زوري اگهه، نه وچولو. في ڪلاڪ يا في ايڪڙ پنهنجي آڇ لڳايو ۽ 40 ڪلوميٽرن اندر مالڪن سان سڌو ملو.",
+    tour8_3_t: "زمين ٺيڪو ۽ اسٽامپ پيپر اقرار نامو",
+    tour8_3_s: "ٻن ٻولين جي اسٽامپ پيپر اقرار نامي سان محفوظ نموني زمين ٺيڪي تي وٺو يا ڏيو، ۽ مشينري فيس تي 0.50% وڌيڪ رعايت حاصل ڪريو.",
+    tour8_4_t: "فصل منڊي: سڀ فصل ۽ ڀاڄيون",
+    tour8_4_s: "ڪڻڪ، چانور، ڪپهه يا ڪا به ڀاڄي اصلي تصوير ۽ وڊيو ثبوت سان سڌو تصديق ٿيل خريدارن کي وڪڻو.",
+    tour8_5_t: "مالڪن لاءِ 0% لانچ آڇ",
+    tour8_5_s: "بيڪار بيٺل ٽريڪٽرن ۽ زمين کي پڪي آمدني بڻايو: پهرين 5 مشينري، 3 فصل ۽ 1 زمين ڊيل تي 0% ڪميشن.",
+    tour8_6_t: "ايگري والٽ ۽ سڀ کان گهٽ 2.5% فيس",
+    tour8_6_s: "رڳو 2.5% مشينري فيس، هر وقت ڏسڻ جوڳو اڳواٽ ايگري والٽ، ۽ ڪم جا تصوير / وڊيو ثبوت.",
+    tour8_7_t: "سادو فون ۽ ڳوٺ جي ايجنٽ جي سهولت",
+    tour8_7_s: "اسمارٽ فون يا انٽرنيٽ ناهي؟ پنهنجي ڳوٺ جي ايگري ايجنٽ ذريعي بڪنگ ڪريو. USSD بڪنگ جلد اچي رهي آهي.",
+    tour8_8_t: "6 ٻولين ۾ AI هاري مددگار",
+    tour8_8_s: "اردو، پنجابي، سنڌي، پشتو، بلوچي يا انگريزي ۾ آواز يا لکي ڪجهه به پڇو.",
+    tour_get_started: "شروع ڪريو",
     crop_sugarcane: "ڪمند",
     crop_potato: "پٽاٽا",
     crop_onion: "بصر",
@@ -4968,6 +5036,23 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    tour8_1_t: "ټول په یو ځای د بزګر سوپر اېپ",
+    tour8_1_s: "د بزګر یا ځمکوال هره اړتیا په یوه باوري پلیټ فارم: ماشینونه، د ځمکې اجاره، د فصل منډۍ او آفلاین بکنګ.",
+    tour8_2_t: "اپني بولي: خپله بیه پخپله وټاکئ",
+    tour8_2_s: "نه زوري بیه، نه منځګړی. فی ساعت یا فی جریب خپل وړاندیز وکړئ او په 40 کیلومترو کې مستقیم له مالکانو سره ووینئ.",
+    tour8_3_t: "د ځمکې اجاره او د سټامپ پاڼې اقرارنامه",
+    tour8_3_s: "په دوه ژبني سټامپ پاڼې اقرارنامې سره ځمکه په خوندي ډول په اجاره واخلئ یا ورکړئ، او د ماشین پر فیس 0.50% اضافي تخفیف ترلاسه کړئ.",
+    tour8_4_t: "فصل منډۍ: ټول فصلونه او سبزیجات",
+    tour8_4_s: "غنم، وريجې، پنبه یا هره سبزي د اصلي انځور او ویډیو ثبوت سره مستقیم تایید شویو پېرودونکو ته وپلورئ.",
+    tour8_5_t: "مالکانو ته 0% د پیل وړاندیز",
+    tour8_5_s: "بېکاره ټراکټورونه او ځمکه په دوامداره عاید بدل کړئ: په لومړیو 5 ماشین، 3 فصل او 1 ځمکې معاملو 0% کمیشن.",
+    tour8_6_t: "اګري والټ او تر ټولو ټیټ 2.5% فیس",
+    tour8_6_s: "یوازې 2.5% د ماشین فیس، هر وخت د کتلو وړ مخکې جمع اګري والټ، او د کار انځور / ویډیو ثبوتونه.",
+    tour8_7_t: "ساده ټیلیفون او د کلي اېجنټ اسانتیا",
+    tour8_7_s: "سمارټ فون یا انټرنېټ نه لرئ؟ د خپل کلي د اګري اېجنټ له لارې بکنګ وکړئ. د USSD بکنګ ژر راځي.",
+    tour8_8_t: "په 6 ژبو کې AI کسان مرستیال",
+    tour8_8_s: "په اردو، پنجابي، سندهي، پښتو، بلوڅي یا انګلیسي کې په غږ یا لیکلو هر څه وپوښتئ.",
+    tour_get_started: "پیل وکړئ",
     crop_sugarcane: "ګنې",
     crop_potato: "کچالو",
     crop_onion: "پیاز",
@@ -5778,6 +5863,23 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    tour8_1_t: "آل اِن ون بزگرءِ سپر ایپ",
+    tour8_1_s: "بزگر یا زمینداریءِ هر لوٹ یک باوریں پلیٹ فارمءَ: مشین، زمین ٹھیکہ، فصلءِ منڈی و آف لائن بکنگ۔",
+    tour8_2_t: "اپنی بولی: وتی نرخءَ وت بلگا",
+    tour8_2_s: "نہ زوریں نرخ، نہ نیامجی۔ هر ساعت یا هر ایکڑءِ وتی پیشکشءَ بکن و 40 کلومیٹرءِ تہا واہنداں گوں راستیں گند۔",
+    tour8_3_t: "زمین ٹھیکہ و اسٹامپ پیپرءِ اقرار نامہ",
+    tour8_3_s: "دو زبانیں اسٹامپ پیپر اقرار نامہءِ همراہا زمینءَ ایمنیءَ گوں ٹھیکہءَ گر یا دئے، و مشین فیسءِ سرا 0.50% گیشیں کمّی بگر۔",
+    tour8_4_t: "فصلءِ منڈی: سجّیں فصل و سبزی",
+    tour8_4_s: "گندم، برنج، کپاس یا هر سبزیءَ راستیں عکس و ویڈیو ثبوتءِ همراہا راستیں تصدیق بوتگیں گرگوکاں بہا کن۔",
+    tour8_5_t: "واہنداں 0% لانچ آفر",
+    tour8_5_s: "بیکاریں ٹریکٹر و زمینءَ برجاہیں آمدن جوڑ کن: اولی 5 مشین، 3 فصل و 1 زمین ڈیلءَ 0% کمیشن۔",
+    tour8_6_t: "ایگری والٹ و کمتریں 2.5% فیس",
+    tour8_6_s: "تہنا 2.5% مشین فیس، هر وہد چارگ بوتگیں پیسرا جمع ایگری والٹ، و کارءِ عکس / ویڈیو ثبوت۔",
+    tour8_7_t: "سادگیں فون و میتگءِ ایجنٹءِ آسانی",
+    tour8_7_s: "سمارٹ فون یا انٹرنیٹ نیست؟ وتی میتگءِ ایگری ایجنٹءِ کمکءَ بکنگ کن۔ USSD بکنگ زوت کئیت۔",
+    tour8_8_t: "6 زبانءَ AI کسان ہیلپر",
+    tour8_8_s: "اردو، پنجابی، سندھی، پشتو، بلوچی یا انگریزیءَ توار یا نبشتہءَ هر چیز جُست کن۔",
+    tour_get_started: "بنگیج کن",
     crop_sugarcane: "کماد",
     crop_potato: "آلو",
     crop_onion: "پیاز",
@@ -7056,7 +7158,7 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
             <Field label={t("loc_village")} htmlFor="loc-vil">
               <input id="loc-vil" value={village} onChange={(e) => setVillage(e.target.value)} placeholder={t("loc_village_ph")} className={inputCls} maxLength={80} />
             </Field>
-            <button type="button" onClick={useGps} className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-forest bg-white px-3 py-2.5 text-sm font-bold text-forest hover:bg-forest/5">
+            <button type="button" onClick={useGps} className="min-h-[44px] inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-forest bg-white px-3 py-2.5 text-sm font-bold text-forest hover:bg-forest/5">
               <LocateFixed className="h-4 w-4" aria-hidden="true" />{t("loc_gps")}
             </button>
             {gps && <p className="rounded-lg bg-gold/15 p-2 text-xs font-semibold text-soil" role="status">{gps}</p>}
@@ -7097,8 +7199,8 @@ function LocationPicker({ t, lang, value: rawValue, onSave, onClose }) {
           )}
         </div>
         <div className="flex flex-wrap justify-end gap-2 border-t border-soil/10 bg-white px-5 py-3">
-          <button type="button" onClick={onClose} className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("cancel")}</button>
-          <button type="button" onClick={save} className="inline-flex items-center gap-2 rounded-xl bg-forest px-5 py-2.5 text-sm font-bold text-ivory"><Check className="h-4 w-4" aria-hidden="true" />{t("loc_save")}</button>
+          <button type="button" onClick={onClose} className="min-h-[44px] rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("cancel")}</button>
+          <button type="button" onClick={save} className="min-h-[44px] inline-flex items-center gap-2 rounded-xl bg-forest px-5 py-2.5 text-sm font-bold text-ivory"><Check className="h-4 w-4" aria-hidden="true" />{t("loc_save")}</button>
         </div>
       </div>
     </div>
@@ -7325,7 +7427,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
   return (
     <>
     <header className="sticky top-0 z-40 w-full max-w-full border-b border-forest/10 bg-white/95 shadow-[0_1px_0_rgba(20,90,50,0.04)] backdrop-blur">
-      <div className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
+      <div className="mx-auto flex w-full max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
         <button onClick={() => setTab("marketplace")} className="flex min-w-0 items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label="Agri-Share home">
           <Logo className="h-9 w-9 shrink-0 sm:h-11 sm:w-11" />
           <span className="min-w-0 text-start">
@@ -7349,7 +7451,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
         </div>
       </div>
       {/* desktop tab bar */}
-      <nav data-nav className="mx-auto hidden max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6 lg:flex" aria-label="Main">
+      <nav data-nav className="mx-auto hidden max-w-6xl items-center gap-1 overflow-x-auto px-4 sm:px-6 lg:flex" aria-label="Main">
         {tabs.map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}
             className={`relative flex items-center gap-1.5 whitespace-nowrap px-3 pb-2.5 pt-1.5 text-sm font-semibold transition ${tab === key ? "text-forest" : "text-soil/80 hover:text-forest"}`}>
@@ -7367,7 +7469,7 @@ function Header({ t, lang, setLang, tab, setTab, pendingCount, activeCount, tabs
     <div className="flex w-full items-center gap-2 border-b border-forest/5 bg-white/80 px-4 py-2 md:hidden">
       <div className="min-w-0 flex-1"><PrefsPill full t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} /></div>
       {onTour && (
-        <button type="button" onClick={onTour} className="inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 py-1.5 text-xs font-bold text-forest shadow-sm transition hover:shadow-md" aria-label={t("tour_btn")} title={t("tour_btn")}>
+        <button type="button" onClick={onTour} className="inline-flex min-h-[44px] shrink-0 items-center gap-1 rounded-full border border-forest/15 bg-white/80 px-2.5 py-1.5 text-xs font-bold text-forest shadow-sm transition hover:shadow-md" aria-label={t("tour_btn")} title={t("tour_btn")}>
           <Compass className="h-4 w-4" aria-hidden="true" /><span className="whitespace-nowrap rtl:leading-[2]">{t("tour_btn_s")}</span>
         </button>
       )}
@@ -7426,7 +7528,7 @@ function Hero({ t, onFind, onList, onLive, onLand, isEnglish, stats }) {
       <div className="pointer-events-none absolute inset-0 opacity-[0.06]" aria-hidden="true" style={{ backgroundImage: "repeating-linear-gradient(-8deg, #FAF8EE 0 2px, transparent 2px 26px)" }} />
       <div className="pointer-events-none absolute -top-32 start-1/3 h-80 w-80 rounded-full bg-leaf/30 blur-3xl" aria-hidden="true" />
       <div className="pointer-events-none absolute -bottom-24 -end-24 h-80 w-80 rounded-full bg-gold/25 blur-3xl" aria-hidden="true" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-14">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-14">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold text-ivory/90 ring-1 ring-ivory/20 backdrop-blur">
             <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-gold" /></span>
@@ -7497,7 +7599,7 @@ function TrustStrip({ t }) {
     [Headphones, t("tr4_t"), t("tr4_s")],
   ];
   return (
-    <div className="relative z-10 mx-auto -mt-8 max-w-7xl px-4 sm:px-6">
+    <div className="relative z-10 mx-auto -mt-8 max-w-6xl px-4 sm:px-6">
       <ul className="grid gap-px overflow-hidden rounded-3xl bg-forest/10 shadow-xl shadow-forest/10 ring-1 ring-forest/10 sm:grid-cols-2 lg:grid-cols-4">
         {items.map(([Icon, title, sub]) => (
           <li key={title} className="flex items-start gap-3 bg-white/95 p-4 backdrop-blur transition hover:bg-white">
@@ -7525,7 +7627,7 @@ const HUB_TILES = [
 ];
 function ServicesHub({ t, setTab }) {
   return (
-    <section aria-labelledby="hub-title" data-tour="hub" className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+    <section aria-labelledby="hub-title" data-tour="hub" className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
       <div className="mb-2.5 flex flex-wrap items-end justify-between gap-x-3 gap-y-1">
         <h2 id="hub-title" className="font-display text-lg font-extrabold text-forest rtl:leading-[2]">{t("hub_title")}</h2>
         <p className="text-xs text-soil/80 rtl:leading-[2]">{t("hub_sub")}</p>
@@ -7647,14 +7749,14 @@ const TOPUP_MIN = 100, TOPUP_MAX = 1000000;
 const walletTxLabel = (t, x) => t({ topup: "aw_tx_topup", booking: "aw_tx_booking", land: "aw_tx_land", crop: "aw_tx_crop" }[x.kind] || "aw_tx_other");
 const topupTone = { pending: "bg-gold/20 text-soil ring-gold/40", credited: "bg-leaf/15 text-forest ring-leaf/30", rejected: "bg-red-50 text-red-700 ring-red-200" };
 
-function AgriWalletCard({ t, wallet, topups = [], need = 0, onTopUp, className = "" }) {
+function AgriWalletCard({ t, wallet, topups = [], need = 0, onTopUp, className = "", ...rest }) {
   const bal = wallet ? Math.round(Number(wallet.balance) || 0) : 0;
   const txns = (wallet && Array.isArray(wallet.txns) ? wallet.txns : []).slice(0, 12);
   const pending = topups.filter((x) => x.status === "pending").sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   const recent = topups.filter((x) => x.status !== "pending").sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 3);
   const low = need > 0 && bal < need;
   return (
-    <div className={`grid gap-4 lg:grid-cols-[1fr_1.2fr] ${className}`}>
+    <div className={`grid scroll-mt-24 gap-4 lg:grid-cols-[1fr_1.2fr] ${className}`} {...rest}>
       <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(150deg,#14532d,#0f3d23_55%,#052e16)] p-5 text-ivory shadow-md">
         <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_35%,rgba(255,255,255,0.12)_48%,transparent_60%)]" aria-hidden="true" />
         <p className="relative flex items-center gap-2 text-sm font-bold text-gold rtl:leading-[2]"><Wallet className="h-4 w-4" aria-hidden="true" />{t("aw_balance")}</p>
@@ -8022,7 +8124,7 @@ function ProofStrip({ t, deal, className = "" }) {
     <div className={`rounded-xl bg-white p-3 ring-1 ring-soil/10 ${className}`}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wide text-forest rtl:leading-[2]"><ShieldCheck className="h-4 w-4 text-leafink" aria-hidden="true" />{t("pf_title")} {list.length ? <span className="rounded-full bg-forest/10 px-1.5 text-[11px]">{list.length}</span> : null}</p>
-        <button type="button" onClick={() => setAdding(true)} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-forest/30 bg-white px-3 text-xs font-bold text-forest hover:bg-forest/5"><Camera className="h-4 w-4" aria-hidden="true" />{t("pf_add")}</button>
+        <button type="button" onClick={() => setAdding(true)} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-forest/30 bg-white px-3 text-xs font-bold text-forest hover:bg-forest/5"><Camera className="h-4 w-4" aria-hidden="true" />{t("pf_add")}</button>
       </div>
       {list.length === 0 ? <p className="mt-2 text-xs text-soil/80 rtl:leading-[2]">{t("pf_none")}</p> : (
         <ul className="no-scrollbar -mx-1 mt-2 flex gap-2 overflow-x-auto px-1 pb-1">
@@ -8223,7 +8325,7 @@ function ReceiptsAdmin({ t, isFounder }) {
               <div className="min-w-0 flex-1">
                 <p className="font-bold text-forest"><span dir="ltr" className="font-mono">{r.dealId}</span> · {t(r.kind === "land" ? "cl_land" : "cl_machine")}</p>
                 <p className="text-xs text-soil/80">{t("ad_rc_from")}: {r.byName || "-"} · <b dir="ltr">{pkr(r.amount || 0)}</b>{r.ref ? <> · <span dir="ltr" className="font-mono">{r.ref}</span></> : null}</p>
-                <label className="mt-2 flex min-h-[40px] cursor-pointer items-center gap-2 text-xs font-bold text-forest">
+                <label className="mt-2 flex min-h-[44px] cursor-pointer items-center gap-2 text-xs font-bold text-forest">
                   <input type="checkbox" checked={r.status === "verified"} disabled={!isFounder} onChange={() => toggle(r)} className="h-5 w-5 accent-[#145A32]" />
                   {t("ad_rc_verify")}
                 </label>
@@ -8348,9 +8450,9 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
           </div>
         </div>
         <div className="no-print sticky bottom-0 flex flex-wrap gap-2 border-t border-soil/10 bg-ivory/95 p-4 backdrop-blur">
-          <button onClick={print} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory transition hover:bg-[#0f4a28]"><Printer className="h-4 w-4" aria-hidden="true" />{t("vo_print")}</button>
-          <button onClick={download} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-forest ring-1 ring-forest/20 transition hover:bg-forest/5"><Download className="h-4 w-4" aria-hidden="true" />{t("vo_download")}</button>
-          <button onClick={onClose} aria-label="Close voucher" className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-bold text-soil ring-1 ring-soil/15 transition hover:bg-white">{t("vo_close")}</button>
+          <button onClick={print} className="min-h-[44px] inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory transition hover:bg-[#0f4a28]"><Printer className="h-4 w-4" aria-hidden="true" />{t("vo_print")}</button>
+          <button onClick={download} className="min-h-[44px] inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-forest ring-1 ring-forest/20 transition hover:bg-forest/5"><Download className="h-4 w-4" aria-hidden="true" />{t("vo_download")}</button>
+          <button onClick={onClose} aria-label="Close voucher" className="min-h-[44px] inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-bold text-soil ring-1 ring-soil/15 transition hover:bg-white">{t("vo_close")}</button>
         </div>
       </div>
     </div>,
@@ -8391,7 +8493,7 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
         </div>
         <div className="flex gap-1 border-b border-soil/10 bg-white/60 px-3 py-2" role="tablist">
           {tabs.map(([k, label, n]) => (
-            <button key={k} role="tab" aria-selected={view === k} onClick={() => setView(k)} className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-bold transition ${view === k ? "bg-forest text-ivory shadow" : "text-soil/80 hover:bg-soil/5"}`}>
+            <button key={k} role="tab" aria-selected={view === k} onClick={() => setView(k)} className={`flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-bold transition ${view === k ? "bg-forest text-ivory shadow" : "text-soil/80 hover:bg-soil/5"}`}>
               {label}<span className={`rounded-full px-1.5 text-[11px] ${view === k ? "bg-ivory/20" : "bg-soil/10"}`}>{n}</span>
             </button>
           ))}
@@ -8527,7 +8629,7 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
   const showConsultant = !!(fallbackProps && fallbackProps.onSendLead && !demoMode && (realInRange === null ? results.length === 0 : realInRange === 0));
 
   return (
-    <section id="market" className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="market-h">
+    <section id="market" className="mx-auto max-w-6xl px-4 py-8 sm:px-6" aria-labelledby="market-h">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <h2 id="market-h" className="font-display text-2xl font-extrabold text-forest">{t("nav_market")}</h2>
         <p className="text-sm font-semibold text-soil/80" aria-live="polite">{results.length === 0 && nearestBeyond.length > 0
@@ -8577,7 +8679,7 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
               <p className="mt-1 text-xs text-soil/80">{t("radius_note")}</p>
             </div>
             <button type="button" onClick={resetAll}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-soil/15 px-3 py-2 text-sm font-semibold text-soil hover:bg-ivory">
+              className="min-h-[44px] inline-flex w-full items-center justify-center gap-2 rounded-xl border border-soil/15 px-3 py-2 text-sm font-semibold text-soil hover:bg-ivory">
               <RotateCcw className="h-4 w-4" aria-hidden="true" />{t("reset")}
             </button>
           </div>
@@ -8597,8 +8699,8 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
               <Search className="h-10 w-10 text-soil/30" aria-hidden="true" />
               <p className="mt-3 max-w-md text-soil/80">{userLoc ? t("loc_far").replace("{km}", radius).replace("{place}", locLabel(userLoc)) : t("no_results")}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <button onClick={resetAll} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
-                {userLoc && <button onClick={onLive} className="inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_live")}</button>}
+                <button onClick={resetAll} className="min-h-[44px] rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
+                {userLoc && <button onClick={onLive} className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_live")}</button>}
               </div>
               {nearestBeyond.length === 0 && country === "PK" && <PopularMachines t={t} onRequest={(c) => onLive(c)} />}
               {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
@@ -8860,7 +8962,7 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
               {errors.ack && <p className="mt-1 text-xs font-medium text-red-700">{errors.ack}</p>}
             </div>
             <div className="flex min-w-0 flex-col-reverse gap-2">
-              <button type="button" onClick={onClose} className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil hover:bg-white">{t("cancel")}</button>
+              <button type="button" onClick={onClose} className="min-h-[44px] rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil hover:bg-white">{t("cancel")}</button>
               <button type="submit" className="flex-wrap inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory hover:bg-[#0f4a28] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2">
                 {offerOn ? <Tag className="h-4 w-4" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}{offerOn ? t("bk_send_offer") : t("bk_submit")} · <span dir="ltr">{payLater ? `${pkr(advance)} ${t("pl_now_short")}` : pkr(q.total)}</span>
               </button>
@@ -8915,7 +9017,7 @@ function FeedbackForm({ t, onSubmit }) {
       </div>
       <label className="sr-only" htmlFor="fb-c">{t("mb_comment")}</label>
       <textarea id="fb-c" rows={2} value={comment} onChange={(e) => setComment(e.target.value)} placeholder={t("mb_comment")} className={inputCls} />
-      <button type="submit" disabled={!rating} className="rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory disabled:opacity-40">{t("mb_feedback")}</button>
+      <button type="submit" disabled={!rating} className="min-h-[44px] rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory disabled:opacity-40">{t("mb_feedback")}</button>
     </form>
   );
 }
@@ -9286,7 +9388,7 @@ function useArchive(uid) {
 
 function ClearBtn({ t, onClick, className = "" }) {
   return (
-    <button type="button" onClick={onClick} className={`inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold text-soil/80 ring-1 ring-soil/15 hover:bg-ivory hover:text-forest ${className}`} title={t("arc_clear_hint")}>
+    <button type="button" onClick={onClick} className={`min-h-[44px] inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold text-soil/80 ring-1 ring-soil/15 hover:bg-ivory hover:text-forest ${className}`} title={t("arc_clear_hint")}>
       <ArchiveIcon className="h-3.5 w-3.5" aria-hidden="true" />{t("arc_clear")}
     </button>
   );
@@ -9387,7 +9489,7 @@ function PendingRequest({ b, t, updateBooking, contact, onClear }) {
           <Field label={t("ow_counter_rate")} htmlFor={"cr-" + b.id}><MoneyInput id={"cr-" + b.id} min={100} step="50" value={cRate} onChange={setCRate} className={inputCls} /></Field>
           {hasTr ? <Field label={t("ow_counter_tr")} htmlFor={"ct-" + b.id}><MoneyInput id={"ct-" + b.id} min={0} step="50" value={cTr} onChange={setCTr} className={inputCls} /></Field> : <span />}
           <div className="flex gap-2">
-            <button type="submit" className="rounded-lg bg-forest px-3 py-2.5 text-sm font-bold text-ivory">{t("ow_send_counter")}</button>
+            <button type="submit" className="min-h-[44px] rounded-lg bg-forest px-3 py-2.5 text-sm font-bold text-ivory">{t("ow_send_counter")}</button>
             <button type="button" onClick={() => setCountering(false)} className="rounded-lg border border-soil/20 px-3 py-2.5 text-sm font-bold text-soil" aria-label={t("cancel")}><X className="h-4 w-4" /></button>
           </div>
         </form>
@@ -9437,13 +9539,13 @@ function OwnerPortal({ wallet = null, walletTopups = [], walletNeed = 0, onTopUp
     { key: "history", label: t("arc_history"), icon: HistoryIcon },
   ];
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="ow-h">
-      <div className="mb-5">
+    <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6" aria-labelledby="ow-h">
+      <div className="mb-5" data-tour="owner-head">
         <h2 id="ow-h" className="font-display text-2xl font-extrabold text-forest">{t("ow_title")}</h2>
         <p className="mt-1 text-sm text-soil/80"><Coins className="me-1.5 inline h-4 w-4 align-[-2px] text-gold" aria-hidden="true" /><span className="font-semibold">{t("hero_owner")}</span><span className="mt-0.5 block">{t("ow_sub")}</span></p>
       </div>
       {session && session.uid && <PromoPill t={t} used={promoUsed} className="mb-4" />}
-      {session && session.uid && <AgriWalletCard t={t} wallet={wallet} topups={walletTopups} need={walletNeed} onTopUp={onTopUp} className="mb-5" />}
+      {session && session.uid && <AgriWalletCard data-tour="wallet" t={t} wallet={wallet} topups={walletTopups} need={walletNeed} onTopUp={onTopUp} className="mb-5" />}
       <div className="relative mb-5">
       <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto scroll-smooth px-4 pe-10 sm:mx-0 sm:px-0 sm:pe-0" role="tablist">
         {subs.map(({ key, label, icon: Icon, badge }) => (
@@ -9721,13 +9823,13 @@ function UssdSimulator({ t, lang = "en", listings, createBooking, updateBooking 
           </div>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2">
-          <button onClick={submit} disabled={phase === "pending"} className="flex items-center justify-center rounded-xl bg-emerald-600 py-2.5 text-white hover:bg-emerald-500 disabled:opacity-40" aria-label="Send / call">
+          <button onClick={submit} disabled={phase === "pending"} className="min-h-[44px] flex items-center justify-center rounded-xl bg-emerald-600 py-2.5 text-white hover:bg-emerald-500 disabled:opacity-40" aria-label="Send / call">
             <PhoneCall className="h-5 w-5" />
           </button>
           <button onClick={() => setInput((s) => s.slice(0, -1))} className="flex items-center justify-center rounded-xl bg-[#3a332e] py-2.5 text-ivory hover:bg-[#4a423c]" aria-label="Delete digit">
             <Delete className="h-5 w-5" />
           </button>
-          <button onClick={reset} className="flex items-center justify-center rounded-xl bg-red-700 py-2.5 text-white hover:bg-red-600" aria-label="End session">
+          <button onClick={reset} className="min-h-[44px] flex items-center justify-center rounded-xl bg-red-700 py-2.5 text-white hover:bg-red-600" aria-label="End session">
             <PhoneOff className="h-5 w-5" />
           </button>
           {keys.map((k) => (
@@ -9771,7 +9873,7 @@ function AgentTab({ t, lang, listings, createBooking, updateBooking, setTab }) {
     { icon: ShieldCheck, title: t("ag4_t"), text: t("ag4_d") },
   ];
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="ag-h">
+    <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6" aria-labelledby="ag-h">
       <div className="mb-6 overflow-hidden rounded-3xl bg-soil text-ivory">
         <div className="grid gap-6 p-6 md:grid-cols-[1fr_auto] md:p-8">
           <div>
@@ -9785,7 +9887,7 @@ function AgentTab({ t, lang, listings, createBooking, updateBooking, setTab }) {
               <p>{t("ag_pilot")}</p>
               <p className="mt-2 text-xs font-semibold text-ivory/80">{t("ag_call")}</p>
               <a href={`tel:${CONSULTANT.primary.tel}`} className="mt-0.5 inline-flex min-h-[44px] items-center gap-1.5 font-mono text-lg font-extrabold text-gold underline-offset-4 hover:underline" dir="ltr"><Phone className="h-4 w-4" aria-hidden="true" />{CONSULTANT.primary.label}</a>
-              <a href={`tel:${CONSULTANT.secondary.tel}`} className="inline-flex min-h-[40px] items-center gap-1.5 font-mono text-base font-bold text-ivory/90 underline-offset-4 hover:underline" dir="ltr"><Phone className="h-4 w-4" aria-hidden="true" />{CONSULTANT.secondary.label}</a>
+              <a href={`tel:${CONSULTANT.secondary.tel}`} className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-base font-bold text-ivory/90 underline-offset-4 hover:underline" dir="ltr"><Phone className="h-4 w-4" aria-hidden="true" />{CONSULTANT.secondary.label}</a>
             </div>
           </div>
         </div>
@@ -11094,7 +11196,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
                   <button type="button" onClick={runDemo} className="inline-flex w-full max-w-[290px] items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-4 text-base font-extrabold text-soil shadow-lg transition active:scale-95" data-demo>
                     <PlayCircle className="h-6 w-6" aria-hidden="true" />{t("vc_demo_btn")}
                   </button>
-                  {voiceEngine !== "none" && <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-1.5 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_again")}</button>}
+                  {voiceEngine !== "none" && <button type="button" onClick={tapToTalk} className="min-h-[44px] inline-flex items-center gap-1.5 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_again")}</button>}
                 </div>
               ) : (
                 <>
@@ -11107,8 +11209,8 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
                   </button>
                   <div className="scale-125 drop-shadow-[0_0_12px_rgba(237,192,74,0.45)]">{phase === "listening" && mrRef.current ? <LevelBars level={level} /> : <VoiceWaves active={phase === "listening" || phase === "speaking" || phase === "thinking" || phase === "sending"} tone={phase === "speaking" ? "speak" : phase === "thinking" || phase === "sending" ? "think" : "listen"} />}</div>
                   <p className="font-display text-2xl font-extrabold" aria-live="assertive" data-phase={phase}>{phaseLabel}</p>
-                  {phase === "listening" && <button type="button" onClick={stopListening} className="rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25">{t("vc_done_speaking")}</button>}
-                  {(phase === "speaking" || phase === "thinking" || phase === "sending") && <button type="button" onClick={interrupt} className="inline-flex items-center gap-2 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_interrupt")}</button>}
+                  {phase === "listening" && <button type="button" onClick={stopListening} className="min-h-[44px] rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25">{t("vc_done_speaking")}</button>}
+                  {(phase === "speaking" || phase === "thinking" || phase === "sending") && <button type="button" onClick={interrupt} className="min-h-[44px] inline-flex items-center gap-2 rounded-full bg-ivory/15 px-4 py-2 text-sm font-bold ring-1 ring-ivory/25"><Mic className="h-4 w-4" aria-hidden="true" />{t("vc_interrupt")}</button>}
                   {(phase === "tap" || phase === "idle") && voiceEngine !== "none" && (
                     <button type="button" onClick={tapToTalk} className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-base font-extrabold text-soil shadow-lg transition active:scale-95"><Mic className="h-5 w-5" aria-hidden="true" />{voiceNoteRaw === "vc_no_speech" || phase === "tap" ? t("vc_again") : t("vc_tap_btn")}</button>
                   )}
@@ -11130,7 +11232,7 @@ AUDIO MODE: the farmer's last message is a voice recording. Listen carefully, wh
                   <PhoneOff className="h-8 w-8" aria-hidden="true" />{t("vc_end")}
                 </button>
               </div>
-              {!voiceErr && <button type="button" onClick={runDemo} disabled={demoRef.current && phase !== "idle"} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-gold underline-offset-2 hover:underline disabled:opacity-40" data-demo><PlayCircle className="h-4 w-4" aria-hidden="true" />{t("vc_demo_btn")}</button>}
+              {!voiceErr && <button type="button" onClick={runDemo} disabled={demoRef.current && phase !== "idle"} className="min-h-[44px] inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-gold underline-offset-2 hover:underline disabled:opacity-40" data-demo><PlayCircle className="h-4 w-4" aria-hidden="true" />{t("vc_demo_btn")}</button>}
             </div>
           )}
           <div ref={listRef} className={`flex-1 space-y-3 overflow-y-auto p-3 ${voiceOpen ? "hidden" : ""}`} aria-live="polite">
@@ -11399,8 +11501,8 @@ function ConsultantCard({ t, lang, request, onSendLead, requireAuth, autoSent })
     <div className="flex items-center justify-between gap-2">
       <span className="min-w-0 truncate font-mono text-xs font-bold text-forest min-[400px]:text-sm" dir="ltr">{num.label}</span>
       <span className="flex shrink-0 items-center gap-1.5">
-      <a href={`tel:${num.tel}`} className={`inline-flex min-h-[40px] items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_call")}</a>
-      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-[40px] items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_wa")}</a>
+      <a href={`tel:${num.tel}`} className={`inline-flex min-h-[44px] items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold ${primary ? "bg-forest text-ivory" : "bg-white text-forest ring-1 ring-forest/30"}`} aria-label={`${t("zc_call")} ${num.label}`}><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_call")}</a>
+      <a href={wa(num.wa)} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-[44px] items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold ${primary ? "bg-[#1E7A45] text-white" : "bg-white text-[#1E7A45] ring-1 ring-[#1E7A45]/40"}`} aria-label={`${t("zc_wa")} ${num.label}`}><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("zc_wa")}</a>
       </span>
     </div>
   );
@@ -11498,7 +11600,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
             ))}
           </div>
           {onExpand && (canExpand
-            ? <button type="button" onClick={onExpand} className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Radar className="h-4 w-4" aria-hidden="true" />{t("zs_a_btn")}</button>
+            ? <button type="button" onClick={onExpand} className="min-h-[44px] mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Radar className="h-4 w-4" aria-hidden="true" />{t("zs_a_btn")}</button>
             : <p className="mt-2 text-xs font-semibold text-soil/80">{t("zs_a_done")}</p>)}
         </ZsCard>
         <ZsCard letter="B" icon={Headphones} title={t("zs_b")} tone="ring-gold/50">
@@ -11510,7 +11612,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
               <label className="min-w-[10rem] flex-1 text-xs font-semibold text-soil">{t("zs_phone")}
                 <input type="tel" inputMode="tel" value={phone} onChange={(e) => { setPhone(e.target.value); setPhoneErr(""); }} placeholder="0300 1234567" dir="ltr" className={inputCls + " mt-1"} aria-invalid={!!phoneErr} />
               </label>
-              <button type="button" onClick={sendAgent} className="inline-flex items-center gap-2 rounded-xl bg-gold px-4 py-2.5 text-sm font-bold text-soil"><PhoneCall className="h-4 w-4" aria-hidden="true" />{t("zs_b_btn")}</button>
+              <button type="button" onClick={sendAgent} className="min-h-[44px] inline-flex items-center gap-2 rounded-xl bg-gold px-4 py-2.5 text-sm font-bold text-soil"><PhoneCall className="h-4 w-4" aria-hidden="true" />{t("zs_b_btn")}</button>
               {phoneErr && <p className="w-full text-xs font-semibold text-red-700" role="alert">{phoneErr}</p>}
             </div>
           )}
@@ -11520,7 +11622,7 @@ function ZeroSupplyFallback({ t, dn, lang = "en", session, requireAuth, saveDema
           {doneC ? (
             <p className="mt-3 flex items-start gap-2 rounded-lg bg-leaf/15 p-2.5 text-xs font-semibold text-forest" role="status"><CircleCheck className="h-4 w-4 shrink-0" aria-hidden="true" />{t("zs_c_done").replace("{id}", doneC.id).replace("{district}", district ? dn(district) : place)}</p>
           ) : (
-            <button type="button" onClick={notify} className="mt-3 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-leafink px-4 py-2.5 text-sm font-bold text-white"><Percent className="h-4 w-4" aria-hidden="true" />{t("zs_c_btn")} · {PRIORITY_DISCOUNT_PCT}%</button>
+            <button type="button" onClick={notify} className="min-h-[44px] mt-3 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-leafink px-4 py-2.5 text-sm font-bold text-white"><Percent className="h-4 w-4" aria-hidden="true" />{t("zs_c_btn")} · {PRIORITY_DISCOUNT_PCT}%</button>
           )}
         </ZsCard>
       </div>
@@ -11558,7 +11660,7 @@ function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast, onCl
         <label className="sr-only" htmlFor={`ofr-${r.id}`}>{t("ow_offer_rate")}</label>
         <MoneyInput id={`ofr-${r.id}`} min={100} step="50" value={rate} onChange={(v) => { setRate(v); setSent(false); }} className={inputCls + " max-w-[9rem] py-1.5"} />
         <span className="text-xs text-soil/80">/hr</span>
-        <button type="button" onClick={send} className={`ms-auto rounded-lg px-3 py-1.5 text-xs font-bold ${sent ? "bg-leaf/15 text-forest" : "bg-forest text-ivory"}`}>{sent ? t("ow_offer_update") : t("ow_offer_send")}</button>
+        <button type="button" onClick={send} className={`min-h-[44px] ms-auto rounded-lg px-3 py-1.5 text-xs font-bold ${sent ? "bg-leaf/15 text-forest" : "bg-forest text-ivory"}`}>{sent ? t("ow_offer_update") : t("ow_offer_send")}</button>
       </div>
     </li>
   );
@@ -11601,7 +11703,7 @@ function WaitingDemand({ t, dn, demand, session, onList, requests = [], myListin
           ))}
         </ul>
       )}
-      {waiting.length > 0 && onList && myListings.length === 0 && <button type="button" onClick={onList} className="mt-3 inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Plus className="h-4 w-4" aria-hidden="true" />{t("ow_waiting_list")}</button>}
+      {waiting.length > 0 && onList && myListings.length === 0 && <button type="button" onClick={onList} className="min-h-[44px] mt-3 inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Plus className="h-4 w-4" aria-hidden="true" />{t("ow_waiting_list")}</button>}
     </div>
   );
 }
@@ -11810,7 +11912,7 @@ function LiveRequest({ promoFor = () => null, fuel = null, initialCat = null, ec
   });
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-44 pt-8 sm:px-6 lg:pb-8" aria-labelledby="lr-h">
+    <section className="mx-auto max-w-6xl px-4 pb-44 pt-8 sm:px-6 lg:pb-8" aria-labelledby="lr-h">
       <div className="mb-6 overflow-hidden rounded-3xl bg-forest text-ivory">
         <div className="grid gap-4 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
@@ -12230,8 +12332,8 @@ function LandAgreementModal({ t, b, dn, onClose }) {
           <div className="mt-4 flex gap-4"><Sign label={`${t("ag_witness1")} / گواہ نمبر 1`} /><Sign label={`${t("ag_witness2")} / گواہ نمبر 2`} /></div>
         </div>
         <div className="no-print flex gap-2 border-t border-soil/10 p-4">
-          <button type="button" onClick={print} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Printer className="h-4 w-4" aria-hidden="true" />{t("ag_print")}</button>
-          <button type="button" onClick={onClose} className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("ag_close")}</button>
+          <button type="button" onClick={print} className="min-h-[44px] inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory"><Printer className="h-4 w-4" aria-hidden="true" />{t("ag_print")}</button>
+          <button type="button" onClick={onClose} className="min-h-[44px] rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil">{t("ag_close")}</button>
         </div>
       </div>
     </div>,
@@ -12412,7 +12514,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   const statusPill = (s) => <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${s === "accepted" ? "bg-leaf/15 text-forest" : s === "declined" ? "bg-red-100 text-red-800" : "bg-gold/25 text-soil"}`}>{t(s === "accepted" ? "ld_accepted" : s === "declined" ? "ld_declined" : "ld_pending")}</span>;
 
   return (
-    <section className={`mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 sm:pb-8 ${rtl ? "leading-[2]" : ""}`} aria-labelledby="ld-h">
+    <section className={`mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 sm:pb-8 ${rtl ? "leading-[2]" : ""}`} aria-labelledby="ld-h">
       <div className="mb-5 overflow-hidden rounded-3xl bg-forest p-6 text-ivory md:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-semibold"><Sprout className="h-3.5 w-3.5 text-gold" aria-hidden="true" />{t("nav_land")}</p>
         <h2 id="ld-h" className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{t("ld_title")}</h2>
@@ -12646,7 +12748,7 @@ const USSD_CODE = "";
 function KeypadBanner({ t, setTab }) {
   const [ivr, setIvr] = useState(false);
   return (
-    <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6" aria-labelledby="kp-h">
+    <section className="mx-auto max-w-6xl px-4 pt-6 sm:px-6" aria-labelledby="kp-h">
       <div className="overflow-hidden rounded-3xl bg-soil text-ivory shadow-lg">
         <div className="grid gap-5 p-5 md:grid-cols-[1fr_auto] md:items-center md:p-6">
           <div className="flex items-start gap-4">
@@ -13036,8 +13138,8 @@ function CropSellerContact({ t, cropId }) {
     <div className="mt-2 rounded-lg bg-leaf/10 p-2 ring-1 ring-leaf/30">
       <p className="text-[11px] font-bold text-forest">{t("am_seller_contact")}: {c.sellerName || ""}</p>
       <div className="mt-1 flex flex-wrap gap-2">
-        <a href={`tel:${c.sellerPhone}`} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-forest/25 bg-white px-2.5 text-xs font-bold text-forest"><Phone className="h-3.5 w-3.5" aria-hidden="true" /><span dir="ltr">{c.sellerPhone}</span></a>
-        {wa && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-[#1E7A45] px-2.5 text-xs font-bold text-white"><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_wa")}</a>}
+        <a href={`tel:${c.sellerPhone}`} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-forest/25 bg-white px-2.5 text-xs font-bold text-forest"><Phone className="h-3.5 w-3.5" aria-hidden="true" /><span dir="ltr">{c.sellerPhone}</span></a>
+        {wa && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg bg-[#1E7A45] px-2.5 text-xs font-bold text-white"><MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />{t("ct_wa")}</a>}
       </div>
     </div>
   );
@@ -13070,7 +13172,7 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
         <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={t("am_crop")}>
           {["all", ...ALL_CROP_KEYS].map((c) => (
             <button key={c} type="button" onClick={() => setCrop(c)} aria-pressed={crop === c}
-              className={`min-h-[40px] rounded-full px-3.5 text-sm font-bold ring-1 ${crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{c === "all" ? t("am_buy_all") : t("crop_" + c)}</button>
+              className={`min-h-[44px] rounded-full px-3.5 text-sm font-bold ring-1 ${crop === c ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{c === "all" ? t("am_buy_all") : t("crop_" + c)}</button>
           ))}
         </div>
       </div>
@@ -13123,7 +13225,7 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
                   <span><span dir="ltr" className="font-mono text-xs">{o.cropId}</span> · {cropName(t, o)} · <b dir="ltr">{pkr(o.rate)}</b>{t("am_per_maund")} × <span dir="ltr">{o.qty}</span> {t("am_mann")}</span>
                   <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${offerStatusTone[o.status] || ""}`}>{t("am_of_" + o.status)}</span>
                 </div>
-                {o.status === "pending" && <button type="button" onClick={() => withdraw(o)} className="mt-2 min-h-[40px] rounded-lg border border-soil/20 px-3 text-xs font-bold text-soil">{t("am_withdraw")}</button>}
+                {o.status === "pending" && <button type="button" onClick={() => withdraw(o)} className="mt-2 min-h-[44px] rounded-lg border border-soil/20 px-3 text-xs font-bold text-soil">{t("am_withdraw")}</button>}
                 {o.status === "accepted" && <CropSellerContact t={t} cropId={o.cropId} />}
               </li>
             ))}
@@ -13141,22 +13243,34 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
 /* Targets are the services-hub tiles, which are visible on phones and */
 /* desktops alike, plus the Kisan Helper button.                        */
 /* ------------------------------------------------------------------ */
-const TOUR_KEY = "agrishare.tour.v1";
-const TOUR_STEPS = ['[data-tour="hub"]', '[data-tour="hub-live-request"]', '[data-tour="hub-land"]', '[data-tour="hub-agri-mandi"]', '[data-tour="hub-owner-portal"]', '[data-tour="helper"]'];
-function GuidedTour({ t, onClose }) {
+const TOUR_KEY = "agrishare.tour.v2"; // v2: the 8-step walkthrough (shown once more to returning visitors)
+// each step: the tab it lives on and the elements to spotlight (first one found wins; none found = centred card)
+const TOUR_STEPS = [
+  { tab: "marketplace", sel: ['[data-tour="hub"]'] },
+  { tab: "marketplace", sel: ['[data-tour="hub-live-request"]'] },
+  { tab: "marketplace", sel: ['[data-tour="hub-land"]'] },
+  { tab: "marketplace", sel: ['[data-tour="hub-agri-mandi"]'] },
+  { tab: "marketplace", sel: ['[data-tour="hub-owner-portal"]'] },
+  { tab: "owner-portal", sel: ['[data-tour="wallet"]', '[data-tour="owner-head"]'] },
+  { tab: "marketplace", sel: ['[data-tour="hub-agri-agent"]'] },
+  { tab: null, sel: ['[data-tour="helper"]'] },
+];
+function GuidedTour({ t, onClose, goTab = () => {} }) {
   const [i, setI] = useState(0);
   const [rect, setRect] = useState(null);
   const [vp, setVp] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
   const nextRef = useRef(null);
   const last = i === TOUR_STEPS.length - 1;
   useEffect(() => {
-    let raf = 0, alive = true;
-    const find = () => document.querySelector(TOUR_STEPS[i]);
-    const el0 = find();
-    if (el0) el0.scrollIntoView({ behavior: "smooth", block: "center" });
+    let raf = 0, alive = true, scrolled = false;
+    const step = TOUR_STEPS[i];
+    if (step.tab) goTab(step.tab);
+    const find = () => { for (const q of step.sel) { const el = document.querySelector(q); if (el && el.getBoundingClientRect().width > 0) return el; } return null; };
     const measure = () => {
       if (!alive) return;
       const el = find();
+      // the target may appear a frame later (after switching tab): scroll to it once it exists
+      if (el && !scrolled) { scrolled = true; el.scrollIntoView({ behavior: "smooth", block: "center" }); }
       const r = el && el.getBoundingClientRect();
       const nr = r && r.width > 0 ? { top: r.top, left: r.left, width: r.width, height: r.height } : null;
       setRect((o) => (o && nr && Math.abs(o.top - nr.top) < 0.5 && Math.abs(o.left - nr.left) < 0.5 && Math.abs(o.width - nr.width) < 0.5 && Math.abs(o.height - nr.height) < 0.5 ? o : nr));
@@ -13197,15 +13311,20 @@ function GuidedTour({ t, onClose }) {
         </span>
       )}
       <div role="dialog" aria-modal="true" aria-labelledby="tour-h" aria-describedby="tour-d" className="fixed rounded-2xl bg-white p-4 shadow-2xl ring-1 ring-forest/10" style={cardStyle}>
-        <p className="text-[11px] font-bold uppercase tracking-wide text-leafink">{t("tour_step").replace("{n}", i + 1).replace("{total}", TOUR_STEPS.length)}</p>
-        <h3 id="tour-h" className="mt-1 font-display text-base font-extrabold text-forest rtl:leading-[2]">{t(`tour_${i + 1}_t`)}</h3>
-        <p id="tour-d" className="mt-1 text-sm leading-snug text-soil rtl:leading-[2]">{t(`tour_${i + 1}_s`)}</p>
-        <div className="mt-3 flex gap-1" aria-hidden="true">{TOUR_STEPS.map((_, n) => <span key={n} className={`h-1.5 flex-1 rounded-full ${n <= i ? "bg-forest" : "bg-soil/15"}`} />)}</div>
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-leafink rtl:leading-[2]">{t("tour_step").replace("{n}", i + 1).replace("{total}", TOUR_STEPS.length)}</p>
+          <span className="rounded-full bg-gold/25 px-2 py-0.5 text-[10px] font-extrabold text-soil" dir="ltr">{Math.round(((i + 1) / TOUR_STEPS.length) * 100)}%</span>
+        </div>
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-soil/10" role="progressbar" aria-valuemin={1} aria-valuemax={TOUR_STEPS.length} aria-valuenow={i + 1} aria-label={t("tour_step").replace("{n}", i + 1).replace("{total}", TOUR_STEPS.length)}>
+          <span className="block h-full rounded-full bg-gradient-to-r from-leaf to-forest transition-all duration-500 ease-out rtl:ms-auto" style={{ width: `${((i + 1) / TOUR_STEPS.length) * 100}%` }} />
+        </div>
+        <h3 id="tour-h" className="mt-2.5 font-display text-base font-extrabold text-forest rtl:leading-[2]">{t(`tour8_${i + 1}_t`)}</h3>
+        <p id="tour-d" className="mt-1 text-sm leading-snug text-soil rtl:leading-[2]">{t(`tour8_${i + 1}_s`)}</p>
         <div className="mt-3 flex items-center justify-between gap-2">
-          <button type="button" onClick={onClose} className="min-h-[40px] rounded-lg px-1 text-xs font-bold text-soil/80 underline-offset-2 hover:underline">{t("tour_skip")}</button>
+          {!last ? <button type="button" onClick={onClose} className="min-h-[44px] rounded-lg px-1 text-xs font-bold text-soil/80 underline-offset-2 hover:underline">{t("tour_skip")}</button> : <span />}
           <div className="flex gap-2">
-            <button type="button" onClick={() => setI((n) => Math.max(0, n - 1))} disabled={i === 0} className="min-h-[40px] rounded-xl px-3 text-sm font-bold text-forest ring-1 ring-forest/25 disabled:opacity-40">{t("tour_back")}</button>
-            <button ref={nextRef} type="button" onClick={() => (last ? onClose() : setI((n) => n + 1))} className="min-h-[40px] rounded-xl bg-forest px-4 text-sm font-bold text-ivory">{t(last ? "tour_finish" : "tour_next")}</button>
+            <button type="button" onClick={() => setI((n) => Math.max(0, n - 1))} disabled={i === 0} className="min-h-[44px] rounded-xl px-3 text-sm font-bold text-forest ring-1 ring-forest/25 disabled:opacity-40">{t("tour_back")}</button>
+            <button ref={nextRef} type="button" onClick={() => (last ? onClose(true) : setI((n) => n + 1))} className={`min-h-[44px] rounded-xl px-4 text-sm font-bold ${last ? "bg-gold text-soil shadow-md" : "bg-forest text-ivory"}`}>{t(last ? "tour_get_started" : "tour_next")}</button>
           </div>
         </div>
       </div>
@@ -13368,7 +13487,7 @@ function AgriMandi({ walletBal = 0, onLowWallet = () => {}, promoUsed = null, t,
   const liveCount = mandiPosts.filter((m) => m.status === "open" && !m.own && m.sellerUid).length;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="am-h">
+    <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6" aria-labelledby="am-h">
       <div className="mb-6 overflow-hidden rounded-3xl bg-gradient-to-br from-[#7a4e2d] to-soil text-ivory">
         <div className="grid gap-4 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
@@ -13595,7 +13714,7 @@ function AgriMandi({ walletBal = 0, onLowWallet = () => {}, promoUsed = null, t,
                 </div>
                 <div className="space-y-2 md:w-56">
                   <p className="text-sm text-soil"><b>{pickedBid.name}</b></p>
-                  {pickedBid.real && pickedBid.offer.buyerPhone && <a href={`tel:${pickedBid.offer.buyerPhone}`} className="flex min-h-[40px] items-center gap-1.5 rounded-lg bg-leaf/10 px-2.5 text-xs font-bold text-forest ring-1 ring-leaf/30"><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("am_buyer_phone")}: <span dir="ltr">{pickedBid.offer.buyerPhone}</span></a>}
+                  {pickedBid.real && pickedBid.offer.buyerPhone && <a href={`tel:${pickedBid.offer.buyerPhone}`} className="flex min-h-[44px] items-center gap-1.5 rounded-lg bg-leaf/10 px-2.5 text-xs font-bold text-forest ring-1 ring-leaf/30"><Phone className="h-3.5 w-3.5" aria-hidden="true" />{t("am_buyer_phone")}: <span dir="ltr">{pickedBid.offer.buyerPhone}</span></a>}
                   <button type="button" onClick={confirmSale} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><BadgeCheck className="h-4 w-4" aria-hidden="true" />{t("am_confirm")}</button>
                   <button type="button" onClick={() => setPicked(null)} className="w-full rounded-xl border border-soil/20 px-4 py-2 text-sm font-bold text-soil">{t("cancel")}</button>
                 </div>
@@ -13765,7 +13884,7 @@ function AdminVerifyEmail({ t, accounts, toast }) {
       {msg && <p className="mt-3 text-sm font-semibold text-red-700" role="alert">{msg}</p>}
       <div className="mt-5 flex flex-col gap-2">
         <button type="button" disabled={busy} onClick={send} className="rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory disabled:opacity-50">{t("adv_send")}</button>
-        <button type="button" disabled={busy} onClick={check} className="rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil disabled:opacity-50">{t("adv_check")}</button>
+        <button type="button" disabled={busy} onClick={check} className="min-h-[44px] rounded-xl border border-soil/20 px-4 py-2.5 text-sm font-bold text-soil disabled:opacity-50">{t("adv_check")}</button>
       </div>
     </AdminShell>
   );
@@ -13930,8 +14049,8 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
         {pw("ads-new2", t("adp_confirm"), nw2, setNw2, "new-password")}
         {err && <p className="text-sm font-semibold text-red-700" role="alert">{err}</p>}
         <div className="flex flex-wrap gap-2">
-          <button type="submit" disabled={!founder || busy || !nw || (enabled && !cur)} className="inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory disabled:opacity-40"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t(enabled ? "ads_change" : "ads_pin_enable")}</button>
-          {enabled && <button type="button" onClick={turnOff} disabled={!founder || busy || !cur} className="rounded-xl border border-red-300 px-4 py-2.5 text-sm font-bold text-red-800 disabled:opacity-40">{t("ads_pin_disable")}</button>}
+          <button type="submit" disabled={!founder || busy || !nw || (enabled && !cur)} className="min-h-[44px] inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-bold text-ivory disabled:opacity-40"><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t(enabled ? "ads_change" : "ads_pin_enable")}</button>
+          {enabled && <button type="button" onClick={turnOff} disabled={!founder || busy || !cur} className="min-h-[44px] rounded-xl border border-red-300 px-4 py-2.5 text-sm font-bold text-red-800 disabled:opacity-40">{t("ads_pin_disable")}</button>}
         </div>
       </form>
       <div className="rounded-2xl border border-soil/10 bg-white p-5 shadow-sm">
@@ -14068,7 +14187,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
   ];
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="ad-h">
+    <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6" aria-labelledby="ad-h">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 id="ad-h" className="flex items-center gap-2 font-display text-2xl font-extrabold text-forest"><ShieldCheck className="h-6 w-6" aria-hidden="true" />{t("ad_title")}</h2>
@@ -14077,7 +14196,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
         <div className="flex flex-wrap items-center gap-2">
           <ModeBadge t={t} demo={demoMode} />
           <CloudBadge t={t} cloud={cloud} detail />
-          {lock && <button onClick={lock} className="inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
+          {lock && <button onClick={lock} className="min-h-[44px] inline-flex items-center gap-2 rounded-xl border border-soil/20 bg-white px-3 py-2 text-sm font-bold text-soil"><Lock className="h-4 w-4" aria-hidden="true" />{t("ad_lock")}</button>}
         </div>
       </div>
       {/* Urgent unmatched farmer leads (no machine within 15-40 km) — founder only */}
@@ -14132,7 +14251,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
                   <span className="block break-words font-bold text-forest">{a.title}</span>
                   <span className="block break-words text-xs text-soil/80">{[a.who, a.where, fmtStamp(a.at)].filter(Boolean).join(" · ")}</span>
                 </span>
-                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") { setLsFilter("unverified"); setFocusLs({ id: a.lsId, n: Date.now() }); } }} className="ms-auto shrink-0 rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
+                <button type="button" onClick={() => { setSub(a.sub); if (a.kind === "listing") { setLsFilter("unverified"); setFocusLs({ id: a.lsId, n: Date.now() }); } }} className="ms-auto min-h-[44px] shrink-0 rounded-lg bg-forest px-4 py-1.5 text-xs font-bold text-ivory">{t("al_view")}</button>
               </li>
             ))}
           </ul>
@@ -14185,7 +14304,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
           <div className="mb-4 flex flex-wrap gap-2">
             {["unverified", "approved", "rejected"].map((s) => (
               <button key={s} onClick={() => setLsFilter(s)} aria-pressed={lsFilter === s}
-                className={`rounded-full px-3 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t(s === "unverified" ? "ls_unverified" : "ls_" + s)} ({counts[s]})</button>
+                className={`min-h-[44px] rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t(s === "unverified" ? "ls_unverified" : "ls_" + s)} ({counts[s]})</button>
             ))}
           </div>
           {shownListings.length === 0 ? <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
@@ -14234,7 +14353,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
         <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-soil/10 p-4">
             <p className="text-sm font-semibold text-soil">{t("ad_kpi_bookings")}: <b>{bookings.length}</b></p>
-            <button onClick={copyLedger} disabled={!bookings.length} className="inline-flex items-center gap-2 rounded-xl border border-forest/20 px-3 py-2 text-sm font-bold text-forest disabled:opacity-40"><Copy className="h-4 w-4" aria-hidden="true" />{t("mem_copy")}</button>
+            <button onClick={copyLedger} disabled={!bookings.length} className="min-h-[44px] inline-flex items-center gap-2 rounded-xl border border-forest/20 px-3 py-2 text-sm font-bold text-forest disabled:opacity-40"><Copy className="h-4 w-4" aria-hidden="true" />{t("mem_copy")}</button>
           </div>
           {sortedBookings.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
             <div className="overflow-x-auto">
@@ -14907,7 +15026,7 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
             <div className="mt-5 grid grid-cols-2 rounded-xl bg-ivory/10 p-1" role="tablist">
               {[["signin", t("auth_signin"), LogIn], ["signup", t("auth_signup"), UserPlus]].map(([k, l, Icon]) => (
                 <button key={k} role="tab" aria-selected={tab === k} onClick={() => switchTab(k)}
-                  className={`flex items-center justify-center gap-2 rounded-lg py-2 text-sm font-bold ${tab === k ? "bg-ivory text-forest" : "text-ivory/80 hover:text-ivory"}`}>
+                  className={`flex min-h-[44px] items-center justify-center gap-2 rounded-lg py-2 text-sm font-bold ${tab === k ? "bg-ivory text-forest" : "text-ivory/80 hover:text-ivory"}`}>
                   <Icon className="h-4 w-4" aria-hidden="true" />{l}
                 </button>
               ))}
@@ -15030,7 +15149,7 @@ function AccountMenu({ t, session, onSignIn, onSignUp, onSignOut }) {
     return (
       <div className="flex items-center gap-1.5">
         <button onClick={onSignIn} aria-label={t("auth_signin")} className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-forest/15 bg-white px-2.5 py-2 text-sm font-bold text-forest hover:bg-forest/5"><LogIn className="h-4 w-4" aria-hidden="true" /><span className="hidden text-xs min-[400px]:inline sm:text-sm">{t("auth_signin")}</span></button>
-        <button onClick={onSignUp} className="hidden items-center gap-1.5 rounded-xl bg-gold px-3 py-2 text-sm font-bold text-soil hover:brightness-105 sm:inline-flex"><UserPlus className="h-4 w-4" aria-hidden="true" />{t("auth_signup")}</button>
+        <button onClick={onSignUp} className="min-h-[44px] hidden items-center gap-1.5 rounded-xl bg-gold px-3 py-2 text-sm font-bold text-soil hover:brightness-105 sm:inline-flex"><UserPlus className="h-4 w-4" aria-hidden="true" />{t("auth_signup")}</button>
       </div>
     );
   }
@@ -15071,13 +15190,13 @@ function MembersAdmin({ t, dn, accounts, toast, embedded }) {
     try { await navigator.clipboard.writeText(csv); toast(t("mem_copied")); } catch (e) { toast("Copy is not allowed here."); }
   };
   return (
-    <section className={embedded ? "" : "mx-auto max-w-7xl px-4 py-8 sm:px-6"} aria-labelledby="mem-h">
+    <section className={embedded ? "" : "mx-auto max-w-6xl px-4 py-8 sm:px-6"} aria-labelledby="mem-h">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 id="mem-h" className="font-display text-2xl font-extrabold text-forest">{t("mem_title")}</h2>
           <p className="mt-1 text-sm text-soil/80">{t("mem_sub")}</p>
         </div>
-        <button onClick={copyCsv} disabled={!list.length} className="inline-flex items-center gap-2 rounded-xl border border-forest/20 bg-white px-3 py-2 text-sm font-bold text-forest disabled:opacity-40"><Copy className="h-4 w-4" aria-hidden="true" />{t("mem_copy")}</button>
+        <button onClick={copyCsv} disabled={!list.length} className="min-h-[44px] inline-flex items-center gap-2 rounded-xl border border-forest/20 bg-white px-3 py-2 text-sm font-bold text-forest disabled:opacity-40"><Copy className="h-4 w-4" aria-hidden="true" />{t("mem_copy")}</button>
       </div>
       <p className={`mb-4 flex items-center gap-2 rounded-xl p-3 text-sm ${accounts.mode === "cloud" ? "bg-leaf/10 text-forest" : "bg-gold/15 text-soil"}`}>
         {accounts.mode === "cloud" ? <ShieldCheck className="h-4 w-4 shrink-0" aria-hidden="true" /> : <Database className="h-4 w-4 shrink-0" aria-hidden="true" />}
@@ -15165,8 +15284,8 @@ function Footer({ t, setTab }) {
   const [info, setInfo] = useState(null);
   const links = [["how", ClipboardList], ["safety", ShieldCheck], ["agent", Handshake]];
   return (
-    <footer className="mt-8 w-full bg-[#4A3219] pb-28 text-ivory lg:pb-12" dir="ltr">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_1.4fr]">
+    <footer className="w-full bg-[#4A3219] pb-[calc(9.5rem+env(safe-area-inset-bottom))] text-ivory lg:pb-12" dir="ltr">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_1.4fr]">
         <div>
           <div className="flex items-center gap-3">
             <span className="rounded-2xl bg-ivory p-1.5"><Logo className="h-12 w-12" /></span>
@@ -15188,7 +15307,7 @@ function Footer({ t, setTab }) {
           </a>
         </nav>
       </div>
-      <div className="mx-auto max-w-7xl px-4 pb-6 text-[11px] leading-relaxed text-ivory/80 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 pb-6 text-[11px] leading-relaxed text-ivory/80 sm:px-6">
         <p className="mb-1 flex items-center gap-1.5 font-bold uppercase tracking-wide text-ivory/75"><Camera className="h-3.5 w-3.5" aria-hidden="true" />Machine photo credits (Wikimedia Commons)</p>
         <p>
           {Object.values(MACHINE_PHOTOS).map((ph, i) => (
@@ -15958,7 +16077,7 @@ function App() {
     <div dir={langMeta.dir} lang={lang} className={`min-h-screen w-full max-w-full overflow-x-clip bg-ivory text-soil ${lang === "ur" || lang === "pa" ? "font-nastaliq" : langMeta.dir === "rtl" ? "font-urdu" : "font-sans"}`}>
       <Header onTour={() => { setHelperOpen(false); setTab("marketplace"); setTourOpen(true); }} t={t} lang={lang} setLang={setLang} country={country} setCountry={setCountry} activityCount={activityCount} onActivity={() => setActivityOpen(true)} tab={showTab} setTab={setTab} pendingCount={pendingCount} activeCount={activeCount} tabs={tabs} adminCount={adminCount}
         account={<AccountMenu t={t} session={session} onSignIn={() => openAuth("signin")} onSignUp={() => openAuth("signup")} onSignOut={signOut} />} />
-      <main id="main" className="w-full">
+      <main id="main" className="w-full max-w-full overflow-x-clip pb-28 sm:pb-12">
         {showTab === "marketplace" && (
           <>
             <Hero t={t} isEnglish={lang === "en"} stats={{ machines: publicListings.length, owners: new Set(publicListings.map((l) => l.ownerId)).size, bookings: bookings.length }} onFind={() => document.getElementById("market") && document.getElementById("market").scrollIntoView({ behavior: "smooth" })} onList={() => setTab("owner-portal", "list")} onLive={() => setTab("live-request")} onLand={() => setTab("land")} />
@@ -15990,7 +16109,7 @@ function App() {
       {auth && <AuthModal t={t} dn={dn} lang={lang} initialTab={auth.tab} reason={auth.reason} accounts={accounts} onClose={() => setAuth(null)} onDone={onAuthDone} />}
       <KisanHelper t={t} lang={lang} listings={publicListings} open={helperOpen} setOpen={setHelperOpen} session={session} dieselPrice={dieselPrice} petrolPrice={country === "PK" && fuel ? fuel.petrol : null} />
       {!helperOpen && <ConsultBar t={t} lang={lang} />}
-      {tourOpen && <GuidedTour t={t} onClose={closeTour} />}
+      {tourOpen && <GuidedTour t={t} onClose={(done) => { closeTour(); if (done === true) setTab("marketplace"); }} goTab={(k) => { if (k !== showTab) setTab(k); }} />}
       {topupOpen && session && session.uid && <TopUpModal t={t} session={session} toast={toast} onClose={() => setTopupOpen(false)} />}
       <BottomNav t={t} adminCount={adminCount} tab={showTab} setTab={setTab} tabs={tabs} activeCount={activeCount} pendingCount={pendingCount} activityCount={activityCount} onActivity={() => setActivityOpen(true)} />
       <ActivityDrawer t={t} dn={dn} open={activityOpen} onClose={() => setActivityOpen(false)} bookings={myBookings} requests={myRequests} deals={myDeals} onVoucher={(id) => { setActivityOpen(false); setVoucherId(id); }} setTab={setTab} />
