@@ -389,6 +389,17 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    wa_share: "Share on WhatsApp",
+    wa_share_req_hint: "Share your request in village WhatsApp groups so more owners see it.",
+    au_id: "Mobile number or email",
+    au_id_ph: "03XX XXXXXXX or name@example.com",
+    au_err_id: "Enter a mobile number (03XX XXXXXXX) or a valid email.",
+    au_err_reset_phone: "Password reset works with email only for now. For a mobile account, call our helpline 0322-4729249.",
+    au_district: "District",
+    au_district_pick: "Choose your district",
+    au_err_district: "Please choose your district.",
+    au_quick_hint: "Takes about 15 seconds. You can add more details later.",
+    au_consent_inline: "By creating an account, you agree that PakAgriShare stores your name, mobile or email and district only to run your account.",
     mk_show_all: "Show all listings across Pakistan",
     mk_show_all_any: "Show all listings nationwide",
     mk_showing_all: "Showing all listings across Pakistan",
@@ -1650,6 +1661,17 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    wa_share: "واٹس ایپ پر شیئر کریں",
+    wa_share_req_hint: "اپنی درخواست گاؤں کے واٹس ایپ گروپس میں شیئر کریں تاکہ زیادہ مالکان دیکھیں۔",
+    au_id: "موبائل نمبر یا ای میل",
+    au_id_ph: "03XX XXXXXXX یا name@example.com",
+    au_err_id: "موبائل نمبر (03XX XXXXXXX) یا درست ای میل لکھیں۔",
+    au_err_reset_phone: "پاس ورڈ ری سیٹ ابھی صرف ای میل سے ہوتا ہے۔ موبائل اکاؤنٹ کے لیے ہماری ہیلپ لائن 0322-4729249 پر کال کریں۔",
+    au_district: "ضلع",
+    au_district_pick: "اپنا ضلع منتخب کریں",
+    au_err_district: "براہ کرم اپنا ضلع منتخب کریں۔",
+    au_quick_hint: "صرف 15 سیکنڈ لگیں گے۔ باقی تفصیل بعد میں شامل کر سکتے ہیں۔",
+    au_consent_inline: "اکاؤنٹ بنا کر آپ متفق ہیں کہ پاک ایگری شیئر آپ کا نام، موبائل یا ای میل اور ضلع صرف آپ کا اکاؤنٹ چلانے کے لیے محفوظ کرے۔",
     mk_show_all: "پورے پاکستان کی تمام لسٹنگز دیکھیں",
     mk_show_all_any: "ملک بھر کی تمام لسٹنگز دیکھیں",
     mk_showing_all: "پورے پاکستان کی تمام لسٹنگز دکھائی جا رہی ہیں",
@@ -2911,6 +2933,17 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    wa_share: "واٹس ایپ تے شیئر کرو",
+    wa_share_req_hint: "اپنی درخواست پنڈ دے واٹس ایپ گروپاں وچ شیئر کرو تاں جو ہور مالک ویکھن۔",
+    au_id: "موبائل نمبر یا ای میل",
+    au_id_ph: "03XX XXXXXXX یا name@example.com",
+    au_err_id: "موبائل نمبر (03XX XXXXXXX) یا ٹھیک ای میل لکھو۔",
+    au_err_reset_phone: "پاس ورڈ ری سیٹ ہلے صرف ای میل نال ہوندا اے۔ موبائل اکاؤنٹ لئی ساڈی ہیلپ لائن 0322-4729249 تے کال کرو۔",
+    au_district: "ضلع",
+    au_district_pick: "اپنا ضلع چنو",
+    au_err_district: "مہربانی کر کے اپنا ضلع چنو۔",
+    au_quick_hint: "بس 15 سیکنڈ لگن گے۔ باقی تفصیل بعد وچ پا سکدے او۔",
+    au_consent_inline: "اکاؤنٹ بنا کے تسیں منّدے او کہ پاک ایگری شیئر تہاڈا ناں، موبائل یا ای میل تے ضلع صرف تہاڈا اکاؤنٹ چلاون لئی رکھے۔",
     mk_show_all: "پورے پاکستان دیاں ساریاں لسٹنگاں ویکھو",
     mk_show_all_any: "سارے ملک دیاں ساریاں لسٹنگاں ویکھو",
     mk_showing_all: "پورے پاکستان دیاں ساریاں لسٹنگاں وکھائیاں جا رہیاں نیں",
@@ -4075,6 +4108,17 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    wa_share: "واٽس ايپ تي شيئر ڪريو",
+    wa_share_req_hint: "پنهنجي درخواست ڳوٺ جي واٽس ايپ گروپن ۾ شيئر ڪريو ته جيئن وڌيڪ مالڪ ڏسن.",
+    au_id: "موبائل نمبر يا اي ميل",
+    au_id_ph: "03XX XXXXXXX يا name@example.com",
+    au_err_id: "موبائل نمبر (03XX XXXXXXX) يا صحيح اي ميل لکو.",
+    au_err_reset_phone: "پاسورڊ ري سيٽ هن وقت صرف اي ميل سان ٿئي ٿو. موبائل اڪائونٽ لاءِ اسان جي هيلپ لائن 0322-4729249 تي ڪال ڪريو.",
+    au_district: "ضلعو",
+    au_district_pick: "پنهنجو ضلعو چونڊيو",
+    au_err_district: "مهرباني ڪري پنهنجو ضلعو چونڊيو.",
+    au_quick_hint: "صرف 15 سيڪنڊ لڳندا. باقي تفصيل پوءِ شامل ڪري سگهو ٿا.",
+    au_consent_inline: "اڪائونٽ ٺاهي توهان متفق آهيو ته پاڪ ايگري شيئر توهان جو نالو، موبائل يا اي ميل ۽ ضلعو صرف توهان جو اڪائونٽ هلائڻ لاءِ رکي.",
     mk_show_all: "سڄي پاڪستان جون سڀ لسٽنگون ڏسو",
     mk_show_all_any: "سڄي ملڪ جون سڀ لسٽنگون ڏسو",
     mk_showing_all: "سڄي پاڪستان جون سڀ لسٽنگون ڏيکاريون پيون وڃن",
@@ -5240,6 +5284,17 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    wa_share: "په واټس اپ شریک کړئ",
+    wa_share_req_hint: "خپله غوښتنه د کلي په واټس اپ ګروپونو کې شریکه کړئ چې ډېر مالکان یې وویني.",
+    au_id: "موبایل نمبر یا برېښنالیک",
+    au_id_ph: "03XX XXXXXXX یا name@example.com",
+    au_err_id: "موبایل نمبر (03XX XXXXXXX) یا سم برېښنالیک ولیکئ.",
+    au_err_reset_phone: "د پټنوم بیا تنظیم اوس یوازې په برېښنالیک کېږي. د موبایل حساب لپاره زموږ مرستندویه کرښې 0322-4729249 ته زنګ ووهئ.",
+    au_district: "ولسوالي",
+    au_district_pick: "خپله ولسوالي وټاکئ",
+    au_err_district: "مهرباني وکړئ خپله ولسوالي وټاکئ.",
+    au_quick_hint: "یوازې ۱۵ ثانیې وخت نیسي. نور جزئیات وروسته اضافه کولی شئ.",
+    au_consent_inline: "د حساب په جوړولو سره تاسو منئ چې پاک ایگری شیئر ستاسو نوم، موبایل یا برېښنالیک او ولسوالي یوازې ستاسو د حساب د چلولو لپاره ساتي.",
     mk_show_all: "د ټول پاکستان ټول لیستونه وګورئ",
     mk_show_all_any: "د ټول هېواد ټول لیستونه وګورئ",
     mk_showing_all: "د ټول پاکستان ټول لیستونه ښودل کېږي",
@@ -6124,6 +6179,17 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    wa_share: "واٹس ایپءَ شیئر کن",
+    wa_share_req_hint: "وتی درخواستءَ میتگءِ واٹس ایپ گروپاں شیئر کن تانکہ گیشتر واہند بگندنت۔",
+    au_id: "موبائل نمبر یا ای میل",
+    au_id_ph: "03XX XXXXXXX یا name@example.com",
+    au_err_id: "موبائل نمبر (03XX XXXXXXX) یا درستیں ای میل بنبیس۔",
+    au_err_reset_phone: "پاس ورڈ ری سیٹ انگت تهنا ای میلءَ گوں بیت۔ موبائل اکاؤنٹءِ واستا مئے ہیلپ لائن 0322-4729249ءَ کال کن۔",
+    au_district: "ضلع",
+    au_district_pick: "وتی ضلعءَ گچین کن",
+    au_err_district: "مہربانی کن، وتی ضلعءَ گچین کن۔",
+    au_quick_hint: "تهنا 15 سیکنڈ لگیت۔ دگہ تفصیل رندا هور کت کنئے۔",
+    au_consent_inline: "اکاؤنٹ جوڑ کنگءَ گوں شما منّئے کہ پاک ایگری شیئر شمئے نام، موبائل یا ای میل و ضلعءَ تهنا شمئے اکاؤنٹ چلائینگءِ واستا داریت۔",
     mk_show_all: "سجّیں پاکستانءِ کُلّیں لسٹنگاں بچار",
     mk_show_all_any: "سجّیں ملکءِ کُلّیں لسٹنگاں بچار",
     mk_showing_all: "سجّیں پاکستانءِ کُلّیں لسٹنگ پیش کنگ بوگ اَنت",
@@ -8922,6 +8988,57 @@ function ActivityDrawer({ t, dn, open, onClose, bookings, requests, deals, onVou
 /* ------------------------------------------------------------------ */
 /* Marketplace                                                         */
 /* ------------------------------------------------------------------ */
+/* One-tap "Share on WhatsApp": a short Urdu + English summary of a listing for village WhatsApp groups.
+   The message is always Urdu + English (what farmers forward); only the button label follows the UI language. */
+const SHARE_URL = "https://agri-share-tau.vercel.app";
+const WA_SHARE = {
+  ur: {
+    machine: "🚜 {title} کرائے کے لیے دستیاب", request: "🙋 کسان کو {title} چاہیے", land: "🌾 زمین ٹھیکے پر: {title}", crop: "🌾 فصل برائے فروخت: {title}",
+    place: "📍 جگہ: {place}", acres: "📐 رقبہ: {acres} ایکڑ", qty: "⚖️ مقدار: {qty} من",
+    rate_hr: "💰 مالک کا مانگا ہوا ریٹ: {rate} روپے فی گھنٹہ (بات چیت ہو سکتی ہے)", rate_offer: "💰 کسان کی اپنی بولی: {rate} روپے فی گھنٹہ، مالکان اپنی آفر بھیجیں",
+    rate_acre: "💰 ٹھیکہ: {rate} روپے فی ایکڑ ماہانہ", rate_total: "💰 کل ٹھیکہ: {rate} روپے", rate_crop: "💰 مانگا ہوا ریٹ: {rate} روپے فی من",
+    promo: "🎉 0% لانچ آفر: کوئی کمیشن نہیں", cta: "پاک ایگری شیئر پر دیکھیں",
+  },
+  en: {
+    machine: "🚜 {title} available for rent", request: "🙋 Farmer needs a {title}", land: "🌾 Land for lease (Zameen Thaika): {title}", crop: "🌾 Crop for sale: {title}",
+    place: "📍 Location: {place}", acres: "📐 Area: {acres} acres", qty: "⚖️ Quantity: {qty} maunds",
+    rate_hr: "💰 Owner's asking rate: Rs {rate}/hr (negotiable)", rate_offer: "💰 Farmer's own offer (Apni Boli): Rs {rate}/hr. Owners, send your offer",
+    rate_acre: "💰 Lease: Rs {rate} per acre per month", rate_total: "💰 Total lease: Rs {rate}", rate_crop: "💰 Asking rate: Rs {rate} per maund",
+    promo: "🎉 0% Launch Offer: no commission", cta: "See it on PakAgriShare",
+  },
+};
+const tIn = (lg) => (k) => (T[lg] && T[lg][k]) || T.en[k] || k;
+const waNum = (n) => Number(n || 0).toLocaleString("en-PK");
+// d: { title: {ur, en}, place, rate, rateKey, acres, qty }
+function waShareText(kind, d) {
+  const block = (lg) => {
+    const W = WA_SHARE[lg];
+    const f = (k, v) => W[k].replace("{title}", v.title || "").replace("{place}", v.place || "").replace("{rate}", waNum(v.rate)).replace("{acres}", v.acres || "").replace("{qty}", waNum(v.qty));
+    const v = { ...d, title: (d.title && d.title[lg]) || "" };
+    return [f(kind, v), d.place && f("place", v), d.acres && f("acres", v), Number(d.qty) > 0 && f("qty", v), Number(d.rate) > 0 && d.rateKey && f(d.rateKey, v), W.promo].filter(Boolean).join("\n");
+  };
+  return `${block("ur")}\n\n${block("en")}\n\n👉 ${WA_SHARE.ur.cta} / ${WA_SHARE.en.cta}:\n${SHARE_URL}`;
+}
+const waShareFor = {
+  machine: (l) => waShareText("machine", { title: { ur: `${tIn("ur")("one_" + l.category)} (${l.name})`, en: l.name }, place: [l.village, l.district].filter(Boolean).join(", "), rate: l.rate, rateKey: "rate_hr" }),
+  request: (r) => waShareText("request", { title: { ur: tIn("ur")("one_" + r.category), en: tIn("en")("one_" + r.category) }, place: r.village || (r.loc && (r.loc.village || r.loc.district)) || r.district || "", rate: r.rate, rateKey: "rate_offer" }),
+  land: (l) => waShareText("land", { title: { ur: l.title || l.village || tIn("ur")("ld_land"), en: l.title || l.village || tIn("en")("ld_land") }, place: landPlace(l), acres: landAcres(l) ? landAcres(l).toFixed(1) : "", rate: l.rate, rateKey: l.rateType === "total" ? "rate_total" : "rate_acre" }),
+  crop: (p) => waShareText("crop", { title: { ur: cropName(tIn("ur"), p), en: cropName(tIn("en"), p) }, place: p.village || locLabel(p.loc) || "", qty: p.qty, rate: p.rate, rateKey: "rate_crop" }),
+};
+function WaShareBtn({ t, text, compact = false, className = "" }) {
+  const href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  if (compact) return (
+    <a href={href} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title={t("wa_share")} aria-label={t("wa_share")}
+      className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#1E7A45] text-white hover:bg-[#17633a] ${className}`}><MessageCircle className="h-4 w-4" aria-hidden="true" /></a>
+  );
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
+      className={`inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl bg-[#1E7A45] px-3 text-sm font-bold text-white transition hover:bg-[#17633a] rtl:leading-[2] ${className}`}>
+      <MessageCircle className="h-4 w-4" aria-hidden="true" />{t("wa_share")}
+    </a>
+  );
+}
+
 function ListingCard({ l, t, dn, lang, onBook }) {
   const opText = l.operator === "included" ? t("op_included") : l.operator === "optional" ? t("op_optional") : t("op_none");
   const trText = l.transport === "included" ? t("tr_included") : l.transport === "optional" ? t("tr_fee").replace("{fee}", pkr(transportFee(l.distance))).replace("{km}", l.distance) : t("tr_self");
@@ -8981,6 +9098,7 @@ function ListingCard({ l, t, dn, lang, onBook }) {
             <HandCoins className="h-4 w-4" aria-hidden="true" />{t("ask_make_offer")}
           </button>
         )}
+        <WaShareBtn t={t} text={waShareFor.machine(l)} className="-mt-1" />
       </div>
     </article>
   );
@@ -12067,6 +12185,7 @@ function OwnerOfferRow({ t, dn, r, session, myListings, saveRequest, toast, onCl
         <MoneyInput id={`ofr-${r.id}`} min={100} step="50" value={rate} onChange={(v) => { setRate(v); setSent(false); }} className={inputCls + " max-w-[9rem] py-1.5"} />
         <span className="text-xs text-soil/80">/hr</span>
         <button type="button" onClick={send} className={`min-h-[44px] ms-auto rounded-lg px-3 py-1.5 text-xs font-bold ${sent ? "bg-leaf/15 text-forest" : "bg-forest text-ivory"}`}>{sent ? t("ow_offer_update") : t("ow_offer_send")}</button>
+        <WaShareBtn t={t} text={waShareFor.request(r)} compact />
       </div>
     </li>
   );
@@ -12396,7 +12515,7 @@ function LiveRequest({ promoFor = () => null, fuel = null, initialCat = null, ec
                 {myRequests.map((r) => (
                   <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
                     <span className="min-w-0 truncate"><span dir="ltr" className="font-mono">{r.id}</span> · {t("one_" + r.category)} · {r.village} · T{r.tierReached || 1}</span>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>
+                    <span className="flex shrink-0 items-center gap-1.5"><span className={`rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>{r.status === "open" && <WaShareBtn t={t} text={waShareFor.request(r)} compact className="h-8 w-8" />}</span>
                   </li>
                 ))}
               </ul>
@@ -12477,7 +12596,7 @@ function LiveRequest({ promoFor = () => null, fuel = null, initialCat = null, ec
                 {myRequests.map((r) => (
                   <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-ivory px-2.5 py-1.5 text-xs">
                     <span className="min-w-0 truncate"><span dir="ltr" className="font-mono">{r.id}</span> · {t("one_" + r.category)} · {r.village} · T{r.tierReached || 1}</span>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>
+                    <span className="flex shrink-0 items-center gap-1.5"><span className={`rounded-full px-2 py-0.5 font-bold ${r.status === "booked" ? "bg-leaf/15 text-forest" : r.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("rq_" + r.status)}</span>{r.status === "open" && <WaShareBtn t={t} text={waShareFor.request(r)} compact className="h-8 w-8" />}</span>
                   </li>
                 ))}
               </ul>
@@ -12509,6 +12628,12 @@ function LiveRequest({ promoFor = () => null, fuel = null, initialCat = null, ec
               <div className="min-w-0">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold text-forest"><Zap className="h-4 w-4 text-gold" aria-hidden="true" />{t("lr_offers")}</p>
                 {!req && <p className="rounded-xl bg-ivory p-4 text-sm text-soil/80">{t("lr_idle_offers")}</p>}
+                {req && !booked && (
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-[#1E7A45]/5 p-3 ring-1 ring-[#1E7A45]/20">
+                    <p className="min-w-0 flex-1 text-xs font-semibold text-soil rtl:leading-[2]">{t("wa_share_req_hint")}</p>
+                    <WaShareBtn t={t} text={waShareFor.request({ ...req, village: req.village || village.village || village.district })} />
+                  </div>
+                )}
                 {!demoMode && reqLoc && realInRange === 0 && offersInTier.length === 0 && sendLead && (
                   <div className="mb-3"><ConsultantCard t={t} lang={lang} request={{ ...(req || f), district: village.district, loc: reqLoc }} onSendLead={sendLead} requireAuth={requireAuth} autoSent={req && autoLeadFor && autoLeadFor.id === req.id ? autoLeadFor : false} /></div>
                 )}
@@ -13019,6 +13144,7 @@ function LandLease({ notifyFounder = () => {}, t, dn, lang, session, requireAuth
                     </div>
                     <p className="mt-2 font-display text-lg font-extrabold text-forest" dir="ltr">{l.rateType === "total" ? pkr(l.rate) : <>{pkr(l.rate)}<span className="text-xs font-semibold text-soil/80"> {t("ld_per_acre_month")}</span></>}</p>
                     <p className="text-xs text-soil/80">{monthsLabel(t, l.months)} · {t("p_" + (l.payment || "advance"))}</p>
+                    {!activeLease(l) && <WaShareBtn t={t} text={waShareFor.land(l)} className="mt-2 w-full sm:w-fit" />}
                     {!l.mine && activeLease(l) ? (
                       <p className="mt-auto pt-3"><span className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl bg-soil/10 px-4 py-2 text-sm font-bold text-soil/80" aria-disabled="true"><CircleCheck className="h-4 w-4" aria-hidden="true" />{t(activeLease(l).status === "accepted" ? "ld_lease_active" : "ld_req_already")}</span></p>
                     ) : <>
@@ -13657,6 +13783,7 @@ function CropBuyerMarket({ t, lang, session, requireAuth, posts, offers, toast }
                       <button type="button" onClick={() => requireAuth(() => setOfferFor(p))} className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-forest px-3 text-sm font-bold text-ivory"><HandCoins className="h-4 w-4" aria-hidden="true" />{t("am_offer")}</button>
                       </>
                     )}
+                    <WaShareBtn t={t} text={waShareFor.crop(p)} className="mt-2 w-full" />
                   </div>
                 </div>
               </li>
@@ -15126,6 +15253,13 @@ async function hashPassword(email, password) {
 }
 const withTimeout = (p, ms, fallback) => Promise.race([p, new Promise((r) => setTimeout(() => r(fallback), ms))]);
 const cleanEmail = (e) => String(e || "").trim().toLowerCase();
+// Quick sign-up: a Pakistani mobile number can be the login ID. It is stored as a private,
+// non-mailable address on our own Vercel host so the normal email/password login keeps working.
+const PHONE_ID_DOMAIN = "phone.agri-share-tau.vercel.app";
+const asPhoneId = (raw) => { const d = String(raw || "").replace(/[\s-]/g, ""); if (/^03\d{9}$/.test(d)) return "92" + d.slice(1); if (/^\+?923\d{9}$/.test(d)) return d.replace("+", ""); return null; };
+// show "03XXXXXXXXX" instead of the internal login ID for mobile accounts
+const shownId = (email, phone) => (String(email || "").endsWith("@" + PHONE_ID_DOMAIN) ? (phone || "0" + String(email).slice(2, 12)) : email || "");
+const idToEmail = (raw) => { const ph = asPhoneId(raw); return ph ? `${ph}@${PHONE_ID_DOMAIN}` : cleanEmail(raw); };
 // 03001234567 / 3001234567 / +923001234567 -> +923001234567 (null if not a Pakistani mobile)
 const toE164PK = (raw) => {
   const d = String(raw || "").replace(/[^\d+]/g, "");
@@ -15473,7 +15607,7 @@ function useAccounts() {
 
 function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone }) {
   const [tab, setTab] = useState(initialTab || "signin");
-  const [f, setF] = useState({ name: "", email: "", phone: "", password: "", password2: "", role: "renter", location: null, consent: false });
+  const [f, setF] = useState({ name: "", email: "", phone: "", password: "", password2: "", role: "renter", location: null, consent: true });
   const [tried, setTried] = useState(false);
   const [busy, setBusy] = useState(false);
   const [serverErr, setServerErr] = useState("");
@@ -15498,18 +15632,17 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
       if (tab === "signup" && f.name.trim().length < 2) e.name = t("au_err_name");
       if (!toE164PK(f.phone)) e.phone = t("err_phone");
       if (otpSent && !/^\d{6}$/.test(otp.trim())) e.otp = t("au_otp_err");
-      if (tab === "signup" && !f.location) e.location = t("loc_err");
-      if (tab === "signup" && !f.consent) e.consent = t("au_err_consent");
+      if (tab === "signup" && !f.location) e.location = t("au_err_district");
       return e;
     }
     if (tab === "signup" && f.name.trim().length < 2) e.name = t("au_err_name");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = t("au_err_email");
-    if (tab === "signup" && f.phone.trim() && !/^03\d{9}$/.test(f.phone.replace(/[\s-]/g, ""))) e.phone = t("err_phone");
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim());
+    if (tab === "reset") { if (!isEmail) e.email = t(asPhoneId(f.email) ? "au_err_reset_phone" : "au_err_email"); }
+    else if (!isEmail && !asPhoneId(f.email)) e.email = t("au_err_id");
     const emailReset = tab === "reset" && accounts.resetByEmail;
     if (!emailReset && f.password.length < 6) e.password = t("au_err_pass");
-    if (!emailReset && tab !== "signin" && f.password !== f.password2) e.password2 = t("au_err_pass2");
-    if (tab === "signup" && !f.location) e.location = t("loc_err");
-    if (tab === "signup" && !f.consent) e.consent = t("au_err_consent");
+    if (!emailReset && tab === "reset" && f.password !== f.password2) e.password2 = t("au_err_pass2");
+    if (tab === "signup" && !f.location) e.location = t("au_err_district");
     return e;
   };
   const errors = tried ? validate() : {};
@@ -15538,8 +15671,9 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
       return;
     }
     try {
-      if (tab === "signup") r = await accounts.signUp({ ...f, phone: f.phone.replace(/[\s-]/g, "") });
-      else if (tab === "signin") r = await accounts.signIn(f.email, f.password);
+      const ph = asPhoneId(f.email);
+      if (tab === "signup") r = await accounts.signUp({ ...f, email: idToEmail(f.email), phone: ph ? "0" + ph.slice(2) : "", consent: true });
+      else if (tab === "signin") r = await accounts.signIn(idToEmail(f.email), f.password);
       else r = await accounts.resetPassword(f.email, f.password);
     } catch (err) { r = { error: "au_err_generic" }; }
     setBusy(false);
@@ -15583,6 +15717,7 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
               ))}
             </div>
           )}
+          {tab === "signup" && <p className="flex items-start gap-1.5 rounded-xl bg-leaf/10 px-3 py-2 text-xs font-semibold text-forest ring-1 ring-leaf/25 rtl:leading-[2]"><Zap className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" aria-hidden="true" />{t("au_quick_hint")}</p>}
           {tab === "signup" && (
             <Field label={t("au_name")} htmlFor="au-name" error={errors.name}>
               <input id="au-name" value={f.name} onChange={set("name")} className={inputCls} autoComplete="name" />
@@ -15603,34 +15738,13 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
             </div>
           )}
           {!(method === "phone" && tab !== "reset") && <>
-          <Field label={t("au_email")} htmlFor="au-email" error={errors.email}>
+          <Field label={tab === "reset" ? t("au_email") : t("au_id")} htmlFor="au-email" error={errors.email}>
             <div className="relative">
-              <Mail className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />
-              <input id="au-email" type="email" dir="ltr" value={f.email} onChange={set("email")} placeholder="name@example.com" className={inputCls + " ps-9"} autoComplete="email" />
+              {tab === "reset" ? <Mail className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" /> : <User className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-soil/80" aria-hidden="true" />}
+              <input id="au-email" type={tab === "reset" ? "email" : "text"} inputMode={tab === "reset" ? "email" : "text"} dir="ltr" value={f.email} onChange={set("email")} placeholder={tab === "reset" ? "name@example.com" : t("au_id_ph")} className={inputCls + " ps-9"} autoComplete={tab === "signin" ? "username" : tab === "reset" ? "email" : "username"} autoCapitalize="none" spellCheck={false} />
             </div>
           </Field>
           </>}
-          {tab === "signup" && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {method !== "phone" && <Field label={t("au_phone")} htmlFor="au-phone" error={errors.phone}>
-                <input id="au-phone" inputMode="tel" dir="ltr" placeholder="03XX XXXXXXX" value={f.phone} onChange={set("phone")} className={inputCls} autoComplete="tel" />
-              </Field>}
-              <div className="sm:col-span-2"><LocationField t={t} lang={lang} id="au-loc" label={t("loc_farm")} value={f.location} onChange={(location) => { setServerErr(""); setF((s) => ({ ...s, location })); }} error={errors.location} /></div>
-            </div>
-          )}
-          {tab === "signup" && (
-            <fieldset>
-              <legend className="mb-2 text-sm font-semibold text-soil">{t("au_role")}</legend>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {[["renter", t("role_renter"), Sprout], ["owner", t("role_owner"), Tractor], ["buyer", t("role_buyer"), Wheat], ["agent", t("role_agent"), Store]].map(([v, l, Icon]) => (
-                  <label key={v} className={`flex cursor-pointer flex-col items-center gap-1 rounded-xl border p-2.5 text-center text-xs font-bold ${f.role === v ? "border-forest bg-forest/5 text-forest" : "border-soil/15 bg-white text-soil"}`}>
-                    <input type="radio" name="role" value={v} checked={f.role === v} onChange={set("role")} className="sr-only" />
-                    <Icon className="h-5 w-5" aria-hidden="true" />{l}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-          )}
           {!(tab === "reset" && accounts.resetByEmail) && !(method === "phone" && tab !== "reset") && <>
           <Field label={tab === "reset" ? t("au_reset_btn") : t("au_pass")} htmlFor="au-pass" error={errors.password}>
             <div className="relative">
@@ -15641,20 +15755,20 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
               </button>
             </div>
           </Field>
-          {tab !== "signin" && (
+          {tab === "reset" && (
             <Field label={t("au_pass2")} htmlFor="au-pass2" error={errors.password2}>
               <input id="au-pass2" type={showPass ? "text" : "password"} dir="ltr" value={f.password2} onChange={set("password2")} className={inputCls} autoComplete="new-password" />
             </Field>
           )}
           </>}
           {tab === "signup" && (
-            <div>
-              <label className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm ${errors.consent ? "border-red-400 bg-red-50" : "border-soil/15 bg-white"}`}>
-                <input type="checkbox" checked={f.consent} onChange={set("consent")} className="mt-0.5 h-4 w-4 shrink-0 accent-forest" />
-                <span className="text-soil">{t("au_consent")}</span>
-              </label>
-              {errors.consent && <p className="mt-1 text-xs font-medium text-red-700">{errors.consent}</p>}
-            </div>
+            <Field label={t("au_district")} htmlFor="au-dist" error={errors.location}>
+              <select id="au-dist" value={f.location ? f.location.district : ""} className={inputCls + " pe-7"}
+                onChange={(e) => { const d = regionsFor(CUR.id).find((x) => x.name === e.target.value); setServerErr(""); setF((s) => ({ ...s, location: d ? { country: CUR.id, province: d.province, district: d.name, village: "", lat: d.lat, lng: d.lng, source: "district" } : null })); }}>
+                <option value="">{t("au_district_pick")}</option>
+                {[...regionsFor(CUR.id)].sort((a, b) => String(dn(a.name)).localeCompare(String(dn(b.name)))).map((d) => <option key={d.name} value={d.name}>{dn(d.name)}</option>)}
+              </select>
+            </Field>
           )}
           {tab === "reset" && <p className="rounded-xl bg-gold/15 p-3 text-xs text-soil">{t(accounts.resetByEmail ? "au_reset_email_note" : "au_reset_note")}</p>}
           {serverErr && <p className="rounded-xl bg-red-50 p-3 text-sm font-semibold text-red-800" role="alert">{serverErr}</p>}
@@ -15668,6 +15782,7 @@ function AuthModal({ t, dn, lang, initialTab, reason, accounts, onClose, onDone 
             {tab === "signup" && <button type="button" onClick={() => switchTab("signin")} className="text-soil/80">{t("au_have")} <b className="text-forest">{t("auth_signin")}</b></button>}
             {tab === "reset" && <button type="button" onClick={() => switchTab("signin")} className="font-semibold text-forest">{t("au_back")}</button>}
           </div>
+          {tab === "signup" && <p className="text-[11px] leading-snug text-soil/80 rtl:leading-[2]">{t("au_consent_inline")}</p>}
           {accounts.mode === "local" && <p className="flex items-center gap-1.5 text-[11px] text-soil/80"><Database className="h-3.5 w-3.5" aria-hidden="true" />{t("au_local_note")}</p>}
         </form>
       </div>
@@ -15702,7 +15817,7 @@ function AccountMenu({ t, session, onSignIn, onSignUp, onSignOut }) {
       {open && (
         <div className="absolute end-0 top-full z-50 mt-2 w-64 rounded-2xl border border-soil/10 bg-white p-3 shadow-xl">
           <p className="font-bold text-forest">{session.name}</p>
-          <p className="truncate text-sm text-soil/80" dir="ltr">{session.email}</p>
+          <p className="truncate text-sm text-soil/80" dir="ltr">{shownId(session.email, session.phone)}</p>
           <p className="mt-1 inline-flex rounded-full bg-leaf/15 px-2 py-0.5 text-xs font-bold text-forest">{t("role_" + session.role)}</p>
           <button onClick={() => { setOpen(false); onSignOut(); }} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-soil/15 px-3 py-2 text-sm font-bold text-soil hover:bg-ivory">
             <LogOut className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />{t("auth_signout")}
@@ -15769,7 +15884,7 @@ function MembersAdmin({ t, dn, accounts, toast, embedded }) {
                 {list.map((m) => (
                   <tr key={m.id} className="hover:bg-ivory/60">
                     <td className="px-4 py-3 font-semibold text-forest">{m.name}</td>
-                    <td className="px-4 py-3" dir="ltr"><a href={`mailto:${m.email}`} className="text-soil underline-offset-2 hover:underline">{m.email}</a></td>
+                    <td className="px-4 py-3" dir="ltr">{String(m.email || "").endsWith("@" + PHONE_ID_DOMAIN) ? <span className="text-soil">{shownId(m.email, m.phone)}</span> : <a href={`mailto:${m.email}`} className="text-soil underline-offset-2 hover:underline">{m.email}</a>}</td>
                     <td className="px-4 py-3" dir="ltr">{m.phone || "·"}</td>
                     <td className="px-4 py-3"><span className="rounded-full bg-leaf/15 px-2 py-0.5 text-xs font-bold text-forest">{t("role_" + m.role)}</span></td>
                     <td className="px-4 py-3">{[m.village, dn(m.district)].filter(Boolean).join(", ")}{m.province ? <span className="block text-[11px] text-soil/80">{provName("en", m.province)}</span> : null}</td>
