@@ -389,6 +389,28 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    lv_verified: "Record Verified by PakAgriShare",
+    lv_requested: "Admin Review Requested",
+    lv_req_label: "Request PakAgriShare Admin Verification & Record Review (Optional)",
+    lv_req_sub: "Your post goes live right away. Tick this if you also want our team to check and verify the record.",
+    lv_req_btn: "Request admin verification (optional)",
+    lv_req_toast: "Verification requested. Our team will review this record. Your post stays live meanwhile.",
+    adm_tab: "Agri-Market Posts",
+    adm_sub: "Live crop posts. They go live instantly; this tab is for oversight, records and support.",
+    adm_payout: "Total payout",
+    adm_founder_only: "Seller contact is visible to the founder only.",
+    adz_tab: "Zameen Thaika",
+    adz_sub: "Live land listings, land wanted posts and lease deals. Records with an admin review request come first.",
+    adz_k_listing: "Land listing",
+    adz_k_request: "Land wanted (Zameen Ki Boli)",
+    adz_k_booking: "Lease deal",
+    adz_tenant: "Tenant",
+    adz_st_live: "Live",
+    adz_mark: "Mark Record Verified",
+    adz_marked: "Record marked verified by PakAgriShare.",
+    al_crop: "New crop post (live)",
+    al_land: "New Zameen Thaika record (live)",
+    al_land_review: "Land record: admin review requested",
     brand_name: "PakAgriShare",
     pub_promo_t: "0% Launch Promo",
     pub_promo_s: "Your first deals are commission free: 5 machinery, 3 crop and 1 land deal.",
@@ -774,7 +796,7 @@ const T = {
     al_title: "New Activity Alerts",
     al_sub: "{n} item(s) need attention",
     al_none: "All caught up. New listings and farmer requests appear here instantly.",
-    al_listing: "New machine awaiting approval",
+    al_listing: "New machine listed (live now)",
     al_request: "Farmer request",
     al_demand: "Waiting demand ticket",
     al_booking: "Booking awaiting owner",
@@ -848,7 +870,7 @@ const T = {
     lr_listed: "Listed rate · owner confirms",
     toast_lr_sent: "Request sent to {owner}. They confirm from their Owner Portal.",
     mode_live: "Live Public Mode",
-    mode_live_d: "Real registered owners only. Only machinery posted and approved via the Owner Portal is shown.",
+    mode_live_d: "Real registered owners only. Machinery posted via the Owner Portal goes live instantly.",
     mode_demo: "Sample Demo Data",
     mode_demo_d: "Adds sample tractors and simulated owner counter-offers for testing every flow.",
     mode_title: "Marketplace mode",
@@ -1204,7 +1226,7 @@ const T = {
     mem_slow: "Records are taking a while to load. They will appear once the connection answers.",
     nav_admin: "Admin Panel",
     ad_title: "Admin Panel",
-    ad_sub: "Verify new machinery, watch bookings and commission, and set platform rates.",
+    ad_sub: "Live oversight: verify machinery records, watch bookings, crop posts and land leases, and support members.",
     ad_lock_title: "Admin access",
     ad_lock_sub: "Enter the admin PIN to open the control panel.",
     ad_pin: "PIN",
@@ -1215,8 +1237,8 @@ const T = {
     ad_ledger: "Bookings & commission",
     ad_settings: "Platform settings",
     ad_requests: "Apni Boli requests",
-    ad_pending: "Pending verification",
-    ad_approve: "Approve",
+    ad_pending: "Live · Not yet verified",
+    ad_approve: "Restore listing",
     ad_reject: "Reject",
     ad_none: "Nothing here yet.",
     ad_submitted: "submitted",
@@ -1248,10 +1270,10 @@ const T = {
     rq_open: "Open",
     rq_booked: "Booked",
     rq_closed: "Closed",
-    ls_pending: "Pending verification",
-    ls_approved: "Approved",
+    ls_pending: "Live · Not yet verified",
+    ls_approved: "Live",
     ls_rejected: "Rejected",
-    toast_approved: "Listing approved. It is now live in the marketplace.",
+    toast_approved: "Listing restored. It is live in the marketplace again.",
     toast_rejected: "Listing rejected.",
     toast_diesel: "Diesel rate updated to {v}/L across the app.",
     toast_demo_reset: "Marketplace data reset.",
@@ -1623,6 +1645,28 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    lv_verified: "پاک ایگری شیئر سے ریکارڈ کی تصدیق شدہ",
+    lv_requested: "ایڈمن جائزے کی درخواست",
+    lv_req_label: "پاک ایگری شیئر ایڈمن تصدیق اور ریکارڈ کا جائزہ (اختیاری)",
+    lv_req_sub: "آپ کی پوسٹ فوراً لائیو ہو جاتی ہے۔ اگر آپ چاہتے ہیں کہ ہماری ٹیم ریکارڈ چیک کر کے تصدیق کرے تو یہ نشان لگائیں۔",
+    lv_req_btn: "ایڈمن تصدیق کی درخواست (اختیاری)",
+    lv_req_toast: "تصدیق کی درخواست بھیج دی گئی۔ ہماری ٹیم یہ ریکارڈ دیکھے گی۔ اس دوران آپ کی پوسٹ لائیو رہے گی۔",
+    adm_tab: "ایگری مارکیٹ پوسٹس",
+    adm_sub: "لائیو فصل پوسٹس۔ یہ فوراً لائیو ہوتی ہیں؛ یہ ٹیب نگرانی، ریکارڈ اور مدد کے لیے ہے۔",
+    adm_payout: "کل ادائیگی",
+    adm_founder_only: "بیچنے والے کا رابطہ صرف بانی کو نظر آتا ہے۔",
+    adz_tab: "زمین ٹھیکہ",
+    adz_sub: "لائیو زمین لسٹنگز، زمین کی طلب اور ٹھیکے کے سودے۔ ایڈمن جائزے کی درخواست والے ریکارڈ پہلے۔",
+    adz_k_listing: "زمین لسٹنگ",
+    adz_k_request: "زمین درکار (زمین کی بولی)",
+    adz_k_booking: "ٹھیکے کا سودا",
+    adz_tenant: "کرایہ دار",
+    adz_st_live: "لائیو",
+    adz_mark: "ریکارڈ کی تصدیق کریں",
+    adz_marked: "ریکارڈ کی پاک ایگری شیئر سے تصدیق ہو گئی۔",
+    al_crop: "نئی فصل پوسٹ (لائیو)",
+    al_land: "نیا زمین ٹھیکہ ریکارڈ (لائیو)",
+    al_land_review: "زمین ریکارڈ: ایڈمن جائزے کی درخواست",
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آفر",
     pub_promo_s: "آپ کی پہلی ڈیلز پر کوئی کمیشن نہیں: 5 مشینری، 3 فصل اور 1 زمین کی ڈیل۔",
@@ -2304,7 +2348,7 @@ const T = {
     mem_slow: "ریکارڈ لوڈ ہونے میں وقت لگ رہا ہے۔",
     nav_admin: "ایڈمن پینل",
     ad_title: "ایڈمن پینل",
-    ad_sub: "نئی مشینری کی تصدیق کریں، بکنگز اور کمیشن دیکھیں اور پلیٹ فارم ریٹ مقرر کریں۔",
+    ad_sub: "لائیو نگرانی: مشینری ریکارڈ کی تصدیق، بکنگ، فصل پوسٹس اور زمین ٹھیکوں پر نظر، اور ممبرز کی مدد۔",
     ad_lock_title: "ایڈمن رسائی",
     ad_lock_sub: "کنٹرول پینل کھولنے کے لیے ایڈمن پن لکھیں۔",
     ad_pin: "پن",
@@ -2315,8 +2359,8 @@ const T = {
     ad_ledger: "بکنگز اور کمیشن",
     ad_settings: "پلیٹ فارم سیٹنگز",
     ad_requests: "اپنی بولی درخواستیں",
-    ad_pending: "تصدیق کی منتظر",
-    ad_approve: "منظور",
+    ad_pending: "لائیو · ابھی تصدیق نہیں ہوئی",
+    ad_approve: "لسٹنگ بحال کریں",
     ad_reject: "مسترد",
     ad_none: "ابھی کچھ نہیں۔",
     ad_submitted: "جمع",
@@ -2348,10 +2392,10 @@ const T = {
     rq_open: "کھلی",
     rq_booked: "بک ہو گئی",
     rq_closed: "بند",
-    ls_pending: "تصدیق کی منتظر",
-    ls_approved: "منظور شدہ",
+    ls_pending: "لائیو · ابھی تصدیق نہیں ہوئی",
+    ls_approved: "لائیو",
     ls_rejected: "مسترد",
-    toast_approved: "فہرست منظور، اب مارکیٹ میں موجود۔",
+    toast_approved: "لسٹنگ بحال ہو گئی۔ یہ دوبارہ مارکیٹ میں لائیو ہے۔",
     toast_rejected: "فہرست مسترد۔",
     toast_diesel: "ڈیزل ریٹ پوری ایپ میں {v} فی لیٹر ہو گیا۔",
     toast_demo_reset: "مارکیٹ ڈیٹا ری سیٹ ہو گیا۔",
@@ -2492,7 +2536,7 @@ const T = {
     dm_contacted: "رابطہ ہو گیا",
     dm_matched: "مل گیا",
     mode_live: "لائیو پبلک موڈ",
-    mode_live_d: "صرف رجسٹرڈ اصل مالکان۔ صرف اونر پورٹل سے آئی اور منظور شدہ مشینیں دکھائی جاتی ہیں۔",
+    mode_live_d: "صرف حقیقی رجسٹرڈ مالکان۔ مالک پورٹل سے درج کی گئی مشینری فوراً لائیو ہو جاتی ہے۔",
     mode_demo: "نمونہ ڈیٹا",
     mode_title: "مارکیٹ موڈ",
     mode_load_demo: "نمونہ ڈیٹا لوڈ کریں",
@@ -2509,7 +2553,7 @@ const T = {
     al_title: "نئی سرگرمی کے الرٹ",
     al_sub: "{n} چیزیں توجہ چاہتی ہیں",
     al_none: "سب نمٹ گیا۔ نئی مشینیں اور کسانوں کی درخواستیں یہاں فوراً آئیں گی۔",
-    al_listing: "نئی مشین منظوری کی منتظر",
+    al_listing: "نئی مشین درج ہوئی (اب لائیو)",
     al_request: "کسان کی درخواست",
     al_demand: "منتظر طلب کا ٹکٹ",
     al_booking: "بکنگ مالک کی منتظر",
@@ -2857,6 +2901,30 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    lv_verified: "پاک ایگری شیئر ولوں ریکارڈ دی تصدیق ہوئی",
+    lv_requested: "ایڈمن جائزے دی درخواست",
+    lv_req_label: "پاک ایگری شیئر ایڈمن تصدیق تے ریکارڈ دا جائزہ (مرضی نال)",
+    lv_req_sub: "تہاڈی پوسٹ فوراً لائیو ہو جاندی اے۔ جے تسیں چاہندے او کہ ساڈی ٹیم ریکارڈ ویکھ کے تصدیق کرے تاں ایہہ نشان لاؤ۔",
+    lv_req_btn: "ایڈمن تصدیق دی درخواست (مرضی نال)",
+    lv_req_toast: "تصدیق دی درخواست گھل دتی گئی۔ ساڈی ٹیم ایہہ ریکارڈ ویکھے گی۔ اینے چر تہاڈی پوسٹ لائیو رہوے گی۔",
+    adm_tab: "ایگری مارکیٹ پوسٹاں",
+    adm_sub: "لائیو فصل پوسٹاں۔ ایہہ فوراً لائیو ہوندیاں نیں؛ ایہہ ٹیب نگرانی، ریکارڈ تے مدد لئی اے۔",
+    adm_payout: "کل ادائیگی",
+    adm_founder_only: "ویچن والے دا رابطہ صرف بانی نوں نظر آندا اے۔",
+    adz_tab: "زمین ٹھیکہ",
+    adz_sub: "لائیو زمین لسٹنگاں، زمین دی منگ تے ٹھیکے دے سودے۔ ایڈمن جائزے دی درخواست والے ریکارڈ پہلاں۔",
+    adz_k_listing: "زمین لسٹنگ",
+    adz_k_request: "زمین چاہیدی (زمین دی بولی)",
+    adz_k_booking: "ٹھیکے دا سودا",
+    adz_tenant: "کرایہ دار",
+    adz_st_live: "لائیو",
+    adz_mark: "ریکارڈ دی تصدیق کرو",
+    adz_marked: "ریکارڈ دی پاک ایگری شیئر ولوں تصدیق ہو گئی۔",
+    al_crop: "نویں فصل پوسٹ (لائیو)",
+    al_land: "نواں زمین ٹھیکہ ریکارڈ (لائیو)",
+    al_land_review: "زمین ریکارڈ: ایڈمن جائزے دی درخواست",
+    al_listing: "نویں مشین درج ہوئی (ہُن لائیو)",
+    mode_live_d: "صرف اصلی رجسٹرڈ مالک۔ مالک پورٹل توں درج کیتی مشینری فوراً لائیو ہو جاندی اے۔",
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آفر",
     pub_promo_s: "تہاڈیاں پہلیاں ڈیلاں تے کوئی کمیشن نہیں: 5 مشینری، 3 فصل تے 1 زمین دی ڈیل۔",
@@ -3539,7 +3607,7 @@ const T = {
     mem_slow: "ریکارڈ لوڈ ہون وچ ویلا لگ رہیا اے۔",
     nav_admin: "ایڈمن پینل",
     ad_title: "ایڈمن پینل",
-    ad_sub: "نویں مشینری دی تصدیق کرو، بکنگاں تے کمیشن ویکھو تے پلیٹ فارم ریٹ رکھو۔",
+    ad_sub: "لائیو نگرانی: مشینری ریکارڈ دی تصدیق، بکنگاں، فصل پوسٹاں تے زمین ٹھیکیاں تے نظر، تے ممبراں دی مدد۔",
     ad_lock_title: "ایڈمن رسائی",
     ad_lock_sub: "کنٹرول پینل کھولن لئی ایڈمن پن لکھو۔",
     ad_pin: "پن",
@@ -3550,8 +3618,8 @@ const T = {
     ad_ledger: "بکنگاں تے کمیشن",
     ad_settings: "پلیٹ فارم سیٹنگاں",
     ad_requests: "اپنی بولی درخواستاں",
-    ad_pending: "تصدیق دی اڈیک",
-    ad_approve: "منظور",
+    ad_pending: "لائیو · ہلے تصدیق نہیں ہوئی",
+    ad_approve: "لسٹنگ بحال کرو",
     ad_reject: "رد",
     ad_none: "ہلے کجھ نئیں۔",
     ad_submitted: "جمع",
@@ -3583,10 +3651,10 @@ const T = {
     rq_open: "کھلی",
     rq_booked: "بک ہو گئی",
     rq_closed: "بند",
-    ls_pending: "تصدیق دی اڈیک",
-    ls_approved: "منظور",
+    ls_pending: "لائیو · ہلے تصدیق نہیں ہوئی",
+    ls_approved: "لائیو",
     ls_rejected: "رد",
-    toast_approved: "لسٹ منظور، ہن منڈی وچ اے۔",
+    toast_approved: "لسٹنگ بحال ہو گئی۔ ایہہ فیر مارکیٹ وچ لائیو اے۔",
     toast_rejected: "لسٹ رد۔",
     toast_diesel: "ڈیزل ریٹ ساری ایپ وچ {v} فی لیٹر ہو گیا۔",
     toast_demo_reset: "منڈی ڈیٹا ری سیٹ ہو گیا۔",
@@ -3992,6 +4060,30 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    lv_verified: "پاک ايگري شيئر طرفان رڪارڊ جي تصديق ٿيل",
+    lv_requested: "ايڊمن جائزي جي درخواست",
+    lv_req_label: "پاک ايگري شيئر ايڊمن تصديق ۽ رڪارڊ جو جائزو (اختياري)",
+    lv_req_sub: "توهان جي پوسٽ فوري لائيو ٿي وڃي ٿي. جيڪڏهن توهان چاهيو ٿا ته اسان جي ٽيم رڪارڊ چڪاسي تصديق ڪري ته هي نشان لڳايو.",
+    lv_req_btn: "ايڊمن تصديق جي درخواست (اختياري)",
+    lv_req_toast: "تصديق جي درخواست موڪلي وئي. اسان جي ٽيم هي رڪارڊ ڏسندي. تيستائين توهان جي پوسٽ لائيو رهندي.",
+    adm_tab: "ايگري مارڪيٽ پوسٽون",
+    adm_sub: "لائيو فصل پوسٽون. اهي فوري لائيو ٿين ٿيون؛ هي ٽيب نگراني، رڪارڊ ۽ مدد لاءِ آهي.",
+    adm_payout: "ڪل ادائيگي",
+    adm_founder_only: "وڪڻندڙ جو رابطو رڳو باني کي نظر اچي ٿو.",
+    adz_tab: "زمين ٺيڪو",
+    adz_sub: "لائيو زمين لسٽنگون، زمين جي گهرج ۽ ٺيڪي جا سودا. ايڊمن جائزي جي درخواست وارا رڪارڊ پهريان.",
+    adz_k_listing: "زمين لسٽنگ",
+    adz_k_request: "زمين گهرجي (زمين جي ٻولي)",
+    adz_k_booking: "ٺيڪي جو سودو",
+    adz_tenant: "ڪرائيدار",
+    adz_st_live: "لائيو",
+    adz_mark: "رڪارڊ جي تصديق ڪريو",
+    adz_marked: "رڪارڊ جي پاک ايگري شيئر طرفان تصديق ٿي وئي.",
+    al_crop: "نئين فصل پوسٽ (لائيو)",
+    al_land: "نئون زمين ٺيڪو رڪارڊ (لائيو)",
+    al_land_review: "زمين رڪارڊ: ايڊمن جائزي جي درخواست",
+    al_listing: "نئين مشين درج ٿي (هاڻي لائيو)",
+    mode_live_d: "رڳو اصلي رجسٽرڊ مالڪ. مالڪ پورٽل تان درج ڪيل مشينري فوري لائيو ٿي وڃي ٿي.",
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آڇ",
     pub_promo_s: "توهان جي پهرين ڊيلن تي ڪو ڪميشن ناهي: 5 مشينري، 3 فصل ۽ 1 زمين جي ڊيل.",
@@ -4674,7 +4766,7 @@ const T = {
     mem_slow: "رڪارڊ لوڊ ٿيڻ ۾ وقت لڳي رهيو آهي۔",
     nav_admin: "ايڊمن پينل",
     ad_title: "ايڊمن پينل",
-    ad_sub: "نئين مشينري جي تصديق ڪريو، بڪنگون ۽ ڪميشن ڏسو ۽ پليٽ فارم اگهه مقرر ڪريو۔",
+    ad_sub: "لائيو نگراني: مشينري رڪارڊ جي تصديق، بڪنگون، فصل پوسٽون ۽ زمين ٺيڪن تي نظر، ۽ ميمبرن جي مدد.",
     ad_lock_title: "ايڊمن رسائي",
     ad_lock_sub: "ڪنٽرول پينل کولڻ لاءِ ايڊمن پن لکو۔",
     ad_pin: "پن",
@@ -4685,8 +4777,8 @@ const T = {
     ad_ledger: "بڪنگون ۽ ڪميشن",
     ad_settings: "پليٽ فارم سيٽنگون",
     ad_requests: "پنهنجي ٻولي درخواستون",
-    ad_pending: "تصديق جي انتظار ۾",
-    ad_approve: "منظور",
+    ad_pending: "لائيو · اڃا تصديق ناهي ٿي",
+    ad_approve: "لسٽنگ بحال ڪريو",
     ad_reject: "رد",
     ad_none: "اڃا ڪجهه ناهي۔",
     ad_submitted: "جمع",
@@ -4718,10 +4810,10 @@ const T = {
     rq_open: "کليل",
     rq_booked: "بڪ ٿي وئي",
     rq_closed: "بند",
-    ls_pending: "تصديق جي انتظار ۾",
-    ls_approved: "منظور",
+    ls_pending: "لائيو · اڃا تصديق ناهي ٿي",
+    ls_approved: "لائيو",
     ls_rejected: "رد",
-    toast_approved: "لسٽ منظور، هاڻي بازار ۾ آهي۔",
+    toast_approved: "لسٽنگ بحال ٿي وئي. هي وري مارڪيٽ ۾ لائيو آهي.",
     toast_rejected: "لسٽ رد۔",
     toast_diesel: "ڊيزل اگهه سڄي ايپ ۾ {v} في ليٽر ٿي ويو۔",
     toast_demo_reset: "مارڪيٽ ڊيٽا ري سيٽ ٿي وئي۔",
@@ -5128,6 +5220,35 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    lv_verified: "د پاک ایګري شېئر لخوا ریکارډ تایید شوی",
+    lv_requested: "د اډمین د بیاکتنې غوښتنه",
+    lv_req_label: "د پاک ایګري شېئر اډمین تایید او د ریکارډ بیاکتنه (اختیاري)",
+    lv_req_sub: "ستاسو پوسټ سمدستي ژوندی کېږي. که غواړئ زموږ ټیم ریکارډ وګوري او تایید یې کړي، دا نښه کړئ.",
+    lv_req_btn: "د اډمین تایید غوښتنه (اختیاري)",
+    lv_req_toast: "د تایید غوښتنه ولېږل شوه. زموږ ټیم به دا ریکارډ وګوري. تر هغه ستاسو پوسټ ژوندی پاتې کېږي.",
+    adm_tab: "د ایګري مارکېټ پوسټونه",
+    adm_sub: "ژوندي فصل پوسټونه. دوی سمدستي ژوندي کېږي؛ دا ټب د څارنې، ریکارډ او مرستې لپاره دی.",
+    adm_payout: "ټول تادیه",
+    adm_founder_only: "د پلورونکي اړیکه یوازې بنسټګر ته ښکاري.",
+    adz_tab: "د ځمکې اجاره",
+    adz_sub: "ژوندي ځمکې لېستونه، د ځمکې غوښتنې او د اجارې معاملې. د اډمین بیاکتنې غوښتنې لرونکي ریکارډونه لومړی.",
+    adz_k_listing: "د ځمکې لېست",
+    adz_k_request: "ځمکه پکار ده (د ځمکې بولي)",
+    adz_k_booking: "د اجارې معامله",
+    adz_tenant: "اجاره دار",
+    adz_st_live: "ژوندی",
+    adz_mark: "ریکارډ تایید کړئ",
+    adz_marked: "ریکارډ د پاک ایګري شېئر لخوا تایید شو.",
+    al_crop: "نوی فصل پوسټ (ژوندی)",
+    al_land: "د ځمکې اجارې نوی ریکارډ (ژوندی)",
+    al_land_review: "د ځمکې ریکارډ: د اډمین بیاکتنې غوښتنه",
+    al_listing: "نوی ماشین ثبت شو (اوس ژوندی)",
+    mode_live_d: "یوازې ریښتیني ثبت شوي مالکان. د مالک پورټال له لارې ثبت شوې ماشینري سمدستي ژوندۍ کېږي.",
+    ad_approve: "لېست بېرته فعال کړئ",
+    toast_approved: "لېست بېرته فعال شو. دا بیا په بازار کې ژوندی دی.",
+    ad_sub: "ژوندۍ څارنه: د ماشینرۍ ریکارډ تایید، بکنګونه، فصل پوسټونه او د ځمکې اجارې څارل، او له غړو سره مرسته.",
+    ls_approved: "ژوندی",
+    ls_pending: "ژوندی · لا تایید شوی نه دی",
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% د پیل وړاندیز",
     pub_promo_s: "ستاسو په لومړیو معاملو کمیشن نشته: 5 ماشینري، 3 فصل او 1 ځمکې معامله.",
@@ -5241,7 +5362,7 @@ const T = {
     promo_note: "په لومړیو 5 ماشین بکنګونو، 3 فصل پلور او 1 ځمکې اجارې 0% پلیټ فارم کمیشن. له هغې وروسته عادي نرخ: ماشین 2.5% (کوچني بزګر 2%)، فصل 3.5%، ځمکه 4.5%.",
     promo_used_up: "ټولې وړیا معاملې وکارول شوې. اوس عادي کمیشن: ماشین 2.5% (کوچني بزګر 2%)، فصل 3.5%، ځمکه 4.5%.",
     al_view: "وګورئ",
-    ad_pending: "د تصدیق په تمه",
+    ad_pending: "ژوندی · لا تایید شوی نه دی",
     tour_btn_s: "لارښود",
     am_own_offer_pill: "دا د بزګر غوښتل شوې بیه ده. خپله بولي ولګوئ، هر مناسب وړاندیز وکړئ",
     reset_done: "فلټرونه او ځای بېرته تنظیم شول",
@@ -5978,6 +6099,35 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    lv_verified: "پاک ایگری شیئرءِ نیمگا ریکارڈ منّتگ بوتگ",
+    lv_requested: "ایڈمنءِ چارگءِ لوٹ",
+    lv_req_label: "پاک ایگری شیئر ایڈمنءِ منّگ و ریکارڈءِ چارگ (وتی واهگ)",
+    lv_req_sub: "شمئے پوسٹ هما دمانا لائیو بیت۔ اگاں لوٹیت که مئے ٹیم ریکارڈءَ بچاریت و بمنّیت، اے نشانءَ بلگائیت۔",
+    lv_req_btn: "ایڈمنءِ منّگءِ لوٹ (وتی واهگ)",
+    lv_req_toast: "منّگءِ لوٹ دیم دیگ بوت۔ مئے ٹیم اے ریکارڈءَ چاریت۔ تان هما وهدا شمئے پوسٹ لائیو انت۔",
+    adm_tab: "ایگری مارکیٹءِ پوسٹ",
+    adm_sub: "لائیو کِشتءِ پوسٹ۔ اے هما دمانا لائیو بنت؛ اے ٹیب چارگ، ریکارڈ و کمکءِ هاترا انت۔",
+    adm_payout: "سجّهیں زرّ",
+    adm_founder_only: "بها کنوکءِ رابطه بس بنیادکارءَ گندگ بیت۔",
+    adz_tab: "زمینءِ ٹھیکه",
+    adz_sub: "لائیو زمینءِ لسٹنگ، زمینءِ لوٹ و ٹھیکهءِ سودا۔ ایڈمنءِ چارگءِ لوٹءِ ریکارڈ اولا۔",
+    adz_k_listing: "زمینءِ لسٹنگ",
+    adz_k_request: "زمین پکار انت (زمینءِ بولی)",
+    adz_k_booking: "ٹھیکهءِ سودا",
+    adz_tenant: "کرایه دار",
+    adz_st_live: "لائیو",
+    adz_mark: "ریکارڈءَ بمنّ",
+    adz_marked: "ریکارڈ پاک ایگری شیئرءِ نیمگا منّتگ بوت۔",
+    al_crop: "نوکیں کِشتءِ پوسٹ (لائیو)",
+    al_land: "نوکیں زمین ٹھیکهءِ ریکارڈ (لائیو)",
+    al_land_review: "زمینءِ ریکارڈ: ایڈمنءِ چارگءِ لوٹ",
+    al_listing: "نوکیں مشین درج بوت (نوں لائیو)",
+    mode_live_d: "بس راستیں رجسٹرڈ واهند۔ مالک پورٹلءَ چه درج بوتگیں مشینری هما دمانا لائیو بیت۔",
+    ad_approve: "لسٹنگءَ پدا بیار",
+    toast_approved: "لسٹنگ پدا آتک۔ اے پدا بازارءَ لائیو انت۔",
+    ad_sub: "لائیو چارگ: مشینری ریکارڈءِ منّگ، بکنگ، کِشتءِ پوسٹ و زمینءِ ٹھیکهءِ چارگ، و ممبرانی کمک۔",
+    ls_approved: "لائیو",
+    ls_pending: "لائیو · انگت منّتگ نه بوتگ",
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آپر",
     pub_promo_s: "شمئے اولی ڈیلانی سرا هچ کمیشن نیست: 5 مشینری، 3 کِشت و 1 زمینءِ ڈیل۔",
@@ -6091,7 +6241,7 @@ const T = {
     promo_note: "اولی 5 مشین بکنگ، 3 فصلءِ بہا و 1 زمین ٹھیکہءَ 0% پلیٹ فارم کمیشن۔ رندا عامیں ریٹ: مشین 2.5% (کسانیں بزگر 2%)، فصل 3.5%، زمین 4.5%۔",
     promo_used_up: "سجّیں مُفتیں لانچ ڈیل کارمرز بوتگ انت۔ نوں عامیں کمیشن: مشین 2.5% (کسانیں بزگر 2%)، فصل 3.5%، زمین 4.5%۔",
     al_view: "بچار",
-    ad_pending: "تصدیقءِ ودارا",
+    ad_pending: "لائیو · انگت منّتگ نه بوتگ",
     tour_btn_s: "رہشونی",
     am_own_offer_pill: "اے بزگرءِ لوٹتگیں ریٹ اِنت۔ وتی بولی بلگائیں، ہر مناسبیں پیشکش بکنیں",
     reset_done: "فلٹر و جاگہ ری سیٹ بوتنت",
@@ -12537,9 +12687,31 @@ function LandAgreementModal({ t, b, dn, onClose }) {
   );
 }
 
+// Zameen Thaika: optional record review by PakAgriShare. Posting never waits for it; the landowner or
+// tenant may ask for it, and the founder marks the record verified from Admin Panel > Zameen Thaika.
+const reviewFields = (on) => (on ? { reviewRequested: true, reviewRequestedAt: Date.now() } : {});
+function LandReviewBadge({ t, rec, className = "" }) {
+  if (!rec) return null;
+  if (rec.recordVerified) return <span className={`inline-flex items-center gap-1 rounded-full bg-leaf/15 px-2 py-0.5 text-[10px] font-bold text-forest ring-1 ring-leaf/30 rtl:leading-[2] ${className}`}><ShieldCheck className="h-3 w-3 shrink-0" aria-hidden="true" />{t("lv_verified")}</span>;
+  if (rec.reviewRequested) return <span className={`inline-flex items-center gap-1 rounded-full bg-gold/25 px-2 py-0.5 text-[10px] font-bold text-soil ring-1 ring-gold/50 rtl:leading-[2] ${className}`}><Hourglass className="h-3 w-3 shrink-0" aria-hidden="true" />{t("lv_requested")}</span>;
+  return null;
+}
+function LandReviewCheck({ t, id, checked, onChange, className = "" }) {
+  return (
+    <label htmlFor={id} className={`flex cursor-pointer items-start gap-2 rounded-xl bg-leaf/10 p-3 text-sm ring-1 ring-leaf/30 ${className}`}>
+      <input id={id} type="checkbox" checked={!!checked} onChange={(e) => onChange(e.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-forest" />
+      <span><span className="font-bold text-forest rtl:leading-[2]">{t("lv_req_label")}</span><span className="mt-0.5 block text-xs text-soil/80 rtl:leading-[2]">{t("lv_req_sub")}</span></span>
+    </label>
+  );
+}
+function LandReviewBtn({ t, rec, onRequest }) {
+  if (rec.reviewRequested || rec.recordVerified) return <LandReviewBadge t={t} rec={rec} />;
+  return <button type="button" onClick={onRequest} className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-leaf/50 bg-white px-2.5 py-1.5 text-xs font-bold text-forest hover:bg-leaf/10 rtl:leading-[2]"><ShieldCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{t("lv_req_btn")}</button>;
+}
+
 function LandForm({ t, lang, session, onCreate }) {
   const sessLoc = session && session.location ? session.location : null;
-  const blank = { title: "", loc: sessLoc, tehsil: "", areaUnit: "acre", areaInput: 5, water: "canal", soil: "loam", road: "paved", months: 6, rateType: "perAcreMonth", rate: 8000, payment: "advance", featured: false, ownerPhone: (session && session.phone) || "" };
+  const blank = { title: "", loc: sessLoc, tehsil: "", areaUnit: "acre", areaInput: 5, water: "canal", soil: "loam", road: "paved", months: 6, rateType: "perAcreMonth", rate: 8000, payment: "advance", featured: false, reviewRequested: false, ownerPhone: (session && session.phone) || "" };
   const [f, setF] = useState(blank);
   const [errs, setErrs] = useState({});
   const set = (k, v) => { setF((s) => ({ ...s, [k]: v })); setErrs((e) => ({ ...e, [k]: undefined })); };
@@ -12581,13 +12753,14 @@ function LandForm({ t, lang, session, onCreate }) {
         <input type="checkbox" checked={f.featured} onChange={(e) => set("featured", e.target.checked)} className="mt-1 h-4 w-4 accent-forest" />
         <span><span className="font-bold text-forest">{t("ld_featured")}</span>{f.featured && <span className="mt-0.5 block text-xs text-soil/80">{t("ld_featured_note").replace("{fee}", pkr(Math.round(LAND_BOOST_PER_ACRE * acres)))}</span>}</span>
       </label>
+      <LandReviewCheck t={t} id="ld-review" checked={f.reviewRequested} onChange={(v) => set("reviewRequested", v)} className="sm:col-span-2" />
       <div className="sm:col-span-2"><p className="mb-1 text-sm font-semibold text-soil" dir="ltr"><span dir="auto">{t("ld_total_value")}</span>: <b className="text-forest">{pkr(total)}</b></p><CommissionCard t={t} total={total} /></div>
       <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory sm:col-span-2"><Plus className="h-4 w-4" aria-hidden="true" />{t("ld_submit")}</button>
     </form>
   );
 }
 
-function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landListings, landRequests, landBookings, setLandListings, saveLandRequest, saveLandBooking, sendLead, ecoActive, archive }) {
+function LandLease({ notifyFounder = () => {}, t, dn, lang, session, requireAuth, toast, userLoc, landListings, landRequests, landBookings, setLandListings, saveLandRequest, saveLandBooking, sendLead, ecoActive, archive }) {
   const [sub, setSub] = useState("find");
   const [agreement, setAgreement] = useState(null);
   const [contactShown, setContactShown] = useState({});
@@ -12611,6 +12784,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   const [reqStart, setReqStart] = useState(addDaysISO(7));
   const [reqMonths, setReqMonths] = useState(6);
   const [reqSent, setReqSent] = useState({});
+  const [reqReview, setReqReview] = useState(false);
   // one active request per farmer per land: pending or accepted blocks a second request
   const activeLease = (l) => (uid ? landBookings.find((b) => b.listingId === l.id && b.tenantUid === uid && (b.status === "pending" || b.status === "accepted")) : null);
   const sendLeaseRequest = (l) => requireAuth(() => {
@@ -12622,8 +12796,11 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
       village: (l.village && l.village !== l.title ? l.village : "") || l.district || "", tehsil: l.tehsil || "", district: l.district || "", acres: landAcres(l), water: l.water, soil: l.soil,
       ownerDistrict: l.ownerDistrict || l.district || "", tenantDistrict: (session.location && session.location.district) || "",
       months, startDate: reqStart, endDate: addMonthsISO(reqStart, months), total: landTotal(l, months), payment: l.payment || "advance", country: CUR.id,
+      ...reviewFields(reqReview),
     };
     saveLandBooking(b);
+    notifyFounder({ kind: "land", what: "Lease request", id: b.id, district: b.district, village: b.village, qty: b.acres, total: b.total, review: reqReview });
+    setReqReview(false);
     // tenant contact is private; the land owner is the counterparty who may read it
     writeDoc(COL.landReqContacts, b.id, { requestId: b.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: l.ownerUid || "", createdAt: Date.now() }).catch((e) => console.warn("[PakAgriShare] Land contact not saved:", e && e.code));
     setReqFor(null);
@@ -12632,15 +12809,17 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   });
 
   // ---------- Zameen Ki Boli (land demand) ----------
-  const [bf, setBf] = useState({ loc: userLoc || (session && session.location) || null, acres: 5, water: "any", months: 6, budget: 8000 });
+  const [bf, setBf] = useState({ loc: userLoc || (session && session.location) || null, acres: 5, water: "any", months: 6, budget: 8000, reviewRequested: false });
   const [boliErr, setBoliErr] = useState("");
   const postBoli = (e) => {
     e.preventDefault();
     if (!bf.loc) { setBoliErr(t("loc_err")); return; }
     requireAuth(() => {
       const near = landListings.filter((l) => (l.status || "approved") === "approved" && kmToListing(bf.loc, l) <= MATCH_RADIUS_KM);
-      const r = { id: "LR-" + Date.now().toString(36).toUpperCase(), renterUid: session.uid, renterName: session.name || "", village: locLabel(bf.loc), district: bf.loc.district || "", loc: bf.loc, acres: Number(bf.acres) || 1, water: bf.water, months: Number(bf.months) || 1, budget: Number(bf.budget) || 0, status: "open", createdAt: Date.now(), country: CUR.id, matchedOwnerUids: [...new Set(near.map((l) => l.ownerUid).filter(Boolean))], offers: [] };
+      const r = { id: "LR-" + Date.now().toString(36).toUpperCase(), renterUid: session.uid, renterName: session.name || "", village: locLabel(bf.loc), district: bf.loc.district || "", loc: bf.loc, acres: Number(bf.acres) || 1, water: bf.water, months: Number(bf.months) || 1, budget: Number(bf.budget) || 0, status: "open", createdAt: Date.now(), country: CUR.id, matchedOwnerUids: [...new Set(near.map((l) => l.ownerUid).filter(Boolean))], offers: [], ...reviewFields(bf.reviewRequested) };
       saveLandRequest(r);
+      notifyFounder({ kind: "land", what: "Zameen Ki Boli (land wanted)", id: r.id, district: r.district, village: r.village, qty: r.acres, rate: r.budget, review: bf.reviewRequested });
+      setBf((s) => ({ ...s, reviewRequested: false }));
       writeDoc(COL.landReqContacts, r.id, { requestId: r.id, renterUid: session.uid, renterName: session.name || "", renterEmail: session.email || "", renterPhone: session.phone || "", acceptedUid: "", createdAt: Date.now() }).catch((e2) => console.warn("[PakAgriShare] Land demand contact not saved:", e2 && e2.code));
       if (!near.length && sendLead) sendLead({ category: "land", district: bf.loc.district, village: locLabel(bf.loc), hours: null, rate: r.budget, requestId: r.id }, true).catch(() => {});
       toast(t("ld_boli_posted"), { title: t("ld_tab_boli") });
@@ -12687,6 +12866,14 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
   const landHist = landHistItems(t, dn, uid, landBookings, landRequests, cl);
   const myDemand = landRequests.filter((r) => uid && r.renterUid === uid);
   const decide = (b, status) => saveLandBooking({ id: b.id, status, ...(status === "accepted" ? { acceptedAt: Date.now() } : {}) });
+  // optional record review, asked later from My land (listing, land wanted post or lease deal)
+  const askReview = (kind, rec) => {
+    if (kind === "listing") setLandListings((ls) => ls.map((l) => (l.id === rec.id ? { ...l, ...reviewFields(true) } : l)));
+    else if (kind === "request") saveLandRequest({ id: rec.id, ...reviewFields(true) });
+    else saveLandBooking({ id: rec.id, ...reviewFields(true) });
+    notifyFounder({ kind: "land_review", what: { listing: "Land listing", request: "Zameen Ki Boli", booking: "Lease deal" }[kind], id: rec.id, district: rec.district, village: rec.village || rec.title, qty: rec.acres, total: rec.total, review: true });
+    toast(t("lv_req_toast"), { title: t("nav_land") });
+  };
   // owner: once a lease is accepted, let that tenant read the owner's private contact
   useEffect(() => {
     if (!uid) return;
@@ -12762,6 +12949,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${l.isVerified ? "bg-leaf/15 text-forest" : "bg-gold/25 text-soil"}`}>{t(l.isVerified ? "ls_verified" : "ls_unverified")}</span>
                       </span>
                     </div>
+                    {(l.recordVerified || l.reviewRequested) && <LandReviewBadge t={t} rec={l} className="mt-1 self-start" />}
                     <p className="text-xs text-soil/80">{landPlace(l, dn)}{l.km != null ? <span dir="ltr"> · {Math.round(l.km)} km</span> : null}</p>
                     <div className="mt-2 flex flex-wrap gap-1.5 text-[11px] font-semibold">
                       <span className="rounded-full bg-ivory px-2 py-0.5 ring-1 ring-soil/10" dir="ltr">{landAcres(l).toFixed(1)} <span dir="auto">{t("ld_acres")}</span></span>
@@ -12783,6 +12971,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                         </div>
                         <p className="text-sm" dir="ltr"><span dir="auto">{t("ld_total_value")}</span>: <b>{pkr(landTotal(l, reqMonths))}</b></p>
                         <CommissionCard t={t} total={landTotal(l, reqMonths)} />
+                        <LandReviewCheck t={t} id={`ldv-${l.id}`} checked={reqReview} onChange={setReqReview} />
                         <button type="button" onClick={() => sendLeaseRequest(l)} className="w-full rounded-lg bg-forest px-3 py-2 text-sm font-bold text-ivory">{t("ld_send_req")}</button>
                       </div>
                     ) : <button type="button" onClick={() => { setReqFor(l.id); setReqMonths(Number(l.months) || 6); }} className="mt-auto pt-3"><span className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory"><Handshake className="h-4 w-4" aria-hidden="true" />{t("ld_request")}</span></button>)}
@@ -12798,8 +12987,10 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
       {sub === "list" && <LandForm t={t} lang={lang} session={session} onCreate={(f) => requireAuth(() => {
         const id = "LL-" + Date.now().toString(36).toUpperCase();
         const { ownerPhone, loc, areaInput, ...rest } = f;
-        const l = { ...rest, areaInput: Number(areaInput), id, ownerUid: session.uid, ownerName: session.name || "", village: (loc && loc.village) || "", ownerDistrict: (session.location && session.location.district) || loc.district || "", district: loc.district || "", province: loc.province || "", lat: loc.lat, lng: loc.lng, country: loc.country || CUR.id, status: "approved", isVerified: false, available: true, boostFee: f.featured ? Math.round(LAND_BOOST_PER_ACRE * f.acres) : 0, createdAt: Date.now() };
+        const l = { ...rest, areaInput: Number(areaInput), id, ownerUid: session.uid, ownerName: session.name || "", village: (loc && loc.village) || "", ownerDistrict: (session.location && session.location.district) || loc.district || "", district: loc.district || "", province: loc.province || "", lat: loc.lat, lng: loc.lng, country: loc.country || CUR.id, status: "approved", isVerified: false, available: true, boostFee: f.featured ? Math.round(LAND_BOOST_PER_ACRE * f.acres) : 0, createdAt: Date.now(), ...reviewFields(f.reviewRequested) };
+        if (!f.reviewRequested) delete l.reviewRequested;
         setLandListings((ls) => [...ls, l]);
+        notifyFounder({ kind: "land", what: "Land listed for lease", id, phone: String(ownerPhone || "").replace(/[\s-]/g, ""), district: l.district, village: l.village || l.title, qty: f.acres, rate: l.rate, total: f.total, review: !!f.reviewRequested });
         writeDoc(COL.landContacts, id, { listingId: id, ownerUid: session.uid, ownerName: session.name || "", ownerPhone: String(ownerPhone || "").replace(/[\s-]/g, ""), ownerEmail: session.email || "", acceptedUids: [], createdAt: Date.now() }).catch((e) => console.warn("[PakAgriShare] Land owner contact not saved:", e && e.code));
         toast(t("ld_listed"), { title: t("nav_land") });
         setSub("mine");
@@ -12817,6 +13008,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
             </div>
             <Field label={t("ld_water")} htmlFor="ldb-w"><select id="ldb-w" value={bf.water} onChange={(e) => setBf((s) => ({ ...s, water: e.target.value }))} className={inputCls + " pe-7 text-sm"}><option value="any">{t("w_any")}</option>{LAND_WATER.map((w) => <option key={w} value={w}>{t("w_" + w)}</option>)}</select></Field>
             <Field label={t("ld_budget")} htmlFor="ldb-b"><MoneyInput id="ldb-b" min={100} step="500" value={bf.budget} onChange={(v) => setBf((s) => ({ ...s, budget: v }))} className={inputCls} /></Field>
+            <LandReviewCheck t={t} id="ldb-review" checked={bf.reviewRequested} onChange={(v) => setBf((s) => ({ ...s, reviewRequested: v }))} />
             <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3 text-sm font-bold text-ivory"><Megaphone className="h-4 w-4" aria-hidden="true" />{t("ld_boli_post")}</button>
           </form>
           <div className="space-y-3 rounded-2xl border border-gold/50 bg-gold/10 p-4">
@@ -12849,6 +13041,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
               <div key={r.id} className="rounded-xl bg-gold/10 p-3 text-sm ring-1 ring-gold/40">
                 <p className="font-bold text-forest">{t("ld_tab_boli")} · {uniqPlaces(r.village, dn(r.district || ""))}</p>
                 <p className="text-xs text-soil/80" dir="ltr">{r.acres} <span dir="auto">{t("ld_acres")}</span> · <span dir="auto">{monthsLabel(t, r.months)}</span> · {pkr(r.budget)}</p>
+                <div className="mt-1.5"><LandReviewBtn t={t} rec={r} onRequest={() => askReview("request", r)} /></div>
                 <p className="mt-2 text-xs font-bold text-soil/80">{t("ld_offers")}</p>
                 {(r.offers || []).length === 0 ? <p className="text-xs text-soil/80">{t("ld_no_offers")}</p> : (r.offers || []).map((o) => (
                   <div key={o.uid} className="mt-1 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-white px-2 py-1.5">
@@ -12862,6 +13055,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
               <div key={b.id} className="rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
                 <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{uniqPlaces(b.village, dn(b.district || ""))}</p><span className="flex shrink-0 items-center gap-1.5">{statusPill(b.status)}{archive && <ClearBtn t={t} onClick={() => clearKeys("lb:" + b.id)} />}</span></div>
                 <p className="text-xs text-soil/80" dir="ltr">{b.id} · {Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} (<span dir="auto">{monthsLabel(t, b.months)}</span>) · {pkr(b.total)}</p>
+                {b.status !== "declined" && <div className="mt-1.5"><LandReviewBtn t={t} rec={b} onRequest={() => askReview("booking", b)} /></div>}
                 {b.status === "accepted" && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     <button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button>
@@ -12880,6 +13074,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
                 <div className="flex items-start justify-between gap-2"><p className="font-bold text-forest">{b.tenantName || "-"} · {uniqPlaces(b.village, dn(b.district || ""))}</p><span className="flex shrink-0 items-center gap-1.5">{statusPill(b.status)}{archive && <ClearBtn t={t} onClick={() => clearKeys("lb:" + b.id)} />}</span></div>
                 <p className="text-xs text-soil/80" dir="ltr">{Number(b.acres).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {fmtDate(b.startDate)} → {fmtDate(b.endDate)} (<span dir="auto">{monthsLabel(t, b.months)}</span>) · {pkr(b.total)}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
+                  {b.status !== "declined" && <LandReviewBtn t={t} rec={b} onRequest={() => askReview("booking", b)} />}
                   {b.status === "pending" && <><button type="button" onClick={() => decide(b, "accepted")} className="rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory">{t("ld_accept_req")}</button><button type="button" onClick={() => decide(b, "declined")} className="rounded-lg border border-red-300 px-2.5 py-1.5 text-xs font-bold text-red-800">{t("ld_decline")}</button></>}
                   {b.status === "accepted" && <><button type="button" onClick={() => setAgreement(b)} className="inline-flex items-center gap-1 rounded-lg bg-forest px-2.5 py-1.5 text-xs font-bold text-ivory"><Printer className="h-3.5 w-3.5" aria-hidden="true" />{t("ld_agreement")}</button><button type="button" onClick={() => showContact(b)} className="rounded-lg border border-forest/30 px-2.5 py-1.5 text-xs font-bold text-forest">{t("ld_contact")}</button></>}
                 </div>
@@ -12892,6 +13087,7 @@ function LandLease({ t, dn, lang, session, requireAuth, toast, userLoc, landList
               <div key={l.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-ivory p-3 text-sm ring-1 ring-soil/10">
                 <span className="min-w-0"><span className="block font-bold text-forest">{l.title || l.village}</span><span className="text-xs text-soil/80" dir="ltr">{landAcres(l).toFixed(1)} <span dir="auto">{t("ld_acres")}</span> · {pkr(l.rate)}</span></span>
                 <span className="flex gap-1">{l.featured && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-soil">{t("ld_featured_badge")}</span>}<span className="rounded-full bg-gold/25 px-2 py-0.5 text-[10px] font-bold text-soil">{t(l.isVerified ? "ls_verified" : "ls_unverified")}</span></span>
+                <span className="basis-full"><LandReviewBtn t={t} rec={l} onRequest={() => askReview("listing", l)} /></span>
               </div>
             ))}
           </div>
@@ -13533,7 +13729,7 @@ function GuidedTour({ t, onClose, goTab = () => {} }) {
   );
 }
 
-function AgriMandi({ walletBal = 0, onLowWallet = () => {}, promoUsed = null, t, dn, lang, session, requireAuth, bookings, mandiPosts, saveMandi, settleFinancing, userLoc, setTab, toast, demoMode = false }) {
+function AgriMandi({ notifyFounder = () => {}, walletBal = 0, onLowWallet = () => {}, promoUsed = null, t, dn, lang, session, requireAuth, bookings, mandiPosts, saveMandi, settleFinancing, userLoc, setTab, toast, demoMode = false }) {
   const startLoc = userLoc || (session && session.location) || null; // no sample village pre-filled
   const [errs, setErrs] = useState({});
   const [f, setF] = useState(() => ({ crop: "wheat", qty: 100, grade: "A", loc: startLoc, village: locLabel(startLoc), rate: "", wallet: "jazzcash", walletNo: (session && session.phone) || "" }));
@@ -13614,7 +13810,9 @@ function AgriMandi({ walletBal = 0, onLowWallet = () => {}, promoUsed = null, t,
       const { walletNo, sellerEmail: _noEmail, sellerPhone: _noPhone, ...pub } = p;
       if (session) writeDoc(COL.cropContacts, p.id, { cropId: p.id, sellerUid: session.uid, sellerName: session.name || "", sellerEmail: session.email || "", sellerPhone: String(walletNo || "").replace(/[\s-]/g, ""), wallet: p.wallet, createdAt: Date.now() })
         .catch((e) => console.warn("[PakAgriShare] Crop contact not saved:", e && e.code));
-      saveMandi(pub); setPost(p); setReceipt(null); setBids([]); setPicked(null); setConfirm({ ...p, media: localMedia }); setMedia({ photos: [], video: "", videoUrl: "" });
+      saveMandi(pub);
+      notifyFounder({ kind: "crop", what: cropName(t, p), id: p.id, phone: String(walletNo || "").replace(/[\s-]/g, ""), district: p.district || "", village: p.village || "", qty: p.qty, rate: p.rate, total: Math.round(p.qty * p.rate) });
+      setPost(p); setReceipt(null); setBids([]); setPicked(null); setConfirm({ ...p, media: localMedia }); setMedia({ photos: [], video: "", videoUrl: "" });
       // simulated buyer bids only in the founder's Sample Demo Data mode; live posts wait for real verified buyers
       if (demoMode) setTimeout(() => startBidding(p), 0);
     });
@@ -14278,7 +14476,7 @@ function AdminSecurity({ t, accounts, sec, setSec, toast }) {
   );
 }
 
-function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
+function AdminConsole({ landListings = [], landRequests = [], landBookings = [], cropContacts = {}, landContacts = {}, landReqContacts = {}, markLandVerified = () => {}, fuel = null, fuelOverride = null, archive, bookingContacts = {}, demandContacts = {}, reqContacts = {}, contacts = {}, leads = [], markLeadArranged, verifyListing, t, dn, lang, listings, setListingStatus, bookings, liveRequests, settings, setSettings, resetDemo, toast, accounts, mandiPosts = [], cloud, demoMode = false, setDemoMode, demand = [], saveDemand, onLock, sec, setSec }) {
   const [sub, setSub] = useState("verify");
   const [lsFilter, setLsFilter] = useState("unverified");
   // alert "Review" -> jump to the machine card in Machinery verification and pulse it briefly
@@ -14324,12 +14522,29 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
   // older records may lack a phone: fall back to the member profile with the same email
   const byEmail = useMemo(() => { const m = new Map(); (accounts.members || []).forEach((x) => { if (x.email) m.set(normEmail(x.email), x); }); return m; }, [accounts.members]);
   const prof = (email) => (email ? byEmail.get(normEmail(email)) : null) || {};
+  // Agri-Market and Zameen Thaika oversight (live records; nothing here blocks a deal)
+  const RECENT_MS = 7 * 24 * 3600 * 1000, nowMs = Date.now();
+  const cropPosts = mandiPosts.filter((m) => m.sellerUid && !isSeedListing(m)).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const landItems = [
+    ...landListings.filter((l) => !isSeedListing(l)).map((rec) => ({ kind: "listing", rec, at: rec.createdAt || 0 })),
+    ...landRequests.map((rec) => ({ kind: "request", rec, at: rec.createdAt || 0 })),
+    ...landBookings.map((rec) => ({ kind: "booking", rec, at: rec.createdAt || 0 })),
+  ];
+  const needsReview = (x) => !!(x.rec.reviewRequested && !x.rec.recordVerified);
+  const landShown = landItems.filter((x) => !isCl("lz:" + x.rec.id) || needsReview(x))
+    .sort((a, b) => (needsReview(b) ? 1 : 0) - (needsReview(a) ? 1 : 0) || b.at - a.at);
+  const reviewCount = landItems.filter(needsReview).length;
+  const cropShown = cropPosts.filter((m) => !isCl("am:" + m.id));
+  const readCropKeys = cropShown.filter((m) => m.status !== "open").map((m) => "am:" + m.id);
+  const readLandKeys = landShown.filter((x) => !needsReview(x)).map((x) => "lz:" + x.rec.id);
   const alerts = [
+    ...cropPosts.filter((m) => nowMs - (m.createdAt || 0) < RECENT_MS && m.status === "open").map((m) => ({ id: "c" + m.id, at: m.createdAt || 0, kind: "crop", sub: "mandi", title: `${m.id} · ${cropName(t, m)} · ${m.qty} · ${pkr(m.rate)}`, who: (cropContacts[m.id] || {}).sellerName || "", where: [m.village, dn(m.district || "")].filter(Boolean).join(", ") })),
+    ...landItems.filter((x) => needsReview(x) || (nowMs - x.at < RECENT_MS && (x.kind !== "request" || x.rec.status === "open") && (x.kind !== "booking" || x.rec.status === "pending"))).map((x) => ({ id: "z" + x.rec.id, at: x.rec.reviewRequestedAt || x.at, kind: needsReview(x) ? "land_review" : "land", sub: "zameen", title: `${x.rec.id} · ${t("adz_k_" + x.kind)}`, who: x.rec.ownerName || x.rec.renterName || x.rec.tenantName || "", where: uniqPlaces(x.rec.village || x.rec.title, dn(x.rec.district || "")) })),
     ...listings.filter((l) => !l.isVerified && l.ownerUid && (l.status || "approved") !== "rejected").map((l) => ({ id: "l" + l.id, at: l.submittedAt || 0, kind: "listing", sub: "verify", lsId: l.id, title: l.name, who: l.ownerName, where: `${l.village || ""}${l.district ? ", " + dn(l.district) : ""}` })),
     ...liveRequests.filter((r) => r.status === "open").map((r) => ({ id: "r" + r.id, at: r.createdAt || 0, kind: "request", sub: "live", title: `${t("one_" + r.category)} · ${pkr(r.rate)}/hr`, who: r.renterName || prof(r.renterEmail).name || "", where: r.village || "" })),
     ...demand.filter((d) => d.status === "waiting").map((d) => ({ id: "d" + d.id, at: d.createdAt || 0, kind: "demand", sub: "demand", title: `${t("one_" + d.category)} · ${t("dm_" + d.type)}`, who: d.renterName || "", where: d.village || dn(d.district || "") })),
     ...bookings.filter((b) => b.status === "sent").map((b) => ({ id: "b" + b.id, at: b.createdAt || 0, kind: "booking", sub: "live", title: b.listingName, who: b.renterName || "", where: dn(b.district || "") })),
-  ].filter((a) => !isCl(({ request: "rq:", demand: "dm:", booking: "bk:" }[a.kind] || "-:") + a.id.slice(1))).sort((a, b) => b.at - a.at);
+  ].filter((a) => a.kind === "land_review" || !isCl(({ request: "rq:", demand: "dm:", booking: "bk:", crop: "am:", land: "lz:" }[a.kind] || "-:") + a.id.slice(1))).sort((a, b) => b.at - a.at);
   const activeBookings = sortedBookings.filter((b) => !isCl("bk:" + b.id));
   const readBookingKeys = activeBookings.filter((b) => !["sent", "countered"].includes(b.status)).map((b) => "bk:" + b.id);
   const leadHist = (x, cleared) => ({ key: "lead:" + x.id, kind: "lead", title: `${x.farmerName || "·"} · ${x.category ? t("one_" + x.category) : x.machineType || ""}`, sub: [uniqPlaces(x.village, x.district), x.farmerPhone, fmtStamp(x.createdAt)].filter(Boolean).join(" · "), statusLabel: t(x.status === "new" ? "ad_lead_new" : "ad_lead_arranged"), at: x.createdAt || 0, cleared });
@@ -14381,7 +14596,8 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
     { key: "live", label: t("ad_live"), icon: Radar, badge: activeReqs.filter((r) => r.status === "open").length + activeBookings.filter((b) => b.status === "sent").length },
     { key: "demand", label: t("ad_demand"), icon: Inbox, badge: activeDemand.filter((d) => d.status === "waiting").length },
     { key: "history", label: t("arc_history"), icon: HistoryIcon },
-    { key: "mandi", label: t("nav_mandi"), icon: Wheat },
+    { key: "mandi", label: `${t("adm_tab")} (${cropPosts.length})`, icon: Wheat, badge: cropShown.filter((m) => m.status === "open" && nowMs - (m.createdAt || 0) < RECENT_MS).length },
+    { key: "zameen", label: `${t("adz_tab")} (${landItems.length})`, icon: Sprout, badge: reviewCount, alert: reviewCount > 0 },
     { key: "members", label: t("nav_members"), icon: Users },
     { key: "security", label: t("ads_tab"), icon: KeyRound },
   ];
@@ -14491,10 +14707,10 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
         <div className="rounded-2xl bg-gold/15 p-4 ring-1 ring-gold/40"><p className="text-xs text-soil/80">{t("ad_kpi_credit")}</p><p className="font-display text-2xl font-extrabold text-soil" dir="ltr">{pkr(creditOut)}</p></div>
       </div>
       <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto" role="tablist">
-        {subs.map(({ key, label, icon: Icon, badge }) => (
+        {subs.map(({ key, label, icon: Icon, badge, alert }) => (
           <button key={key} role="tab" aria-selected={sub === key} onClick={() => setSub(key)}
             className={`flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ring-1 ${sub === key ? "bg-forest text-ivory ring-forest" : "bg-white text-forest ring-soil/15 hover:ring-leaf"}`}>
-            <Icon className="h-4 w-4" aria-hidden="true" />{label}{badge ? <span className="rounded-full bg-gold px-1.5 text-[11px] text-soil">{badge}</span> : null}
+            <Icon className="h-4 w-4" aria-hidden="true" />{label}{badge ? <span className={`rounded-full px-1.5 text-[11px] font-bold ${alert ? "bg-red-600 text-white" : "bg-gold text-soil"}`}>{badge}</span> : null}
           </button>
         ))}
       </div>
@@ -14504,7 +14720,7 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
           <div className="mb-4 flex flex-wrap gap-2">
             {["unverified", "approved", "rejected"].map((s) => (
               <button key={s} onClick={() => setLsFilter(s)} aria-pressed={lsFilter === s}
-                className={`min-h-[44px] rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t(s === "unverified" ? "ls_unverified" : "ls_" + s)} ({counts[s]})</button>
+                className={`min-h-[44px] rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 ${lsFilter === s ? "bg-forest text-ivory ring-forest" : "bg-ivory text-soil ring-soil/15"}`}>{t(s === "unverified" ? "ls_unverified" : s === "approved" ? "ls_verified" : "ls_" + s)} ({counts[s]})</button>
             ))}
           </div>
           {shownListings.length === 0 ? <p className="rounded-xl bg-ivory p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
@@ -14679,30 +14895,93 @@ function AdminConsole({ fuel = null, fuelOverride = null, archive, bookingContac
       )}
 
       {sub === "mandi" && (
-        <div className="rounded-2xl border border-soil/10 bg-white shadow-sm">
-          {mandiPosts.length === 0 ? <p className="p-6 text-center text-sm text-soil/80">{t("ad_none")}</p> : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] text-sm">
-                <thead className="bg-ivory text-xs uppercase tracking-wide text-soil/80">
-                  <tr>{["ID", t("am_crop"), t("am_qty"), t("lr_village"), t("am_rate"), t("am_sold_to"), t("am_minus_credit"), t("am_net"), t("ad_col_status")].map((h) => <th key={h} className="px-4 py-2.5 text-start font-semibold">{h}</th>)}</tr>
-                </thead>
-                <tbody className="divide-y divide-soil/10">
-                  {[...mandiPosts].sort((a, b) => b.createdAt - a.createdAt).map((m) => (
-                    <tr key={m.id}>
-                      <td className="px-4 py-3 font-mono text-xs" dir="ltr">{m.id}</td>
-                      <td className="px-4 py-3">{cropName(t, m)}</td>
-                      <td className="px-4 py-3" dir="ltr">{m.qty}</td>
-                      <td className="px-4 py-3">{m.village}</td>
-                      <td className="px-4 py-3" dir="ltr">{pkr(m.rate)}{m.soldRate ? ` → ${pkr(m.soldRate)}` : ""}</td>
-                      <td className="px-4 py-3">{m.soldTo || "·"}</td>
-                      <td className="px-4 py-3" dir="ltr">{m.creditSettled != null ? pkr(m.creditSettled) : "·"}</td>
-                      <td className="px-4 py-3 font-bold text-forest" dir="ltr">{m.net != null ? pkr(m.net) : "·"}</td>
-                      <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${m.status === "sold" ? "bg-leaf/15 text-forest" : m.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("am_st_" + m.status)}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-soil/10">
+            <p className="text-sm text-soil/80 rtl:leading-[2]">{t("adm_sub")}</p>
+            {archive && <ClearAllBtn t={t} count={readCropKeys.length} onClick={() => clearKeys(readCropKeys)} />}
+          </div>
+          {cropShown.length === 0 ? <p className="rounded-2xl bg-white p-6 text-center text-sm text-soil/80 ring-1 ring-soil/10">{t("ad_none")}</p> : (
+            <ul className="grid gap-3 md:grid-cols-2">
+              {cropShown.map((m) => {
+                const c = cropContacts[m.id] || {};
+                const total = Math.round((Number(m.qty) || 0) * (Number(m.soldRate || m.rate) || 0));
+                return (
+                  <li key={m.id} className={`rounded-2xl bg-white p-4 text-sm shadow-sm ring-1 ${m.status === "open" ? "ring-gold/50" : "ring-soil/10"}`}>
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-mono text-xs font-bold text-soil/80" dir="ltr">{m.id} · {fmtStamp(m.createdAt)}</p>
+                        <p className="font-bold text-forest">{cropName(t, m)}{m.grade ? <span className="font-normal text-soil/80"> · {m.grade}</span> : null}</p>
+                        <p className="text-xs text-soil/80">{[m.village, dn(m.district || "")].filter(Boolean).join(", ") || "·"}</p>
+                      </div>
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${m.status === "sold" ? "bg-leaf/15 text-forest" : m.status === "open" ? "bg-gold/25 text-soil" : "bg-soil/10 text-soil/80"}`}>{t("am_st_" + (m.status || "open"))}</span>
+                    </div>
+                    <dl className="mt-2 grid grid-cols-3 gap-2 text-center">
+                      <div className="rounded-lg bg-ivory p-2"><dt className="text-[10px] font-bold uppercase text-soil/80">{t("am_qty")}</dt><dd className="font-bold text-forest" dir="ltr">{m.qty}</dd></div>
+                      <div className="rounded-lg bg-ivory p-2"><dt className="text-[10px] font-bold uppercase text-soil/80">{t("am_rate")}</dt><dd className="font-bold text-forest" dir="ltr">{pkr(m.soldRate || m.rate)}</dd></div>
+                      <div className="rounded-lg bg-leaf/10 p-2"><dt className="text-[10px] font-bold uppercase text-soil/80">{t("adm_payout")}</dt><dd className="font-bold text-forest" dir="ltr">{pkr(m.net != null ? m.net : total)}</dd></div>
+                    </dl>
+                    {m.soldTo && <p className="mt-1.5 text-xs text-soil"><b>{t("am_sold_to")}:</b> {m.soldTo}</p>}
+                    <CropMediaStrip t={t} post={m} className="mt-2" />
+                    <div className="mt-2 rounded-xl bg-ivory p-2.5">
+                      <p className="text-[11px] font-bold text-soil/80">{t("am_seller_contact")}{c.sellerName ? `: ${c.sellerName}` : ""}</p>
+                      {accounts.isFounder ? (c.sellerPhone || c.sellerEmail ? (
+                        <div className="mt-1 space-y-1">
+                          {c.sellerPhone && <ContactButtons t={t} phone={c.sellerPhone} name={c.sellerName} />}
+                          {c.sellerEmail && <a href={`mailto:${c.sellerEmail}`} className="block break-all text-xs font-semibold text-forest underline" dir="ltr">{c.sellerEmail}</a>}
+                        </div>
+                      ) : <p className="mt-1 text-xs text-soil/80">{t("ct_none")}</p>) : <p className="mt-1 text-xs text-soil/80">{t("adm_founder_only")}</p>}
+                    </div>
+                    {archive && <div className="mt-2 flex justify-end"><ClearBtn t={t} onClick={() => clearKeys("am:" + m.id)} /></div>}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {sub === "zameen" && (
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-soil/10">
+            <p className="text-sm text-soil/80 rtl:leading-[2]">{t("adz_sub")}{reviewCount > 0 && <span className="ms-2 rounded-full bg-gold px-2 py-0.5 text-xs font-bold text-soil">{t("lv_requested")}: {reviewCount}</span>}</p>
+            {archive && <ClearAllBtn t={t} count={readLandKeys.length} onClick={() => clearKeys(readLandKeys)} />}
+          </div>
+          {landShown.length === 0 ? <p className="rounded-2xl bg-white p-6 text-center text-sm text-soil/80 ring-1 ring-soil/10">{t("ad_none")}</p> : (
+            <ul className="grid gap-3 md:grid-cols-2">
+              {landShown.map((x) => {
+                const r = x.rec, review = needsReview(x);
+                // founder-only contacts: land owner (land_contacts) and tenant / renter (land_request_contacts)
+                const owner = x.kind === "listing" ? landContacts[r.id] : x.kind === "booking" && r.listingId ? landContacts[r.listingId] : null;
+                const renter = x.kind === "request" ? landReqContacts[r.id] : x.kind === "booking" ? landReqContacts[r.requestId || r.id] || landReqContacts[r.id] : null;
+                const money = x.kind === "listing" ? (r.rateType === "total" ? pkr(r.rate) : `${pkr(r.rate)} ${t("ld_per_acre_month")}`) : x.kind === "request" ? `${pkr(r.budget)} ${t("ld_per_acre_month")}` : pkr(r.total);
+                return (
+                  <li key={x.kind + r.id} className={`rounded-2xl p-4 text-sm shadow-sm ring-1 ${review ? "bg-gold/10 ring-2 ring-gold" : "bg-white ring-soil/10"}`}>
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-mono text-xs font-bold text-soil/80" dir="ltr">{r.id} · {fmtStamp(r.reviewRequestedAt || x.at)}</p>
+                        <p className="font-bold text-forest">{t("adz_k_" + x.kind)} · {uniqPlaces(r.village || r.title, dn(r.district || "")) || "·"}</p>
+                        <p className="text-xs text-soil/80" dir="ltr">{Number(r.acres || landAcres(r) || 0).toFixed(1)} <span dir="auto">{t("ld_acres")}</span>{r.months ? <> · <span dir="auto">{monthsLabel(t, r.months)}</span></> : null} · {money}</p>
+                        <p className="text-xs text-soil">{[r.ownerName && `${t("ct_owner")}: ${r.ownerName}`, (r.tenantName || r.renterName) && `${t("adz_tenant")}: ${r.tenantName || r.renterName}`].filter(Boolean).join(" · ")}</p>
+                      </div>
+                      <span className="flex flex-col items-end gap-1">
+                        {r.status && <span className="rounded-full bg-soil/10 px-2 py-0.5 text-[10px] font-bold text-soil">{t({ accepted: "ld_accepted", declined: "ld_declined", pending: "ld_pending" }[r.status] || "adz_st_live")}</span>}
+                        <LandReviewBadge t={t} rec={r} />
+                      </span>
+                    </div>
+                    {accounts.isFounder && (owner || renter) && (
+                      <div className="mt-2 grid gap-1.5 rounded-xl bg-white/80 p-2.5 ring-1 ring-soil/10">
+                        {owner && (owner.ownerPhone || owner.ownerEmail) && <div><p className="text-[11px] font-bold text-soil/80">{t("ct_owner")}{owner.ownerName ? `: ${owner.ownerName}` : ""}</p>{owner.ownerPhone && <ContactButtons t={t} phone={owner.ownerPhone} name={owner.ownerName} />}{owner.ownerEmail && <a href={`mailto:${owner.ownerEmail}`} className="block break-all text-xs font-semibold text-forest underline" dir="ltr">{owner.ownerEmail}</a>}</div>}
+                        {renter && (renter.renterPhone || renter.renterEmail) && <div><p className="text-[11px] font-bold text-soil/80">{t("adz_tenant")}{renter.renterName ? `: ${renter.renterName}` : ""}</p>{renter.renterPhone && <ContactButtons t={t} phone={renter.renterPhone} name={renter.renterName} />}{renter.renterEmail && <a href={`mailto:${renter.renterEmail}`} className="block break-all text-xs font-semibold text-forest underline" dir="ltr">{renter.renterEmail}</a>}</div>}
+                      </div>
+                    )}
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      {!r.recordVerified && <button type="button" onClick={() => markLandVerified(x.kind, r)} className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold ${review ? "bg-forest text-ivory" : "border border-forest/30 bg-white text-forest"}`}><ShieldCheck className="h-4 w-4" aria-hidden="true" />{t("adz_mark")}</button>}
+                      {archive && !review && <ClearBtn t={t} className="ms-auto" onClick={() => clearKeys("lz:" + r.id)} />}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           )}
         </div>
       )}
@@ -15900,6 +16179,18 @@ function App() {
     if (!auto) toast(t(ok2 ? "zc_emailed" : "zc_queued"), { title: t("zc_title"), type: ok2 ? "success" : "info" });
     return { saved: ok1, emailed: ok2 };
   };
+  // founder only: crop seller contacts and land owner / tenant contacts for the Agri-Market and Zameen Thaika admin tabs
+  const [cropContacts, setCropContacts] = useState({});
+  const [landContacts, setLandContacts] = useState({});
+  const [landReqContacts, setLandReqContacts] = useState({});
+  useEffect(() => {
+    if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setCropContacts({}); setLandContacts({}); setLandReqContacts({}); return undefined; }
+    const warn = (what) => (e) => console.warn(`[PakAgriShare] ${what} listener:`, e && e.code);
+    const u1 = watchCollection(COL.cropContacts, (list) => setCropContacts(Object.fromEntries(list.map((c) => [c.cropId || c.id, c]))), warn("Crop contacts"));
+    const u2 = watchCollection(COL.landContacts, (list) => setLandContacts(Object.fromEntries(list.map((c) => [c.listingId || c.id, c]))), warn("Land contacts"));
+    const u3 = watchCollection(COL.landReqContacts, (list) => setLandReqContacts(Object.fromEntries(list.map((c) => [c.requestId || c.id, c]))), warn("Land request contacts"));
+    return () => { u1(); u2(); u3(); };
+  }, [accounts.isFounder, accounts.fbUser && accounts.fbUser.emailVerified]); // eslint-disable-line
   const [contacts, setContacts] = useState({}); // listingId -> { ownerPhone, ownerEmail } (founder only)
   useEffect(() => {
     if (!accounts.isFounder || !accounts.fbUser || !accounts.fbUser.emailVerified) { setContacts({}); return undefined; }
@@ -15970,17 +16261,17 @@ function App() {
           .catch((e) => console.warn("[PakAgriShare] Crop contact migration failed for", m.id, e && e.code)));
       }
     }
-    // listings: drop the legacy "mine" field and give status-less real listings an explicit status,
-    // so the "approved only" read rule and queries can see them
+    // listings: drop the legacy "mine" field and give status-less (or legacy "pending") real listings the live
+    // status, so they show in the marketplace at once: no listing ever waits for admin approval
     {
-      const stale = listings.filter((l) => (Object.prototype.hasOwnProperty.call(l, "mine") || (!l.status && !isSeedListing(l))) && !cleanTried.current.has("ls:" + l.id));
+      const stale = listings.filter((l) => (Object.prototype.hasOwnProperty.call(l, "mine") || (!l.status && !isSeedListing(l)) || l.status === "pending") && !cleanTried.current.has("ls:" + l.id));
       if (stale.length) {
         stale.forEach((l) => cleanTried.current.add("ls:" + l.id));
         console.info(`[PakAgriShare] Founder clean-up: removing legacy "mine" / adding status on ${stale.length} listing(s): ${stale.map((l) => l.id).join(", ")}`);
         setListings((ls) => ls.map((l) => {
           if (!stale.some((x) => x.id === l.id)) return l;
           const { mine: _legacyMine, ...rest } = l;
-          return rest.status || isSeedListing(rest) ? rest : { ...rest, status: "approved" };
+          return (rest.status && rest.status !== "pending") || isSeedListing(rest) ? rest : { ...rest, status: "approved" };
         }));
       }
     }
@@ -16066,6 +16357,24 @@ function App() {
   const shownLand = useMemo(() => landListings.map(({ ownerEmail, ownerPhone, ...l }) => ({ ...l, mine: Boolean(uid && l.ownerUid === uid) })), [landListings, uid]); // eslint-disable-line
   const saveLandRequest = (patch) => setLandRequests((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
   const saveLandBooking = (patch) => setLandBookings((list) => (list.some((r) => r.id === patch.id) ? list.map((r) => (r.id === patch.id ? { ...r, ...patch } : r)) : [...list, patch]));
+  // founder email for a new crop post, land submission or land review request (/api/notify-lead; best effort, never blocks)
+  const notifyFounder = (info) => {
+    if (!session) return;
+    const body = { kind: info.kind, farmerName: session.name || "", farmerPhone: info.phone || session.phone || "", farmerEmail: session.email || "",
+      district: info.district || "", village: info.village || "", machineType: info.what || "", offeredRate: info.rate || "", qty: info.qty || "", total: info.total || "",
+      requestId: info.id || "", reviewRequested: info.review ? "yes" : "", lang };
+    fetch("/api/notify-lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+      .then((r) => r.json()).then((j) => { if (!(j && j.sent)) console.info("[PakAgriShare] Founder alert email not sent:", (j && (j.reason || j.error)) || "email not set up"); })
+      .catch(() => {});
+  };
+  // Admin Panel > Zameen Thaika: founder marks a land record verified (listing, land wanted post or lease deal)
+  const markLandVerified = (kind, rec) => {
+    const stamp = { recordVerified: true, recordVerifiedAt: Date.now(), recordVerifiedBy: (accounts.fbUser && accounts.fbUser.email) || "" };
+    if (kind === "listing") setLandListings((ls) => ls.map((l) => (l.id === rec.id ? { ...l, ...stamp, isVerified: true, verifiedAt: stamp.recordVerifiedAt } : l)));
+    else if (kind === "request") saveLandRequest({ id: rec.id, ...stamp });
+    else saveLandBooking({ id: rec.id, ...stamp });
+    toast(t("adz_marked"));
+  };
   // 360° benefit: an accepted land lease as tenant -> 0.50% off machinery commission (floor 2.0%)
   const ecoActive = Boolean(uid && landBookings.some((b) => b.tenantUid === uid && b.status === "accepted"));
   // launch promo (see PROMO_FREE): preview a free slot on bills, and show each owner what is left
@@ -16257,9 +16566,10 @@ function App() {
 
   const routedOpen = uid ? shownRequests.filter((r) => r.status === "open" && Array.isArray(r.matchedOwnerUids) && r.matchedOwnerUids.includes(uid) && !(r.offers || []).some((o) => o.uid === uid)).length : 0;
   const pendingCount = ownerBookings.filter((b) => b.status === "sent").length + routedOpen;
-  // red Admin badge: machines awaiting approval + open Apni Boli requests + waiting demand tickets
+  // red Admin badge: unverified live machines + open Apni Boli requests + waiting demand tickets + land review requests
+  const landReviewCount = [...landListings, ...landRequests, ...landBookings].filter((x) => x.reviewRequested && !x.recordVerified).length;
   const adminCount = accounts.isAdmin
-    ? realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + shownRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
+    ? landReviewCount + realListings.filter((l) => (l.status || "approved") !== "rejected" && !l.isVerified && l.ownerUid).length + shownRequests.filter((r) => r.status === "open").length + demand.filter((d) => d.status === "waiting").length + leads.filter((x) => x.status === "new").length
     : 0;
   const mine = (email) => !session || !email || email === session.email;
   const myBookings = shownBookings.filter((b) => b.channel === "ussd" || b.own).sort((a, b) => b.createdAt - a.createdAt);
@@ -16298,10 +16608,10 @@ function App() {
         {showTab === "owner-portal" && <OwnerPortal onSignIn={() => openAuth("signin", t("pub_signin_btn"))} wallet={wallet} walletTopups={myTopups} walletNeed={walletNeed} onTopUp={() => setTopupOpen(true)} promoUsed={promoUsed} archive={archive} landBookings={landBookings} landRequests={landRequests} t={t} dn={dn} demand={shownDemand} bookingContacts={bookingContacts} liveRequests={shownRequests} saveRequest={saveRequest} toast={toast} listings={myListings.filter((l) => (l.country || "PK") === country)} bookings={ownerBookings} addListing={(f) => requireAuth(() => addListing(f))} session={session} lang={lang} toggleListing={toggleListing} removeListing={removeListing} updateBooking={updateBooking} initialSub={ownerSub} />}
         {showTab === "live-request" && <LiveRequest promoFor={machinePromoFor} fuel={fuel} key={liveCat || "none"} initialCat={liveCat} ecoActive={ecoActive} t={t} dn={dn} listings={publicListings} session={session} requireAuth={requireAuth} createBooking={createBooking} setTab={setTab} toast={toast}
           dieselPrice={dieselPrice} lang={lang} userLoc={userLoc} liveRequests={shownRequests} saveRequest={saveRequest} country={country} setCountry={setCountry} onVoucher={setVoucherId} demoMode={demoMode} saveDemand={saveDemand} sendLead={sendLead} />}
-        {showTab === "agri-mandi" && <AgriMandi walletBal={walletBal} onLowWallet={lowWallet} promoUsed={promoUsed} demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
-        {showTab === "admin" && <AdminPanel fuel={fuel} fuelOverride={fuelOverride} archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
+        {showTab === "agri-mandi" && <AgriMandi notifyFounder={notifyFounder} walletBal={walletBal} onLowWallet={lowWallet} promoUsed={promoUsed} demoMode={demoMode} t={t} dn={dn} session={session} requireAuth={requireAuth} bookings={shownBookings} mandiPosts={shownMandi} saveMandi={saveMandi} settleFinancing={settleFinancing} lang={lang} userLoc={userLoc} setTab={setTab} toast={toast} />}
+        {showTab === "admin" && <AdminPanel landListings={landListings} landRequests={landRequests} landBookings={landBookings} cropContacts={cropContacts} landContacts={landContacts} landReqContacts={landReqContacts} markLandVerified={markLandVerified} fuel={fuel} fuelOverride={fuelOverride} archive={archive} bookingContacts={bookingContacts} demandContacts={demandContacts} contacts={contacts} leads={leads} markLeadArranged={markLeadArranged} verifyListing={verifyListing} t={t} dn={dn} lang={lang} listings={demoMode ? marketListings : realListings} demoMode={demoMode} setDemoMode={setDemoMode} demand={shownDemand} saveDemand={saveDemand} setListingStatus={setListingStatus} bookings={shownBookings} liveRequests={shownRequests} settings={settings} setSettings={setSettings} resetDemo={resetDemo} toast={toast} accounts={accounts} openAuth={openAuth} reqContacts={reqContacts} mandiPosts={shownMandi} cloud={cloud} />}
         {showTab === "members" && <MembersAdmin t={t} dn={dn} accounts={accounts} toast={toast} />}
-        {showTab === "land" && <LandLease archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBookingChecked} sendLead={sendLead} ecoActive={ecoActive} />}
+        {showTab === "land" && <LandLease notifyFounder={notifyFounder} archive={archive} t={t} dn={dn} lang={lang} session={session} requireAuth={requireAuth} toast={toast} userLoc={userLoc} landListings={shownLand} landRequests={landRequests} landBookings={landBookings} setLandListings={setLandListings} saveLandRequest={saveLandRequest} saveLandBooking={saveLandBookingChecked} sendLead={sendLead} ecoActive={ecoActive} />}
         {showTab === "govt" && <GovtPortal t={t} />}
         {showTab === "agri-agent" && <KeypadBanner t={t} setTab={setTab} />}
         {showTab === "agri-agent" && <AgentTab lang={lang} setTab={setTab} t={t} listings={publicListings} createBooking={createBooking} updateBooking={updateBooking} />}

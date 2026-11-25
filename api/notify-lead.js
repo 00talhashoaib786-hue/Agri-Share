@@ -8,11 +8,14 @@
     WEB3FORMS_ACCESS_KEY    https://web3forms.com  (the access key is created for the receiving email address)
   LEAD_ALERT_EMAIL          optional, default the founder's address below
 
-  POST /api/notify-lead  { farmerName, farmerPhone, farmerEmail, district, village, machineType, hours, offeredRate, radiusChecked, requestId, lang }
+  POST /api/notify-lead  { kind?, farmerName, farmerPhone, farmerEmail, district, village, machineType, hours, offeredRate, radiusChecked, requestId, qty, total, reviewRequested, lang }
+    kind: "lead" (default: unmatched farmer), "crop" (new Agri-Market post), "land" (new Zameen Thaika
+          listing / request / lease), "land_review" (a member asked for PakAgriShare record verification)
     -> { ok: true, sent: boolean, via: "resend" | "web3forms" | "none" }
 */
 const FOUNDER_EMAIL = "00talhashoaib786@gmail.com";
-const LIMITS = { farmerName: 80, farmerPhone: 20, farmerEmail: 120, district: 60, village: 80, machineType: 40, hours: 8, offeredRate: 12, radiusChecked: 10, requestId: 30, lang: 5 };
+const KINDS = new Set(["lead", "crop", "land", "land_review"]);
+const LIMITS = { kind: 12, qty: 14, total: 14, reviewRequested: 4, farmerName: 80, farmerPhone: 20, farmerEmail: 120, district: 60, village: 80, machineType: 40, hours: 8, offeredRate: 12, radiusChecked: 10, requestId: 30, lang: 5 };
 
 // best-effort throttle per IP inside one warm function instance (stops casual inbox flooding)
 const recent = new Map();
@@ -56,6 +59,44 @@ const waLink = (phone) => {
   return d.length >= 10 ? `https://wa.me/${d}` : "";
 };
 
+// Send through Resend first, then Web3Forms; answers the request either way (never a hard failure)
+async function sendEmail(res, { to, subject, text, html, replyTo, resend, w3 }) {
+  const reasons = []; // why email was not sent (returned to the app and logged; never contains a key)
+  if (resend.value) {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${resend.value}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from: process.env.RESEND_FROM || "PakAgriShare <onboarding@resend.dev>", to: [to], subject, html, text, ...(replyTo ? { reply_to: replyTo } : {}) }),
+    });
+    if (r.ok) return res.status(200).json({ ok: true, sent: true, via: "resend" });
+    const err = await r.json().catch(() => ({}));
+    const why = `resend HTTP ${r.status}: ${(err && (err.message || err.name)) || "rejected"}`;
+    reasons.push(why); console.error("[api/notify-lead] Resend failed:", why);
+  }
+  if (w3.value) {
+    try {
+      const r = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json", "User-Agent": "PakAgriShare-Lead-Alerts/1.0" },
+        body: JSON.stringify({ access_key: w3.value, subject, from_name: "PakAgriShare Leads", message: text, ...(replyTo ? { replyto: replyTo } : {}) }),
+      });
+      const raw = await r.text();
+      let j = {}; try { j = JSON.parse(raw); } catch (e) { j = { message: `non-JSON reply: ${raw.replace(/\s+/g, " ").slice(0, 120)}` }; }
+      if (r.ok && j.success !== false) return res.status(200).json({ ok: true, sent: true, via: "web3forms" });
+      const why = `web3forms HTTP ${r.status}: ${j.message || "rejected"}`;
+      reasons.push(why); console.error("[api/notify-lead] Web3Forms failed:", why);
+    } catch (e) {
+      const why = `web3forms unreachable: ${e && e.message ? e.message : e}`;
+      reasons.push(why); console.error("[api/notify-lead]", why);
+    }
+  } else {
+    const why = "no Web3Forms key in this deployment (WEB3FORMS_ACCESS_KEY empty or not set for this environment; redeploy after adding it)";
+    reasons.push(why); console.warn("[api/notify-lead] Web3Forms skipped:", why, "| VERCEL_ENV =", process.env.VERCEL_ENV || "unknown");
+  }
+  // no email sent: the lead is still saved in Firestore by the app; "reason" says why
+  return res.status(200).json({ ok: true, sent: false, via: "none", reason: reasons.join(" | ") });
+}
+
 export default async function handler(req, res) {
   try {
     res.setHeader("Cache-Control", "no-store");
@@ -83,52 +124,41 @@ export default async function handler(req, res) {
     if (throttled(ip)) return res.status(429).json({ ok: false, error: "Too many alerts, please wait a few minutes" });
 
     const to = process.env.LEAD_ALERT_EMAIL || FOUNDER_EMAIL;
-    const subject = `Unmatched farmer lead: ${lead.machineType || "machine"} in ${lead.district || "unknown district"} (no owner within ${lead.radiusChecked || "40"} km)`;
-    const rows = [
+    const kind = KINDS.has(lead.kind) ? lead.kind : "lead";
+    const place = lead.district || lead.village || "unknown district";
+    const subject = {
+      lead: `Unmatched farmer lead: ${lead.machineType || "machine"} in ${place} (no owner within ${lead.radiusChecked || "40"} km)`,
+      crop: `New Agri-Market crop post ${lead.requestId}: ${lead.machineType || "crop"}, ${lead.qty || "?"} maunds in ${place}`,
+      land: `New Zameen Thaika record ${lead.requestId}: ${lead.machineType || "land"} in ${place}${lead.reviewRequested ? " (admin verification requested)" : ""}`,
+      land_review: `Admin verification requested: ${lead.machineType || "land record"} ${lead.requestId} in ${place}`,
+    }[kind];
+    const rows = (kind === "lead" ? [
       ["Farmer", lead.farmerName], ["Phone", lead.farmerPhone], ["Email", lead.farmerEmail],
       ["District", lead.district], ["Village", lead.village], ["Machine needed", lead.machineType],
       ["Hours", lead.hours], ["Offered rate (PKR/hr)", lead.offeredRate], ["Radius checked (km)", lead.radiusChecked], ["Request ID", lead.requestId],
-    ].filter(([, v]) => v);
+    ] : [
+      ["Record", lead.requestId], ["What", lead.machineType], ["Member", lead.farmerName], ["Phone", lead.farmerPhone], ["Email", lead.farmerEmail],
+      ["District", lead.district], ["Village", lead.village], [kind === "crop" ? "Quantity (maunds)" : "Acres", lead.qty],
+      ["Rate (PKR)", lead.offeredRate], ["Total (PKR)", lead.total], ["Admin verification requested", lead.reviewRequested ? "Yes" : ""],
+    ]).filter(([, v]) => v);
+    if (kind !== "lead") {
+      // live marketplace records: an FYI for the founder's oversight log, never an approval step
+      const intro = kind === "land_review" ? "A member asked PakAgriShare to verify this land record. Open Admin Panel > Zameen Thaika and press Mark Record Verified after checking it."
+        : kind === "crop" ? "A new crop post is live on Agri-Market (no approval needed). Seller details are in Admin Panel > Agri-Market Posts."
+        : "A new Zameen Thaika record is live (no approval needed). Details are in Admin Panel > Zameen Thaika.";
+      const text2 = `${intro}\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nCall: ${lead.farmerPhone || "-"}  WhatsApp: ${waLink(lead.farmerPhone) || "-"}`;
+      const html2 = `<h2 style="font-family:sans-serif;color:#145A32">${esc(subject)}</h2><p style="font-family:sans-serif">${esc(intro)}</p>
+<table style="font-family:sans-serif;border-collapse:collapse">${rows.map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#5C3A21"><b>${esc(k)}</b></td><td style="padding:4px 0">${esc(v)}</td></tr>`).join("")}</table>
+${lead.farmerPhone ? `<p style="font-family:sans-serif"><a href="tel:${esc(lead.farmerPhone)}">Call</a>${waLink(lead.farmerPhone) ? ` &middot; <a href="${waLink(lead.farmerPhone)}">WhatsApp</a>` : ""}</p>` : ""}`;
+      return await sendEmail(res, { to, subject, text: text2, html: html2, replyTo: lead.farmerEmail, resend, w3 });
+    }
     const text = `No registered machine was available for this farmer.\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nCall: ${lead.farmerPhone || "-"}  WhatsApp: ${waLink(lead.farmerPhone) || "-"}\nAlso saved in the Admin Panel under "Urgent Unmatched Farmer Leads".`;
     const html = `<h2 style="font-family:sans-serif;color:#145A32">Urgent: unmatched farmer lead</h2>
 <p style="font-family:sans-serif">No registered machine was available within ${esc(lead.radiusChecked || "40")} km. Please arrange one from the offline network.</p>
 <table style="font-family:sans-serif;border-collapse:collapse">${rows.map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#5C3A21"><b>${esc(k)}</b></td><td style="padding:4px 0">${esc(v)}</td></tr>`).join("")}</table>
 ${lead.farmerPhone ? `<p style="font-family:sans-serif"><a href="tel:${esc(lead.farmerPhone)}">Call farmer</a>${waLink(lead.farmerPhone) ? ` &middot; <a href="${waLink(lead.farmerPhone)}">WhatsApp farmer</a>` : ""}</p>` : ""}`;
 
-    const reasons = []; // why email was not sent (returned to the app and logged; never contains a key)
-    if (resend.value) {
-      const r = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${resend.value}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ from: process.env.RESEND_FROM || "PakAgriShare <onboarding@resend.dev>", to: [to], subject, html, text, ...(lead.farmerEmail ? { reply_to: lead.farmerEmail } : {}) }),
-      });
-      if (r.ok) return res.status(200).json({ ok: true, sent: true, via: "resend" });
-      const err = await r.json().catch(() => ({}));
-      const why = `resend HTTP ${r.status}: ${(err && (err.message || err.name)) || "rejected"}`;
-      reasons.push(why); console.error("[api/notify-lead] Resend failed:", why);
-    }
-    if (w3.value) {
-      try {
-        const r = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json", "User-Agent": "PakAgriShare-Lead-Alerts/1.0" },
-          body: JSON.stringify({ access_key: w3.value, subject, from_name: "PakAgriShare Leads", message: text, ...(lead.farmerEmail ? { replyto: lead.farmerEmail } : {}) }),
-        });
-        const raw = await r.text();
-        let j = {}; try { j = JSON.parse(raw); } catch (e) { j = { message: `non-JSON reply: ${raw.replace(/\s+/g, " ").slice(0, 120)}` }; }
-        if (r.ok && j.success !== false) return res.status(200).json({ ok: true, sent: true, via: "web3forms" });
-        const why = `web3forms HTTP ${r.status}: ${j.message || "rejected"}`;
-        reasons.push(why); console.error("[api/notify-lead] Web3Forms failed:", why);
-      } catch (e) {
-        const why = `web3forms unreachable: ${e && e.message ? e.message : e}`;
-        reasons.push(why); console.error("[api/notify-lead]", why);
-      }
-    } else {
-      const why = "no Web3Forms key in this deployment (WEB3FORMS_ACCESS_KEY empty or not set for this environment; redeploy after adding it)";
-      reasons.push(why); console.warn("[api/notify-lead] Web3Forms skipped:", why, "| VERCEL_ENV =", process.env.VERCEL_ENV || "unknown");
-    }
-    // no email sent: the lead is still saved in Firestore by the app; "reason" says why
-    return res.status(200).json({ ok: true, sent: false, via: "none", reason: reasons.join(" | ") });
+    return await sendEmail(res, { to, subject, text, html, replyTo: lead.farmerEmail, resend, w3 });
   } catch (err) {
     console.error("[api/notify-lead] unexpected error:", err);
     try { if (!res.headersSent) return res.status(200).json({ ok: true, sent: false, via: "none", note: "email step failed" }); } catch (e) { /* gone */ }

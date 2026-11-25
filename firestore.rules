@@ -294,30 +294,30 @@ service cloud.firestore {
         || (request.resource.data.ownerUid == request.auth.uid
             && request.resource.data.status == 'approved'
             && request.resource.data.get('isVerified', false) == false
-            && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone'])));
+            && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone', 'recordVerified', 'recordVerifiedAt', 'recordVerifiedBy'])));
       allow update: if signedIn() && smallDoc() && (isAdmin()
         || (resource.data.get('ownerUid', '') == request.auth.uid
             && request.resource.data.get('ownerUid', '') == request.auth.uid
-            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'isVerified', 'verifiedAt', 'ownerEmail', 'ownerPhone'])));
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'isVerified', 'verifiedAt', 'ownerEmail', 'ownerPhone', 'recordVerified', 'recordVerifiedAt', 'recordVerifiedBy'])));
       allow delete: if isAdmin() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid);
     }
     // "Zameen Ki Boli": members can read (owners in the district send offers); renter contact lives elsewhere
     match /land_requests/{id} {
       allow read: if signedIn();
       allow create: if signedIn() && smallDoc() && request.resource.data.renterUid == request.auth.uid
-        && !request.resource.data.keys().hasAny(['renterEmail', 'renterPhone']);
-      allow update: if signedIn() && smallDoc()
-        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['renterEmail', 'renterPhone', 'renterUid']);
+        && !request.resource.data.keys().hasAny(['renterEmail', 'renterPhone', 'recordVerified', 'recordVerifiedAt', 'recordVerifiedBy']);
+      allow update: if signedIn() && smallDoc() && (isAdmin()
+        || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['renterEmail', 'renterPhone', 'renterUid', 'recordVerified', 'recordVerifiedAt', 'recordVerifiedBy']));
       allow delete: if isAdmin() || (signedIn() && resource.data.renterUid == request.auth.uid);
     }
     // Land leases: only the land owner, the tenant and admins
     match /land_bookings/{id} {
       allow read: if isAdmin() || (signedIn() && (resource.data.ownerUid == request.auth.uid || resource.data.tenantUid == request.auth.uid));
       allow create: if signedIn() && smallDoc() && request.resource.data.tenantUid == request.auth.uid
-        && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone', 'renterEmail', 'renterPhone']);
+        && !request.resource.data.keys().hasAny(['ownerEmail', 'ownerPhone', 'renterEmail', 'renterPhone', 'recordVerified', 'recordVerifiedAt', 'recordVerifiedBy']);
       allow update: if signedIn() && smallDoc() && (isAdmin()
         || ((resource.data.ownerUid == request.auth.uid || resource.data.tenantUid == request.auth.uid)
-            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['ownerUid', 'tenantUid', 'ownerEmail', 'ownerPhone', 'renterEmail', 'renterPhone'])));
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['ownerUid', 'tenantUid', 'ownerEmail', 'ownerPhone', 'renterEmail', 'renterPhone', 'recordVerified', 'recordVerifiedAt', 'recordVerifiedBy'])));
       allow delete: if isAdmin();
     }
     // Land owner contact: the owner, tenants whose lease the owner accepted (acceptedUids), and the founder
