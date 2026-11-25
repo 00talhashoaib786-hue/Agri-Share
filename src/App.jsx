@@ -389,6 +389,11 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    mk_show_all: "Show all listings across Pakistan",
+    mk_show_all_any: "Show all listings nationwide",
+    mk_showing_all: "Showing all listings across Pakistan",
+    mk_showing_all_any: "Showing all listings nationwide",
+    mk_back_radius: "Back to {km} km radius",
     lv_verified: "Record Verified by PakAgriShare",
     lv_requested: "Admin Review Requested",
     lv_req_label: "Request PakAgriShare Admin Verification & Record Review (Optional)",
@@ -1645,6 +1650,11 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    mk_show_all: "پورے پاکستان کی تمام لسٹنگز دیکھیں",
+    mk_show_all_any: "ملک بھر کی تمام لسٹنگز دیکھیں",
+    mk_showing_all: "پورے پاکستان کی تمام لسٹنگز دکھائی جا رہی ہیں",
+    mk_showing_all_any: "ملک بھر کی تمام لسٹنگز دکھائی جا رہی ہیں",
+    mk_back_radius: "واپس {km} کلومیٹر دائرے پر",
     lv_verified: "پاک ایگری شیئر سے ریکارڈ کی تصدیق شدہ",
     lv_requested: "ایڈمن جائزے کی درخواست",
     lv_req_label: "پاک ایگری شیئر ایڈمن تصدیق اور ریکارڈ کا جائزہ (اختیاری)",
@@ -2901,6 +2911,11 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    mk_show_all: "پورے پاکستان دیاں ساریاں لسٹنگاں ویکھو",
+    mk_show_all_any: "سارے ملک دیاں ساریاں لسٹنگاں ویکھو",
+    mk_showing_all: "پورے پاکستان دیاں ساریاں لسٹنگاں وکھائیاں جا رہیاں نیں",
+    mk_showing_all_any: "سارے ملک دیاں ساریاں لسٹنگاں وکھائیاں جا رہیاں نیں",
+    mk_back_radius: "واپس {km} کلومیٹر دائرے تے",
     lv_verified: "پاک ایگری شیئر ولوں ریکارڈ دی تصدیق ہوئی",
     lv_requested: "ایڈمن جائزے دی درخواست",
     lv_req_label: "پاک ایگری شیئر ایڈمن تصدیق تے ریکارڈ دا جائزہ (مرضی نال)",
@@ -4060,6 +4075,11 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    mk_show_all: "سڄي پاڪستان جون سڀ لسٽنگون ڏسو",
+    mk_show_all_any: "سڄي ملڪ جون سڀ لسٽنگون ڏسو",
+    mk_showing_all: "سڄي پاڪستان جون سڀ لسٽنگون ڏيکاريون پيون وڃن",
+    mk_showing_all_any: "سڄي ملڪ جون سڀ لسٽنگون ڏيکاريون پيون وڃن",
+    mk_back_radius: "واپس {km} ڪلوميٽر دائري تي",
     lv_verified: "پاک ايگري شيئر طرفان رڪارڊ جي تصديق ٿيل",
     lv_requested: "ايڊمن جائزي جي درخواست",
     lv_req_label: "پاک ايگري شيئر ايڊمن تصديق ۽ رڪارڊ جو جائزو (اختياري)",
@@ -5220,6 +5240,11 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    mk_show_all: "د ټول پاکستان ټول لیستونه وګورئ",
+    mk_show_all_any: "د ټول هېواد ټول لیستونه وګورئ",
+    mk_showing_all: "د ټول پاکستان ټول لیستونه ښودل کېږي",
+    mk_showing_all_any: "د ټول هېواد ټول لیستونه ښودل کېږي",
+    mk_back_radius: "بېرته {km} کیلومتره دایرې ته",
     lv_verified: "د پاک ایګري شېئر لخوا ریکارډ تایید شوی",
     lv_requested: "د اډمین د بیاکتنې غوښتنه",
     lv_req_label: "د پاک ایګري شېئر اډمین تایید او د ریکارډ بیاکتنه (اختیاري)",
@@ -6099,6 +6124,11 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    mk_show_all: "سجّیں پاکستانءِ کُلّیں لسٹنگاں بچار",
+    mk_show_all_any: "سجّیں ملکءِ کُلّیں لسٹنگاں بچار",
+    mk_showing_all: "سجّیں پاکستانءِ کُلّیں لسٹنگ پیش کنگ بوگ اَنت",
+    mk_showing_all_any: "سجّیں ملکءِ کُلّیں لسٹنگ پیش کنگ بوگ اَنت",
+    mk_back_radius: "پدا {km} کلومیٹرءِ دائرہءَ",
     lv_verified: "پاک ایگری شیئرءِ نیمگا ریکارڈ منّتگ بوتگ",
     lv_requested: "ایڈمنءِ چارگءِ لوٹ",
     lv_req_label: "پاک ایگری شیئر ایڈمنءِ منّگ و ریکارڈءِ چارگ (وتی واهگ)",
@@ -8960,12 +8990,12 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
   // short skeleton while listings settle (first paint and country switch)
   const [ready, setReady] = useState(false);
   useEffect(() => { setReady(false); const id = setTimeout(() => setReady(true), 420); return () => clearTimeout(id); }, [country]);
-  const { category, province = "all", radius, query } = filters;
+  const { category, province = "all", radius, query, nationwide = false } = filters;
   const set = (patch) => setFilters((f) => ({ ...f, ...patch }));
   // Reset filters: category, search, radius, province, the farm location pin AND the country (back to Pakistan · PKR)
   const resetAll = () => {
     if (setCountry && country !== "PK") setCountry("PK");
-    setFilters({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" });
+    setFilters({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "", nationwide: false });
     if (setUserLoc) setUserLoc(null);
     if (toast) toast(t("reset_done"));
   };
@@ -8974,10 +9004,19 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
     return listings
       .filter((l) => (category === "all" || l.category === category))
       .filter((l) => (province === "all" || (l.province || "PB") === province))
-      .filter((l) => l.distance <= radius)
+      .filter((l) => nationwide || l.distance <= radius)
       .filter((l) => !q || [l.name, l.village, l.district, l.ownerId].join(" ").toLowerCase().includes(q))
-      .sort((a, b) => (b.available - a.available) || a.distance - b.distance);
-  }, [listings, category, province, radius, query]);
+      .sort((a, b) => (b.available - a.available) || (a.distance || 0) - (b.distance || 0));
+  }, [listings, category, province, radius, query, nationwide]);
+  // every active listing in the country for this machine type and search, ignoring distance and province
+  const nationwideCount = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return listings.filter((l) => l.available && (category === "all" || l.category === category) && (!q || [l.name, l.village, l.district, l.ownerId].join(" ").toLowerCase().includes(q))).length;
+  }, [listings, category, query]);
+  const showNationwide = () => {
+    set({ nationwide: true, province: "all" });
+    setTimeout(() => { const el = document.getElementById("market"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+  };
   // when nothing is inside the radius, still show the closest machines (with their real distance)
   const nearestBeyond = useMemo(() => (userLoc ? listings.filter((l) => l.available && !l.unknownPlace && (category === "all" || l.category === category) && l.distance > radius).sort((a, b) => a.distance - b.distance).slice(0, 3) : []), [listings, userLoc, category, radius]);
   const pct = ((radius - 1) / (MAX_RADIUS - 1)) * 100;
@@ -9030,7 +9069,7 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
                 <label htmlFor="radius" className="text-sm font-semibold text-soil">{t("f_radius")}</label>
                 <span className="rounded-lg bg-forest px-2 py-0.5 text-sm font-bold text-ivory">{radius} {t("km")}</span>
               </div>
-              <input id="radius" type="range" min="1" max={MAX_RADIUS} step="1" value={radius} onChange={(e) => set({ radius: Number(e.target.value) })}
+              <input id="radius" type="range" min="1" max={MAX_RADIUS} step="1" value={radius} onChange={(e) => set({ radius: Number(e.target.value), nationwide: false })}
                 className="range w-full" style={{ "--pct": pct + "%" }} aria-valuetext={`${radius} km`} />
               <div className="mt-1 flex justify-between text-[11px] text-soil/80" dir="ltr"><span>1</span><span>15</span><span>40 km</span></div>
               <p className="mt-1 text-xs text-soil/80">{t("radius_note")}</p>
@@ -9055,9 +9094,15 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-soil/25 bg-white px-6 py-14 text-center">
               <Search className="h-10 w-10 text-soil/30" aria-hidden="true" />
               <p className="mt-3 max-w-md text-soil/80">{userLoc ? t("loc_far").replace("{km}", radius).replace("{place}", locLabel(userLoc)) : t("no_results")}</p>
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <button onClick={resetAll} className="min-h-[44px] rounded-xl bg-forest px-4 py-2 text-sm font-bold text-ivory">{t("reset")}</button>
-                {userLoc && <button onClick={onLive} className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-leafink px-4 py-2 text-sm font-bold text-white"><Radar className="h-4 w-4" aria-hidden="true" />{t("loc_try_live")}</button>}
+              <div className="mt-4 flex w-full flex-col items-stretch justify-center gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+                {!nationwide && nationwideCount > 0 && (
+                  <button type="button" onClick={showNationwide} className="min-h-[48px] inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-5 py-2.5 text-sm font-extrabold text-ivory shadow-md ring-2 ring-gold/60 hover:bg-forest/90 rtl:leading-[2]">
+                    <Globe className="h-4 w-4" aria-hidden="true" />{t(country === "PK" ? "mk_show_all" : "mk_show_all_any")}
+                    <span className="rounded-full bg-ivory/20 px-2 py-0.5 text-xs font-bold" dir="ltr">{nationwideCount}</span>
+                  </button>
+                )}
+                {onLive && <button type="button" onClick={() => onLive()} className="min-h-[48px] inline-flex items-center justify-center gap-1.5 rounded-xl bg-leafink px-5 py-2.5 text-sm font-bold text-white rtl:leading-[2]"><Radar className="h-4 w-4" aria-hidden="true" />{t("cta_live")}</button>}
+                <button type="button" onClick={resetAll} className="min-h-[44px] rounded-xl border border-soil/20 px-4 py-2 text-sm font-semibold text-soil hover:bg-ivory">{t("reset")}</button>
               </div>
               {nearestBeyond.length === 0 && country === "PK" && <PopularMachines t={t} onRequest={(c) => onLive(c)} />}
               {nearestBeyond.length === 0 && fallbackProps && !demoMode && (
@@ -9075,9 +9120,17 @@ function Marketplace({ fuel = null, t, dn, lang, listings, onBook, filters, setF
               )}
             </div>
           ) : (
+            <>
+            {nationwide && (
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-forest/15 bg-forest/5 px-3 py-2">
+                <p className="flex items-center gap-1.5 text-sm font-bold text-forest rtl:leading-[2]"><Globe className="h-4 w-4" aria-hidden="true" />{t(country === "PK" ? "mk_showing_all" : "mk_showing_all_any")}</p>
+                <button type="button" onClick={() => set({ nationwide: false })} className="min-h-[40px] rounded-lg border border-forest/20 bg-white px-3 py-1.5 text-xs font-bold text-forest hover:bg-ivory rtl:leading-[2]">{t("mk_back_radius").replace("{km}", radius)}</button>
+              </div>
+            )}
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {ready ? results.map((l) => <ListingCard key={l.id} l={l} t={t} dn={dn} lang={lang} onBook={onBook} />) : Array.from({ length: Math.max(3, Math.min(6, results.length)) }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
+            </>
           )}
         </div>
       </div>
@@ -10326,8 +10379,7 @@ function pickReplyLang(raw, uiLang) {
   return typed === "ur" ? scriptLang(String(raw || ""), uiLang) : typed;
 }
 
-// Machinery rate replies in every language. Ranges come from the country's rate card (CUR.catalog),
-// the same numbers shown on the machine-type cards, so the helper never contradicts the app.
+// Machinery rate replies in every language: no prices, only "owners set negotiable asking rates / use Apni Boli".
 const RATE_NAMES = {
   en: { tractor: "Tractor", land: "Agricultural land", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser land leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
   ro: { tractor: "Tractor", land: "Zarai zameen", harvester: "Combine harvester", thresher: "Thresher", leveler: "Laser leveler", drone: "Spray drone", planter: "Planter", implement: "Implement" },
@@ -10375,7 +10427,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   const avgRate = (c) => {
     const xs = avail.filter((l) => l.category === c);
     const src = xs.length ? xs : listings.filter((l) => l.category === c);
-    return src.length ? Math.round(src.reduce((s, l) => s + l.rate, 0) / src.length / 50) * 50 : { tractor: 2400, thresher: 1900, harvester: 8750 }[c];
+    return src.length ? Math.round(src.reduce((s, l) => s + l.rate, 0) / src.length / 50) * 50 : null; // no live listing: no price at all
   };
   const name = (c) => L({ en: { tractor: "tractor", thresher: "thresher", harvester: "combine harvester" }[c], ur: { tractor: "ٹریکٹر", thresher: "تھریشر", harvester: "کمبائن ہارویسٹر" }[c], ro: { tractor: "tractor", thresher: "thresher", harvester: "combine harvester" }[c] });
   const money = (n) => "Rs " + Math.round(n).toLocaleString("en-PK");
@@ -10401,6 +10453,12 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
 
   const costLines = (c, hrs) => {
     const rate = avgRate(c);
+    const litres0 = Math.round(DIESEL_L_PER_HR[c] * hrs);
+    if (!rate) return L({
+      en: `• ${name(c)}: ${hrs} h. There is no fixed price: each owner sets a negotiable asking rate, or post your own rate with Apni Boli.\n• Platform commission is 2.5% of the agreed rent (0% on your first deals under the Launch Offer)\n• Dry rent: diesel is extra, roughly ${litres0} litres (rule of thumb)`,
+      ur: `• ${name(c)}: ${hrs} گھنٹے۔ کوئی مقررہ قیمت نہیں: ہر مالک اپنا قابلِ بات چیت ریٹ لکھتا ہے، یا اپنی بولی میں اپنا ریٹ دیں۔\n• پلیٹ فارم کمیشن طے شدہ کرائے کا 2.5% ہے (لانچ آفر میں پہلی ڈیلز پر 0%)\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres0} لیٹر`,
+      ro: `• ${name(c)}: ${hrs} ghante. Koi fixed qeemat nahi: har maalik apna rate likhta hai jis par baat ho sakti hai, ya Apni Boli mein apna rate dein.\n• Platform commission tay shuda kiraye ka 2.5% hai (Launch Offer mein pehli deals par 0%)\n• Dry rent: diesel alag hai, andazan ${litres0} litre`,
+    });
     const base = rate * hrs, comm = Math.round(base * COMMISSION), total = base + comm, litres = Math.round(DIESEL_L_PER_HR[c] * hrs);
     return L({
       en: `• ${name(c)}: about ${hrs} h × ${money(rate)}/hr = ${money(base)}\n• + 2.5% platform commission ${money(comm)} → total about ${money(total)}\n• Dry rent: diesel is extra, roughly ${litres} litres (rule of thumb)\n• Operator, if optional, adds Rs 500/hr; transport, if optional, adds Rs 1,500`,
@@ -10427,7 +10485,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   // ---------- Website / portal guidance ----------
   const has = (re) => re.test(text);
   const steps = (o) => L(o) + "";
-  // Rate / rent questions answer with real hourly ranges BEFORE any other intent (Apni Boli, offers, diesel...)
+  // Rate / rent questions get the no-fixed-price answer BEFORE any other intent (Apni Boli, offers, diesel...)
   const askingTime = /waqt|time|kitni der|der lag|کتنا وقت|کتنی دیر|وقت/i.test(text);
   const aboutFees = /commission|کمیشن|\bfee|فیس/i.test(text);
   const dieselOnly = /diesel|fuel|ڈیزل|ایندھن/i.test(text) && !rateCat;
@@ -10616,13 +10674,14 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   });
 }
 
-// Live rate card for the selected country, the same ranges as the machine-type cards
+// Machine types for the selected country (names and horsepower only, never prices)
+// Machine types and horsepower for the AI. No prices: every owner sets their own negotiable asking rate.
 function rateCardText() {
   const card = (CUR && CUR.catalog) || [];
   return [...new Set(card.map((m) => m.cat))].map((c) => {
     const ms = card.filter((m) => m.cat === c);
     const hp = ms.map((m) => (String(m.spec).match(/(\d+)\s*HP/) || [])[1]).filter(Boolean).map(Number);
-    return `- ${(RATE_NAMES.en[c] || c)}${hp.length > 1 ? ` (${Math.min(...hp)}-${Math.max(...hp)} HP)` : ""}: ${fmtLocal(Math.min(...ms.map((m) => m.min)))} to ${fmtLocal(Math.max(...ms.map((m) => m.max)))} per hour, dry rent. Models: ${ms.map((m) => `${m.name} (${m.spec}, ${fmtLocal(m.min)}-${fmtLocal(m.max)})`).join("; ")}`;
+    return `- ${(RATE_NAMES.en[c] || c)}${hp.length > 1 ? ` (${Math.min(...hp)}-${Math.max(...hp)} HP)` : ""}: ${ms.map((m) => m.name).join(", ")}`;
   }).join("\n");
 }
 
@@ -10633,12 +10692,13 @@ function buildSystem(listings, session, dieselPrice = DIESEL_BENCHMARK, uiLang =
 
 function buildPrompt(history, listings, session, dieselPrice = DIESEL_BENCHMARK, uiLang = "en", voice = false, systemOnly = false, replyLang = null) {
   const langName = (LANGS.find((l) => l.code === uiLang) || LANGS[0]).name;
-  const lst = listings.filter((l) => l.available).map((l) => `- ${l.name} (${l.category}) in ${l.village}, ${l.district}: PKR ${l.rate}/hr, ${l.distance} km, operator ${l.operator}, transport ${l.transport}, owner ${l.ownerId}`).join("\n");
+  const lst = listings.filter((l) => l.available).map((l) => `- ${l.name} (${l.category}) in ${l.village}, ${l.district}: owner's negotiable asking rate PKR ${l.rate}/hr, ${l.distance} km, operator ${l.operator}, transport ${l.transport}, owner ${l.ownerId}`).join("\n");
   const convo = history.map((m) => `${m.role === "user" ? "Farmer" : "Helper"}: ${m.text}`).join("\n");
-  const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec}, about ${fmtLocal(m.min)} to ${fmtLocal(m.max)}/hr)`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
+  const ctry = CUR.id === "PK" ? "" : `\nSelected country/region: ${({ CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id]}. Quote prices in ${CUR.code} (reference rate 1 USD = ${USD_PKR} PKR; listing rates below are stored in PKR, convert them). Local machinery in this region: ${CUR.catalog.map((m) => `${m.name} (${m.spec})`).join("; ")}. Pakistani rules about transport fees, diesel price and USSD apply only in Pakistan.`;
   const persona = `You are "PakAgriShare Kisan Advisor": a warm, respectful, intelligent Pakistani agricultural advisor for PakAgriShare, a peer-to-peer agricultural machinery rental and crop marketplace (tagline "Sharing Resources, Growing Together"). Speak like a trusted elder brother or sister from the village who also knows the business: practical, kind, never condescending. Understand natural accents, slang, typos and mixed Urdu / Punjabi / English (for example "mujhay kiraya zyada lag raha ha kam kaisay krun" means "the rent feels too high, how can I reduce it"), and answer the real need behind the question.
 LANGUAGE RULE (most important): mirror the language of the farmer's LATEST message only, never the language of the greeting or of earlier messages. English message (for example "what is meant by zameen thaika") -> reply in clean, natural English; Pakistani terms such as Zameen Thaika, Apni Boli or Nehri may stay as names, but explain them in English. Roman Urdu message (for example "zameen thaika kya hota hai" or "tractor kitne ka milega") -> reply only in Roman Urdu with Pakistani vocabulary (pani ka zariya, zameen, kisan, shukriya, meharbani, waqt), never Hindi words such as srot, jal, dhanyavaad, kripya or samay. Urdu, Punjabi, Sindhi, Pashto or Balochi script -> reply in that language and script. SCRIPT PURITY: write ONLY in plain Latin letters (English / Roman Urdu) or ONLY in Urdu Nastaliq / Perso-Arabic script; never mix in Devanagari, Bengali, Gurmukhi, Malayalam or any other Indic characters. Do not use markdown symbols such as ** or #. Urdu script in, Urdu script out; Roman Urdu in, Roman Urdu out; English in, English out; Punjabi in Shahmukhi, Sindhi, Pashto and Balochi in their Perso-Arabic scripts. If unclear, use the app language (${langName}). Never write Hindi / Devanagari.
-CURRENT RATE CARD (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; rough market reference only. There are NO fixed prices on PakAgriShare: every owner sets their own asking rate on their listing and it is always negotiable. When asked about rent, rates or prices, first explain that the farmer can negotiate the owner's asking rate, send their own offer, or post their own price with Apni Boli; mention live listing asking rates when relevant, and give a range only as a rough reference, never as a fixed price):
+PRICING RULE (very important, every language): PakAgriShare has NO fixed, typical or average machinery rental prices. Never state, estimate or invent any hourly rent figure or price range for a tractor, thresher, harvester, leveler, drone or any machine, in English, Roman Urdu or any regional language. Every owner sets their own asking rate on their listing and it is always negotiable. When asked "how much", "kitne ka", "kiraya kya hai" or similar: (1) explain there is no fixed price, (2) the farmer can open a live listing and negotiate the owner's asking rate or tap Make Own Offer, (3) or post their own price with Apni Boli (Post a Request) and nearby owners send offers. You may mention the asking rate of a specific live listing shown below only as that owner's negotiable asking rate.
+MACHINE TYPES ON PAKAGRISHARE (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; names only):
 ${rateCardText()}
 Platform fee: 2.5% standard, 2% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
   const base = `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}${persona}
@@ -10657,7 +10717,7 @@ How to use the website (guide users step by step when they ask):
 - Sign out: click your name/initials at top right > Sign out.
 - Book: Marketplace > filters (category, district, radius 15 km default up to 40 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
 - List a machine: Owner Portal > "List Available Machinery" > name, category, hourly rate, district, village, distance, operator and transport terms > "Add to marketplace". Earnings Estimator in Owner Portal.
-- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer (often +Rs 200/hr); farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 2.5% commission, grand total). "No match, expand search" button moves to the next tier.
+- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer; farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 2.5% commission, grand total). "No match, expand search" button moves to the next tier.
 - Commission: 2.5% standard; smallholders under 5 acres tick a box for a subsidised 2%.
 - Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, PakAgriShare carries none.
 - Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Real buyers and mills are still being onboarded: say so honestly and never claim live bids from registered mills (simulated buyer bids appear only in the founder's Sample Demo Data mode). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
@@ -10682,7 +10742,7 @@ NEW PAKAGRISHARE FEATURES (explain these accurately when asked; never invent fea
 ${session ? `The farmer is signed in as ${session.name} (${session.role}).` : "The farmer is not signed in."}
 Current listings:
 ${lst}
-Answer ANY question: about using this website, renting, farming machinery, crops, or general topics. ${uiLang === "en" ? "The app is in English. Still mirror the farmer's latest message: English, Roman Urdu or Urdu script." : `The app language is ${langName}. A message in Perso-Arabic script (including tapped suggestion chips) gets a reply in ${langName} in its usual script; a message typed in English gets an English reply; a message in Roman Urdu gets a Roman Urdu reply. If unsure of a ${langName} word, keep it simple rather than switching language.`}${replyLang ? ` REPLY LANGUAGE FOR THE LATEST MESSAGE: ${({ en: "English", ro: "Roman Urdu (Latin letters only, Pakistani vocabulary)", ur: "Urdu in Urdu script", pa: "Punjabi in Shahmukhi script", sd: "Sindhi in Sindhi script", ps: "Pashto in Pashto script", bal: "Balochi in Perso-Arabic script" })[replyLang] || "English"}.` : ""} SCRIPT RULE: never write Hindi or any Devanagari characters. Urdu must be in Urdu (Perso-Arabic) script and Punjabi in Shahmukhi (Perso-Arabic) script; use Roman Urdu or Roman Punjabi only if the farmer wrote in Roman letters.${voice ? (uiLang === "en" ? " This is a live voice call in English: reply only in English." : ` This is a live voice call in ${langName}: reply only in ${langName}.`) + " VOICE-CALL MODE: you are talking to the farmer on a live phone call and your words are read aloud by text-to-speech. Reply in 2 to 3 short, warm, natural spoken sentences in the farmer's exact language. No markdown, bullets, numbering, symbols, tables or URLs. Write money and numbers the way people say them (for example 1,800 se 3,500 rupay, or 1,800 سے 3,500 روپے, never PKR or Rs). For machine rates, say the hourly range first, then one short tip about Apni Boli." : ""} In English replies call the crop-selling tab "Agri-Market". Keep answers short (under 150 words), use numbered steps for how-to questions, show the arithmetic for cost estimates, and never use em dashes.`;
+Answer ANY question: about using this website, renting, farming machinery, crops, or general topics. ${uiLang === "en" ? "The app is in English. Still mirror the farmer's latest message: English, Roman Urdu or Urdu script." : `The app language is ${langName}. A message in Perso-Arabic script (including tapped suggestion chips) gets a reply in ${langName} in its usual script; a message typed in English gets an English reply; a message in Roman Urdu gets a Roman Urdu reply. If unsure of a ${langName} word, keep it simple rather than switching language.`}${replyLang ? ` REPLY LANGUAGE FOR THE LATEST MESSAGE: ${({ en: "English", ro: "Roman Urdu (Latin letters only, Pakistani vocabulary)", ur: "Urdu in Urdu script", pa: "Punjabi in Shahmukhi script", sd: "Sindhi in Sindhi script", ps: "Pashto in Pashto script", bal: "Balochi in Perso-Arabic script" })[replyLang] || "English"}.` : ""} SCRIPT RULE: never write Hindi or any Devanagari characters. Urdu must be in Urdu (Perso-Arabic) script and Punjabi in Shahmukhi (Perso-Arabic) script; use Roman Urdu or Roman Punjabi only if the farmer wrote in Roman letters.${voice ? (uiLang === "en" ? " This is a live voice call in English: reply only in English." : ` This is a live voice call in ${langName}: reply only in ${langName}.`) + " VOICE-CALL MODE: you are talking to the farmer on a live phone call and your words are read aloud by text-to-speech. Reply in 2 to 3 short, warm, natural spoken sentences in the farmer's exact language. No markdown, bullets, numbering, symbols, tables or URLs. Write money and numbers the way people say them (for example 5,000 rupay, or 5,000 روپے, never PKR or Rs). For machine rates, never say any price or range: say there is no fixed price, the owner's asking rate is negotiable, and they can post their own rate with Apni Boli." : ""} In English replies call the crop-selling tab "Agri-Market". Keep answers short (under 150 words), use numbered steps for how-to questions, show the arithmetic for cost estimates, and never use em dashes.`;
   if (systemOnly) return base;
   return `${base}
 
@@ -16015,7 +16075,7 @@ function App() {
     const { activeDistricts, ...rest } = saved; // older versions stored pilot districts; provinces replace them
     return { dieselPrice: DIESEL_BENCHMARK, dieselUpdatedAt: null, activeProvinces: PROVINCES, ...rest };
   });
-  const [filters, setFilters] = useState({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "" });
+  const [filters, setFilters] = useState({ category: "all", province: "all", radius: DEFAULT_RADIUS, query: "", nationwide: false });
   const [bookingTarget, setBookingTarget] = useState(null);
   const [bookingOffer, setBookingOffer] = useState(false); // opened from "Make Own Offer"
   const [toasts, setToasts] = useState([]);
