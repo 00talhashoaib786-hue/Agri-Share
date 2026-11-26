@@ -46,16 +46,16 @@ const TRANSPORT_PER_KM = 100; // PKR per km, distance based (illustrative)
 const TRANSPORT_MIN = 500; // minimum transport charge
 const MIN_OFFER_RATIO = 0.6; // an offer must be at least 60% of the listed rate
 const transportFee = (km) => Math.max(trMin(), Math.round(((Number(km) || 0) * trKm()) / 50) * 50);
-const COMMISSION = 0.025; // machinery platform commission: the lowest rung of the 2.5% / 3.5% / 4.5% ladder
-const SMALLHOLDER_COMMISSION = 0.02; // subsidised machinery rate for smallholders under 5 acres (same as the 360° floor)
+const COMMISSION = 0.01; // flat 1% Platform Service Fee, the same on machinery, crops and land
+const SMALLHOLDER_COMMISSION = COMMISSION; // one flat fee for every farmer: no separate smallholder rate any more
 const ADVANCE_SHARE = 0.3; // Harvest Now, Pay Later: 30% advance, 70% after harvest (credit by a third-party partner)
 const CREDIT_PARTNERS = ["JazzCash Credit", "EasyPaisa", "ZTBL"]; // proposed partners only, no agreement exists
-const pctLabel = (r) => Math.round(r * 1000) / 10 + "%"; // 0.025 -> "2.5%"
+const pctLabel = (r) => Math.round(r * 1000) / 10 + "%"; // 0.01 -> "1%"
 /* Launch promo: each owner's first deals per category carry 0% platform commission.
    Deals closed before PROMO_START count as already used (no retroactive refunds). */
 const PROMO_START = Date.UTC(2026, 10, 22);
 const PROMO_FREE = { machinery: 5, crop: 3, land: 1 };
-const CROP_COMMISSION = 0.035; // Agri-Market crop and vegetable sales, after the free deals
+const CROP_COMMISSION = COMMISSION; // Agri-Market crop and vegetable sales, after the free deals (flat 1%)
 const promoSlot = (kind, used) => (used < PROMO_FREE[kind] ? { kind, n: used + 1, of: PROMO_FREE[kind] } : null);
 // zero the commission on a quote; the owner receives 100% of the total
 const withPromo = (q, slot) => {
@@ -66,8 +66,11 @@ const withPromo = (q, slot) => {
   return r;
 };
 const promoText = (t, slot) => t("promo_free_n").replace("{n}", slot.n).replace("{of}", slot.of);
-// "PakAgriShare Platform Commission (0% · Launch Promo: Free Deal 2 of 5)" or the normal "Platform commission (2.5%)"
-const commLabel = (t, q, fallbackRate = COMMISSION) => (q && q.promo ? t("promo_comm_line").replace("{x}", promoText(t, q.promo))
+// the 1% a launch-promo deal would have paid: shown as "Saved PKR ..." so the promo feels like a reward
+const feeSavedFor = (q) => Math.round((Number(q && (q.subtotal != null ? q.subtotal : q.base)) || 0) * ((q && q.stdCommissionRate) || COMMISSION));
+const promoSavedLine = (t, saved) => t("promo_saved_line").replace("{amt}", pkr(saved));
+// "Launch Bonus: 1% Service Fee Waived (Saved PKR 120)" or the normal "Platform Service & Support (1%)"
+const commLabel = (t, q, fallbackRate = COMMISSION) => (q && q.promo ? promoSavedLine(t, feeSavedFor(q))
   : t("bk_comm").replace("{p}", pctLabel((q && (q.commissionRate || (q.subtotal ? q.commission / q.subtotal : 0))) || fallbackRate)));
 // machinery: confirmed / completed bookings, plus requests already holding a free slot
 const machineryPromoUsed = (bookings, ownerUid) => (ownerUid ? bookings.filter((b) => b.ownerUid === ownerUid
@@ -389,6 +392,7 @@ const RTL_FALLBACK = "ur";
 
 const T = {
   en: {
+    promo_saved_line: "Launch Bonus: 1% Service Fee Waived (Saved {amt})",
     wa_share: "Share on WhatsApp",
     wa_share_req_hint: "Share your request in village WhatsApp groups so more owners see it.",
     au_id: "Mobile number or email",
@@ -430,8 +434,8 @@ const T = {
     brand_name: "PakAgriShare",
     pub_promo_t: "0% Launch Promo",
     pub_promo_s: "Your first deals are commission free: 5 machinery, 3 crop and 1 land deal.",
-    pub_ladder_t: "Commission ladder",
-    pub_ladder_s: "After your free deals, a small fee applies only on confirmed deals.",
+    pub_ladder_t: "Platform Service Fee",
+    pub_ladder_s: "After your free deals, one flat 1% fee applies only on confirmed deals.",
     pub_ladder_machinery: "Machinery rental",
     pub_ladder_crop: "Crop sale",
     pub_ladder_land: "Land lease (Zameen Thaika)",
@@ -455,13 +459,13 @@ const T = {
     tour8_2_t: "Apni Boli: Set Your Own Rate",
     tour8_2_s: "No forced rates or middlemen. Name your own hourly or per-acre offer and match directly with owners within 40 km.",
     tour8_3_t: "Zameen Thaika & Stamp-Paper Iqrarnama",
-    tour8_3_s: "Lease or rent farmland safely with a bilingual stamp-paper Iqrarnama, plus an extra 0.50% machinery fee rebate.",
+    tour8_3_s: "Lease or rent farmland safely with a bilingual stamp-paper Iqrarnama.",
     tour8_4_t: "Agri-Market: All Crops & Vegetables",
     tour8_4_s: "Sell wheat, rice, cotton or any vegetable with real photo and video proof, directly to verified buyers.",
     tour8_5_t: "0% Launch Promo for Owners",
     tour8_5_s: "Turn idle tractors and land into steady income: 0% commission on your first 5 machinery, 3 crop and 1 land deals.",
-    tour8_6_t: "Agri-Wallet & Lowest 2.5% Fee",
-    tour8_6_s: "An industry-low 2.5% machinery fee, a prepaid Agri-Wallet you can track anytime, and photo / video work proofs.",
+    tour8_6_t: "Agri-Wallet & Flat 1% Service Fee",
+    tour8_6_s: "One flat 1% platform service fee on every deal, a prepaid Agri-Wallet you can track anytime, and photo / video work proofs.",
     tour8_7_t: "Keypad Phone & Village Agent Access",
     tour8_7_s: "No smartphone or internet? Book through your local village Agri-Agent. USSD booking is coming soon.",
     tour8_8_t: "AI Kisan Helper in 6 Languages",
@@ -486,7 +490,7 @@ const T = {
     am_custom_ph: "For example: Peas, Okra, Guava",
     am_err_custom: "Write the crop or vegetable name.",
     aw_balance: "Agri-Wallet Balance",
-    aw_sub: "Prepaid balance for platform commission. After your free launch deals, the commission (machinery 2.5%, crops 3.5%, land 4.5%) is taken from here when you confirm or accept a deal.",
+    aw_sub: "Prepaid balance for the platform service fee. After your free launch deals, one flat 1% service fee is taken from here when you confirm or accept a deal.",
     aw_topup: "Top Up Agri-Wallet",
     aw_ledger: "Agri-Wallet transactions",
     aw_none: "No transactions yet.",
@@ -530,15 +534,15 @@ const T = {
     adw_txn: "Txn ID",
     adw_founder_only: "Only the founder can credit wallets.",
     promo_free_n: "Launch Promo: Free Deal {n} of {of}",
-    promo_comm_line: "PakAgriShare Platform Commission (0% · {x})",
+    promo_comm_line: "Platform Service & Support (0% · {x})",
     promo_net_s: "Launch Promo: 100% of the total goes directly to the owner / seller",
-    promo_title: "Launch Offer: Free Commission Remaining",
+    promo_title: "Launch Offer: Free Service Fee Deals Remaining",
     promo_cat_machinery: "Machinery",
     promo_cat_crop: "Crop Market",
     promo_cat_land: "Zameen Thaika",
     promo_free_word: "free",
-    promo_note: "0% platform commission on your first 5 machinery bookings, 3 crop sales and 1 land lease. After that the standard rate applies: machinery 2.5% (2% smallholder), crops 3.5%, land 4.5%.",
-    promo_used_up: "All free launch deals are used. Standard commission now applies: machinery 2.5% (2% smallholder), crops 3.5%, land 4.5%.",
+    promo_note: "0% service fee on your first 5 machinery bookings, 3 crop sales and 1 land lease. After that, one flat 1% platform service fee applies to every deal.",
+    promo_used_up: "All free launch deals are used. The flat 1% platform service fee now applies.",
     tour_btn_s: "Guide",
     am_own_offer_pill: "Farmer's asking rate. Make your own offer · Apni boli lagayein",
     reset_done: "Filters & location reset",
@@ -616,8 +620,8 @@ const T = {
     ad_cp_edit: "Edit Account Details",
     ad_cp_cancel: "Cancel",
     ad_cp_saved_badge: "Saved account, shown on every bill",
-    cs_comm_t: "PakAgriShare Platform Commission",
-    cs_comm_s: "Auto-deducted platform facilitation fee payable to PakAgriShare Official Account",
+    cs_comm_t: "Platform Service & Support (1%)",
+    cs_comm_s: "Covers secure booking, support and records. Paid to the PakAgriShare Official Account.",
     cs_net_t: "Net Owner Payout",
     cs_net_s: "Direct payout to Machinery / Land Owner",
     ca_title: "PakAgriShare Official Collection Account",
@@ -735,8 +739,8 @@ const T = {
     hero_bookings: "bookings made on this device",
     tr1_t: "Verified / Unverified badges",
     tr1_s: "Listings go live immediately with clear Verified / Unverified badges and direct consultant support",
-    tr2_t: "2.5% to 4.5% fair commission",
-    tr2_s: "Only 2% for smallholders under 5 acres",
+    tr2_t: "Direct Farmer-to-Owner & Buyer Deals",
+    tr2_s: "Zero middleman: deal directly with owners and buyers",
     tr3_t: "30/70 harvest credit",
     tr3_s: "Pay 30% now, 70% after harvest (proposed partners)",
     tr4_t: "Real consultant support",
@@ -1117,7 +1121,7 @@ const T = {
     request: "Request Booking", unavailable: "Currently unavailable", owner: "Owner", new_badge: "New listing",
     bk_title: "Request booking", bk_date: "Rental date", bk_hours: "Working hours", bk_operator: "Add operator", bk_transport: "Add transport",
     bk_breakdown: "Transparent price breakdown", bk_base: "Base dry-rent", bk_op: "Operator", bk_tr: "Transport", bk_sub: "Subtotal",
-    bk_comm: "Platform commission ({p})", bk_total: "Total estimated", bk_fuel_line: "Diesel/fuel: supplied by renter (not in price)",
+    bk_comm: "Platform Service & Support ({p})", bk_total: "Total estimated", bk_fuel_line: "Diesel/fuel: supplied by renter (not in price)",
     bk_ack: "I understand this is a dry rent: I will provide diesel/fuel, and overtime and late-return terms will be agreed with the owner before confirmation.",
     bk_pay: "Payment option", bk_pay_note: "Pay with EasyPaisa, JazzCash or cash through your Agri-Agent.",
     pay_easypaisa: "EasyPaisa", pay_jazzcash: "JazzCash", pay_agent: "Cash via local Agri-Agent",
@@ -1136,7 +1140,7 @@ const T = {
     ow_no_req: "No pending requests right now.", ow_pending: "Pending", ow_history: "Responded", ow_available: "Available", ow_hidden: "Hidden", ow_remove: "Remove",
     es_machine: "Machine", es_hours: "Idle hours available per day", es_days: "Rental days per season", es_util: "Expected booking rate",
     es_result: "Estimated seasonal rental income", es_month: "per season", es_confirmed: "From confirmed bookings so far",
-    es_note: "The 2.5% commission (2% for smallholders) is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
+    es_note: "The 1% platform service fee is added to the renter's bill, so the owner keeps the full rental. Fuel is excluded (dry rent).",
     ag_title: "Agri-Agent & USSD Offline Booking", ag_sub: "Local village shopkeepers help farmers without smartphones find and book machinery.",
     ag1_t: "Who is an Agri-Agent?", ag1_d: "An existing village grocery or mobile-load shop, trained as a local booking point.",
     ag2_t: "What do they do?", ag2_d: "Explain the service, register farmers, show available machines and submit booking requests.",
@@ -1296,7 +1300,7 @@ const T = {
     lr_diesel_admin: "National diesel benchmark: {v}/L",
     lr_recent: "Your recent requests",
     bk_smallholder: "Smallholder farmer (under 5 acres)",
-    bk_smallholder_sub: "Subsidised 2% commission instead of the standard 2.5%.",
+    bk_smallholder_sub: "Every farmer, big or small, pays the same flat 1% service fee.",
     pay_paylater: "Harvest Now, Pay Later (30% now + 70% after harvest)",
     pl_now: "Pay now (30%)",
     pl_later: "After harvest (70%)",
@@ -1533,12 +1537,12 @@ const T = {
     ld_declined: "Declined",
     ld_contact: "Show contact",
     ld_agreement: "Print / Download Stamp-Paper Agreement",
-    cm_title: "PakAgriShare commission",
-    cm_sub: "A flat one-time facilitation fee of 4.5% on the total lease value, whatever the lease length.",
-    cm_total: "Total commission",
+    cm_title: "PakAgriShare Platform Service & Support",
+    cm_sub: "A flat one-time 1% platform service fee on the total lease value, whatever the lease length.",
+    cm_total: "Platform Service & Support",
     eco_title: "PakAgriShare 360° Ecosystem Benefit",
-    eco_sub: "Lease land on PakAgriShare and also rent machinery or sell your harvest here: you get a 0.50% commission rebate on your next machinery booking (commission never goes below 2.0%).",
-    eco_active: "360° benefit active: 0.50% off machinery commission",
+    eco_sub: "Lease land on PakAgriShare and also rent machinery or sell your harvest here, all with one account and the same flat 1% service fee.",
+    eco_active: "360° member: land, machinery and crops on one account",
     ag_stamp: "Attach E-Stamp Paper here",
     ag_date: "Date",
     ag_first: "First Party (Land Owner)",
@@ -1608,7 +1612,7 @@ const T = {
     ld_how1: "List land",
     ld_how2: "Tenant requests",
     ld_how3: "Sign stamp paper",
-    ld_fee_example: "Example: PKR 400,000 lease = PKR 18,000 fee (4.5%), one time",
+    ld_fee_example: "Example: PKR 400,000 lease = PKR 4,000 service fee (1%), one time",
     ld_sample_btn: "See a sample Iqrarnama",
     ld_sample_badge: "Sample",
     ld_pick_district: "Pick your district first to see land near you. If nothing is listed there, our consultant will find land for you.",
@@ -1661,6 +1665,7 @@ const T = {
     ad_fuel_auto_on: "Automatic daily fuel rates are on again."
   },
   ur: {
+    promo_saved_line: "لانچ بونس: 1% سروس فیس معاف ({amt} کی بچت)",
     wa_share: "واٹس ایپ پر شیئر کریں",
     wa_share_req_hint: "اپنی درخواست گاؤں کے واٹس ایپ گروپس میں شیئر کریں تاکہ زیادہ مالکان دیکھیں۔",
     au_id: "موبائل نمبر یا ای میل",
@@ -1702,8 +1707,8 @@ const T = {
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آفر",
     pub_promo_s: "آپ کی پہلی ڈیلز پر کوئی کمیشن نہیں: 5 مشینری، 3 فصل اور 1 زمین کی ڈیل۔",
-    pub_ladder_t: "کمیشن کی شرح",
-    pub_ladder_s: "مفت ڈیلز کے بعد صرف تصدیق شدہ ڈیلز پر معمولی فیس لگتی ہے۔",
+    pub_ladder_t: "پلیٹ فارم سروس فیس",
+    pub_ladder_s: "مفت ڈیلز کے بعد صرف کنفرم ڈیلز پر 1% فلیٹ فیس۔",
     pub_ladder_machinery: "مشینری کرایہ",
     pub_ladder_crop: "فصل کی فروخت",
     pub_ladder_land: "زمین ٹھیکہ",
@@ -1727,13 +1732,13 @@ const T = {
     tour8_2_t: "اپنی بولی: اپنا ریٹ خود لگائیں",
     tour8_2_s: "نہ زبردستی کا ریٹ، نہ بچولیا۔ فی گھنٹہ یا فی ایکڑ اپنی پیشکش لگائیں اور 40 کلومیٹر کے اندر مالکان سے براہ راست ملیں۔",
     tour8_3_t: "زمین ٹھیکہ اور اسٹامپ پیپر اقرار نامہ",
-    tour8_3_s: "دو زبانوں کے اسٹامپ پیپر اقرار نامے کے ساتھ محفوظ طریقے سے زمین ٹھیکے پر لیں یا دیں، اور مشینری فیس پر 0.50% اضافی چھوٹ پائیں۔",
+    tour8_3_s: "دو زبانوں والے اسٹامپ پیپر اقرارنامے کے ساتھ زرعی زمین محفوظ طریقے سے ٹھیکے پر دیں یا لیں۔",
     tour8_4_t: "فصل منڈی: تمام فصلیں اور سبزیاں",
     tour8_4_s: "گندم، چاول، کپاس یا کوئی بھی سبزی اصل تصویر اور ویڈیو ثبوت کے ساتھ براہ راست تصدیق شدہ خریداروں کو بیچیں۔",
     tour8_5_t: "مالکان کے لیے 0% لانچ آفر",
     tour8_5_s: "خالی کھڑے ٹریکٹر اور زمین کو مستقل آمدن بنائیں: پہلی 5 مشینری، 3 فصل اور 1 زمین ڈیل پر 0% کمیشن۔",
-    tour8_6_t: "ایگری والٹ اور سب سے کم 2.5% فیس",
-    tour8_6_s: "صرف 2.5% مشینری فیس، ہر وقت دیکھا جا سکنے والا پیشگی ایگری والٹ، اور کام کی تصویر / ویڈیو ثبوت۔",
+    tour8_6_t: "ایگری والٹ اور صرف 1% سروس فیس",
+    tour8_6_s: "ہر ڈیل پر صرف 1% فلیٹ پلیٹ فارم سروس فیس، پری پیڈ ایگری والٹ جسے آپ کبھی بھی دیکھ سکتے ہیں، اور کام کی فوٹو / ویڈیو کا ثبوت۔",
     tour8_7_t: "سادہ فون اور گاؤں کے ایجنٹ کی سہولت",
     tour8_7_s: "اسمارٹ فون یا انٹرنیٹ نہیں؟ اپنے گاؤں کے ایگری ایجنٹ کے ذریعے بکنگ کریں۔ USSD بکنگ جلد آ رہی ہے۔",
     tour8_8_t: "6 زبانوں میں AI کسان ہیلپر",
@@ -1758,7 +1763,7 @@ const T = {
     am_custom_ph: "مثال: مٹر، بھنڈی، امرود",
     am_err_custom: "فصل یا سبزی کا نام لکھیں۔",
     aw_balance: "ایگری والٹ بیلنس",
-    aw_sub: "پلیٹ فارم کمیشن کے لیے پیشگی بیلنس۔ مفت لانچ ڈیلز کے بعد کمیشن (مشینری 2.5%، فصل 3.5%، زمین 4.5%) ڈیل کی تصدیق یا منظوری پر یہیں سے کٹتا ہے۔",
+    aw_sub: "پلیٹ فارم سروس فیس کے لیے پری پیڈ بیلنس۔ مفت لانچ ڈیلز کے بعد ڈیل کنفرم یا قبول کرنے پر صرف 1% فلیٹ سروس فیس یہاں سے کٹتی ہے۔",
     aw_topup: "ایگری والٹ ٹاپ اپ کریں",
     aw_ledger: "ایگری والٹ لین دین",
     aw_none: "ابھی کوئی لین دین نہیں۔",
@@ -1802,15 +1807,15 @@ const T = {
     adw_txn: "ٹرانزیکشن آئی ڈی",
     adw_founder_only: "صرف بانی والٹ میں رقم ڈال سکتا ہے۔",
     promo_free_n: "لانچ آفر: مفت ڈیل {n} از {of}",
-    promo_comm_line: "پاک ایگری شیئر پلیٹ فارم کمیشن (0% · {x})",
+    promo_comm_line: "پلیٹ فارم سروس اور سپورٹ (0% · {x})",
     promo_net_s: "لانچ آفر: پوری رقم کا 100% براہ راست مالک / فروخت کنندہ کو",
-    promo_title: "لانچ آفر: باقی مفت کمیشن ڈیلز",
+    promo_title: "لانچ آفر: باقی مفت سروس فیس ڈیلز",
     promo_cat_machinery: "مشینری",
     promo_cat_crop: "فصل منڈی",
     promo_cat_land: "زمین ٹھیکہ",
     promo_free_word: "مفت",
-    promo_note: "پہلی 5 مشینری بکنگز، 3 فصل فروخت اور 1 زمین ٹھیکے پر 0% پلیٹ فارم کمیشن۔ اس کے بعد عام ریٹ: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
-    promo_used_up: "تمام مفت لانچ ڈیلز استعمال ہو چکیں۔ اب عام کمیشن: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
+    promo_note: "پہلی 5 مشینری بکنگز، 3 فصل کی فروخت اور 1 زمین کے ٹھیکے پر 0% سروس فیس۔ اس کے بعد ہر ڈیل پر صرف 1% فلیٹ پلیٹ فارم سروس فیس۔",
+    promo_used_up: "تمام مفت لانچ ڈیلز استعمال ہو چکی ہیں۔ اب 1% فلیٹ پلیٹ فارم سروس فیس لاگو ہے۔",
     tour_btn_s: "رہنمائی",
     am_own_offer_pill: "یہ کسان کا مانگا ہوا ریٹ ہے۔ اپنی بولی لگائیں، جو مناسب لگے پیشکش کریں",
     reset_done: "فلٹر اور مقام ری سیٹ ہو گئے",
@@ -1888,8 +1893,8 @@ const T = {
     ad_cp_edit: "اکاؤنٹ تفصیلات تبدیل کریں",
     ad_cp_cancel: "منسوخ کریں",
     ad_cp_saved_badge: "محفوظ شدہ اکاؤنٹ، ہر بل پر دکھایا جاتا ہے",
-    cs_comm_t: "پاک ایگری شیئر پلیٹ فارم کمیشن",
-    cs_comm_s: "پلیٹ فارم کی سہولت فیس، خود بخود الگ، پاک ایگری شیئر کے سرکاری اکاؤنٹ میں جمع ہو گی",
+    cs_comm_t: "پلیٹ فارم سروس اور سپورٹ (1%)",
+    cs_comm_s: "محفوظ بکنگ، سپورٹ اور ریکارڈ کے لیے۔ پاک ایگری شیئر کے آفیشل اکاؤنٹ میں جمع ہوتی ہے۔",
     cs_net_t: "مالک کو خالص ادائیگی",
     cs_net_s: "مشینری یا زمین کے مالک کو براہ راست ادائیگی",
     ca_title: "پاک ایگری شیئر کا سرکاری وصولی اکاؤنٹ",
@@ -2007,8 +2012,8 @@ const T = {
     hero_bookings: "اس ڈیوائس پر بکنگز",
     tr1_t: "تصدیق شدہ / غیر تصدیق شدہ نشان",
     tr1_s: "فہرستیں فوراً لائیو ہوتی ہیں، واضح تصدیق شدہ / غیر تصدیق شدہ نشان اور کنسلٹنٹ کی براہ راست مدد کے ساتھ",
-    tr2_t: "2.5% سے 4.5% منصفانہ کمیشن",
-    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 2%",
+    tr2_t: "کسان سے مالک اور خریدار تک براہ راست ڈیل",
+    tr2_s: "کوئی بچولیا نہیں: مالکان اور خریداروں سے براہ راست بات کریں",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "حقیقی کنسلٹنٹ مدد",
@@ -2262,7 +2267,7 @@ const T = {
     request: "بکنگ کی درخواست", unavailable: "فی الحال دستیاب نہیں", owner: "مالک", new_badge: "نئی فہرست",
     bk_title: "بکنگ کی درخواست", bk_date: "کرائے کی تاریخ", bk_hours: "کام کے گھنٹے", bk_operator: "آپریٹر شامل کریں", bk_transport: "ٹرانسپورٹ شامل کریں",
     bk_breakdown: "قیمت کی واضح تفصیل", bk_base: "بنیادی ڈرائی رینٹ", bk_op: "آپریٹر", bk_tr: "ٹرانسپورٹ", bk_sub: "ذیلی کل",
-    bk_comm: "پلیٹ فارم کمیشن ({p})", bk_total: "کل تخمینی رقم", bk_fuel_line: "ڈیزل: کسان فراہم کرے گا (قیمت میں شامل نہیں)",
+    bk_comm: "پلیٹ فارم سروس اور سپورٹ ({p})", bk_total: "کل تخمینی رقم", bk_fuel_line: "ڈیزل: کسان فراہم کرے گا (قیمت میں شامل نہیں)",
     bk_ack: "میں سمجھتا/سمجھتی ہوں کہ یہ ڈرائی رینٹ ہے: ڈیزل میں فراہم کروں گا/گی، اور اوور ٹائم اور دیر سے واپسی کی شرائط تصدیق سے پہلے مالک کے ساتھ طے ہوں گی۔",
     bk_pay: "ادائیگی کا طریقہ", bk_pay_note: "ایزی پیسہ، جاز کیش یا اپنے ایگری ایجنٹ کے ذریعے نقد ادائیگی کریں۔",
     pay_easypaisa: "ایزی پیسہ", pay_jazzcash: "جاز کیش", pay_agent: "مقامی ایگری ایجنٹ کے ذریعے نقد",
@@ -2281,7 +2286,7 @@ const T = {
     ow_no_req: "ابھی کوئی زیر التوا درخواست نہیں۔", ow_pending: "زیر التوا", ow_history: "جواب دیا گیا", ow_available: "دستیاب", ow_hidden: "پوشیدہ", ow_remove: "ہٹائیں",
     es_machine: "مشین", es_hours: "روزانہ فارغ گھنٹے", es_days: "سیزن میں کرائے کے دن", es_util: "متوقع بکنگ کی شرح",
     es_result: "سیزن کی تخمینی کرایہ آمدنی", es_month: "فی سیزن", es_confirmed: "اب تک کی تصدیق شدہ بکنگز سے",
-    es_note: "2.5٪ کمیشن (چھوٹے کسانوں کے لیے 2٪) کسان کے بل میں شامل ہوتا ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
+    es_note: "1% پلیٹ فارم سروس فیس کرایہ دار کے بل میں شامل ہوتی ہے، اس لیے مالک کو پورا کرایہ ملتا ہے۔ ڈیزل شامل نہیں (ڈرائی رینٹ)۔",
     ag_title: "ایگری ایجنٹ اور USSD آف لائن بکنگ", ag_sub: "گاؤں کے دکاندار بغیر اسمارٹ فون والے کسانوں کو مشینری بک کرنے میں مدد دیتے ہیں۔",
     ag1_t: "ایگری ایجنٹ کون ہے؟", ag1_d: "گاؤں کی کریانہ یا موبائل لوڈ کی دکان، جسے بکنگ پوائنٹ کے طور پر تربیت دی جاتی ہے۔",
     ag2_t: "وہ کیا کرتے ہیں؟", ag2_d: "سروس سمجھاتے ہیں، کسانوں کو رجسٹر کرتے ہیں، مشینیں دکھاتے ہیں اور بکنگ بھیجتے ہیں۔",
@@ -2434,7 +2439,7 @@ const T = {
     lr_diesel_admin: "قومی ڈیزل ریٹ: {v} فی لیٹر",
     lr_recent: "آپ کی حالیہ درخواستیں",
     bk_smallholder: "چھوٹا کسان (5 ایکڑ سے کم)",
-    bk_smallholder_sub: "عام 2.5% کی بجائے رعایتی 2% کمیشن۔",
+    bk_smallholder_sub: "ہر کسان، چھوٹا ہو یا بڑا، ایک جیسی 1% فلیٹ سروس فیس دیتا ہے۔",
     pay_paylater: "ابھی کٹائی، بعد میں ادائیگی (30% ابھی + 70% کٹائی کے بعد)",
     pl_now: "ابھی ادائیگی (30%)",
     pl_later: "کٹائی کے بعد (70%)",
@@ -2805,12 +2810,12 @@ const T = {
     ld_declined: "انکار ہو گیا",
     ld_contact: "رابطہ دکھائیں",
     ld_agreement: "اسٹامپ پیپر معاہدہ پرنٹ / ڈاؤن لوڈ کریں",
-    cm_title: "پاک ایگری شیئر کمیشن",
-    cm_sub: "کل ٹھیکہ رقم پر 4.5٪ کا ایک ہی مقررہ ریٹ، ایک بار، ٹھیکے کی مدت چاہے جتنی بھی ہو۔",
-    cm_total: "کل کمیشن",
+    cm_title: "پاک ایگری شیئر پلیٹ فارم سروس اور سپورٹ",
+    cm_sub: "ٹھیکے کی کل رقم پر صرف ایک بار 1% فلیٹ پلیٹ فارم سروس فیس، ٹھیکہ جتنا بھی لمبا ہو۔",
+    cm_total: "پلیٹ فارم سروس اور سپورٹ",
     eco_title: "پاک ایگری شیئر 360° فائدہ",
-    eco_sub: "پاک ایگری شیئر پر زمین ٹھیکے پر لیں اور یہاں مشینری کرائے پر لیں یا فصل بیچیں: اگلی مشینری بکنگ پر 0.50٪ کمیشن کی چھوٹ (کمیشن 2.0٪ سے کم نہیں ہوگا)۔",
-    eco_active: "360° فائدہ فعال: مشینری کمیشن پر 0.50٪ چھوٹ",
+    eco_sub: "پاک ایگری شیئر پر زمین ٹھیکے پر لیں اور یہیں مشینری کرائے پر لیں یا فصل بیچیں، ایک ہی اکاؤنٹ اور ایک جیسی 1% فلیٹ سروس فیس کے ساتھ۔",
+    eco_active: "360° ممبر: زمین، مشینری اور فصل ایک ہی اکاؤنٹ پر",
     ag_stamp: "ای اسٹامپ پیپر یہاں لگائیں",
     ag_date: "تاریخ",
     ag_first: "فریق اول (زمین کا مالک)",
@@ -2880,7 +2885,7 @@ const T = {
     ld_how1: "زمین درج کریں",
     ld_how2: "کرایہ دار درخواست دے",
     ld_how3: "اسٹامپ پیپر پر دستخط",
-    ld_fee_example: "مثال: 4,00,000 روپے کا ٹھیکہ = 18,000 روپے فیس (4.5%)، صرف ایک بار",
+    ld_fee_example: "مثال: 4,00,000 روپے کا ٹھیکہ = 4,000 روپے سروس فیس (1%)، صرف ایک بار",
     ld_sample_btn: "نمونہ اقرار نامہ دیکھیں",
     ld_sample_badge: "نمونہ",
     ld_pick_district: "قریبی زمین دیکھنے کے لیے پہلے اپنا ضلع چنیں۔ وہاں کوئی زمین درج نہ ہو تو ہمارا کنسلٹنٹ آپ کے لیے زمین تلاش کرے گا۔",
@@ -2933,6 +2938,7 @@ const T = {
     ad_fuel_auto_on: "خودکار روزانہ ایندھن ریٹ دوبارہ چالو ہیں۔"
   },
   pa: {
+    promo_saved_line: "لانچ بونس: 1% سروس فیس معاف ({amt} دی بچت)",
     wa_share: "واٹس ایپ تے شیئر کرو",
     wa_share_req_hint: "اپنی درخواست پنڈ دے واٹس ایپ گروپاں وچ شیئر کرو تاں جو ہور مالک ویکھن۔",
     au_id: "موبائل نمبر یا ای میل",
@@ -2976,8 +2982,8 @@ const T = {
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آفر",
     pub_promo_s: "تہاڈیاں پہلیاں ڈیلاں تے کوئی کمیشن نہیں: 5 مشینری، 3 فصل تے 1 زمین دی ڈیل۔",
-    pub_ladder_t: "کمیشن دی شرح",
-    pub_ladder_s: "مفت ڈیلاں توں بعد صرف پکیاں ڈیلاں تے تھوڑی فیس لگدی اے۔",
+    pub_ladder_t: "پلیٹ فارم سروس فیس",
+    pub_ladder_s: "مفت ڈیلاں توں بعد بس پکیاں ڈیلاں تے 1% فلیٹ فیس۔",
     pub_ladder_machinery: "مشینری کرایہ",
     pub_ladder_crop: "فصل دی ویچ",
     pub_ladder_land: "زمین ٹھیکہ",
@@ -3001,13 +3007,13 @@ const T = {
     tour8_2_t: "اپنی بولی: اپنا ریٹ آپ لاؤ",
     tour8_2_s: "نہ دھکے دا ریٹ، نہ وچولا۔ فی گھنٹہ یا فی ایکڑ اپنی پیشکش لاؤ تے 40 کلومیٹر اندر مالکاں نال سدھا ملو۔",
     tour8_3_t: "زمین ٹھیکہ تے اسٹامپ پیپر اقرار نامہ",
-    tour8_3_s: "دو بولیاں دے اسٹامپ پیپر اقرار نامے نال محفوظ طریقے نال زمین ٹھیکے تے لؤ یا دیو، تے مشینری فیس تے 0.50% ہور چھوٹ لؤ۔",
+    tour8_3_s: "دو زباناں والے اسٹامپ پیپر اقرارنامے نال زرعی زمین محفوظ طریقے نال ٹھیکے تے دیو یا لوو۔",
     tour8_4_t: "فصل منڈی: ساریاں فصلاں تے سبزیاں",
     tour8_4_s: "کنک، چول، کپاہ یا کوئی وی سبزی اصلی تصویر تے ویڈیو ثبوت نال سدھی تصدیق شدہ خریداراں نوں ویچو۔",
     tour8_5_t: "مالکاں لئی 0% لانچ آفر",
     tour8_5_s: "ویہلے کھلوتے ٹریکٹر تے زمین نوں پکی آمدن بناؤ: پہلیاں 5 مشینری، 3 فصل تے 1 زمین ڈیل تے 0% کمیشن۔",
-    tour8_6_t: "ایگری والٹ تے سب توں گھٹ 2.5% فیس",
-    tour8_6_s: "صرف 2.5% مشینری فیس، ہر ویلے ویکھیا جان والا اگاؤں ایگری والٹ، تے کم دی تصویر / ویڈیو ثبوت۔",
+    tour8_6_t: "ایگری والٹ تے بس 1% سروس فیس",
+    tour8_6_s: "ہر ڈیل تے بس 1% فلیٹ پلیٹ فارم سروس فیس، پری پیڈ ایگری والٹ جیہڑا تسیں کدے وی ویکھ سکدے او، تے کم دی فوٹو / ویڈیو دا ثبوت۔",
     tour8_7_t: "سادہ فون تے پنڈ دے ایجنٹ دی سہولت",
     tour8_7_s: "اسمارٹ فون یا انٹرنیٹ نئیں؟ اپنے پنڈ دے ایگری ایجنٹ راہیں بکنگ کرو۔ USSD بکنگ چھیتی آ رہی اے۔",
     tour8_8_t: "6 بولیاں وچ AI کسان ہیلپر",
@@ -3032,7 +3038,7 @@ const T = {
     am_custom_ph: "مثال: مٹر، بھنڈی، امرود",
     am_err_custom: "فصل یا سبزی دا ناں لکھو۔",
     aw_balance: "ایگری والٹ بیلنس",
-    aw_sub: "پلیٹ فارم کمیشن لئی اگاؤں جمع بیلنس۔ مفت لانچ ڈیلاں مگروں کمیشن (مشینری 2.5%، فصل 3.5%، زمین 4.5%) ڈیل پکی کرن یا منن تے ایتھوں کٹدا اے۔",
+    aw_sub: "پلیٹ فارم سروس فیس لئی پری پیڈ بیلنس۔ مفت لانچ ڈیلاں توں بعد ڈیل پکی یا قبول کرن تے بس 1% فلیٹ سروس فیس ایتھوں کٹدی اے۔",
     aw_topup: "ایگری والٹ ٹاپ اپ کرو",
     aw_ledger: "ایگری والٹ لین دین",
     aw_none: "حالے کوئی لین دین نئیں۔",
@@ -3076,15 +3082,15 @@ const T = {
     adw_txn: "ٹرانزیکشن آئی ڈی",
     adw_founder_only: "صرف بانی والٹ وچ رقم پا سکدا اے۔",
     promo_free_n: "لانچ آفر: مفت ڈیل {n} وچوں {of}",
-    promo_comm_line: "پاک ایگری شیئر پلیٹ فارم کمیشن (0% · {x})",
+    promo_comm_line: "پلیٹ فارم سروس تے سپورٹ (0% · {x})",
     promo_net_s: "لانچ آفر: پوری رقم دا 100% سدھا مالک / ویچن والے نوں",
-    promo_title: "لانچ آفر: باقی مفت کمیشن ڈیلاں",
+    promo_title: "لانچ آفر: باقی مفت سروس فیس ڈیلاں",
     promo_cat_machinery: "مشینری",
     promo_cat_crop: "فصل منڈی",
     promo_cat_land: "زمین ٹھیکہ",
     promo_free_word: "مفت",
-    promo_note: "پہلیاں 5 مشینری بکنگاں، 3 فصل ویچاں تے 1 زمین ٹھیکے تے 0% پلیٹ فارم کمیشن۔ ایہدے مگروں عام ریٹ: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
-    promo_used_up: "ساریاں مفت لانچ ڈیلاں ورت لئیاں۔ ہُن عام کمیشن: مشینری 2.5% (چھوٹے کسان 2%)، فصل 3.5%، زمین 4.5%۔",
+    promo_note: "پہلیاں 5 مشینری بکنگاں، 3 فصل دی ویچ تے 1 زمین دے ٹھیکے تے 0% سروس فیس۔ اوہدے بعد ہر ڈیل تے بس 1% فلیٹ پلیٹ فارم سروس فیس۔",
+    promo_used_up: "ساریاں مفت لانچ ڈیلاں ورت لئیاں گئیاں نیں۔ ہن 1% فلیٹ پلیٹ فارم سروس فیس لاگو اے۔",
     al_view: "ویکھو",
     tour_btn_s: "رہنمائی",
     am_own_offer_pill: "ایہہ کسان دا منگیا ریٹ اے۔ اپنی بولی لاؤ، جیہڑی مناسب لگے پیشکش کرو",
@@ -3163,8 +3169,8 @@ const T = {
     ad_cp_edit: "کھاتے دیاں تفصیلاں بدلو",
     ad_cp_cancel: "رہن دیو",
     ad_cp_saved_badge: "سانبھیا ہویا کھاتہ، ہر بل تے دسیا جاندا اے",
-    cs_comm_t: "پاک ایگری شیئر پلیٹ فارم کمیشن",
-    cs_comm_s: "پلیٹ فارم دی سہولت فیس، آپے وکھ، پاک ایگری شیئر دے سرکاری کھاتے وچ جمع ہووے گی",
+    cs_comm_t: "پلیٹ فارم سروس تے سپورٹ (1%)",
+    cs_comm_s: "محفوظ بکنگ، سپورٹ تے ریکارڈ لئی۔ پاک ایگری شیئر دے آفیشل اکاؤنٹ وچ جمع ہوندی اے۔",
     cs_net_t: "مالک نوں خالص ادائیگی",
     cs_net_s: "مشینری یا زمین دے مالک نوں سدھی ادائیگی",
     ca_title: "پاک ایگری شیئر دا سرکاری وصولی کھاتہ",
@@ -3282,8 +3288,8 @@ const T = {
     hero_bookings: "اس ڈیوائس پر بکنگز",
     tr1_t: "تصدیق شدہ / غیر تصدیق شدہ نشان",
     tr1_s: "لسٹاں فوراً لائیو ہوندیاں نیں، صاف تصدیق شدہ / غیر تصدیق شدہ نشان تے کنسلٹنٹ دی سدھی مدد نال",
-    tr2_t: "2.5% سے 4.5% منصفانہ کمیشن",
-    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 2%",
+    tr2_t: "کسان توں مالک تے خریدار تک سدھی ڈیل",
+    tr2_s: "کوئی وچولا نئیں: مالکاں تے خریداراں نال سدھی گل کرو",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "اصل کنسلٹنٹ مدد",
@@ -3537,7 +3543,7 @@ const T = {
     request: "بکنگ دی درخواست", unavailable: "ہن دستیاب نئیں", owner: "مالک", new_badge: "نویں لسٹ",
     bk_title: "بکنگ دی درخواست", bk_date: "کرائے دی تاریخ", bk_hours: "کم دے گھنٹے", bk_operator: "آپریٹر شامل کرو", bk_transport: "ٹرانسپورٹ شامل کرو",
     bk_breakdown: "ریٹ دی صاف تفصیل", bk_base: "بنیادی ڈرائی رینٹ", bk_op: "آپریٹر", bk_tr: "ٹرانسپورٹ", bk_sub: "ذیلی کل",
-    bk_comm: "پلیٹ فارم کمیشن ({p})", bk_total: "کل اندازاً رقم", bk_fuel_line: "ڈیزل: کسان دیوے گا (ریٹ وچ شامل نئیں)",
+    bk_comm: "پلیٹ فارم سروس تے سپورٹ ({p})", bk_total: "کل اندازاً رقم", bk_fuel_line: "ڈیزل: کسان دیوے گا (ریٹ وچ شامل نئیں)",
     bk_ack: "میں سمجھدا/سمجھدی آں کہ ایہہ ڈرائی رینٹ اے: ڈیزل میں دیواں گا/گی، تے اوور ٹائم تے دیر نال واپسی دیاں شرطاں پکی کرن توں پہلاں مالک نال طے ہون گیاں۔",
     bk_pay: "ادائیگی دا طریقہ", bk_pay_note: "ایزی پیسہ، جاز کیش یا اپنے ایگری ایجنٹ راہیں نقد دیو۔",
     pay_easypaisa: "ایزی پیسہ", pay_jazzcash: "جاز کیش", pay_agent: "مقامی ایگری ایجنٹ راہیں نقد",
@@ -3556,7 +3562,7 @@ const T = {
     ow_no_req: "ہن کوئی رکی ہوئی درخواست نئیں۔", ow_pending: "رکی ہوئی", ow_history: "جواب دتا گیا", ow_available: "دستیاب", ow_hidden: "لکی ہوئی", ow_remove: "ہٹاؤ",
     es_machine: "مشین", es_hours: "روزانہ ویہلے گھنٹے", es_days: "سیزن وچ کرائے دے دن", es_util: "اندازاً بکنگ دی شرح",
     es_result: "سیزن دی اندازاً کرایہ کمائی", es_month: "فی سیزن", es_confirmed: "ہن تک پکیاں بکنگاں توں",
-    es_note: "2.5٪ کمیشن (نکے کساناں لئی 2٪) کسان دے بل وچ جڑدا اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
+    es_note: "1% پلیٹ فارم سروس فیس کرایہ دار دے بل وچ شامل ہوندی اے، ایس لئی مالک نوں پورا کرایہ ملدا اے۔ ڈیزل شامل نئیں (ڈرائی رینٹ)۔",
     ag_title: "ایگری ایجنٹ تے USSD آف لائن بکنگ", ag_sub: "پنڈ دے دکاندار بغیر سمارٹ فون والے کساناں دی مشینری بک کرن وچ مدد کردے نیں۔",
     ag1_t: "ایگری ایجنٹ کون اے؟", ag1_d: "پنڈ دی کریانے یا موبائل لوڈ دی ہٹی، جنہوں بکنگ پوائنٹ وجوں سکھایا جاندا اے۔",
     ag2_t: "اوہ کی کردے نیں؟", ag2_d: "سروس سمجھاندے، کساناں نوں رجسٹر کردے، مشیناں وکھاندے تے بکنگ گھلدے نیں۔",
@@ -3709,7 +3715,7 @@ const T = {
     lr_diesel_admin: "قومی ڈیزل ریٹ: {v} فی لیٹر",
     lr_recent: "تہاڈیاں تازہ درخواستاں",
     bk_smallholder: "نکا کسان (5 ایکڑ توں گھٹ)",
-    bk_smallholder_sub: "عام 2.5% دی تھاں رعایتی 2% کمیشن۔",
+    bk_smallholder_sub: "ہر کسان، نکا ہووے یا وڈا، اکو جیہی 1% فلیٹ سروس فیس دیندا اے۔",
     pay_paylater: "ہن وڈھی، بعد وچ ادائیگی (30% ہن + 70% وڈھی توں بعد)",
     pl_now: "ہن ادائیگی (30%)",
     pl_later: "وڈھی توں بعد (70%)",
@@ -3980,12 +3986,12 @@ const T = {
     ld_declined: "انکار ہو گیا",
     ld_contact: "رابطہ وکھاؤ",
     ld_agreement: "اسٹامپ پیپر معاہدہ پرنٹ / ڈاؤن لوڈ کرو",
-    cm_title: "پاک ایگری شیئر کمیشن",
-    cm_sub: "کُل ٹھیکہ رقم تے 4.5٪ دا اکو مقرر ریٹ، اک واری، ٹھیکے دی مدت بھاویں جنی وی ہووے۔",
-    cm_total: "کُل کمیشن",
+    cm_title: "پاک ایگری شیئر پلیٹ فارم سروس تے سپورٹ",
+    cm_sub: "ٹھیکے دی کل رقم تے بس اک واری 1% فلیٹ پلیٹ فارم سروس فیس، ٹھیکہ جنا وی لمبا ہووے۔",
+    cm_total: "پلیٹ فارم سروس تے سپورٹ",
     eco_title: "پاک ایگری شیئر 360° فائدہ",
-    eco_sub: "پاک ایگری شیئر تے زمین ٹھیکے تے لؤ تے ایتھے مشینری کرائے تے لؤ یا فصل ویچو: اگلی مشینری بکنگ تے 0.50٪ کمیشن دی چھوٹ (کمیشن 2.0٪ توں گھٹ نئیں ہووے گا)۔",
-    eco_active: "360° فائدہ چالو: مشینری کمیشن تے 0.50٪ چھوٹ",
+    eco_sub: "پاک ایگری شیئر تے زمین ٹھیکے تے لوو تے ایتھے ای مشینری کرائے تے لوو یا فصل ویچو، اکو اکاؤنٹ تے اکو جیہی 1% فلیٹ سروس فیس نال۔",
+    eco_active: "360° ممبر: زمین، مشینری تے فصل اکو اکاؤنٹ تے",
     ag_stamp: "ای اسٹامپ پیپر ایتھے لاؤ",
     ag_date: "تاریخ",
     ag_first: "فریق اول (زمین دا مالک)",
@@ -4055,7 +4061,7 @@ const T = {
     ld_how1: "زمین لکھاؤ",
     ld_how2: "ٹھیکیدار درخواست دیوے",
     ld_how3: "اسٹامپ پیپر تے دستخط",
-    ld_fee_example: "مثال: 4,00,000 روپے دا ٹھیکہ = 18,000 روپے فیس (4.5%)، صرف اک واری",
+    ld_fee_example: "مثال: 4,00,000 روپے دا ٹھیکہ = 4,000 روپے سروس فیس (1%)، بس اک واری",
     ld_sample_btn: "نمونہ اقرار نامہ ویکھو",
     ld_sample_badge: "نمونہ",
     ld_pick_district: "نیڑے دی زمین ویکھن لئی پہلاں اپنا ضلع چنو۔ اوتھے کوئی زمین نہ ہووے تے ساڈا کنسلٹنٹ تہاڈے لئی زمین لبھے گا۔",
@@ -4108,6 +4114,7 @@ const T = {
     ad_fuel_auto_on: "آٹو روزانہ تیل ریٹ مڑ چالو نیں۔"
   },
   sd: {
+    promo_saved_line: "لانچ بونس: 1% سروس في معاف ({amt} جي بچت)",
     wa_share: "واٽس ايپ تي شيئر ڪريو",
     wa_share_req_hint: "پنهنجي درخواست ڳوٺ جي واٽس ايپ گروپن ۾ شيئر ڪريو ته جيئن وڌيڪ مالڪ ڏسن.",
     au_id: "موبائل نمبر يا اي ميل",
@@ -4151,8 +4158,8 @@ const T = {
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آڇ",
     pub_promo_s: "توهان جي پهرين ڊيلن تي ڪو ڪميشن ناهي: 5 مشينري، 3 فصل ۽ 1 زمين جي ڊيل.",
-    pub_ladder_t: "ڪميشن جي شرح",
-    pub_ladder_s: "مفت ڊيلن کان پوءِ رڳو تصديق ٿيل ڊيلن تي ٿوري في لڳي ٿي.",
+    pub_ladder_t: "پليٽ فارم سروس في",
+    pub_ladder_s: "مفت ڊيلز کان پوءِ صرف پڪين ڊيلز تي 1% فليٽ في.",
     pub_ladder_machinery: "مشينري مسواڙ",
     pub_ladder_crop: "فصل جو وڪرو",
     pub_ladder_land: "زمين ٺيڪو",
@@ -4176,13 +4183,13 @@ const T = {
     tour8_2_t: "پنهنجي ٻولي: پنهنجو اگهه پاڻ لڳايو",
     tour8_2_s: "نه زوري اگهه، نه وچولو. في ڪلاڪ يا في ايڪڙ پنهنجي آڇ لڳايو ۽ 40 ڪلوميٽرن اندر مالڪن سان سڌو ملو.",
     tour8_3_t: "زمين ٺيڪو ۽ اسٽامپ پيپر اقرار نامو",
-    tour8_3_s: "ٻن ٻولين جي اسٽامپ پيپر اقرار نامي سان محفوظ نموني زمين ٺيڪي تي وٺو يا ڏيو، ۽ مشينري فيس تي 0.50% وڌيڪ رعايت حاصل ڪريو.",
+    tour8_3_s: "ٻه ٻولين واري اسٽامپ پيپر اقرارنامي سان زرعي زمين محفوظ طريقي سان ٺيڪي تي ڏيو يا وٺو.",
     tour8_4_t: "فصل منڊي: سڀ فصل ۽ ڀاڄيون",
     tour8_4_s: "ڪڻڪ، چانور، ڪپهه يا ڪا به ڀاڄي اصلي تصوير ۽ وڊيو ثبوت سان سڌو تصديق ٿيل خريدارن کي وڪڻو.",
     tour8_5_t: "مالڪن لاءِ 0% لانچ آڇ",
     tour8_5_s: "بيڪار بيٺل ٽريڪٽرن ۽ زمين کي پڪي آمدني بڻايو: پهرين 5 مشينري، 3 فصل ۽ 1 زمين ڊيل تي 0% ڪميشن.",
-    tour8_6_t: "ايگري والٽ ۽ سڀ کان گهٽ 2.5% فيس",
-    tour8_6_s: "رڳو 2.5% مشينري فيس، هر وقت ڏسڻ جوڳو اڳواٽ ايگري والٽ، ۽ ڪم جا تصوير / وڊيو ثبوت.",
+    tour8_6_t: "ايگري والٽ ۽ صرف 1% سروس في",
+    tour8_6_s: "هر ڊيل تي صرف 1% فليٽ پليٽ فارم سروس في، پري پيڊ ايگري والٽ جيڪو توهان ڪڏهن به ڏسي سگهو ٿا، ۽ ڪم جي فوٽو / وڊيو جو ثبوت.",
     tour8_7_t: "سادو فون ۽ ڳوٺ جي ايجنٽ جي سهولت",
     tour8_7_s: "اسمارٽ فون يا انٽرنيٽ ناهي؟ پنهنجي ڳوٺ جي ايگري ايجنٽ ذريعي بڪنگ ڪريو. USSD بڪنگ جلد اچي رهي آهي.",
     tour8_8_t: "6 ٻولين ۾ AI هاري مددگار",
@@ -4207,7 +4214,7 @@ const T = {
     am_custom_ph: "مثال: مٽر، ڀينڊي، زيتون",
     am_err_custom: "فصل يا ڀاڄي جو نالو لکو.",
     aw_balance: "ايگري والٽ بيلنس",
-    aw_sub: "پليٽ فارم ڪميشن لاءِ اڳواٽ جمع بيلنس. مفت لانچ ڊيلن کان پوءِ ڪميشن (مشينري 2.5%، فصل 3.5%، زمين 4.5%) ڊيل پڪي يا قبول ڪرڻ تي هتان ڪٽجي ٿي.",
+    aw_sub: "پليٽ فارم سروس في لاءِ پري پيڊ بيلنس. مفت لانچ ڊيلز کان پوءِ ڊيل پڪي يا قبول ڪرڻ تي صرف 1% فليٽ سروس في هتان ڪٽجي ٿي.",
     aw_topup: "ايگري والٽ ٽاپ اپ ڪريو",
     aw_ledger: "ايگري والٽ ليڻ ڏيڻ",
     aw_none: "اڃا ڪا به ليڻ ڏيڻ ناهي.",
@@ -4251,15 +4258,15 @@ const T = {
     adw_txn: "ٽرانزيڪشن آءِ ڊي",
     adw_founder_only: "صرف باني والٽ ۾ رقم وجهي سگهي ٿو.",
     promo_free_n: "لانچ آڇ: مفت ڊيل {n} مان {of}",
-    promo_comm_line: "پاک ایگری شیئر پليٽ فارم ڪميشن (0% · {x})",
+    promo_comm_line: "پليٽ فارم سروس ۽ سپورٽ (0% · {x})",
     promo_net_s: "لانچ آڇ: سڄي رقم جو 100% سڌو مالڪ / وڪڻندڙ کي",
-    promo_title: "لانچ آڇ: باقي مفت ڪميشن ڊيلون",
+    promo_title: "لانچ آفر: باقي مفت سروس في ڊيلز",
     promo_cat_machinery: "مشينري",
     promo_cat_crop: "فصل منڊي",
     promo_cat_land: "زمين ٺيڪو",
     promo_free_word: "مفت",
-    promo_note: "پهرين 5 مشينري بڪنگن، 3 فصل وڪري ۽ 1 زمين ٺيڪي تي 0% پليٽ فارم ڪميشن. ان کان پوءِ عام اگهه: مشينري 2.5% (ننڍا هاري 2%)، فصل 3.5%، زمين 4.5%.",
-    promo_used_up: "سڀ مفت لانچ ڊيلون استعمال ٿي ويون. هاڻي عام ڪميشن: مشينري 2.5% (ننڍا هاري 2%)، فصل 3.5%، زمين 4.5%.",
+    promo_note: "پهرين 5 مشينري بڪنگن، 3 فصل جي وڪري ۽ 1 زمين جي ٺيڪي تي 0% سروس في. ان کان پوءِ هر ڊيل تي صرف 1% فليٽ پليٽ فارم سروس في.",
+    promo_used_up: "سڀ مفت لانچ ڊيلز استعمال ٿي چڪيون آهن. هاڻي 1% فليٽ پليٽ فارم سروس في لاڳو آهي.",
     al_view: "ڏسو",
     tour_btn_s: "رهنمائي",
     am_own_offer_pill: "هي هاري جو گهريل ريٽ آهي. پنهنجي بولي لڳايو، جيڪا مناسب لڳي آڇ ڪريو",
@@ -4338,8 +4345,8 @@ const T = {
     ad_cp_edit: "کاتي جا تفصيل بدلايو",
     ad_cp_cancel: "رد ڪريو",
     ad_cp_saved_badge: "محفوظ ٿيل کاتو، هر بل تي ڏيکاريو وڃي ٿو",
-    cs_comm_t: "پاک ایگری شیئر پليٽ فارم ڪميشن",
-    cs_comm_s: "پليٽ فارم جي سهولت في، پاڻمرادو الڳ، پاک ایگری شیئر جي سرڪاري کاتي ۾ جمع ٿيندي",
+    cs_comm_t: "پليٽ فارم سروس ۽ سپورٽ (1%)",
+    cs_comm_s: "محفوظ بڪنگ، سپورٽ ۽ رڪارڊ لاءِ. پاڪ ايگري شيئر جي آفيشل اڪائونٽ ۾ جمع ٿئي ٿي.",
     cs_net_t: "مالڪ کي خالص ادائيگي",
     cs_net_s: "مشينري يا زمين جي مالڪ کي سڌي ادائيگي",
     ca_title: "پاک ایگری شیئر جو سرڪاري وصولي کاتو",
@@ -4457,8 +4464,8 @@ const T = {
     hero_bookings: "اس ڈیوائس پر بکنگز",
     tr1_t: "تصديق ٿيل / غير تصديق ٿيل نشان",
     tr1_s: "لسٽون فوري لائيو ٿين ٿيون، صاف تصديق ٿيل / غير تصديق ٿيل نشان ۽ ڪنسلٽنٽ جي سڌي مدد سان",
-    tr2_t: "2.5% سے 4.5% منصفانہ کمیشن",
-    tr2_s: "5 ایکڑ سے کم والے کسانوں کے لیے صرف 2%",
+    tr2_t: "هاري کان مالڪ ۽ خريدار تائين سڌي ڊيل",
+    tr2_s: "ڪو وچولو ناهي: مالڪن ۽ خريدارن سان سڌي ڳالهه ڪريو",
     tr3_t: "30/70 فصل کریڈٹ",
     tr3_s: "ابھی 30%، فصل کے بعد 70% (مجوزہ پارٹنرز)",
     tr4_t: "حقيقي ڪنسلٽنٽ مدد",
@@ -4712,7 +4719,7 @@ const T = {
     request: "بڪنگ جي درخواست", unavailable: "هن وقت موجود ناهي", owner: "مالڪ", new_badge: "نئين لسٽ",
     bk_title: "بڪنگ جي درخواست", bk_date: "ڪرائي جي تاريخ", bk_hours: "ڪم جا ڪلاڪ", bk_operator: "آپريٽر شامل ڪريو", bk_transport: "ٽرانسپورٽ شامل ڪريو",
     bk_breakdown: "اگهه جي صاف تفصيل", bk_base: "بنيادي ڊرائي رينٽ", bk_op: "آپريٽر", bk_tr: "ٽرانسپورٽ", bk_sub: "ذيلي ڪل",
-    bk_comm: "پليٽ فارم ڪميشن ({p})", bk_total: "ڪل اندازي رقم", bk_fuel_line: "ڊيزل: هاري ڏيندو (اگهه ۾ شامل ناهي)",
+    bk_comm: "پليٽ فارم سروس ۽ سپورٽ ({p})", bk_total: "ڪل اندازي رقم", bk_fuel_line: "ڊيزل: هاري ڏيندو (اگهه ۾ شامل ناهي)",
     bk_ack: "مان سمجهان ٿو/ٿي ته هي ڊرائي رينٽ آهي: ڊيزل مان ڏيندس، ۽ اوور ٽائيم ۽ دير سان واپسي جون شرطون تصديق کان اڳ مالڪ سان طئي ٿينديون۔",
     bk_pay: "ادائيگيءَ جو طريقو", bk_pay_note: "ايزي پيسا، جاز ڪيش يا پنهنجي ايگري ايجنٽ ذريعي نقد ادا ڪريو۔",
     pay_easypaisa: "ايزي پيسا", pay_jazzcash: "جاز ڪيش", pay_agent: "مقامي ايگري ايجنٽ ذريعي نقد",
@@ -4731,7 +4738,7 @@ const T = {
     ow_no_req: "هن وقت ڪا التوا ۾ درخواست ناهي۔", ow_pending: "التوا ۾", ow_history: "جواب ڏنو ويو", ow_available: "موجود", ow_hidden: "لڪيل", ow_remove: "هٽايو",
     es_machine: "مشين", es_hours: "روزانو واندا ڪلاڪ", es_days: "موسم ۾ ڪرائي جا ڏينهن", es_util: "متوقع بڪنگ جي شرح",
     es_result: "موسم جي اندازي ڪرائي ڪمائي", es_month: "في موسم", es_confirmed: "اڃا تائين تصديق ٿيل بڪنگن مان",
-    es_note: "2.5٪ ڪميشن (ننڍن هارين لاءِ 2٪) هاري جي بل ۾ شامل ٿئي ٿي، تنهنڪري مالڪ کي پورو مسواڙ ملي ٿو۔ ڊيزل شامل ناهي (ڊرائي رينٽ)۔",
+    es_note: "1% پليٽ فارم سروس في ڪرائيدار جي بل ۾ شامل ٿئي ٿي، تنهن ڪري مالڪ کي پورو ڪرايو ملي ٿو. ڊيزل شامل ناهي (ڊرائي رينٽ).",
     ag_title: "ايگري ايجنٽ ۽ USSD آف لائن بڪنگ", ag_sub: "ڳوٺ جا دڪاندار سمارٽ فون کان سواءِ هارين کي مشينري بڪ ڪرڻ ۾ مدد ڪن ٿا۔",
     ag1_t: "ايگري ايجنٽ ڪير آهي؟", ag1_d: "ڳوٺ جو ڪرياني يا موبائل لوڊ جو دڪان، جنهن کي بڪنگ پوائنٽ طور سکيا ڏني وڃي ٿي۔",
     ag2_t: "اهي ڇا ٿا ڪن؟", ag2_d: "سروس سمجهائين ٿا، هارين کي رجسٽر ڪن ٿا، مشينون ڏيکارين ٿا ۽ بڪنگ موڪلين ٿا۔",
@@ -4884,7 +4891,7 @@ const T = {
     lr_diesel_admin: "قومي ڊيزل اگهه: {v} في ليٽر",
     lr_recent: "توهان جون تازيون درخواستون",
     bk_smallholder: "ننڍو هاري (5 ايڪڙ کان گهٽ)",
-    bk_smallholder_sub: "عام 2.5% بدران رعايتي 2% ڪميشن۔",
+    bk_smallholder_sub: "هر هاري، ننڍو هجي يا وڏو، ساڳي 1% فليٽ سروس في ڏئي ٿو.",
     pay_paylater: "هاڻي لابارو، پوءِ ادائيگي (30% هاڻي + 70% لاباري کان پوءِ)",
     pl_now: "هاڻي ادائيگي (30%)",
     pl_later: "لاباري کان پوءِ (70%)",
@@ -5156,12 +5163,12 @@ const T = {
     ld_declined: "انڪار ٿيو",
     ld_contact: "رابطو ڏيکاريو",
     ld_agreement: "اسٽامپ پيپر معاهدو پرنٽ / ڊائونلوڊ ڪريو",
-    cm_title: "پاک ایگری شیئر ڪميشن",
-    cm_sub: "ڪل ٺيڪي جي رقم تي 4.5٪ جو هڪ ئي مقرر اگهه، هڪ ڀيرو، ٺيڪي جي مدت ڀلي ڪيتري به هجي۔",
-    cm_total: "ڪل ڪميشن",
+    cm_title: "پاڪ ايگري شيئر پليٽ فارم سروس ۽ سپورٽ",
+    cm_sub: "ٺيڪي جي ڪل رقم تي صرف هڪ ڀيرو 1% فليٽ پليٽ فارم سروس في، ٺيڪو جيترو به ڊگهو هجي.",
+    cm_total: "پليٽ فارم سروس ۽ سپورٽ",
     eco_title: "پاک ایگری شیئر 360° فائدو",
-    eco_sub: "پاک ایگری شیئر تي زمين ٺيڪي تي وٺو ۽ هتي مشينري ڪرائي تي وٺو يا فصل وڪڻو: ايندڙ مشينري بڪنگ تي 0.50٪ ڪميشن جي رعايت (ڪميشن 2.0٪ کان گهٽ نه ٿيندو)۔",
-    eco_active: "360° فائدو فعال: مشينري ڪميشن تي 0.50٪ رعايت",
+    eco_sub: "پاڪ ايگري شيئر تي زمين ٺيڪي تي وٺو ۽ هتي ئي مشينري ڪرائي تي وٺو يا فصل وڪڻو، هڪ ئي اڪائونٽ ۽ ساڳي 1% فليٽ سروس في سان.",
+    eco_active: "360° ميمبر: زمين، مشينري ۽ فصل هڪ ئي اڪائونٽ تي",
     ag_stamp: "اي اسٽامپ پيپر هتي لڳايو",
     ag_date: "تاريخ",
     ag_first: "پهرين ڌر (زمين جو مالڪ)",
@@ -5231,7 +5238,7 @@ const T = {
     ld_how1: "زمين لکرايو",
     ld_how2: "ٺيڪيدار درخواست ڏئي",
     ld_how3: "اسٽامپ پيپر تي صحيح",
-    ld_fee_example: "مثال: 4,00,000 رپين جو ٺيڪو = 18,000 رپيا في (4.5%)، صرف هڪ ڀيرو",
+    ld_fee_example: "مثال: 4,00,000 رپين جو ٺيڪو = 4,000 رپيا سروس في (1%)، صرف هڪ ڀيرو",
     ld_sample_btn: "نمونو اقرار نامو ڏسو",
     ld_sample_badge: "نمونو",
     ld_pick_district: "ويجهي زمين ڏسڻ لاءِ پهريان پنهنجو ضلعو چونڊيو۔ اتي ڪا زمين لسٽ نه هجي ته اسان جو ڪنسلٽنٽ توهان لاءِ زمين ڳوليندو۔",
@@ -5284,6 +5291,10 @@ const T = {
     ad_fuel_auto_on: "خودڪار روزاني تيل اگهه ٻيهر چالو آهن۔"
   },
   ps: {
+    tr2_t: "له بزګر نه مالک او پېرودونکي ته مستقیمه معامله",
+    tr2_s: "هیڅ منځګړی نشته: له مالکانو او پېرودونکو سره مستقیم خبرې وکړئ",
+    es_note: "1% د پلیټ فارم خدمت فیس د کرایه کوونکي په بل کې شامله ده، نو مالک بشپړه کرایه ترلاسه کوي. ډیزل شامل نه دی (ډرای رېنټ).",
+    promo_saved_line: "د لانچ بونس: 1% خدمت فیس معاف ({amt} وسپمول شول)",
     wa_share: "په واټس اپ شریک کړئ",
     wa_share_req_hint: "خپله غوښتنه د کلي په واټس اپ ګروپونو کې شریکه کړئ چې ډېر مالکان یې وویني.",
     au_id: "موبایل نمبر یا برېښنالیک",
@@ -5332,8 +5343,8 @@ const T = {
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% د پیل وړاندیز",
     pub_promo_s: "ستاسو په لومړیو معاملو کمیشن نشته: 5 ماشینري، 3 فصل او 1 ځمکې معامله.",
-    pub_ladder_t: "د کمیشن کچه",
-    pub_ladder_s: "د وړیا معاملو وروسته یوازې په تایید شویو معاملو لږه فیس لګي.",
+    pub_ladder_t: "د پلیټ فارم خدمت فیس",
+    pub_ladder_s: "له وړیا معاملو وروسته یوازې په تایید شویو معاملو 1% ثابته فیس.",
     pub_ladder_machinery: "د ماشینرۍ کرایه",
     pub_ladder_crop: "د فصل پلور",
     pub_ladder_land: "د ځمکې اجاره",
@@ -5357,13 +5368,13 @@ const T = {
     tour8_2_t: "اپني بولي: خپله بیه پخپله وټاکئ",
     tour8_2_s: "نه زوري بیه، نه منځګړی. فی ساعت یا فی جریب خپل وړاندیز وکړئ او په 40 کیلومترو کې مستقیم له مالکانو سره ووینئ.",
     tour8_3_t: "د ځمکې اجاره او د سټامپ پاڼې اقرارنامه",
-    tour8_3_s: "په دوه ژبني سټامپ پاڼې اقرارنامې سره ځمکه په خوندي ډول په اجاره واخلئ یا ورکړئ، او د ماشین پر فیس 0.50% اضافي تخفیف ترلاسه کړئ.",
+    tour8_3_s: "د دوه ژبني سټامپ پېپر اقرارنامې سره کرنیزه ځمکه په خوندي ډول په اجاره ورکړئ یا واخلئ.",
     tour8_4_t: "فصل منډۍ: ټول فصلونه او سبزیجات",
     tour8_4_s: "غنم، وريجې، پنبه یا هره سبزي د اصلي انځور او ویډیو ثبوت سره مستقیم تایید شویو پېرودونکو ته وپلورئ.",
     tour8_5_t: "مالکانو ته 0% د پیل وړاندیز",
     tour8_5_s: "بېکاره ټراکټورونه او ځمکه په دوامداره عاید بدل کړئ: په لومړیو 5 ماشین، 3 فصل او 1 ځمکې معاملو 0% کمیشن.",
-    tour8_6_t: "اګري والټ او تر ټولو ټیټ 2.5% فیس",
-    tour8_6_s: "یوازې 2.5% د ماشین فیس، هر وخت د کتلو وړ مخکې جمع اګري والټ، او د کار انځور / ویډیو ثبوتونه.",
+    tour8_6_t: "اګري والټ او یوازې 1% د خدمت فیس",
+    tour8_6_s: "په هره معامله یوازې 1% ثابته د پلیټ فارم خدمت فیس، مخکې تادیه شوی اګري والټ چې هر وخت یې لیدلی شئ، او د کار عکس / ویډیو ثبوت.",
     tour8_7_t: "ساده ټیلیفون او د کلي اېجنټ اسانتیا",
     tour8_7_s: "سمارټ فون یا انټرنېټ نه لرئ؟ د خپل کلي د اګري اېجنټ له لارې بکنګ وکړئ. د USSD بکنګ ژر راځي.",
     tour8_8_t: "په 6 ژبو کې AI کسان مرستیال",
@@ -5388,7 +5399,7 @@ const T = {
     am_custom_ph: "بېلګه: مټر، بنډۍ، امرود",
     am_err_custom: "د فصل یا سبزۍ نوم ولیکئ.",
     aw_balance: "د اګري والټ بیلنس",
-    aw_sub: "د پلیټ فارم کمیشن لپاره مخکې جمع بیلنس. د وړیا معاملو وروسته کمیشن (ماشین 2.5%، فصل 3.5%، ځمکه 4.5%) د معاملې د تایید یا منلو پر مهال له دې ځایه کمېږي.",
+    aw_sub: "د پلیټ فارم د خدمت فیس لپاره مخکې تادیه شوی بیلانس. د وړیا لانچ معاملو وروسته، د معاملې په تایید یا منلو یوازې 1% ثابته خدمت فیس له دې ځایه کمېږي.",
     aw_topup: "اګري والټ ټاپ اپ کړئ",
     aw_ledger: "د اګري والټ راکړه ورکړه",
     aw_none: "تر اوسه راکړه ورکړه نشته.",
@@ -5432,15 +5443,15 @@ const T = {
     adw_txn: "د راکړې ورکړې آی ډي",
     adw_founder_only: "یوازې بنسټګر والټ ته پیسې اچولی شي.",
     promo_free_n: "د پیل وړاندیز: وړیا معامله {n} له {of}",
-    promo_comm_line: "د پاک ایگری شیئر پلیټ فارم کمیشن (0% · {x})",
+    promo_comm_line: "د پلیټ فارم خدمت او ملاتړ (0% · {x})",
     promo_net_s: "د پیل وړاندیز: د ټولې پیسې 100% مستقیم مالک / پلورونکي ته",
-    promo_title: "د پیل وړاندیز: پاتې وړیا کمیشن معاملې",
+    promo_title: "لانچ وړاندیز: پاتې وړیا خدمت فیس معاملې",
     promo_cat_machinery: "ماشینونه",
     promo_cat_crop: "د فصل منډۍ",
     promo_cat_land: "د ځمکې اجاره",
     promo_free_word: "وړیا",
-    promo_note: "په لومړیو 5 ماشین بکنګونو، 3 فصل پلور او 1 ځمکې اجارې 0% پلیټ فارم کمیشن. له هغې وروسته عادي نرخ: ماشین 2.5% (کوچني بزګر 2%)، فصل 3.5%، ځمکه 4.5%.",
-    promo_used_up: "ټولې وړیا معاملې وکارول شوې. اوس عادي کمیشن: ماشین 2.5% (کوچني بزګر 2%)، فصل 3.5%، ځمکه 4.5%.",
+    promo_note: "په لومړیو 5 ماشینري بکینګونو، 3 د فصل پلور او 1 ځمکې اجاره کې 0% خدمت فیس. له هغې وروسته په هره معامله یوازې 1% ثابته د پلیټ فارم خدمت فیس.",
+    promo_used_up: "ټولې وړیا لانچ معاملې کارول شوې. اوس 1% ثابته د پلیټ فارم خدمت فیس پلي کېږي.",
     al_view: "وګورئ",
     ad_pending: "ژوندی · لا تایید شوی نه دی",
     tour_btn_s: "لارښود",
@@ -5520,8 +5531,8 @@ const T = {
     ad_cp_edit: "د حساب جزئیات بدل کړئ",
     ad_cp_cancel: "لغوه کړئ",
     ad_cp_saved_badge: "خوندي شوی حساب، په هر بل کې ښودل کېږي",
-    cs_comm_t: "د پاک ایگری شیئر د پلیټ فارم کمیشن",
-    cs_comm_s: "د پلیټ فارم د اسانتیا فیس، په خپله جلا کېږي، د پاک ایگری شیئر رسمي حساب ته ورکول کېږي",
+    cs_comm_t: "د پلیټ فارم خدمت او ملاتړ (1%)",
+    cs_comm_s: "د خوندي بکینګ، ملاتړ او ریکارډ لپاره. د پاک ایگری شیئر رسمي حساب ته ورکول کېږي.",
     cs_net_t: "مالک ته خالص تادیه",
     cs_net_s: "د ماشین یا ځمکې مالک ته مستقیمه تادیه",
     ca_title: "د پاک ایگری شیئر رسمي د راټولولو حساب",
@@ -5701,7 +5712,7 @@ const T = {
     bk_op: "چلوونکی",
     bk_tr: "ټرانسپورټ",
     bk_sub: "فرعي ټوټل",
-    bk_comm: "د پلیټ فارم کمیشن ({p})",
+    bk_comm: "د پلیټ فارم خدمت او ملاتړ ({p})",
     bk_total: "ټوله اټکلي بیه",
     bk_fuel_line: "ډیزل: بزګر یې ورکوي (په بیه کې نه دی)",
     bk_ack: "زه پوهېږم چې دا وچه کرایه ده: ډیزل به زه ورکوم، او د اضافي وخت او ناوخته ورګرځولو شرطونه به له تایید مخکې له مالک سره ټاکل کېږي.",
@@ -5757,7 +5768,7 @@ const T = {
     role_agent: "اګري اېجنټ",
     nav_admin: "اډمن پینل",
     bk_smallholder: "کوچنی بزګر (له 5 ایکړو کم)",
-    bk_smallholder_sub: "د عام 2.5% پر ځای 2% رعایتي کمیشن.",
+    bk_smallholder_sub: "هر بزګر، کوچنی وي که لوی، یوه شان 1% ثابته خدمت فیس ورکوي.",
     pay_paylater: "اوس لو، وروسته تادیه (اوس 30% + له لو وروسته 70%)",
     pl_now: "اوس تادیه (30%)",
     pl_later: "له لو وروسته (70%)",
@@ -6042,12 +6053,12 @@ const T = {
     ld_declined: "رد شو",
     ld_contact: "اړیکه وښایاست",
     ld_agreement: "د سټامپ پاڼې تړون چاپ / ډاونلوډ کړئ",
-    cm_title: "د پاک ایگری شیئر کمیسیون",
-    cm_sub: "د اجارې پر ټوله پیسه د 4.5٪ یو ثابت نرخ، یوازې یو ځل، که د اجارې موده هر څومره وي.",
-    cm_total: "ټول کمیسیون",
+    cm_title: "پاک ایگری شیئر د پلیټ فارم خدمت او ملاتړ",
+    cm_sub: "د اجارې په ټول ارزښت یوازې یو ځل 1% ثابته د پلیټ فارم خدمت فیس، اجاره که هر څومره اوږده وي.",
+    cm_total: "د پلیټ فارم خدمت او ملاتړ",
     eco_title: "د پاک ایگری شیئر 360° ګټه",
-    eco_sub: "په پاک ایگری شیئر کې ځمکه په اجاره واخلئ او دلته ماشینونه په کرایه واخلئ یا فصل وپلورئ: د راتلونکي ماشین بکنګ پر کمیسیون 0.50٪ تخفیف (کمیسیون له 2.0٪ ټیټ نه کېږي).",
-    eco_active: "360° ګټه فعاله ده: د ماشین پر کمیسیون 0.50٪ تخفیف",
+    eco_sub: "په پاک ایگری شیئر ځمکه په اجاره واخلئ او همدلته ماشینري کرایه کړئ یا فصل وپلورئ، په یوه حساب او یوه شان 1% ثابته خدمت فیس سره.",
+    eco_active: "360° غړی: ځمکه، ماشینري او فصل په یوه حساب",
     ag_title: "اګري اېجنټ او USSD آفلاین بکنګ",
     ag_stamp: "اې سټامپ پاڼه دلته ونښلوئ",
     ag_date: "نېټه",
@@ -6124,7 +6135,7 @@ const T = {
     ld_how1: "ځمکه ثبت کړئ",
     ld_how2: "اجاره‌دار غوښتنه کوي",
     ld_how3: "په سټامپ پاڼه لاسلیک",
-    ld_fee_example: "بېلګه: د 400,000 روپیو اجاره = 18,000 روپۍ فیس (4.5%)، یوازې یو ځل",
+    ld_fee_example: "بېلګه: د 4,00,000 روپیو اجاره = 4,000 روپۍ خدمت فیس (1%)، یوازې یو ځل",
     ld_sample_btn: "د اقرارنامې بېلګه وګورئ",
     ld_sample_badge: "بېلګه",
     ld_pick_district: "د نږدې ځمکې لیدو لپاره لومړی خپله ولسوالي وټاکئ. که هلته ځمکه ثبت نه وي، زموږ مشاور به ستاسو لپاره ځمکه ومومي.",
@@ -6179,6 +6190,10 @@ const T = {
     ad_fuel_auto_on: "خودکار ورځني نرخونه بیا فعال شول."
   },
   bal: {
+    tr2_t: "بزگرءَ چہ واہند و گرّوکءَ تان راستیں ڈیل",
+    tr2_s: "هچ میانجی نیست: واہند و گرّوکانی گوں راست گپ بجن",
+    es_note: "1% پلیٹ فارم سروس فیس کرایہ دارءِ بلءَ هور اِنت، پمیشکا واہندءَ سجّیں کرایہ رسیت۔ ڈیزل هور نہ اِنت (ڈرائی رینٹ)۔",
+    promo_saved_line: "لانچ بونس: 1% سروس فیس معاف ({amt} بچت)",
     wa_share: "واٹس ایپءَ شیئر کن",
     wa_share_req_hint: "وتی درخواستءَ میتگءِ واٹس ایپ گروپاں شیئر کن تانکہ گیشتر واہند بگندنت۔",
     au_id: "موبائل نمبر یا ای میل",
@@ -6227,8 +6242,8 @@ const T = {
     brand_name: "پاک ایگری شیئر",
     pub_promo_t: "0% لانچ آپر",
     pub_promo_s: "شمئے اولی ڈیلانی سرا هچ کمیشن نیست: 5 مشینری، 3 کِشت و 1 زمینءِ ڈیل۔",
-    pub_ladder_t: "کمیشنءِ نرخ",
-    pub_ladder_s: "مفتیں ڈیلانی رندا، بس منّتگیں ڈیلانی سرا کمّیں فیس کپیت۔",
+    pub_ladder_t: "پلیٹ فارم سروس فیس",
+    pub_ladder_s: "مفتیں ڈیلانی رندا تهنا پکّائیں ڈیلانی سرا 1% فلیٹ فیس۔",
     pub_ladder_machinery: "مشینریءِ کرایہ",
     pub_ladder_crop: "کِشتءِ بہا",
     pub_ladder_land: "زمینءِ ٹھیکہ",
@@ -6252,13 +6267,13 @@ const T = {
     tour8_2_t: "اپنی بولی: وتی نرخءَ وت بلگا",
     tour8_2_s: "نہ زوریں نرخ، نہ نیامجی۔ هر ساعت یا هر ایکڑءِ وتی پیشکشءَ بکن و 40 کلومیٹرءِ تہا واہنداں گوں راستیں گند۔",
     tour8_3_t: "زمین ٹھیکہ و اسٹامپ پیپرءِ اقرار نامہ",
-    tour8_3_s: "دو زبانیں اسٹامپ پیپر اقرار نامہءِ همراہا زمینءَ ایمنیءَ گوں ٹھیکہءَ گر یا دئے، و مشین فیسءِ سرا 0.50% گیشیں کمّی بگر۔",
+    tour8_3_s: "دو زبانی اسٹامپ پیپر اقرارنامہءِ گوں کِشاری زمینءَ ایمنیءَ گوں ٹھیکہءَ بدئے یا بزور۔",
     tour8_4_t: "فصلءِ منڈی: سجّیں فصل و سبزی",
     tour8_4_s: "گندم، برنج، کپاس یا هر سبزیءَ راستیں عکس و ویڈیو ثبوتءِ همراہا راستیں تصدیق بوتگیں گرگوکاں بہا کن۔",
     tour8_5_t: "واہنداں 0% لانچ آفر",
     tour8_5_s: "بیکاریں ٹریکٹر و زمینءَ برجاہیں آمدن جوڑ کن: اولی 5 مشین، 3 فصل و 1 زمین ڈیلءَ 0% کمیشن۔",
-    tour8_6_t: "ایگری والٹ و کمتریں 2.5% فیس",
-    tour8_6_s: "تہنا 2.5% مشین فیس، هر وہد چارگ بوتگیں پیسرا جمع ایگری والٹ، و کارءِ عکس / ویڈیو ثبوت۔",
+    tour8_6_t: "ایگری والٹ و تهنا 1% سروس فیس",
+    tour8_6_s: "هر ڈیلءَ سرا تهنا 1% فلیٹ پلیٹ فارم سروس فیس، پری پیڈ ایگری والٹ کہ شما هر وهد دیست کنئے، و کارءِ فوٹو / ویڈیوءِ ثبوت۔",
     tour8_7_t: "سادگیں فون و میتگءِ ایجنٹءِ آسانی",
     tour8_7_s: "سمارٹ فون یا انٹرنیٹ نیست؟ وتی میتگءِ ایگری ایجنٹءِ کمکءَ بکنگ کن۔ USSD بکنگ زوت کئیت۔",
     tour8_8_t: "6 زبانءَ AI کسان ہیلپر",
@@ -6283,7 +6298,7 @@ const T = {
     am_custom_ph: "درور: مٹر، بھنڈی، امرود",
     am_err_custom: "فصل یا سبزیءِ نامءَ نبشتہ کن۔",
     aw_balance: "ایگری والٹءِ بیلنس",
-    aw_sub: "پلیٹ فارم کمیشنءِ واستا پیسرا جمع کتگیں بیلنس۔ مُفتیں لانچ ڈیلانءِ رندا کمیشن (مشین 2.5%، فصل 3.5%، زمین 4.5%) ڈیل پکّا کنگ یا منّگءِ وہدءَ ادا چہ گِرگ بیت۔",
+    aw_sub: "پلیٹ فارم سروس فیسءِ واستا پری پیڈ بیلنس۔ مفتیں لانچ ڈیلانی رندا، ڈیلءِ پکا کنگ یا منّگءَ تهنا 1% فلیٹ سروس فیس چہ ادا کٹ بیت۔",
     aw_topup: "ایگری والٹءَ ٹاپ اپ کن",
     aw_ledger: "ایگری والٹءِ دئیگ گرگ",
     aw_none: "انگت هچ دئیگ گرگ نیست۔",
@@ -6327,15 +6342,15 @@ const T = {
     adw_txn: "ٹرانزیکشن آئی ڈی",
     adw_founder_only: "تہنا بنگیج کنوک والٹءَ زر کرت کنت۔",
     promo_free_n: "لانچ آفر: مُفتیں ڈیل {n} چہ {of}",
-    promo_comm_line: "پاک ایگری شیئر پلیٹ فارم کمیشن (0% · {x})",
+    promo_comm_line: "پلیٹ فارم سروس و کمک (0% · {x})",
     promo_net_s: "لانچ آفر: سجّیں زرّءِ 100% راستیں واہند / بہا کنوکءَ",
-    promo_title: "لانچ آفر: پشت کپتگیں مُفتیں کمیشن ڈیل",
+    promo_title: "لانچ آفر: پشت کپتگیں مفتیں سروس فیس ڈیل",
     promo_cat_machinery: "مشین",
     promo_cat_crop: "فصلءِ منڈی",
     promo_cat_land: "زمین ٹھیکہ",
     promo_free_word: "مُفت",
-    promo_note: "اولی 5 مشین بکنگ، 3 فصلءِ بہا و 1 زمین ٹھیکہءَ 0% پلیٹ فارم کمیشن۔ رندا عامیں ریٹ: مشین 2.5% (کسانیں بزگر 2%)، فصل 3.5%، زمین 4.5%۔",
-    promo_used_up: "سجّیں مُفتیں لانچ ڈیل کارمرز بوتگ انت۔ نوں عامیں کمیشن: مشین 2.5% (کسانیں بزگر 2%)، فصل 3.5%، زمین 4.5%۔",
+    promo_note: "اولی 5 مشینری بکنگ، 3 فصلءِ بہا و 1 زمینءِ ٹھیکہءَ سرا 0% سروس فیس۔ رندا هر ڈیلءَ سرا تهنا 1% فلیٹ پلیٹ فارم سروس فیس۔",
+    promo_used_up: "کُلّیں مفتیں لانچ ڈیل کارمرز بوتگ اَنت۔ نوں 1% فلیٹ پلیٹ فارم سروس فیس لاگو اِنت۔",
     al_view: "بچار",
     ad_pending: "لائیو · انگت منّتگ نه بوتگ",
     tour_btn_s: "رہشونی",
@@ -6415,8 +6430,8 @@ const T = {
     ad_cp_edit: "اکاؤنٹ ءِ تفصیلاں بدل کن",
     ad_cp_cancel: "کنسل",
     ad_cp_saved_badge: "سمبالتگیں اکاؤنٹ، ہر بل ءِ سرا پیش دارگ بیت",
-    cs_comm_t: "پاک ایگری شیئر ءِ پلیٹ فارم کمیشن",
-    cs_comm_s: "پلیٹ فارم ءِ آسانی ءِ فیس، وت جتا بیت، پاک ایگری شیئر ءِ سرکاری اکاؤنٹ ءَ دیگ بیت",
+    cs_comm_t: "پلیٹ فارم سروس و کمک (1%)",
+    cs_comm_s: "ایمنیں بکنگ، کمک و ریکارڈءِ واستا۔ پاک ایگری شیئرءِ آفیشل اکاؤنٹءَ جمع بیت۔",
     cs_net_t: "واجہ ءَ را خالص زر",
     cs_net_s: "مشینری یا زمین ءِ واجہ ءَ را راستیں زر",
     ca_title: "پاک ایگری شیئر ءِ سرکاری مچ کنگ ءِ اکاؤنٹ",
@@ -6584,7 +6599,7 @@ const T = {
     bk_op: "چلائوک",
     bk_tr: "ٹرانسپورٹ",
     bk_sub: "کسانیں جمع",
-    bk_comm: "پلیٹ فارم ءِ کمیشن ({p})",
+    bk_comm: "پلیٹ فارم سروس و کمک ({p})",
     bk_total: "سجّہیں اندازی بہا",
     bk_fuel_line: "ڈیزل: بزگر دنت (بہا ءَ شامل نہ اِنت)",
     bk_ack: "من زانان کہ اے ڈرائی رینٹ اِنت: ڈیزل من دیاں، و گیشیں وہد و دیر ءَ پِر ترّینگ ءِ شرط منّگ ءَ پیسر واھند ءِ گوں گیشینگ بنت۔",
@@ -6640,7 +6655,7 @@ const T = {
     role_agent: "ایگری ایجنٹ",
     nav_admin: "ایڈمن پینل",
     bk_smallholder: "کسانیں بزگر (5 ایکڑ ءَ کم)",
-    bk_smallholder_sub: "عام 2.5% ءِ بدل ءَ 2% رعایتی کمیشن۔",
+    bk_smallholder_sub: "هر بزگر، کسان بہ بیت یا مزن، یک وڑیں 1% فلیٹ سروس فیس دنت۔",
     pay_paylater: "انّوں رونگ، رند ءَ زرّ (انّوں 30% + رونگ ءَ رند 70%)",
     pl_now: "انّوں زرّ (30%)",
     pl_later: "رونگ ءَ رند (70%)",
@@ -6927,12 +6942,12 @@ const T = {
     ld_declined: "نہ منّگ بوت",
     ld_contact: "سیادی ءَ پیش دار",
     ld_agreement: "اسٹامپ پیپر ءِ معاہدہ ءَ پرنٹ / ڈاؤن لوڈ کن",
-    cm_title: "پاک ایگری شیئر ءِ کمیشن",
-    cm_sub: "سجّہیں ٹھیکہ ءِ زرّ ءِ سرا 4.5٪ ءِ یک گیشینتگیں نرخ، یک بر، ٹھیکہ ءِ مدّت ہر چنت بہ بیت۔",
-    cm_total: "سجّہیں کمیشن",
+    cm_title: "پاک ایگری شیئر پلیٹ فارم سروس و کمک",
+    cm_sub: "ٹھیکہءِ سجّیں زرّءِ سرا تهنا یک بر 1% فلیٹ پلیٹ فارم سروس فیس، ٹھیکہ هر چنکس دراج بہ بیت۔",
+    cm_total: "پلیٹ فارم سروس و کمک",
     eco_title: "پاک ایگری شیئر 360° پائدگ",
-    eco_sub: "پاک ایگری شیئر ءَ زمین ءَ ٹھیکہ ءَ گِر و ادا مشین ءَ کرایہ ءَ گِر یا کِشت ءَ بہا کن: آیوکیں مشین بکنگ ءَ کمیشن ءِ سرا 0.50٪ کمّی (کمیشن 2.0٪ چہ کم نہ بیت)۔",
-    eco_active: "360° پائدگ چالو: مشین ءِ کمیشن ءِ سرا 0.50٪ کمّی",
+    eco_sub: "پاک ایگری شیئرءَ زمینءَ ٹھیکہءَ بزور و همدا مشینری کرایہءَ بزور یا فصلءَ بہا کن، یک اکاؤنٹ و یک وڑیں 1% فلیٹ سروس فیسءِ گوں۔",
+    eco_active: "360° باسک: زمین، مشینری و فصل یک اکاؤنٹءَ",
     ag_title: "ایگری ایجنٹ و USSD آف لائن بکنگ",
     ag_stamp: "ای اسٹامپ پیپر ءَ ادا لگئے",
     ag_date: "تاریخ",
@@ -7009,7 +7024,7 @@ const T = {
     ld_how1: "زمین ءَ نبشتہ کن",
     ld_how2: "ٹھیکہ دار درخواست دنت",
     ld_how3: "اسٹامپ پیپر ءَ دستخط",
-    ld_fee_example: "مثال: 4,00,000 کلدار ءِ ٹھیکہ = 18,000 کلدار فیس (4.5%)، تهنا یک بر",
+    ld_fee_example: "مثال: 4,00,000 کلدارءِ ٹھیکہ = 4,000 کلدار سروس فیس (1%)، تهنا یک بر",
     ld_sample_btn: "نمونہ ءِ اقرار نامہ ءَ بچار",
     ld_sample_badge: "نمونہ",
     ld_pick_district: "نزیکیں زمین ءَ چارگ ءِ واستا اوّل وتی ضلع ءَ گچین کن۔ اگاں اودا زمین نبشتہ مہ بیت، مئے کنسلٹنٹ شمئے واستا زمین شوہاز کنت۔",
@@ -7998,7 +8013,7 @@ function Hero({ t, onFind, onList, onLive, onLand, isEnglish, stats }) {
 function TrustStrip({ t }) {
   const items = [
     [ShieldCheck, t("tr1_t"), t("tr1_s")],
-    [Percent, t("tr2_t"), t("tr2_s")],
+    [HandCoins, t("tr2_t"), t("tr2_s")],
     [Sprout, t("tr3_t"), t("tr3_s")],
     [Headphones, t("tr4_t"), t("tr4_s")],
   ];
@@ -8345,7 +8360,7 @@ function CommissionSplit({ t, commission, total, promo = null, className = "" })
   );
   return (
     <div className={`divide-y divide-soil/10 overflow-hidden rounded-xl bg-white ring-1 ring-soil/15 ${className}`}>
-      {line(Landmark, promo ? "bg-leaf/20 text-forest" : "bg-gold/20 text-soil", promo ? `${t("cs_comm_t")} · 0%` : t("cs_comm_t"), promo ? promoText(t, promo) : t("cs_comm_s"), c)}
+      {line(promo ? Gift : Landmark, promo ? "bg-leaf/20 text-forest" : "bg-gold/20 text-soil", promo ? promoSavedLine(t, Math.round((Number(total) || 0) * COMMISSION)) : t("cs_comm_t"), promo ? promoText(t, promo) : t("cs_comm_s"), c)}
       {line(HandCoins, "bg-leaf/15 text-forest", t("cs_net_t"), promo ? t("promo_net_s") : t("cs_net_s"), net)}
     </div>
   );
@@ -8809,7 +8824,7 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
     q.operator ? [t("bk_op"), q.operator] : null,
     q.transport ? [t("bk_tr"), q.transport] : null,
     q.fuel ? [t("vo_fuel"), q.fuel] : null,
-    [commLabel(t, q), q.commission],
+    [commLabel(t, q), q.commission, !!q.promo],
   ].filter(Boolean).filter((r) => r[1] != null);
   const print = () => {
     document.body.classList.add("print-voucher");
@@ -8882,7 +8897,7 @@ function VoucherModal({ b, t, dn, onClose, updateBooking }) {
             <div className="rounded-xl bg-ivory/70 p-3 ring-1 ring-soil/10">
               <p className="mb-1 text-xs font-bold uppercase tracking-wide text-soil/80">{t("vo_items")}</p>
               <table className="w-full text-sm"><tbody>
-                {rows.map(([k, v]) => <tr key={k} className="border-b border-soil/10"><td className="py-1.5 text-soil/80">{k}</td><td className="py-1.5 text-end font-semibold" dir="ltr">{pkr(v)}</td></tr>)}
+                {rows.map(([k, v, g]) => <tr key={k} className={`border-b border-soil/10 ${g ? "bg-leaf/10" : ""}`}><td className={`py-1.5 ${g ? "ps-1.5 font-bold text-forest" : "text-soil/80"}`}>{k}</td><td className={`py-1.5 text-end font-semibold ${g ? "pe-1.5 text-forest" : ""}`} dir="ltr">{pkr(v)}</td></tr>)}
                 <tr className="tot"><td className="pt-2 font-display text-base font-extrabold text-forest">{t("vo_total")}</td><td className="pt-2 text-end font-display text-xl font-extrabold text-forest" dir="ltr">{pkr(q.total || 0)}</td></tr>
               </tbody></table>
               {b.financing && <p className="mt-2 text-xs text-soil/80" dir="ltr">{t("pay_paylater")}: {t("pl_now")} <b>{pkr(b.financing.advance)}</b> · {t("pl_later")} <b>{pkr(b.financing.balance)}</b> ({b.financing.partner})</p>}
@@ -8997,14 +9012,14 @@ const WA_SHARE = {
     place: "📍 جگہ: {place}", acres: "📐 رقبہ: {acres} ایکڑ", qty: "⚖️ مقدار: {qty} من",
     rate_hr: "💰 مالک کا مانگا ہوا ریٹ: {rate} روپے فی گھنٹہ (بات چیت ہو سکتی ہے)", rate_offer: "💰 کسان کی اپنی بولی: {rate} روپے فی گھنٹہ، مالکان اپنی آفر بھیجیں",
     rate_acre: "💰 ٹھیکہ: {rate} روپے فی ایکڑ ماہانہ", rate_total: "💰 کل ٹھیکہ: {rate} روپے", rate_crop: "💰 مانگا ہوا ریٹ: {rate} روپے فی من",
-    promo: "🎉 0% لانچ آفر: کوئی کمیشن نہیں", cta: "پاک ایگری شیئر پر دیکھیں",
+    promo: "🤝 کسان سے مالک اور خریدار تک براہ راست ڈیل، کوئی بچولیا نہیں", cta: "پاک ایگری شیئر پر دیکھیں",
   },
   en: {
     machine: "🚜 {title} available for rent", request: "🙋 Farmer needs a {title}", land: "🌾 Land for lease (Zameen Thaika): {title}", crop: "🌾 Crop for sale: {title}",
     place: "📍 Location: {place}", acres: "📐 Area: {acres} acres", qty: "⚖️ Quantity: {qty} maunds",
     rate_hr: "💰 Owner's asking rate: Rs {rate}/hr (negotiable)", rate_offer: "💰 Farmer's own offer (Apni Boli): Rs {rate}/hr. Owners, send your offer",
     rate_acre: "💰 Lease: Rs {rate} per acre per month", rate_total: "💰 Total lease: Rs {rate}", rate_crop: "💰 Asking rate: Rs {rate} per maund",
-    promo: "🎉 0% Launch Offer: no commission", cta: "See it on PakAgriShare",
+    promo: "🤝 Direct Farmer-to-Owner & Buyer Deals · Zero Middleman", cta: "See it on PakAgriShare",
   },
 };
 const tIn = (lg) => (k) => (T[lg] && T[lg][k]) || T.en[k] || k;
@@ -9455,7 +9470,9 @@ function BookingModal({ listing, t, dn, onClose, onSubmit, session, ecoActive = 
               <Row label={t("bk_tr")} value={listing.transport === "included" ? t("included_word") : q.transport ? pkr(q.transport) : t("not_added")} muted={!q.transport} />
               <div className="my-1 border-t border-dashed border-soil/20" />
               <Row label={t("bk_sub")} value={pkr(q.subtotal)} />
-              <Row label={commLabel(t, q)} value={pkr(q.commission)} />
+              {q.promo
+                ? <div className="my-0.5 flex items-center justify-between gap-3 rounded-lg bg-leaf/15 px-2 py-1.5 text-sm font-bold text-forest ring-1 ring-leaf/30 rtl:leading-[2]"><span className="inline-flex items-center gap-1.5"><Gift className="h-4 w-4 shrink-0" aria-hidden="true" />{commLabel(t, q)}</span><span className="tabular-nums" dir="ltr">{pkr(0)}</span></div>
+                : <Row label={commLabel(t, q)} value={pkr(q.commission)} />}
               <div className="my-1 border-t border-soil/20" />
               <Row label={t("bk_total")} value={pkr(q.total)} strong />
               {offerOn && q.total !== listedQ.total && <p className="text-end text-xs text-soil/80" dir="ltr">{t("bk_listed")}: <s>{pkr(listedQ.total)}</s> · −{pkr(listedQ.total - q.total)}</p>}
@@ -9665,7 +9682,7 @@ function MyBookings({ t, dn, bookings, updateBooking, setTab, session, openAuth,
                 <span>{t("bk_base")}: <b dir="ltr">{pkr(b.quote.base)}</b></span>
                 <span>{t("bk_op")}: <b>{b.quote.operator ? pkr(b.quote.operator) : b.operator ? t("included_word") : t("not_added")}</b></span>
                 <span>{t("bk_tr")}: <b>{b.quote.transport ? pkr(b.quote.transport) : b.transport ? t("included_word") : t("not_added")}</b></span>
-                <span>{commLabel(t, b.quote)}: <b dir="ltr">{pkr(b.quote.commission)}</b></span>
+                <span className={b.quote.promo ? "rounded-md bg-leaf/15 px-1.5 font-bold text-forest" : ""}>{commLabel(t, b.quote)}: <b dir="ltr">{pkr(b.quote.commission)}</b></span>
                 <span>{t("bk_pay")}: <b>{t("pay_" + b.payment)}</b></span>
                 <span>{t("owner")}: <b dir="ltr">{b.ownerId}</b></span>
               </div>
@@ -10199,7 +10216,7 @@ const U = {
   pa: {
     type: "Machine di qisam chuno:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chuno:\n1. Kal ({d1})\n2. Parson ({d2})\n3. {d3}", hours: "Kinne ghante? (1-16)\nNumber likh ke bhejo", loc: "Nazdeeki ilaqa chuno:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Machinan:", none: "Is qisam di koi machine nahi labhi.\n0. Wapis", operator: "Operator chahida? (+Rs500/ghanta)\n1. Haan\n2. Nahi", transport: "Transport chahidi? (+Rs{fee})\n1. Haan\n2. Nahi",
-    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 2.5% Rs{comm}\nDiesel: tusi dena (dry rent)\nVadh time: maalik naal tay\n1. Confirm  2. Cancel",
+    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 1% Rs{comm}\nDiesel: tusi dena (dry rent)\nVadh time: maalik naal tay\n1. Confirm  2. Cancel",
     pending: "Maalik {owner} nu request ghal ditti.\nTasdeeq di udeek...", confirmed: "SMS: PakAgriShare booking {id} PAKKI.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal",
     complete: "Kya kiraya mukammal hoya?\n1. Haan\n2. Masla report karo", rating: "Rating dio (1-5):", done: "Shukriya! Feedback record ho gaya.\nEnd dabao.", issue: "Shikayat record. Agri-Agent rabta karega.\nEnd dabao.",
     cancelled: "Booking cancel. End dabao.", invalid: "Ghalat input. Dobara koshish karo.",
@@ -10207,7 +10224,7 @@ const U = {
   ur: {
     type: "Machine ki qisam chunein:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chunein:\n1. Kal ({d1})\n2. Parson ({d2})\n3. {d3}", hours: "Kitne ghante? (1-16)\nNumber likh kar bhejein", loc: "Qareebi ilaqa chunein:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Machines:", none: "Is qisam ki koi machine nahi mili.\n0. Wapis", operator: "Operator chahiye? (+Rs500/ghanta)\n1. Haan\n2. Nahi", transport: "Transport chahiye? (+Rs{fee})\n1. Haan\n2. Nahi",
-    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 2.5% Rs{comm}\nDiesel: aap ka (dry rent)\nZaid waqt: maalik se tay\n1. Confirm  2. Cancel",
+    review: "Kul: Rs{total}\nKiraya Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 1% Rs{comm}\nDiesel: aap ka (dry rent)\nZaid waqt: maalik se tay\n1. Confirm  2. Cancel",
     pending: "Maalik {owner} ko request bhej di.\nTasdeeq ka intezar...", confirmed: "SMS: PakAgriShare booking {id} CONFIRMED.\n{machine}, {date}, {h} ghante, Rs{total}.\n1. Rental mukammal",
     complete: "Kya kiraya mukammal hua?\n1. Haan\n2. Masla report karein", rating: "Rating dein (1-5):", done: "Shukriya! Feedback record ho gaya.\nEnd dabayein.", issue: "Shikayat record. Agri-Agent rabta karega.\nEnd dabayein.",
     cancelled: "Booking cancel. End dabayein.", invalid: "Ghalat input. Dobara koshish karein.",
@@ -10215,7 +10232,7 @@ const U = {
   sd: {
     type: "Mashin jo qisam chundiyo:\n1. Tractor\n2. Thresher\n3. Harvester", date: "Tareekh chundiyo:\n1. Subhaane ({d1})\n2. Pareenh ({d2})\n3. {d3}", hours: "Ketra kalak? (1-16)\nNumber likhi moklyo", loc: "Wejho ilaiqo chundiyo:\n1. Lahore Rural\n2. Kasur\n3. Sheikhupura\n4. Okara\n5. Faisalabad\n6. Sahiwal",
     options: "Mashinoon:", none: "Hin qisam ji ka mashin na mili.\n0. Wapas", operator: "Operator khape? (+Rs500/kalak)\n1. Ha\n2. Na", transport: "Transport khape? (+Rs{fee})\n1. Ha\n2. Na",
-    review: "Kul: Rs{total}\nKirayo Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 2.5% Rs{comm}\nDiesel: awhan jo (dry rent)\nWadheek waqt: malik san tay\n1. Confirm  2. Cancel",
+    review: "Kul: Rs{total}\nKirayo Rs{base} + Op Rs{op} + Trans Rs{tr} + Fee 1% Rs{comm}\nDiesel: awhan jo (dry rent)\nWadheek waqt: malik san tay\n1. Confirm  2. Cancel",
     pending: "Malik {owner} khe darkhwast moklee wai.\nTasdeeq jo intezar...", confirmed: "SMS: PakAgriShare booking {id} CONFIRMED.\n{machine}, {date}, {h} kalak, Rs{total}.\n1. Kirayo mukammal",
     complete: "Chha kirayo mukammal thyo?\n1. Ha\n2. Masilo report karyo", rating: "Rating dyo (1-5):", done: "Meharbani! Rai record thi wai.\nEnd dabayo.", issue: "Shikayat record. Agri-Agent rabto kando.\nEnd dabayo.",
     cancelled: "Booking cancel. End dabayo.", invalid: "Ghalat input. Wari koshish karyo.",
@@ -10226,7 +10243,7 @@ U.urS = {
   type: "مشین کی قسم چنیں:\n1. ٹریکٹر\n2. تھریشر\n3. ہارویسٹر", date: "تاریخ چنیں:\n1. کل ({d1})\n2. پرسوں ({d2})\n3. {d3}", hours: "کتنے گھنٹے؟ (1 سے 16)\nنمبر لکھ کر بھیجیں",
   loc: "قریبی علاقہ چنیں:\n1. لاہور دیہی\n2. قصور\n3. شیخوپورہ\n4. اوکاڑہ\n5. فیصل آباد\n6. ساہیوال",
   options: "مشینیں:", none: "اس قسم کی کوئی مشین نہیں ملی۔\n0. واپس", operator: "آپریٹر چاہیے؟ (+500 روپے فی گھنٹہ)\n1. ہاں\n2. نہیں", transport: "ٹرانسپورٹ چاہیے؟ (+{fee} روپے)\n1. ہاں\n2. نہیں",
-  review: "کل: {total} روپے\nکرایہ {base} + آپریٹر {op} + ٹرانسپورٹ {tr} + فیس 2.5% {comm}\nڈیزل: آپ کا (ڈرائی رینٹ)\nزائد وقت: مالک سے طے\n1. تصدیق  2. منسوخ",
+  review: "کل: {total} روپے\nکرایہ {base} + آپریٹر {op} + ٹرانسپورٹ {tr} + فیس 1% {comm}\nڈیزل: آپ کا (ڈرائی رینٹ)\nزائد وقت: مالک سے طے\n1. تصدیق  2. منسوخ",
   pending: "مالک {owner} کو درخواست بھیج دی۔\nتصدیق کا انتظار...", confirmed: "SMS: پاک ایگری شیئر بکنگ {id} پکی۔\n{machine}، {date}، {h} گھنٹے، {total} روپے۔\n1. کرایہ مکمل",
   complete: "کیا کرایہ مکمل ہوا؟\n1. ہاں\n2. مسئلہ بتائیں", rating: "درجہ بندی دیں (1 سے 5):", done: "شکریہ! رائے محفوظ ہو گئی۔\nختم دبائیں۔", issue: "شکایت درج۔ ایگری ایجنٹ رابطہ کرے گا۔\nختم دبائیں۔",
   cancelled: "بکنگ منسوخ۔ ختم دبائیں۔", invalid: "غلط اندراج۔ دوبارہ کوشش کریں۔",
@@ -10484,7 +10501,7 @@ function scriptLang(text, uiLang) {
 }
 const normDigits = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
 
-const HELPER_EXTRA = {"wallet": {"pa": "ایگری والٹ، کمیشن لئی اگاؤں جمع بیلنس (اِن ڈرائیو یا فوڈ پانڈا وانگ):\n1. اونر پورٹل کھولو: سب توں اُتے تہاڈا ایگری والٹ بیلنس تے لین دین اے۔\n2. \"ایگری والٹ ٹاپ اپ کرو\" دباؤ۔ اوتھے لکھے پاک ایگری شیئر دے سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) وچ رقم گھلو۔\n3. رقم چنو (500 توں 10,000 روپے، یا 100 توں اُتے کوئی وی رقم)، ٹرانزیکشن آئی ڈی لکھو، رسید دی تصویر لاؤ تے گھل دیو۔\n4. ساڈی ٹیم رسید ویکھ کے والٹ وچ رقم پا دیندی اے۔\nمفت لانچ ڈیلاں مُکن مگروں کمیشن آپے والٹ وچوں کٹدا اے: بکنگ پکی کرن تے 2.5%، فصل ویچن تے 3.5%، زمین ٹھیکہ منن تے 4.5%۔ بیلنس گھٹ ہووے تے \"ایگری والٹ بیلنس گھٹ اے، آرڈر منن لئی ٹاپ اپ کرو\" دسے گا۔ مدد: 0322-4729249 یا 0370-0318574۔", "sd": "ايگري والٽ، ڪميشن لاءِ اڳواٽ جمع بيلنس (اِن ڊرائيو يا فوڊ پانڊا وانگر):\n1. اونر پورٽل کوليو: سڀ کان مٿي توهان جو ايگري والٽ بيلنس ۽ ليڻ ڏيڻ آهي.\n2. \"ايگري والٽ ٽاپ اپ ڪريو\" دٻايو. اتي لکيل پاک ایگری شیئر جي سرڪاري وصولي اڪائونٽ (بئنڪ، IBAN، راسٽ، جاز ڪيش يا ايزي پيسا) ۾ رقم موڪليو.\n3. رقم چونڊيو (500 کان 10,000 رپيا، يا 100 کان مٿي ڪا به رقم)، ٽرانزيڪشن آءِ ڊي لکو، رسيد جي تصوير لڳايو ۽ موڪليو.\n4. اسان جي ٽيم رسيد ڏسي والٽ ۾ رقم وجهي ٿي.\nمفت لانچ ڊيلون پوريون ٿيڻ کان پوءِ ڪميشن پاڻمرادو والٽ مان ڪٽجي ٿي: بڪنگ پڪي ڪرڻ تي 2.5%، فصل وڪري تي 3.5%، زمين ٺيڪو قبول ڪرڻ تي 4.5%. بيلنس گهٽ هجي ته \"ايگري والٽ بيلنس گهٽ آهي، آرڊر قبول ڪرڻ لاءِ ٽاپ اپ ڪريو\" ڏيکاريو ويندو. مدد: 0322-4729249 يا 0370-0318574.", "ps": "اګري والټ، د کمیشن لپاره مخکې جمع شوی بیلنس (لکه اِن ډرایو یا فوډ پانډا):\n1. اونر پورټل پرانیزئ: تر ټولو پورته ستاسو د اګري والټ بیلنس او راکړه ورکړه ده.\n2. \"اګري والټ ټاپ اپ کړئ\" کېکاږئ. هلته لیکل شوي د پاک ایگری شیئر رسمي وصولي حساب (بانک، IBAN، راسټ، جاز کېش یا ایزي پیسه) ته پیسې ولېږئ.\n3. اندازه وټاکئ (له 500 تر 10,000 روپۍ، یا له 100 پورته هره اندازه)، د راکړې ورکړې آی ډي ولیکئ، د رسید انځور ورزیات کړئ او یې ولېږئ.\n4. زموږ ټیم رسید ګوري او ستاسو والټ ته پیسې اچوي.\nد وړیا معاملو تر پای ته رسېدو وروسته کمیشن پخپله له والټ څخه کمېږي: د بکنګ تایید 2.5%، د فصل پلور 3.5%، د ځمکې اجاره منل 4.5%. که بیلنس کم وي، \"د اګري والټ بیلنس کم دی، د امرونو منلو لپاره ټاپ اپ کړئ\" ښکاري. مرسته: 0322-4729249 یا 0370-0318574.", "bal": "ایگری والٹ، کمیشنءِ واستا پیسرا جمع کتگیں بیلنس (اِن ڈرائیو یا فوڈ پانڈاءِ وڑا):\n1. اونر پورٹلءَ پچ کن: سجّیءَ چہ سرا تئی ایگری والٹءِ بیلنس و دئیگ گرگ است۔\n2. \"ایگری والٹءَ ٹاپ اپ کن\" ءَ جن۔ اودا نبشتگیں پاک ایگری شیئرءِ سرکاری وصولی اکاؤنٹءَ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) زر راہ دئے۔\n3. زرّءِ کچ گچین کن (500 چہ 10,000 روپیہ، یا 100ءَ چہ گیشتر هر کچ)، ٹرانزیکشن آئی ڈی نبشتہ کن، رسیدءِ عکسءَ لگا و راہ دئے۔\n4. مئے ٹیم رسیدءَ چاریت و تئی والٹءَ زر کنت۔\nمُفتیں لانچ ڈیل هلاس بئیگءَ رندا کمیشن وت والٹءَ چہ گِرگ بیت: بکنگ پکّا کنگءَ 2.5%، فصلءِ بہاءَ 3.5%، زمین ٹھیکہ منّگءَ 4.5%۔ اگاں بیلنس کم بیت، \"ایگری والٹءِ بیلنس کم انت، آرڈر منّگءِ واستا ٹاپ اپ کن\" پیش دارگ بیت۔ کمک: 0322-4729249 یا 0370-0318574۔"}, "promo": {"pa": "لانچ آفر، پہلیاں ڈیلاں تے 0% کمیشن:\n• مشینری مالک: پہلیاں 5 پکیاں بکنگاں تے کوئی کمیشن نئیں۔ ایہدے مگروں 2.5% (5 ایکڑ توں گھٹ والے چھوٹے کسان 2%)۔\n• فصل منڈی وچ ویچن والے: پہلیاں 3 فصل ویچاں مفت۔ ایہدے مگروں ویچ دی رقم دا 3.5%۔\n• زمین ٹھیکہ مالک: پہلا منیا ہویا ٹھیکہ مفت۔ ایہدے مگروں اک واری 4.5% فیس۔\nمفت ڈیل تے بل وچ \"پاک ایگری شیئر پلیٹ فارم کمیشن 0 روپے (0% · لانچ آفر: مفت ڈیل 2 وچوں 5)\" لکھیا ہوندا اے تے پوری رقم دا 100% مالک یا ویچن والے نوں ملدا اے، کجھ جمع یا رسید اپ لوڈ نئیں کرنی۔ باقی مفت ڈیلاں اونر پورٹل تے فصل منڈی وچ \"لانچ آفر\" کارڈ تے ویکھو۔", "sd": "لانچ آڇ، پهرين ڊيلن تي 0% ڪميشن:\n• مشينري مالڪ: پهرين 5 پڪين بڪنگن تي ڪو ڪميشن ناهي. ان کان پوءِ 2.5% (5 ايڪڙ کان گهٽ وارا ننڍا هاري 2%).\n• فصل منڊي ۾ وڪڻندڙ: پهريان 3 فصل وڪرا مفت. ان کان پوءِ وڪري جي رقم جو 3.5%.\n• زمين ٺيڪي جا مالڪ: پهريون قبول ٿيل ٺيڪو مفت. ان کان پوءِ هڪ ڀيرو 4.5% فيس.\nمفت ڊيل تي بل ۾ \"پاک ایگری شیئر پليٽ فارم ڪميشن 0 رپيا (0% · لانچ آڇ: مفت ڊيل 2 مان 5)\" لکيل هوندو آهي ۽ سڄي رقم جو 100% مالڪ يا وڪڻندڙ کي ملي ٿو، ڪجهه جمع يا رسيد اپلوڊ نه ڪرڻي. باقي مفت ڊيلون اونر پورٽل ۽ فصل منڊي ۾ \"لانچ آڇ\" ڪارڊ تي ڏسو.", "ps": "د پیل وړاندیز، په لومړیو معاملو 0% کمیشن:\n• د ماشین مالکان: په لومړیو 5 تایید شویو بکنګونو هېڅ کمیشن نشته. وروسته 2.5% (له 5 جریبو کم کوچني بزګر 2%).\n• په فصل منډۍ کې پلورونکي: لومړي 3 فصل پلور وړیا. وروسته د پلور د پیسو 3.5%.\n• د ځمکې اجارې مالکان: لومړۍ منل شوې اجاره وړیا. وروسته یو ځل 4.5% فیس.\nپه وړیا معامله کې بل لیکي \"د پاک ایگری شیئر پلیټ فارم کمیشن 0 روپۍ (0% · د پیل وړاندیز: وړیا معامله 2 له 5)\" او د ټولې پیسې 100% مالک یا پلورونکي ته ځي، هېڅ ورکړه یا رسید نه غواړي. پاتې وړیا معاملې په اونر پورټل او فصل منډۍ کې د \"د پیل وړاندیز\" کارت کې وګورئ.", "bal": "لانچ آفر، اولی ڈیلانءَ 0% کمیشن:\n• مشینءِ واہند: اولی 5 پکّائیں بکنگءَ هچ کمیشن نیست۔ رندا 2.5% (5 ایکڑءَ کمتر کسانیں بزگر 2%)۔\n• فصلءِ منڈیءَ بہا کنوک: اولی 3 فصلءِ بہا مُفت۔ رندا بہاءِ زرّءِ 3.5%۔\n• زمین ٹھیکہءِ واہند: اولی منّتگیں ٹھیکہ مُفت۔ رندا یک بر 4.5% فیس۔\nمُفتیں ڈیلءَ بلءَ \"پاک ایگری شیئر پلیٹ فارم کمیشن 0 روپیہ (0% · لانچ آفر: مُفتیں ڈیل 2 چہ 5)\" نبشتہ انت و سجّیں زرّءِ 100% واہند یا بہا کنوکءَ رسیت، هچ جمع یا رسید اپ لوڈ کنگ نہ لوٹیت۔ پشت کپتگیں مُفتیں ڈیل اونر پورٹل و فصلءِ منڈیءَ \"لانچ آفر\" کارڈءَ بچار۔"}, "register": {"pa": "پاک ایگری شیئر تے رجسٹر ہون دا طریقہ:\n1. اُتے \"سائن اپ\" دباؤ۔\n2. پورا ناں، ای میل، موبائل تے ضلع لکھو۔\n3. اپنا کردار چنو: کسان، مشینری مالک یا ایگری ایجنٹ۔\n4. پاس ورڈ (گھٹ توں گھٹ 6 حرف) دو واری لکھو تے پرائیویسی نوٹ منو۔\n5. \"اکاؤنٹ بناؤ\" دباؤ۔", "sd": "پاک ایگری شیئر تي رجسٽر ٿيڻ جو طريقو:\n1. مٿي \"سائن اپ\" دٻايو۔\n2. پورو نالو، اي ميل، موبائل ۽ ضلعو لکو۔\n3. پنهنجو ڪردار چونڊيو: هاري، مشينري مالڪ يا ايگري ايجنٽ۔\n4. پاس ورڊ (گهٽ ۾ گهٽ 6 اکر) ٻه ڀيرا لکو ۽ پرائيويسي نوٽ قبول ڪريو۔\n5. \"کاتو ٺاهيو\" دٻايو۔", "ps": "په پاک ایگری شیئر کې د نوم لیکنې طریقه:\n1. پورته \"نوم لیکنه\" کېکاږئ.\n2. بشپړ نوم، ای میل، موبایل او ضلع ولیکئ.\n3. خپل رول وټاکئ: بزګر، د ماشین مالک یا اګري اېجنټ.\n4. پاسورډ (لږ تر لږه 6 توري) دوه ځله ولیکئ او د محرمیت یادونه ومنئ.\n5. \"حساب جوړ کړئ\" کېکاږئ.", "bal": "پاک ایگری شیئر ءَ رجسٹر بیگ ءِ راہ:\n1. سرا \"سائن اپ\" ءَ جن۔\n2. پوریں نام، ای میل، موبائل و ضلع نبشتہ کن۔\n3. وتی کار گچین کن: بزگر، مشین ءِ واھند یا ایگری ایجنٹ۔\n4. پاس ورڈ (کمّ ءِ کمّ 6 حرف) دو بر نبشتہ کن و پرائیویسی ءِ نوٹ ءَ بمنّ۔\n5. \"اکاؤنٹ جوڑ کن\" ءَ جن۔"}, "offer": {"pa": "کرایہ ودھ لگدا اے؟ اپنی قیمت دسو:\n1. مشین تے \"بکنگ دی درخواست\" دباؤ۔\n2. \"اپنی قیمت دسو\" چالو کرو۔\n3. فی گھنٹہ پیشکش (لکھے ریٹ دا گھٹ توں گھٹ 60%) تے ٹرانسپورٹ دی پیشکش لکھو۔\n4. سنیہا لکھ کے گھلو۔ مالک منے گا، جوابی پیشکش دیوے گا یا انکار کرے گا۔ ٹرانسپورٹ فاصلے دے حساب نال اے (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)۔", "sd": "ڪرايو وڌيڪ لڳي ٿو؟ پنهنجي قيمت ٻڌايو:\n1. مشين تي \"بڪنگ جي درخواست\" دٻايو۔\n2. \"پنهنجي قيمت ٻڌايو\" چالو ڪريو۔\n3. في ڪلاڪ آڇ (لکيل اگهه جو گهٽ ۾ گهٽ 60%) ۽ ٽرانسپورٽ جي آڇ لکو۔\n4. پيغام لکي موڪليو۔ مالڪ قبول، جوابي آڇ يا انڪار ڪري سگهي ٿو۔ ٽرانسپورٽ فاصلي موجب آهي (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)۔", "ps": "کرایه ډېره ښکاري؟ خپله بیه وړاندې کړئ:\n1. پر ماشین \"د بکنګ غوښتنه\" کېکاږئ.\n2. \"خپله بیه وړاندې کړئ\" چالان کړئ.\n3. فی ساعت وړاندیز (د ثبت شوې بیې لږ تر لږه 60%) او د ټرانسپورټ وړاندیز ولیکئ.\n4. پیغام ولیکئ او ولېږئ. مالک یې منلی، بل وړاندیز ورکولی یا ردولی شي. ټرانسپورټ د واټن له مخې دی (100 روپۍ فی کیلومتر، لږ تر لږه 500).", "bal": "کرایہ گیش اِنت؟ وتی بہا ءَ پیش کن:\n1. مشین ءِ سرا \"بکنگ ءِ درخواست\" ءَ جن۔\n2. \"وتی بہا ءَ پیش کن\" ءَ روشن کن۔\n3. ساعت ءِ پیشکش (نبشتہ کتگیں نرخ ءِ کمّ ءِ کمّ 60%) و ٹرانسپورٹ ءِ پیشکش نبشتہ کن۔\n4. کلہو نبشتہ کن و دیم دئے۔ واھند منّیت، دومی پیشکش دنت یا نہ منّیت۔ ٹرانسپورٹ دوری ءِ ہساب ءَ اِنت (100 کلدار فی کلومیٹر، کمّ ءِ کمّ 500)۔"}, "paylater": {"pa": "ہن وڈھی، بعد وچ ادائیگی: بکنگ فارم وچ ایہہ ادائیگی چنو۔ تسیں ہن صرف 30% دیو؛ باقی 70% تیجی دھر مائیکروفنانس پارٹنر (تجویز: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) دا قرض اے جو وڈھی توں بعد (60 توں 180 دن) دینا اے۔ خطرہ پارٹنر دا اے، پاک ایگری شیئر دا نئیں۔ سوکھا طریقہ: ایگری منڈی تے فصل ویچو، 70% آپے کٹ جاوے گا۔", "sd": "هاڻي لابارو، پوءِ ادائيگي: بڪنگ فارم ۾ هي ادائيگي چونڊيو۔ توهان هاڻي صرف 30% ڏيو؛ باقي 70% ٽئين ڌر مائڪروفنانس پارٽنر (تجويز: جاز ڪيش ڪريڊٽ، ايزي پيسا يا ZTBL) جو قرض آهي جيڪو لاباري کان پوءِ (60 کان 180 ڏينهن) ڏيڻو آهي۔ خطرو پارٽنر جو آهي، پاک ایگری شیئر جو ناهي۔ سولو طريقو: ايگري منڊي تي فصل وڪڻو، 70% پاڻمرادو ڪٽجي ويندو۔", "ps": "اوس لو، وروسته تادیه: د بکنګ په فورمه کې دا تادیه وټاکئ. تاسو اوس یوازې 30% ورکوئ؛ پاتې 70% د دریم اړخ مایکروفنانس شریک (وړاندیز: جاز کیش کریډټ، ایزي پیسه یا ZTBL) پور دی چې له لو وروسته (60 تر 180 ورځو) ورکول کېږي. خطر د شریک دی، د پاک ایگری شیئر نه. اسانه لاره: په اګري منډۍ کې فصل وپلورئ، 70% به په خپله پرې شي.", "bal": "انّوں رونگ، رند ءَ زرّ: بکنگ ءِ فارم ءَ اے راہ ءَ گچین کن۔ شما انّوں تهنا 30% دئیت؛ پشت کپتگیں 70% سیمی دَپ ءِ مائیکروفنانس ہمراہ (پیشنهاد: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) ءِ وام اِنت کہ رونگ ءَ رند (60 تا 180 روچ) دئیگ بیت۔ خطر ہمراہ ءِ اِنت، پاک ایگری شیئر ءِ نہ۔ آسانیں راہ: ایگری منڈی ءَ کِشت ءَ بہا کن، 70% وت ءَ کٹ بیت۔"}, "mandi": {"pa": "ایگری منڈی:\n1. فصل (کنک، چول، مکئی، کپاہ)، مقدار من وچ، معیار تے پنڈ چنو۔\n2. فی من متوقع قیمت تے جاز کیش یا ایزی پیسہ نمبر لکھو۔\n3. پوسٹ کرو: آٹا ملاں، رائس ملاں تے وڈے خریدار لائیو بولی لاندے نیں۔\n4. سب توں چنگی بولی منو: ویچ دی رقم وچوں باقی 70% مشینری قرض کٹ کے خالص منافع تہاڈے والٹ وچ۔", "sd": "ايگري منڊي:\n1. فصل (ڪڻڪ، چانور، مڪئي، ڪپهه)، مقدار مڻن ۾، معيار ۽ ڳوٺ چونڊيو۔\n2. في مڻ متوقع قيمت ۽ جاز ڪيش يا ايزي پيسا نمبر لکو۔\n3. پوسٽ ڪريو: اٽي ۽ چانورن جون ملون ۽ وڏا خريدار لائيو بولي ڏين ٿا۔\n4. بهترين بولي قبول ڪريو: وڪري مان باقي 70% مشينري قرض ڪٽجي خالص منافعو توهان جي والٽ ۾۔", "ps": "اګري منډۍ:\n1. فصل (غنم، وريجې، جوار، پنبه)، مقدار په من، کیفیت او کلی وټاکئ.\n2. فی من تمه‌لرونکې بیه او د جاز کیش یا ایزي پیسه شمېره ولیکئ.\n3. ثبت یې کړئ: د اوړو او وريجو ملونه او لوی پېرودونکي ژوندۍ داوطلبي کوي.\n4. غوره داوطلبي ومنئ: له پلور څخه پاتې 70% د ماشین پور پرې کېږي او خالصه ګټه ستاسو والټ ته ځي.", "bal": "ایگری منڈی:\n1. کِشت (گندم، برنج، جُوار، کپاس)، کچ من ءَ، جوانی و میتگ گچین کن۔\n2. فی من امیتیں بہا و جاز کیش یا ایزی پیسہ ءِ نمبر نبشتہ کن۔\n3. دیم دئے: آرت و برنج ءِ مِل و مزنیں گِروک زندگیں بولی جن اَنت۔\n4. گہتریں بولی ءَ بمنّ: بہا ءَ چہ پشت کپتگیں 70% مشین ءِ وام کٹ بیت و خالصیں کٹّ شمئے والٹ ءَ رَوت۔"}, "keypad": {"pa": "سمارٹ فون نئیں؟ کسے وی سادے فون توں ساڈے پاک ایگری شیئر کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔ اوہ نیڑے مشین لبھ کے بکنگ دی تصدیق SMS تے گھلن گے۔ پنڈ دا ایگری ایجنٹ وی تہاڈی بکنگ کر سکدا اے۔", "sd": "سمارٽ فون ناهي؟ ڪنهن به سادي فون مان اسان جي پاک ایگری شیئر ڪنسلٽنٽ کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو۔ اهي ويجهي مشين ڳولي بڪنگ جي تصديق SMS تي موڪليندا۔ ڳوٺ جو ايگري ايجنٽ به توهان جي بڪنگ ڪري سگهي ٿو۔", "ps": "سمارټ فون نه لرئ؟ له هر ساده ټیلیفون څخه زموږ د پاک ایگری شیئر مشاور ته 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ. هغوی به نږدې ماشین ومومي او بکنګ به په SMS تایید کړي. د کلي اګري اېجنټ هم ستاسو بکنګ کولی شي.", "bal": "سمارٹ فون نیست؟ ہر سادگیں فون ءَ چہ مئے پاک ایگری شیئر کنسلٹنٹ ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔ آ نزیکیں مشین ءَ شوہاز کنت و بکنگ ءِ منّگ ءَ SMS ءَ دیم دنت۔ میتگ ءِ ایگری ایجنٹ ہم شمئے بکنگ ءَ کت کنت۔"}, "menu": {"pa": "میں ایہناں وچ مدد کر سکدا آں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، قیمت دی پیشکش، مشین لکھانا\n• ہن وڈھی، بعد وچ ادائیگی (30% / 70%)\n• ایگری منڈی تے فصل ویچنا\n• ڈیزل، آپریٹر، ٹرانسپورٹ تے کمیشن (2.5%)\n• زمین ٹھیکہ، زمین دی بولی تے اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل وچ کمیشن دی ونڈ، سرکاری وصولی کھاتہ تے رسید\n• کم / حوالگی دے تصویر تے ویڈیو ثبوت\n• اپنی بولی (اپنا ریٹ آپ)، 15 / 25 / 40 کلومیٹر دائرہ تے اج دے ڈیزل / پیٹرول ریٹ\n• کنسلٹنٹ: 0322-4729249 یا 0370-0318574", "sd": "مان انهن ۾ مدد ڪري سگهان ٿو:\n• ويب سائيٽ: سائن اپ، سائن ان، بڪنگ، قيمت جي آڇ، مشين لکرائڻ\n• هاڻي لابارو، پوءِ ادائيگي (30% / 70%)\n• ايگري منڊي تي فصل وڪڻڻ\n• ڊيزل، آپريٽر، ٽرانسپورٽ ۽ ڪميشن (2.5%)\n• زمين ٺيڪو، زمين جي ٻولي ۽ اسٽامپ پيپر اقرار نامو (4.5% في)\n• بل ۾ ڪميشن جي ورهاست، سرڪاري وصولي کاتو ۽ رسيد\n• ڪم / حوالگي جا تصوير ۽ وڊيو ثبوت\n• پنهنجي ٻولي (پنهنجو اگهه پاڻ)، 15 / 25 / 40 ڪلوميٽر دائرو ۽ اڄ جا ڊيزل / پيٽرول اگهه\n• صلاحڪار: 0322-4729249 يا 0370-0318574", "ps": "زه په دې کې مرسته کولی شم:\n• ویب پاڼه: نوم لیکنه، ننوتل، بکنګ، د بیې وړاندیز، د ماشین ثبتول\n• اوس لو، وروسته تادیه (30% / 70%)\n• په اګري منډۍ کې د فصل پلورل\n• ډیزل، چلوونکی، ټرانسپورټ او کمیشن (2.5%)\n• د ځمکې اجاره، د ځمکې بولي او د سټامپ پېپر اقرار نامه (4.5% فیس)\n• په بل کې د کمیشن وېش، رسمي حساب او رسیدونه\n• د کار / سپارلو انځور او ویډیو ثبوتونه\n• اپني بولي (خپله بیه پخپله)، 15 / 25 / 40 کیلومتره واټن او د نن ورځې د ډیزلو / پټرولو نرخ\n• سلاکار: 0322-4729249 یا 0370-0318574", "bal": "من اے کاراں کمک کت کناں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، بہا ءِ پیشکش، مشین ءِ نبشتہ کنگ\n• انّوں رونگ، رند ءَ زرّ (30% / 70%)\n• ایگری منڈی ءَ کِشت ءِ بہا کنگ\n• ڈیزل، چلائوک، ٹرانسپورٹ و کمیشن (2.5%)\n• زمین ٹھیکہ، زمین ءِ بولی و اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل ءَ کمیشن ءِ بہر، سرکاری اکاؤنٹ و رسید\n• کار / سپارگ ءِ عکس و ویڈیو ثبوت\n• اپنی بولی (وتی نرخ وت)، 15 / 25 / 40 کلومیٹر دائرہ و مرچی ءِ ڈیزل / پیٹرول نرخ\n• صلاحکار: 0322-4729249 یا 0370-0318574"}, "land": {"pa": "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین دے مالک: اپنی زمین لکھاؤ: پنڈ، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی، سڑک، ٹھیکے دے مہینے تے اپنا ریٹ۔ ساڈی ٹیم تصدیق کردی اے۔\n2. کسان: فاصلے، ایکڑ تے بجٹ نال زمین لبھو تے ٹھیکے دی درخواست گھلو۔ یا \"زمین دی بولی\" لاؤ: جنی زمین چاہیدی اے تے اپنا ریٹ، مالک پیشکش گھلدے نیں۔\n3. مالک دے منن مگروں دو زباناں وچ اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ تے دستخط لئی تیار ہوندا اے۔\n4. فیس: ٹھیکے دی کل رقم تے صرف اک وار 4.5% سہولت کمیشن، پکا کرن توں پہلاں دسیا جاندا اے۔\n5. 360° فائدہ: ٹھیکہ چلدا ہووے تے مشینری کمیشن 0.50% گھٹ (کدی 2.0% توں تھلے نئیں)۔", "sd": "زمين ٺيڪو (ٺيڪي تي زمين ٽيب):\n1. زمين جا مالڪ: پنهنجي زمين لکرايو: ڳوٺ، ضلعو، ايڪڙ يا ڪنال، پاڻي (نهري، سولر ٽيوب ويل، بجلي يا ڊيزل ٽيوب ويل، يا باراني)، مٽي، رستو، ٺيڪي جا مهينا ۽ پنهنجو اگهه. اسان جي ٽيم تصديق ڪري ٿي.\n2. هاري: فاصلي، ايڪڙن ۽ بجيٽ سان زمين ڳوليو ۽ ٺيڪي جي درخواست موڪليو. يا \"زمين جي ٻولي\" لڳايو: جيتري زمين گهرجي ۽ پنهنجو اگهه، مالڪ آڇون موڪليندا.\n3. مالڪ جي قبول ڪرڻ کانپوءِ ٻن ٻولين ۾ اسٽامپ پيپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٽ ۽ صحيح لاءِ تيار ٿئي ٿو.\n4. في: ٺيڪي جي ڪل رقم تي صرف هڪ ڀيرو 4.5% سهولت ڪميشن، تصديق کان اڳ ڏيکاري وڃي ٿي.\n5. 360° فائدو: هلندڙ ٺيڪي دوران مشينري ڪميشن 0.50% گهٽ (ڪڏهن به 2.0% کان هيٺ نه).", "ps": "د ځمکې ټیکه (ځمکه په اجاره ټب):\n1. د ځمکې مالکان: خپله ځمکه ثبت کړئ: کلی، ضلع، ایکړ یا کنال، اوبه (نهري، سولر ټیوب ویل، برقي یا ډیزل ټیوب ویل، یا للمي/بارانی)، خاوره، سړک، د اجارې میاشتې او خپله بیه. زموږ ټیم یې تاییدوي.\n2. بزګران: د واټن، ایکړ او بودیجې له مخې ځمکه ولټوئ او د اجارې غوښتنه ولېږئ. یا \"د ځمکې بولي\" پوسټ کړئ: څومره ځمکه غواړئ او خپله بیه، مالکان وړاندیزونه لېږي.\n3. د مالک له منلو وروسته دوه ژبی سټامپ پېپر \"اقرار نامہ ٹھیکہ اراضی\" د چاپ او لاسلیک لپاره چمتو کېږي.\n4. فیس: د اجارې په ټولې پیسو یوازې یو ځل 4.5% اسانتیا کمیشن، له تایید نه مخکې ښودل کېږي.\n5. 360° ګټه: د فعالې اجارې پر مهال د ماشینونو کمیشن 0.50% کمېږي (هېڅکله له 2.0% نه کم نه).", "bal": "زمین ٹھیکہ (ٹھیکہ ءَ زمین ٹیب):\n1. زمین ءِ واجہ: وتی زمین ءَ نبشتہ کن: میتگ، ضلع، ایکڑ یا کنال، آپ (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، ہاک، راہ، ٹھیکہ ءِ ماہ و وتی نرخ۔ مئے ٹیم تصدیق کنت۔\n2. کشاورز: دوری، ایکڑ و بجٹ ءَ گوں زمین ءَ شوہاز کن و ٹھیکہ ءِ درخواست ءَ دیم دے۔ یا \"زمین ءِ بولی\" بِل: چنچو زمین لوٹئے و وتی نرخ، واجہ پیشکش دیم دینت۔\n3. واجہ ءِ منّگ ءَ رند دو زبانیں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ و دستخط ءِ واستہ تیار بیت۔\n4. فیس: ٹھیکہ ءِ کُلیں زرّ ءِ سرا تہنا یک بر 4.5% کمیشن، تصدیق ءَ پیسر پیش دارگ بیت۔\n5. 360° پائدگ: ٹھیکہ ءِ وہد ءَ مشینری کمیشن 0.50% کم بیت (ہچبر 2.0% ءَ کمتر نہ)۔"}, "split": {"pa": "بل دی ونڈ: ہر مشینری بل تے زمین دے اقرار نامے وچ دو وکھریاں لائناں نیں: پاک ایگری شیئر پلیٹ فارم کمیشن تے مالک نوں خالص ادائیگی۔\n• مشینری: کمیشن 2.5% (5 ایکڑ توں گھٹ والے نکے کسان 2%)، کرائے دے اُتے۔\n• زمین ٹھیکہ: صرف اک وار 4.5% فیس، ٹھیکے دی کل رقم وچوں۔\nکمیشن کیویں جمع کرو: بل اُتے پاک ایگری شیئر دا سرکاری وصولی کھاتہ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھیا اے۔ ادائیگی مگروں \"کمیشن ادائیگی دی رسید اپ لوڈ کرو\" دباؤ تے رسید دی تصویر تے ٹرانزیکشن آئی ڈی لکھو۔ ٹیم دی تصدیق تیک \"جانچ ہو رہی اے\"، فیر \"کمیشن وصول ہو گیا\"۔ مالک سارے واجبات اونر پورٹل > کمیشن وچ ویکھدے نیں۔", "sd": "بل جي ورهاست: هر مشينري بل ۽ زمين جي اقرار نامي ۾ ٻه الڳ سٽون آهن: پاک ایگری شیئر پليٽ فارم ڪميشن ۽ مالڪ کي خالص ادائيگي.\n• مشينري: ڪميشن 2.5% (5 ايڪڙن کان گهٽ وارا ننڍا هاري 2%)، ڪرائي جي مٿان.\n• زمين ٺيڪو: صرف هڪ ڀيرو 4.5% في، ٺيڪي جي ڪل رقم مان.\nڪميشن ڪيئن جمع ڪجي: بل تي پاک ایگری شیئر جو سرڪاري وصولي کاتو (بئنڪ، IBAN، راسٽ، جاز ڪيش، ايزي پيسا) لکيل آهي. ادائيگي کانپوءِ \"ڪميشن ادائيگي جي رسيد اپ لوڊ ڪريو\" دٻايو ۽ رسيد جي تصوير ۽ ٽرانزيڪشن آئي ڊي لکو. ٽيم جي تصديق تائين \"جانچ ٿي رهي آهي\"، پوءِ \"ڪميشن وصول ٿي وئي\". مالڪ سڀ واجبات اونر پورٽل > ڪميشن ۾ ڏسن ٿا.", "ps": "د بل وېش: په هر ماشیني بل او د ځمکې اقرار نامه کې دوه جلا کرښې دي: د پاک ایگری شیئر د پلیټ فارم کمیشن او مالک ته خالص تادیه.\n• ماشینونه: کمیشن 2.5% (له 5 ایکړو کم کوچني بزګران 2%)، د کرایې پر سر.\n• د ځمکې اجاره: یوازې یو ځل 4.5% فیس، د اجارې له ټولو پیسو څخه.\nکمیشن څنګه ورکړئ: په بل کې د پاک ایگری شیئر رسمي د راټولولو حساب (بانک، IBAN، راسټ، جاز کېش، ایزي پېسه) لیکل شوی. له تادیې وروسته \"د کمیشن د تادیې رسید پورته کړئ\" کېکاږئ او د رسید انځور او د معاملې شمېره ولیکئ. د ټیم تر تایید پورې \"د کتنې لاندې\"، بیا \"کمیشن ترلاسه شو\". مالکان ټول پاتې پیسې په اونر پورټل > کمیشن کې ګوري.", "bal": "بل ءِ بہر: ہر مشینری بل و زمین ءِ اقرار نامہ ءَ دو جتائیں لائن ہست: پاک ایگری شیئر ءِ پلیٹ فارم کمیشن و واجہ ءَ را خالص زر۔\n• مشینری: کمیشن 2.5% (5 ایکڑ ءَ کمتریں کسانی کشاورز 2%)، کرایہ ءِ سرا۔\n• زمین ٹھیکہ: تہنا یک بر 4.5% فیس، ٹھیکہ ءِ کُلیں زرّ ءَ چہ۔\nکمیشن ءَ چون دیئے: بل ءِ سرا پاک ایگری شیئر ءِ سرکاری مچ کنگ ءِ اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) نبشتہ اِنت۔ زر دیگ ءَ رند \"کمیشن ءِ زر ءِ رسید ءَ اپ لوڈ کن\" ءَ جن و رسید ءِ عکس و ٹرانزیکشن آئی ڈی ءَ نبشتہ کن۔ ٹیم ءِ تصدیق ءَ تان \"چارگ بیگ ءَ اِنت\"، رند ءَ \"کمیشن رسِت\"۔ واجہ کُلیں دیگی زرّاں اونر پورٹل > کمیشن ءَ گندنت۔"}, "proof": {"pa": "تصویر تے ویڈیو ثبوت دوہاں دھراں دی حفاظت کردا اے۔ معاملہ میریاں بکنگاں، اونر پورٹل (پکے کم) یا ٹھیکے تے زمین > میرے زمین دے معاملے وچ کھولو تے \"تصویر / ویڈیو ثبوت لاؤ\" دباؤ۔\n1. مرحلہ چنو: کم توں پہلاں / حوالگی، کم توں بعد، میٹر یا ڈیزل ریڈنگ، یا زمین دی حالت۔\n2. تصویر، نکی ویڈیو (650 KB تیک) یا یوٹیوب / گوگل ڈرائیو لنک تے نکا نوٹ لاؤ۔\n3. سانبھو: ایہہ گیلری وچ کس نے تے کدوں لایا دے نال دسدا اے۔\nصرف اوسے معاملے دا کسان، مالک تے پاک ایگری شیئر ٹیم ایہہ ثبوت ویکھ سکدے نیں، تے مگروں بدلیا نئیں جا سکدا۔", "sd": "تصوير ۽ وڊيو ثبوت ٻنهي ڌرين جي حفاظت ڪري ٿو. معاملو منهنجون بڪنگون، اونر پورٽل (تصديق ٿيل ڪم) يا ٺيڪي تي زمين > منهنجا زمين جا معاملا ۾ کوليو ۽ \"تصوير / وڊيو ثبوت لڳايو\" دٻايو.\n1. مرحلو چونڊيو: ڪم کان اڳ / حوالگي، ڪم کانپوءِ، ميٽر يا ڊيزل ريڊنگ، يا زمين جي حالت.\n2. تصوير، ننڍي وڊيو (650 KB تائين) يا يوٽيوب / گوگل ڊرائيو لنڪ ۽ ننڍو نوٽ لڳايو.\n3. محفوظ ڪريو: اهو گيلري ۾ ڪنهن ۽ ڪڏهن لڳايو سان گڏ نظر اچي ٿو.\nصرف ان معاملي جو هاري، مالڪ ۽ پاک ایگری شیئر ٽيم اهي ثبوت ڏسي سگهن ٿا، ۽ پوءِ بدلائي نٿا سگهجن.", "ps": "انځور او ویډیو ثبوت د دواړو خواوو ساتنه کوي. معامله په زما بکنګونه، اونر پورټل (تایید شوي کارونه) یا ځمکه په اجاره > زما د ځمکې معاملې کې پرانیزئ او \"انځور / ویډیو ثبوت ورزیات کړئ\" کېکاږئ.\n1. پړاو وټاکئ: له کار مخکې / سپارل، له کار وروسته، د میټر یا ډیزلو لوستنه، یا د ځمکې حالت.\n2. انځور، لنډه ویډیو (تر 650 KB پورې) یا د یوټیوب / ګوګل ډرایو لینک او لنډ یادښت ورزیات کړئ.\n3. خوندي یې کړئ: په ګالرۍ کې د دې سره ښکاري چې چا او کله ورزیات کړ.\nیوازې د همدې معاملې بزګر، مالک او د پاک ایگری شیئر ټیم دا ثبوتونه لیدلی شي، او وروسته نه بدلېږي.", "bal": "عکس و ویڈیو ثبوت دوئیں نیمگاں ءِ نگہپانی کنت۔ معاملہ ءَ منی بکنگ، اونر پورٹل (تصدیق بوتگیں کار) یا ٹھیکہ ءَ زمین > منی زمین ءِ معاملہ ءَ پچ کن و \"عکس / ویڈیو ثبوت لگا\" ءَ جن۔\n1. پڑاو ءَ گچین کن: کار ءَ پیسر / سپارگ، کار ءَ رند، میٹر یا ڈیزل ءِ ریڈنگ، یا زمین ءِ حال۔\n2. عکس، کسانیں ویڈیو (650 KB تان) یا یوٹیوب / گوگل ڈرائیو لنک و کسانیں نوٹ لگا۔\n3. سمبال: اے گیلری ءَ گوں اے ءَ گندگ بیت کہ کئے و کدی لگاتگ۔\nتہنا ہمے معاملہ ءِ کشاورز، واجہ و پاک ایگری شیئر ٹیم اے ثبوتاں گندت کننت، و رند ءَ بدل کنگ نہ بنت۔"}, "govt": {"pa": "سرکاری پورٹل چھیتی آ رہیا اے۔ ایہدے وچ سرکاری قرضے تے سبسڈی دی مدد اک تھاں لیاون دا منصوبہ اے، پر ایہہ ہلے چالو نئیں، ایس لئی ہلے کسے اسکیم دی درخواست نئیں ہو سکدی۔ ہن مدد لئی ساڈے کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔", "sd": "سرڪاري پورٽل جلد اچي رهيو آهي. ان ۾ سرڪاري قرض ۽ سبسڊي جي مدد هڪ هنڌ آڻڻ جو رٿ آهي، پر اهو اڃا هلندڙ ناهي، تنهن ڪري اڃا ڪنهن به اسڪيم جي درخواست نٿي ٿي سگهي. هاڻي مدد لاءِ اسان جي صلاحڪار کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو.", "ps": "دولتي پورټل ژر راځي. پلان دا دی چې د حکومت پورونه او د سبسایډۍ مرسته په یو ځای کې راټوله کړي، خو لا فعال نه دی، نو اوس د هېڅ پروګرام غوښتنه نه شي کېدای. اوس د مرستې لپاره زموږ سلاکار ته په 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ.", "bal": "سرکاری پورٹل زوت کئیت۔ اشیء تہا سرکاری وام و سبسڈی ءِ کمک ءَ یک جاہ ءَ آرگ ءِ منصوبہ ہست، بلے انگت چالو نہ اِنت، پمیشکا انّوں ہچ اسکیم ءِ درخواست نہ بیت۔ انّوں کمک ءِ واستہ مئے صلاحکار ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔"}, "fuel": {"pa": "اج پاکستان وچ تیل دے ریٹ: ڈیزل {d} روپے فی لیٹر{pp}۔ ایہہ سرکاری نوٹیفائیڈ قیمتاں توں دن وچ لگ بھگ دو وار آپے اپڈیٹ ہوندے نیں تے ایپ دے اُتے دسدے نیں۔ مشینری دا کرایہ ڈرائی اے (ڈیزل شامل نئیں)، سوائے اپنی بولی وچ ویٹ رینٹ دے، جتھے مالک ایسے ریٹ تے ڈیزل پاندا اے۔", "sd": "اڄ پاڪستان ۾ تيل جا اگهه: ڊيزل {d} رپيا في ليٽر{pp}. اهي سرڪاري نوٽيفائيڊ قيمتن مان ڏينهن ۾ لڳ ڀڳ ٻه ڀيرا پاڻمرادو اپڊيٽ ٿين ٿا ۽ ايپ جي مٿي نظر اچن ٿا. مشينري جو ڪرايو ڊرائي آهي (ڊيزل شامل ناهي)، سواءِ پنهنجي ٻولي ۾ ويٽ رينٽ جي، جتي مالڪ ساڳئي اگهه تي ڊيزل وجهي ٿو.", "ps": "نن په پاکستان کې د تېلو نرخونه: ډیزل {d} روپۍ په لیټر{pp}. دا د حکومت له خبر شوو بیو څخه په ورځ کې نږدې دوه ځله پخپله تازه کېږي او د اپ په سر کې ښکاري. د ماشینونو کرایه وچه ده (ډیزل پکې نه دی)، پرته له اپني بولي کې د لوند کرایې (Wet rent)، چې مالک په همدې نرخ ډیزل اچوي.", "bal": "مرچی پاکستان ءَ تیل ءِ نرخ: ڈیزل {d} کلدار لیٹر ءَ{pp}۔ اے سرکاری نوٹیفائیڈ بہاں چہ روچ ءَ دو بر وت اپڈیٹ بنت و ایپ ءِ سرا گندگ بنت۔ مشینری ءِ کرایہ ڈرائی اِنت (ڈیزل ہور نہ اِنت)، بیدن اپنی بولی ءِ ویٹ رینٹ ءَ، ہمودا واجہ ہمے نرخ ءَ ڈیزل ءَ دنت۔"}, "boli": {"pa": "اپنی بولی (درخواست پوسٹ کرو ٹیب):\n1. مشین، پنڈ، گھنٹے تے تاریخ چنو۔\n2. اپنا ریٹ آپ لاؤ (اپنی بولی لاؤ): کوئی پکی قیمت نئیں، فی گھنٹہ جنا دینا چاہو لکھو۔\n3. ڈرائی رینٹ (ڈیزل تہاڈا) یا ویٹ رینٹ (ڈیزل مالک دا، لگ بھگ {d} روپے فی لیٹر) چنو۔\n4. پوسٹ کرو: نیڑے دے مالک ریڈار تے آ کے من لیندے نیں یا جوابی پیشکش (اکثر +200 روپے) دیندے نیں۔\n5. کوئی ویہلا نہ ہووے تے دائرہ ودھاؤ: درجہ 1 پنڈ 15 کلومیٹر تیک، درجہ 2 15 توں 25 کلومیٹر (60 روپے فی کلومیٹر ہر پاسے)، درجہ 3 بیک اپ 40 کلومیٹر تیک۔\n6. پیشکش منو، پورا خرچہ ویکھو تے پکا کرو۔", "sd": "پنهنجي ٻولي (درخواست پوسٽ ڪريو ٽيب):\n1. مشين، ڳوٺ، ڪلاڪ ۽ تاريخ چونڊيو.\n2. پنهنجو اگهه پاڻ لڳايو (پنهنجي ٻولي لڳايو): ڪا مقرر قيمت ناهي، في ڪلاڪ جيترو ڏيڻ چاهيو لکو.\n3. ڊرائي رينٽ (ڊيزل توهان جو) يا ويٽ رينٽ (ڊيزل مالڪ جو، لڳ ڀڳ {d} رپيا في ليٽر) چونڊيو.\n4. پوسٽ ڪريو: ويجها مالڪ ريڊار تي اچي قبول ڪن ٿا يا جوابي آڇ (اڪثر +200 رپيا) ڏين ٿا.\n5. ڪو فارغ نه هجي ته دائرو وڌايو: درجو 1 ڳوٺ 15 ڪلوميٽر تائين، درجو 2 15 کان 25 ڪلوميٽر (60 رپيا في ڪلوميٽر هر طرف)، درجو 3 بيڪ اپ 40 ڪلوميٽر تائين.\n6. آڇ قبول ڪريو، پورو خرچ ڏسو ۽ تصديق ڪريو.", "ps": "اپني بولي (غوښتنه پوسټ کړئ ټب):\n1. ماشین، کلی، ساعتونه او نېټه وټاکئ.\n2. خپله بیه پخپله وټاکئ (اپني بولي): هېڅ ټاکلې بیه نشته، په ساعت کې څومره ورکول غواړئ هغه ولیکئ.\n3. وچه کرایه (ډیزل ستاسو) یا لونده کرایه (ډیزل د مالک، نږدې {d} روپۍ په لیټر) وټاکئ.\n4. پوسټ یې کړئ: نږدې مالکان په ریډار راځي او مني یې یا مقابل وړاندیز (اکثر +200 روپۍ) ورکوي.\n5. که څوک وزګار نه وي، واټن پراخ کړئ: لومړی پړاو کلی تر 15 کیلومتره، دوهم پړاو 15 تر 25 کیلومتره (60 روپۍ په کیلومتر هره خوا)، درېیم پړاو بیک اپ تر 40 کیلومتره.\n6. وړاندیز ومنئ، ټول لګښت وګورئ او تایید یې کړئ.", "bal": "اپنی بولی (درخواست پوسٹ کن ٹیب):\n1. مشین، میتگ، ساعت و تاریخ ءَ گچین کن۔\n2. وتی نرخ ءَ وت لگا (اپنی بولی): ہچ مقرریں بہا نیست، ساعت ءَ چنچو دیگ لوٹئے نبشتہ کن۔\n3. ڈرائی رینٹ (ڈیزل شمئیگ) یا ویٹ رینٹ (ڈیزل واجہ ءِ، نزیک {d} کلدار لیٹر ءَ) گچین کن۔\n4. پوسٹ کن: نزیکیں واجہ ریڈار ءَ کاینت و منّنت یا پدی پیشکش (باز وہد +200 کلدار) دینت۔\n5. اگاں کس واندہ مہ بیت دائرہ ءَ مزن کن: درجہ 1 میتگ 15 کلومیٹر تان، درجہ 2 15 چہ 25 کلومیٹر (60 کلدار کلومیٹر ءَ ہر نیمگ)، درجہ 3 بیک اپ 40 کلومیٹر تان۔\n6. پیشکش ءَ منّ، کُلیں خرچ ءَ بگند و تصدیق کن۔"}};
+const HELPER_EXTRA = {"wallet": {"pa": "ایگری والٹ، کمیشن لئی اگاؤں جمع بیلنس (اِن ڈرائیو یا فوڈ پانڈا وانگ):\n1. اونر پورٹل کھولو: سب توں اُتے تہاڈا ایگری والٹ بیلنس تے لین دین اے۔\n2. \"ایگری والٹ ٹاپ اپ کرو\" دباؤ۔ اوتھے لکھے پاک ایگری شیئر دے سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) وچ رقم گھلو۔\n3. رقم چنو (500 توں 10,000 روپے، یا 100 توں اُتے کوئی وی رقم)، ٹرانزیکشن آئی ڈی لکھو، رسید دی تصویر لاؤ تے گھل دیو۔\n4. ساڈی ٹیم رسید ویکھ کے والٹ وچ رقم پا دیندی اے۔\nمفت لانچ ڈیلاں مُکن مگروں کمیشن آپے والٹ وچوں کٹدا اے: بکنگ پکی کرن تے 1%، فصل ویچن تے 1%، زمین ٹھیکہ منن تے 1%۔ بیلنس گھٹ ہووے تے \"ایگری والٹ بیلنس گھٹ اے، آرڈر منن لئی ٹاپ اپ کرو\" دسے گا۔ مدد: 0322-4729249 یا 0370-0318574۔", "sd": "ايگري والٽ، ڪميشن لاءِ اڳواٽ جمع بيلنس (اِن ڊرائيو يا فوڊ پانڊا وانگر):\n1. اونر پورٽل کوليو: سڀ کان مٿي توهان جو ايگري والٽ بيلنس ۽ ليڻ ڏيڻ آهي.\n2. \"ايگري والٽ ٽاپ اپ ڪريو\" دٻايو. اتي لکيل پاک ایگری شیئر جي سرڪاري وصولي اڪائونٽ (بئنڪ، IBAN، راسٽ، جاز ڪيش يا ايزي پيسا) ۾ رقم موڪليو.\n3. رقم چونڊيو (500 کان 10,000 رپيا، يا 100 کان مٿي ڪا به رقم)، ٽرانزيڪشن آءِ ڊي لکو، رسيد جي تصوير لڳايو ۽ موڪليو.\n4. اسان جي ٽيم رسيد ڏسي والٽ ۾ رقم وجهي ٿي.\nمفت لانچ ڊيلون پوريون ٿيڻ کان پوءِ ڪميشن پاڻمرادو والٽ مان ڪٽجي ٿي: بڪنگ پڪي ڪرڻ تي 1%، فصل وڪري تي 1%، زمين ٺيڪو قبول ڪرڻ تي 1%. بيلنس گهٽ هجي ته \"ايگري والٽ بيلنس گهٽ آهي، آرڊر قبول ڪرڻ لاءِ ٽاپ اپ ڪريو\" ڏيکاريو ويندو. مدد: 0322-4729249 يا 0370-0318574.", "ps": "اګري والټ، د کمیشن لپاره مخکې جمع شوی بیلنس (لکه اِن ډرایو یا فوډ پانډا):\n1. اونر پورټل پرانیزئ: تر ټولو پورته ستاسو د اګري والټ بیلنس او راکړه ورکړه ده.\n2. \"اګري والټ ټاپ اپ کړئ\" کېکاږئ. هلته لیکل شوي د پاک ایگری شیئر رسمي وصولي حساب (بانک، IBAN، راسټ، جاز کېش یا ایزي پیسه) ته پیسې ولېږئ.\n3. اندازه وټاکئ (له 500 تر 10,000 روپۍ، یا له 100 پورته هره اندازه)، د راکړې ورکړې آی ډي ولیکئ، د رسید انځور ورزیات کړئ او یې ولېږئ.\n4. زموږ ټیم رسید ګوري او ستاسو والټ ته پیسې اچوي.\nد وړیا معاملو تر پای ته رسېدو وروسته کمیشن پخپله له والټ څخه کمېږي: د بکنګ تایید 1%، د فصل پلور 1%، د ځمکې اجاره منل 1%. که بیلنس کم وي، \"د اګري والټ بیلنس کم دی، د امرونو منلو لپاره ټاپ اپ کړئ\" ښکاري. مرسته: 0322-4729249 یا 0370-0318574.", "bal": "ایگری والٹ، کمیشنءِ واستا پیسرا جمع کتگیں بیلنس (اِن ڈرائیو یا فوڈ پانڈاءِ وڑا):\n1. اونر پورٹلءَ پچ کن: سجّیءَ چہ سرا تئی ایگری والٹءِ بیلنس و دئیگ گرگ است۔\n2. \"ایگری والٹءَ ٹاپ اپ کن\" ءَ جن۔ اودا نبشتگیں پاک ایگری شیئرءِ سرکاری وصولی اکاؤنٹءَ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) زر راہ دئے۔\n3. زرّءِ کچ گچین کن (500 چہ 10,000 روپیہ، یا 100ءَ چہ گیشتر هر کچ)، ٹرانزیکشن آئی ڈی نبشتہ کن، رسیدءِ عکسءَ لگا و راہ دئے۔\n4. مئے ٹیم رسیدءَ چاریت و تئی والٹءَ زر کنت۔\nمُفتیں لانچ ڈیل هلاس بئیگءَ رندا کمیشن وت والٹءَ چہ گِرگ بیت: بکنگ پکّا کنگءَ 1%، فصلءِ بہاءَ 1%، زمین ٹھیکہ منّگءَ 1%۔ اگاں بیلنس کم بیت، \"ایگری والٹءِ بیلنس کم انت، آرڈر منّگءِ واستا ٹاپ اپ کن\" پیش دارگ بیت۔ کمک: 0322-4729249 یا 0370-0318574۔"}, "promo": {"pa": "لانچ آفر، پہلیاں ڈیلاں تے 0% کمیشن:\n• مشینری مالک: پہلیاں 5 پکیاں بکنگاں تے کوئی کمیشن نئیں۔ ایہدے مگروں 1%۔\n• فصل منڈی وچ ویچن والے: پہلیاں 3 فصل ویچاں مفت۔ ایہدے مگروں ویچ دی رقم دا 1%۔\n• زمین ٹھیکہ مالک: پہلا منیا ہویا ٹھیکہ مفت۔ ایہدے مگروں اک واری 1% فیس۔\nمفت ڈیل تے بل وچ \"لانچ بونس: 1% سروس فیس معاف (... روپے دی بچت)\" لکھیا ہوندا اے تے پوری رقم دا 100% مالک یا ویچن والے نوں ملدا اے، کجھ جمع یا رسید اپ لوڈ نئیں کرنی۔ باقی مفت ڈیلاں اونر پورٹل تے فصل منڈی وچ \"لانچ آفر\" کارڈ تے ویکھو۔", "sd": "لانچ آڇ، پهرين ڊيلن تي 0% ڪميشن:\n• مشينري مالڪ: پهرين 5 پڪين بڪنگن تي ڪو ڪميشن ناهي. ان کان پوءِ 1%.\n• فصل منڊي ۾ وڪڻندڙ: پهريان 3 فصل وڪرا مفت. ان کان پوءِ وڪري جي رقم جو 1%.\n• زمين ٺيڪي جا مالڪ: پهريون قبول ٿيل ٺيڪو مفت. ان کان پوءِ هڪ ڀيرو 1% فيس.\nمفت ڊيل تي بل ۾ \"لانچ بونس: 1% سروس في معاف (... رپين جي بچت)\" لکيل هوندو آهي ۽ سڄي رقم جو 100% مالڪ يا وڪڻندڙ کي ملي ٿو، ڪجهه جمع يا رسيد اپلوڊ نه ڪرڻي. باقي مفت ڊيلون اونر پورٽل ۽ فصل منڊي ۾ \"لانچ آڇ\" ڪارڊ تي ڏسو.", "ps": "د پیل وړاندیز، په لومړیو معاملو 0% کمیشن:\n• د ماشین مالکان: په لومړیو 5 تایید شویو بکنګونو هېڅ کمیشن نشته. وروسته 1%.\n• په فصل منډۍ کې پلورونکي: لومړي 3 فصل پلور وړیا. وروسته د پلور د پیسو 1%.\n• د ځمکې اجارې مالکان: لومړۍ منل شوې اجاره وړیا. وروسته یو ځل 1% فیس.\nپه وړیا معامله کې بل لیکي \"د لانچ بونس: 1% خدمت فیس معاف (... روپۍ وسپمول شوې)\" او د ټولې پیسې 100% مالک یا پلورونکي ته ځي، هېڅ ورکړه یا رسید نه غواړي. پاتې وړیا معاملې په اونر پورټل او فصل منډۍ کې د \"د پیل وړاندیز\" کارت کې وګورئ.", "bal": "لانچ آفر، اولی ڈیلانءَ 0% کمیشن:\n• مشینءِ واہند: اولی 5 پکّائیں بکنگءَ هچ کمیشن نیست۔ رندا 1%۔\n• فصلءِ منڈیءَ بہا کنوک: اولی 3 فصلءِ بہا مُفت۔ رندا بہاءِ زرّءِ 1%۔\n• زمین ٹھیکہءِ واہند: اولی منّتگیں ٹھیکہ مُفت۔ رندا یک بر 1% فیس۔\nمُفتیں ڈیلءَ بلءَ \"لانچ بونس: 1% سروس فیس معاف (... کلدار بچت)\" نبشتہ انت و سجّیں زرّءِ 100% واہند یا بہا کنوکءَ رسیت، هچ جمع یا رسید اپ لوڈ کنگ نہ لوٹیت۔ پشت کپتگیں مُفتیں ڈیل اونر پورٹل و فصلءِ منڈیءَ \"لانچ آفر\" کارڈءَ بچار۔"}, "register": {"pa": "پاک ایگری شیئر تے رجسٹر ہون دا طریقہ:\n1. اُتے \"سائن اپ\" دباؤ۔\n2. پورا ناں، ای میل، موبائل تے ضلع لکھو۔\n3. اپنا کردار چنو: کسان، مشینری مالک یا ایگری ایجنٹ۔\n4. پاس ورڈ (گھٹ توں گھٹ 6 حرف) دو واری لکھو تے پرائیویسی نوٹ منو۔\n5. \"اکاؤنٹ بناؤ\" دباؤ۔", "sd": "پاک ایگری شیئر تي رجسٽر ٿيڻ جو طريقو:\n1. مٿي \"سائن اپ\" دٻايو۔\n2. پورو نالو، اي ميل، موبائل ۽ ضلعو لکو۔\n3. پنهنجو ڪردار چونڊيو: هاري، مشينري مالڪ يا ايگري ايجنٽ۔\n4. پاس ورڊ (گهٽ ۾ گهٽ 6 اکر) ٻه ڀيرا لکو ۽ پرائيويسي نوٽ قبول ڪريو۔\n5. \"کاتو ٺاهيو\" دٻايو۔", "ps": "په پاک ایگری شیئر کې د نوم لیکنې طریقه:\n1. پورته \"نوم لیکنه\" کېکاږئ.\n2. بشپړ نوم، ای میل، موبایل او ضلع ولیکئ.\n3. خپل رول وټاکئ: بزګر، د ماشین مالک یا اګري اېجنټ.\n4. پاسورډ (لږ تر لږه 6 توري) دوه ځله ولیکئ او د محرمیت یادونه ومنئ.\n5. \"حساب جوړ کړئ\" کېکاږئ.", "bal": "پاک ایگری شیئر ءَ رجسٹر بیگ ءِ راہ:\n1. سرا \"سائن اپ\" ءَ جن۔\n2. پوریں نام، ای میل، موبائل و ضلع نبشتہ کن۔\n3. وتی کار گچین کن: بزگر، مشین ءِ واھند یا ایگری ایجنٹ۔\n4. پاس ورڈ (کمّ ءِ کمّ 6 حرف) دو بر نبشتہ کن و پرائیویسی ءِ نوٹ ءَ بمنّ۔\n5. \"اکاؤنٹ جوڑ کن\" ءَ جن۔"}, "offer": {"pa": "کرایہ ودھ لگدا اے؟ اپنی قیمت دسو:\n1. مشین تے \"بکنگ دی درخواست\" دباؤ۔\n2. \"اپنی قیمت دسو\" چالو کرو۔\n3. فی گھنٹہ پیشکش (لکھے ریٹ دا گھٹ توں گھٹ 60%) تے ٹرانسپورٹ دی پیشکش لکھو۔\n4. سنیہا لکھ کے گھلو۔ مالک منے گا، جوابی پیشکش دیوے گا یا انکار کرے گا۔ ٹرانسپورٹ فاصلے دے حساب نال اے (100 روپے فی کلومیٹر، گھٹ توں گھٹ 500)۔", "sd": "ڪرايو وڌيڪ لڳي ٿو؟ پنهنجي قيمت ٻڌايو:\n1. مشين تي \"بڪنگ جي درخواست\" دٻايو۔\n2. \"پنهنجي قيمت ٻڌايو\" چالو ڪريو۔\n3. في ڪلاڪ آڇ (لکيل اگهه جو گهٽ ۾ گهٽ 60%) ۽ ٽرانسپورٽ جي آڇ لکو۔\n4. پيغام لکي موڪليو۔ مالڪ قبول، جوابي آڇ يا انڪار ڪري سگهي ٿو۔ ٽرانسپورٽ فاصلي موجب آهي (100 رپيا في ڪلوميٽر، گهٽ ۾ گهٽ 500)۔", "ps": "کرایه ډېره ښکاري؟ خپله بیه وړاندې کړئ:\n1. پر ماشین \"د بکنګ غوښتنه\" کېکاږئ.\n2. \"خپله بیه وړاندې کړئ\" چالان کړئ.\n3. فی ساعت وړاندیز (د ثبت شوې بیې لږ تر لږه 60%) او د ټرانسپورټ وړاندیز ولیکئ.\n4. پیغام ولیکئ او ولېږئ. مالک یې منلی، بل وړاندیز ورکولی یا ردولی شي. ټرانسپورټ د واټن له مخې دی (100 روپۍ فی کیلومتر، لږ تر لږه 500).", "bal": "کرایہ گیش اِنت؟ وتی بہا ءَ پیش کن:\n1. مشین ءِ سرا \"بکنگ ءِ درخواست\" ءَ جن۔\n2. \"وتی بہا ءَ پیش کن\" ءَ روشن کن۔\n3. ساعت ءِ پیشکش (نبشتہ کتگیں نرخ ءِ کمّ ءِ کمّ 60%) و ٹرانسپورٹ ءِ پیشکش نبشتہ کن۔\n4. کلہو نبشتہ کن و دیم دئے۔ واھند منّیت، دومی پیشکش دنت یا نہ منّیت۔ ٹرانسپورٹ دوری ءِ ہساب ءَ اِنت (100 کلدار فی کلومیٹر، کمّ ءِ کمّ 500)۔"}, "paylater": {"pa": "ہن وڈھی، بعد وچ ادائیگی: بکنگ فارم وچ ایہہ ادائیگی چنو۔ تسیں ہن صرف 30% دیو؛ باقی 70% تیجی دھر مائیکروفنانس پارٹنر (تجویز: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) دا قرض اے جو وڈھی توں بعد (60 توں 180 دن) دینا اے۔ خطرہ پارٹنر دا اے، پاک ایگری شیئر دا نئیں۔ سوکھا طریقہ: ایگری منڈی تے فصل ویچو، 70% آپے کٹ جاوے گا۔", "sd": "هاڻي لابارو، پوءِ ادائيگي: بڪنگ فارم ۾ هي ادائيگي چونڊيو۔ توهان هاڻي صرف 30% ڏيو؛ باقي 70% ٽئين ڌر مائڪروفنانس پارٽنر (تجويز: جاز ڪيش ڪريڊٽ، ايزي پيسا يا ZTBL) جو قرض آهي جيڪو لاباري کان پوءِ (60 کان 180 ڏينهن) ڏيڻو آهي۔ خطرو پارٽنر جو آهي، پاک ایگری شیئر جو ناهي۔ سولو طريقو: ايگري منڊي تي فصل وڪڻو، 70% پاڻمرادو ڪٽجي ويندو۔", "ps": "اوس لو، وروسته تادیه: د بکنګ په فورمه کې دا تادیه وټاکئ. تاسو اوس یوازې 30% ورکوئ؛ پاتې 70% د دریم اړخ مایکروفنانس شریک (وړاندیز: جاز کیش کریډټ، ایزي پیسه یا ZTBL) پور دی چې له لو وروسته (60 تر 180 ورځو) ورکول کېږي. خطر د شریک دی، د پاک ایگری شیئر نه. اسانه لاره: په اګري منډۍ کې فصل وپلورئ، 70% به په خپله پرې شي.", "bal": "انّوں رونگ، رند ءَ زرّ: بکنگ ءِ فارم ءَ اے راہ ءَ گچین کن۔ شما انّوں تهنا 30% دئیت؛ پشت کپتگیں 70% سیمی دَپ ءِ مائیکروفنانس ہمراہ (پیشنهاد: جاز کیش کریڈٹ، ایزی پیسہ یا ZTBL) ءِ وام اِنت کہ رونگ ءَ رند (60 تا 180 روچ) دئیگ بیت۔ خطر ہمراہ ءِ اِنت، پاک ایگری شیئر ءِ نہ۔ آسانیں راہ: ایگری منڈی ءَ کِشت ءَ بہا کن، 70% وت ءَ کٹ بیت۔"}, "mandi": {"pa": "ایگری منڈی:\n1. فصل (کنک، چول، مکئی، کپاہ)، مقدار من وچ، معیار تے پنڈ چنو۔\n2. فی من متوقع قیمت تے جاز کیش یا ایزی پیسہ نمبر لکھو۔\n3. پوسٹ کرو: آٹا ملاں، رائس ملاں تے وڈے خریدار لائیو بولی لاندے نیں۔\n4. سب توں چنگی بولی منو: ویچ دی رقم وچوں باقی 70% مشینری قرض کٹ کے خالص منافع تہاڈے والٹ وچ۔", "sd": "ايگري منڊي:\n1. فصل (ڪڻڪ، چانور، مڪئي، ڪپهه)، مقدار مڻن ۾، معيار ۽ ڳوٺ چونڊيو۔\n2. في مڻ متوقع قيمت ۽ جاز ڪيش يا ايزي پيسا نمبر لکو۔\n3. پوسٽ ڪريو: اٽي ۽ چانورن جون ملون ۽ وڏا خريدار لائيو بولي ڏين ٿا۔\n4. بهترين بولي قبول ڪريو: وڪري مان باقي 70% مشينري قرض ڪٽجي خالص منافعو توهان جي والٽ ۾۔", "ps": "اګري منډۍ:\n1. فصل (غنم، وريجې، جوار، پنبه)، مقدار په من، کیفیت او کلی وټاکئ.\n2. فی من تمه‌لرونکې بیه او د جاز کیش یا ایزي پیسه شمېره ولیکئ.\n3. ثبت یې کړئ: د اوړو او وريجو ملونه او لوی پېرودونکي ژوندۍ داوطلبي کوي.\n4. غوره داوطلبي ومنئ: له پلور څخه پاتې 70% د ماشین پور پرې کېږي او خالصه ګټه ستاسو والټ ته ځي.", "bal": "ایگری منڈی:\n1. کِشت (گندم، برنج، جُوار، کپاس)، کچ من ءَ، جوانی و میتگ گچین کن۔\n2. فی من امیتیں بہا و جاز کیش یا ایزی پیسہ ءِ نمبر نبشتہ کن۔\n3. دیم دئے: آرت و برنج ءِ مِل و مزنیں گِروک زندگیں بولی جن اَنت۔\n4. گہتریں بولی ءَ بمنّ: بہا ءَ چہ پشت کپتگیں 70% مشین ءِ وام کٹ بیت و خالصیں کٹّ شمئے والٹ ءَ رَوت۔"}, "keypad": {"pa": "سمارٹ فون نئیں؟ کسے وی سادے فون توں ساڈے پاک ایگری شیئر کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔ اوہ نیڑے مشین لبھ کے بکنگ دی تصدیق SMS تے گھلن گے۔ پنڈ دا ایگری ایجنٹ وی تہاڈی بکنگ کر سکدا اے۔", "sd": "سمارٽ فون ناهي؟ ڪنهن به سادي فون مان اسان جي پاک ایگری شیئر ڪنسلٽنٽ کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو۔ اهي ويجهي مشين ڳولي بڪنگ جي تصديق SMS تي موڪليندا۔ ڳوٺ جو ايگري ايجنٽ به توهان جي بڪنگ ڪري سگهي ٿو۔", "ps": "سمارټ فون نه لرئ؟ له هر ساده ټیلیفون څخه زموږ د پاک ایگری شیئر مشاور ته 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ. هغوی به نږدې ماشین ومومي او بکنګ به په SMS تایید کړي. د کلي اګري اېجنټ هم ستاسو بکنګ کولی شي.", "bal": "سمارٹ فون نیست؟ ہر سادگیں فون ءَ چہ مئے پاک ایگری شیئر کنسلٹنٹ ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔ آ نزیکیں مشین ءَ شوہاز کنت و بکنگ ءِ منّگ ءَ SMS ءَ دیم دنت۔ میتگ ءِ ایگری ایجنٹ ہم شمئے بکنگ ءَ کت کنت۔"}, "menu": {"pa": "میں ایہناں وچ مدد کر سکدا آں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، قیمت دی پیشکش، مشین لکھانا\n• ہن وڈھی، بعد وچ ادائیگی (30% / 70%)\n• ایگری منڈی تے فصل ویچنا\n• ڈیزل، آپریٹر، ٹرانسپورٹ تے کمیشن (1%)\n• زمین ٹھیکہ، زمین دی بولی تے اسٹامپ پیپر اقرار نامہ (1% فیس)\n• بل وچ کمیشن دی ونڈ، سرکاری وصولی کھاتہ تے رسید\n• کم / حوالگی دے تصویر تے ویڈیو ثبوت\n• اپنی بولی (اپنا ریٹ آپ)، 15 / 25 / 40 کلومیٹر دائرہ تے اج دے ڈیزل / پیٹرول ریٹ\n• کنسلٹنٹ: 0322-4729249 یا 0370-0318574", "sd": "مان انهن ۾ مدد ڪري سگهان ٿو:\n• ويب سائيٽ: سائن اپ، سائن ان، بڪنگ، قيمت جي آڇ، مشين لکرائڻ\n• هاڻي لابارو، پوءِ ادائيگي (30% / 70%)\n• ايگري منڊي تي فصل وڪڻڻ\n• ڊيزل، آپريٽر، ٽرانسپورٽ ۽ ڪميشن (1%)\n• زمين ٺيڪو، زمين جي ٻولي ۽ اسٽامپ پيپر اقرار نامو (1% في)\n• بل ۾ ڪميشن جي ورهاست، سرڪاري وصولي کاتو ۽ رسيد\n• ڪم / حوالگي جا تصوير ۽ وڊيو ثبوت\n• پنهنجي ٻولي (پنهنجو اگهه پاڻ)، 15 / 25 / 40 ڪلوميٽر دائرو ۽ اڄ جا ڊيزل / پيٽرول اگهه\n• صلاحڪار: 0322-4729249 يا 0370-0318574", "ps": "زه په دې کې مرسته کولی شم:\n• ویب پاڼه: نوم لیکنه، ننوتل، بکنګ، د بیې وړاندیز، د ماشین ثبتول\n• اوس لو، وروسته تادیه (30% / 70%)\n• په اګري منډۍ کې د فصل پلورل\n• ډیزل، چلوونکی، ټرانسپورټ او کمیشن (1%)\n• د ځمکې اجاره، د ځمکې بولي او د سټامپ پېپر اقرار نامه (1% فیس)\n• په بل کې د کمیشن وېش، رسمي حساب او رسیدونه\n• د کار / سپارلو انځور او ویډیو ثبوتونه\n• اپني بولي (خپله بیه پخپله)، 15 / 25 / 40 کیلومتره واټن او د نن ورځې د ډیزلو / پټرولو نرخ\n• سلاکار: 0322-4729249 یا 0370-0318574", "bal": "من اے کاراں کمک کت کناں:\n• ویب سائٹ: سائن اپ، سائن ان، بکنگ، بہا ءِ پیشکش، مشین ءِ نبشتہ کنگ\n• انّوں رونگ، رند ءَ زرّ (30% / 70%)\n• ایگری منڈی ءَ کِشت ءِ بہا کنگ\n• ڈیزل، چلائوک، ٹرانسپورٹ و کمیشن (1%)\n• زمین ٹھیکہ، زمین ءِ بولی و اسٹامپ پیپر اقرار نامہ (1% فیس)\n• بل ءَ کمیشن ءِ بہر، سرکاری اکاؤنٹ و رسید\n• کار / سپارگ ءِ عکس و ویڈیو ثبوت\n• اپنی بولی (وتی نرخ وت)، 15 / 25 / 40 کلومیٹر دائرہ و مرچی ءِ ڈیزل / پیٹرول نرخ\n• صلاحکار: 0322-4729249 یا 0370-0318574"}, "land": {"pa": "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین دے مالک: اپنی زمین لکھاؤ: پنڈ، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی، سڑک، ٹھیکے دے مہینے تے اپنا ریٹ۔ ساڈی ٹیم تصدیق کردی اے۔\n2. کسان: فاصلے، ایکڑ تے بجٹ نال زمین لبھو تے ٹھیکے دی درخواست گھلو۔ یا \"زمین دی بولی\" لاؤ: جنی زمین چاہیدی اے تے اپنا ریٹ، مالک پیشکش گھلدے نیں۔\n3. مالک دے منن مگروں دو زباناں وچ اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ تے دستخط لئی تیار ہوندا اے۔\n4. فیس: ٹھیکے دی کل رقم تے صرف اک وار 1% سہولت کمیشن، پکا کرن توں پہلاں دسیا جاندا اے۔", "sd": "زمين ٺيڪو (ٺيڪي تي زمين ٽيب):\n1. زمين جا مالڪ: پنهنجي زمين لکرايو: ڳوٺ، ضلعو، ايڪڙ يا ڪنال، پاڻي (نهري، سولر ٽيوب ويل، بجلي يا ڊيزل ٽيوب ويل، يا باراني)، مٽي، رستو، ٺيڪي جا مهينا ۽ پنهنجو اگهه. اسان جي ٽيم تصديق ڪري ٿي.\n2. هاري: فاصلي، ايڪڙن ۽ بجيٽ سان زمين ڳوليو ۽ ٺيڪي جي درخواست موڪليو. يا \"زمين جي ٻولي\" لڳايو: جيتري زمين گهرجي ۽ پنهنجو اگهه، مالڪ آڇون موڪليندا.\n3. مالڪ جي قبول ڪرڻ کانپوءِ ٻن ٻولين ۾ اسٽامپ پيپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٽ ۽ صحيح لاءِ تيار ٿئي ٿو.\n4. في: ٺيڪي جي ڪل رقم تي صرف هڪ ڀيرو 1% سهولت ڪميشن، تصديق کان اڳ ڏيکاري وڃي ٿي.", "ps": "د ځمکې ټیکه (ځمکه په اجاره ټب):\n1. د ځمکې مالکان: خپله ځمکه ثبت کړئ: کلی، ضلع، ایکړ یا کنال، اوبه (نهري، سولر ټیوب ویل، برقي یا ډیزل ټیوب ویل، یا للمي/بارانی)، خاوره، سړک، د اجارې میاشتې او خپله بیه. زموږ ټیم یې تاییدوي.\n2. بزګران: د واټن، ایکړ او بودیجې له مخې ځمکه ولټوئ او د اجارې غوښتنه ولېږئ. یا \"د ځمکې بولي\" پوسټ کړئ: څومره ځمکه غواړئ او خپله بیه، مالکان وړاندیزونه لېږي.\n3. د مالک له منلو وروسته دوه ژبی سټامپ پېپر \"اقرار نامہ ٹھیکہ اراضی\" د چاپ او لاسلیک لپاره چمتو کېږي.\n4. فیس: د اجارې په ټولې پیسو یوازې یو ځل 1% اسانتیا کمیشن، له تایید نه مخکې ښودل کېږي.", "bal": "زمین ٹھیکہ (ٹھیکہ ءَ زمین ٹیب):\n1. زمین ءِ واجہ: وتی زمین ءَ نبشتہ کن: میتگ، ضلع، ایکڑ یا کنال، آپ (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، ہاک، راہ، ٹھیکہ ءِ ماہ و وتی نرخ۔ مئے ٹیم تصدیق کنت۔\n2. کشاورز: دوری، ایکڑ و بجٹ ءَ گوں زمین ءَ شوہاز کن و ٹھیکہ ءِ درخواست ءَ دیم دے۔ یا \"زمین ءِ بولی\" بِل: چنچو زمین لوٹئے و وتی نرخ، واجہ پیشکش دیم دینت۔\n3. واجہ ءِ منّگ ءَ رند دو زبانیں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ و دستخط ءِ واستہ تیار بیت۔\n4. فیس: ٹھیکہ ءِ کُلیں زرّ ءِ سرا تہنا یک بر 1% کمیشن، تصدیق ءَ پیسر پیش دارگ بیت۔"}, "split": {"pa": "بل دی ونڈ: ہر مشینری بل تے زمین دے اقرار نامے وچ دو وکھریاں لائناں نیں: پاک ایگری شیئر پلیٹ فارم کمیشن تے مالک نوں خالص ادائیگی۔\n• مشینری: کمیشن 1%، کرائے دے اُتے۔\n• زمین ٹھیکہ: صرف اک وار 1% فیس، ٹھیکے دی کل رقم وچوں۔\nکمیشن کیویں جمع کرو: بل اُتے پاک ایگری شیئر دا سرکاری وصولی کھاتہ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھیا اے۔ ادائیگی مگروں \"کمیشن ادائیگی دی رسید اپ لوڈ کرو\" دباؤ تے رسید دی تصویر تے ٹرانزیکشن آئی ڈی لکھو۔ ٹیم دی تصدیق تیک \"جانچ ہو رہی اے\"، فیر \"کمیشن وصول ہو گیا\"۔ مالک سارے واجبات اونر پورٹل > کمیشن وچ ویکھدے نیں۔", "sd": "بل جي ورهاست: هر مشينري بل ۽ زمين جي اقرار نامي ۾ ٻه الڳ سٽون آهن: پاک ایگری شیئر پليٽ فارم ڪميشن ۽ مالڪ کي خالص ادائيگي.\n• مشينري: ڪميشن 1%، ڪرائي جي مٿان.\n• زمين ٺيڪو: صرف هڪ ڀيرو 1% في، ٺيڪي جي ڪل رقم مان.\nڪميشن ڪيئن جمع ڪجي: بل تي پاک ایگری شیئر جو سرڪاري وصولي کاتو (بئنڪ، IBAN، راسٽ، جاز ڪيش، ايزي پيسا) لکيل آهي. ادائيگي کانپوءِ \"ڪميشن ادائيگي جي رسيد اپ لوڊ ڪريو\" دٻايو ۽ رسيد جي تصوير ۽ ٽرانزيڪشن آئي ڊي لکو. ٽيم جي تصديق تائين \"جانچ ٿي رهي آهي\"، پوءِ \"ڪميشن وصول ٿي وئي\". مالڪ سڀ واجبات اونر پورٽل > ڪميشن ۾ ڏسن ٿا.", "ps": "د بل وېش: په هر ماشیني بل او د ځمکې اقرار نامه کې دوه جلا کرښې دي: د پاک ایگری شیئر د پلیټ فارم کمیشن او مالک ته خالص تادیه.\n• ماشینونه: کمیشن 1%، د کرایې پر سر.\n• د ځمکې اجاره: یوازې یو ځل 1% فیس، د اجارې له ټولو پیسو څخه.\nکمیشن څنګه ورکړئ: په بل کې د پاک ایگری شیئر رسمي د راټولولو حساب (بانک، IBAN، راسټ، جاز کېش، ایزي پېسه) لیکل شوی. له تادیې وروسته \"د کمیشن د تادیې رسید پورته کړئ\" کېکاږئ او د رسید انځور او د معاملې شمېره ولیکئ. د ټیم تر تایید پورې \"د کتنې لاندې\"، بیا \"کمیشن ترلاسه شو\". مالکان ټول پاتې پیسې په اونر پورټل > کمیشن کې ګوري.", "bal": "بل ءِ بہر: ہر مشینری بل و زمین ءِ اقرار نامہ ءَ دو جتائیں لائن ہست: پاک ایگری شیئر ءِ پلیٹ فارم کمیشن و واجہ ءَ را خالص زر۔\n• مشینری: کمیشن 1%، کرایہ ءِ سرا۔\n• زمین ٹھیکہ: تہنا یک بر 1% فیس، ٹھیکہ ءِ کُلیں زرّ ءَ چہ۔\nکمیشن ءَ چون دیئے: بل ءِ سرا پاک ایگری شیئر ءِ سرکاری مچ کنگ ءِ اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) نبشتہ اِنت۔ زر دیگ ءَ رند \"کمیشن ءِ زر ءِ رسید ءَ اپ لوڈ کن\" ءَ جن و رسید ءِ عکس و ٹرانزیکشن آئی ڈی ءَ نبشتہ کن۔ ٹیم ءِ تصدیق ءَ تان \"چارگ بیگ ءَ اِنت\"، رند ءَ \"کمیشن رسِت\"۔ واجہ کُلیں دیگی زرّاں اونر پورٹل > کمیشن ءَ گندنت۔"}, "proof": {"pa": "تصویر تے ویڈیو ثبوت دوہاں دھراں دی حفاظت کردا اے۔ معاملہ میریاں بکنگاں، اونر پورٹل (پکے کم) یا ٹھیکے تے زمین > میرے زمین دے معاملے وچ کھولو تے \"تصویر / ویڈیو ثبوت لاؤ\" دباؤ۔\n1. مرحلہ چنو: کم توں پہلاں / حوالگی، کم توں بعد، میٹر یا ڈیزل ریڈنگ، یا زمین دی حالت۔\n2. تصویر، نکی ویڈیو (650 KB تیک) یا یوٹیوب / گوگل ڈرائیو لنک تے نکا نوٹ لاؤ۔\n3. سانبھو: ایہہ گیلری وچ کس نے تے کدوں لایا دے نال دسدا اے۔\nصرف اوسے معاملے دا کسان، مالک تے پاک ایگری شیئر ٹیم ایہہ ثبوت ویکھ سکدے نیں، تے مگروں بدلیا نئیں جا سکدا۔", "sd": "تصوير ۽ وڊيو ثبوت ٻنهي ڌرين جي حفاظت ڪري ٿو. معاملو منهنجون بڪنگون، اونر پورٽل (تصديق ٿيل ڪم) يا ٺيڪي تي زمين > منهنجا زمين جا معاملا ۾ کوليو ۽ \"تصوير / وڊيو ثبوت لڳايو\" دٻايو.\n1. مرحلو چونڊيو: ڪم کان اڳ / حوالگي، ڪم کانپوءِ، ميٽر يا ڊيزل ريڊنگ، يا زمين جي حالت.\n2. تصوير، ننڍي وڊيو (650 KB تائين) يا يوٽيوب / گوگل ڊرائيو لنڪ ۽ ننڍو نوٽ لڳايو.\n3. محفوظ ڪريو: اهو گيلري ۾ ڪنهن ۽ ڪڏهن لڳايو سان گڏ نظر اچي ٿو.\nصرف ان معاملي جو هاري، مالڪ ۽ پاک ایگری شیئر ٽيم اهي ثبوت ڏسي سگهن ٿا، ۽ پوءِ بدلائي نٿا سگهجن.", "ps": "انځور او ویډیو ثبوت د دواړو خواوو ساتنه کوي. معامله په زما بکنګونه، اونر پورټل (تایید شوي کارونه) یا ځمکه په اجاره > زما د ځمکې معاملې کې پرانیزئ او \"انځور / ویډیو ثبوت ورزیات کړئ\" کېکاږئ.\n1. پړاو وټاکئ: له کار مخکې / سپارل، له کار وروسته، د میټر یا ډیزلو لوستنه، یا د ځمکې حالت.\n2. انځور، لنډه ویډیو (تر 650 KB پورې) یا د یوټیوب / ګوګل ډرایو لینک او لنډ یادښت ورزیات کړئ.\n3. خوندي یې کړئ: په ګالرۍ کې د دې سره ښکاري چې چا او کله ورزیات کړ.\nیوازې د همدې معاملې بزګر، مالک او د پاک ایگری شیئر ټیم دا ثبوتونه لیدلی شي، او وروسته نه بدلېږي.", "bal": "عکس و ویڈیو ثبوت دوئیں نیمگاں ءِ نگہپانی کنت۔ معاملہ ءَ منی بکنگ، اونر پورٹل (تصدیق بوتگیں کار) یا ٹھیکہ ءَ زمین > منی زمین ءِ معاملہ ءَ پچ کن و \"عکس / ویڈیو ثبوت لگا\" ءَ جن۔\n1. پڑاو ءَ گچین کن: کار ءَ پیسر / سپارگ، کار ءَ رند، میٹر یا ڈیزل ءِ ریڈنگ، یا زمین ءِ حال۔\n2. عکس، کسانیں ویڈیو (650 KB تان) یا یوٹیوب / گوگل ڈرائیو لنک و کسانیں نوٹ لگا۔\n3. سمبال: اے گیلری ءَ گوں اے ءَ گندگ بیت کہ کئے و کدی لگاتگ۔\nتہنا ہمے معاملہ ءِ کشاورز، واجہ و پاک ایگری شیئر ٹیم اے ثبوتاں گندت کننت، و رند ءَ بدل کنگ نہ بنت۔"}, "govt": {"pa": "سرکاری پورٹل چھیتی آ رہیا اے۔ ایہدے وچ سرکاری قرضے تے سبسڈی دی مدد اک تھاں لیاون دا منصوبہ اے، پر ایہہ ہلے چالو نئیں، ایس لئی ہلے کسے اسکیم دی درخواست نئیں ہو سکدی۔ ہن مدد لئی ساڈے کنسلٹنٹ نوں 0322-4729249 یا 0370-0318574 تے کال یا واٹس ایپ کرو۔", "sd": "سرڪاري پورٽل جلد اچي رهيو آهي. ان ۾ سرڪاري قرض ۽ سبسڊي جي مدد هڪ هنڌ آڻڻ جو رٿ آهي، پر اهو اڃا هلندڙ ناهي، تنهن ڪري اڃا ڪنهن به اسڪيم جي درخواست نٿي ٿي سگهي. هاڻي مدد لاءِ اسان جي صلاحڪار کي 0322-4729249 يا 0370-0318574 تي ڪال يا واٽس ايپ ڪريو.", "ps": "دولتي پورټل ژر راځي. پلان دا دی چې د حکومت پورونه او د سبسایډۍ مرسته په یو ځای کې راټوله کړي، خو لا فعال نه دی، نو اوس د هېڅ پروګرام غوښتنه نه شي کېدای. اوس د مرستې لپاره زموږ سلاکار ته په 0322-4729249 یا 0370-0318574 زنګ یا واټس اپ وکړئ.", "bal": "سرکاری پورٹل زوت کئیت۔ اشیء تہا سرکاری وام و سبسڈی ءِ کمک ءَ یک جاہ ءَ آرگ ءِ منصوبہ ہست، بلے انگت چالو نہ اِنت، پمیشکا انّوں ہچ اسکیم ءِ درخواست نہ بیت۔ انّوں کمک ءِ واستہ مئے صلاحکار ءَ 0322-4729249 یا 0370-0318574 ءَ کال یا واٹس ایپ کن۔"}, "fuel": {"pa": "اج پاکستان وچ تیل دے ریٹ: ڈیزل {d} روپے فی لیٹر{pp}۔ ایہہ سرکاری نوٹیفائیڈ قیمتاں توں دن وچ لگ بھگ دو وار آپے اپڈیٹ ہوندے نیں تے ایپ دے اُتے دسدے نیں۔ مشینری دا کرایہ ڈرائی اے (ڈیزل شامل نئیں)، سوائے اپنی بولی وچ ویٹ رینٹ دے، جتھے مالک ایسے ریٹ تے ڈیزل پاندا اے۔", "sd": "اڄ پاڪستان ۾ تيل جا اگهه: ڊيزل {d} رپيا في ليٽر{pp}. اهي سرڪاري نوٽيفائيڊ قيمتن مان ڏينهن ۾ لڳ ڀڳ ٻه ڀيرا پاڻمرادو اپڊيٽ ٿين ٿا ۽ ايپ جي مٿي نظر اچن ٿا. مشينري جو ڪرايو ڊرائي آهي (ڊيزل شامل ناهي)، سواءِ پنهنجي ٻولي ۾ ويٽ رينٽ جي، جتي مالڪ ساڳئي اگهه تي ڊيزل وجهي ٿو.", "ps": "نن په پاکستان کې د تېلو نرخونه: ډیزل {d} روپۍ په لیټر{pp}. دا د حکومت له خبر شوو بیو څخه په ورځ کې نږدې دوه ځله پخپله تازه کېږي او د اپ په سر کې ښکاري. د ماشینونو کرایه وچه ده (ډیزل پکې نه دی)، پرته له اپني بولي کې د لوند کرایې (Wet rent)، چې مالک په همدې نرخ ډیزل اچوي.", "bal": "مرچی پاکستان ءَ تیل ءِ نرخ: ڈیزل {d} کلدار لیٹر ءَ{pp}۔ اے سرکاری نوٹیفائیڈ بہاں چہ روچ ءَ دو بر وت اپڈیٹ بنت و ایپ ءِ سرا گندگ بنت۔ مشینری ءِ کرایہ ڈرائی اِنت (ڈیزل ہور نہ اِنت)، بیدن اپنی بولی ءِ ویٹ رینٹ ءَ، ہمودا واجہ ہمے نرخ ءَ ڈیزل ءَ دنت۔"}, "boli": {"pa": "اپنی بولی (درخواست پوسٹ کرو ٹیب):\n1. مشین، پنڈ، گھنٹے تے تاریخ چنو۔\n2. اپنا ریٹ آپ لاؤ (اپنی بولی لاؤ): کوئی پکی قیمت نئیں، فی گھنٹہ جنا دینا چاہو لکھو۔\n3. ڈرائی رینٹ (ڈیزل تہاڈا) یا ویٹ رینٹ (ڈیزل مالک دا، لگ بھگ {d} روپے فی لیٹر) چنو۔\n4. پوسٹ کرو: نیڑے دے مالک ریڈار تے آ کے من لیندے نیں یا جوابی پیشکش (اکثر +200 روپے) دیندے نیں۔\n5. کوئی ویہلا نہ ہووے تے دائرہ ودھاؤ: درجہ 1 پنڈ 15 کلومیٹر تیک، درجہ 2 15 توں 25 کلومیٹر (60 روپے فی کلومیٹر ہر پاسے)، درجہ 3 بیک اپ 40 کلومیٹر تیک۔\n6. پیشکش منو، پورا خرچہ ویکھو تے پکا کرو۔", "sd": "پنهنجي ٻولي (درخواست پوسٽ ڪريو ٽيب):\n1. مشين، ڳوٺ، ڪلاڪ ۽ تاريخ چونڊيو.\n2. پنهنجو اگهه پاڻ لڳايو (پنهنجي ٻولي لڳايو): ڪا مقرر قيمت ناهي، في ڪلاڪ جيترو ڏيڻ چاهيو لکو.\n3. ڊرائي رينٽ (ڊيزل توهان جو) يا ويٽ رينٽ (ڊيزل مالڪ جو، لڳ ڀڳ {d} رپيا في ليٽر) چونڊيو.\n4. پوسٽ ڪريو: ويجها مالڪ ريڊار تي اچي قبول ڪن ٿا يا جوابي آڇ (اڪثر +200 رپيا) ڏين ٿا.\n5. ڪو فارغ نه هجي ته دائرو وڌايو: درجو 1 ڳوٺ 15 ڪلوميٽر تائين، درجو 2 15 کان 25 ڪلوميٽر (60 رپيا في ڪلوميٽر هر طرف)، درجو 3 بيڪ اپ 40 ڪلوميٽر تائين.\n6. آڇ قبول ڪريو، پورو خرچ ڏسو ۽ تصديق ڪريو.", "ps": "اپني بولي (غوښتنه پوسټ کړئ ټب):\n1. ماشین، کلی، ساعتونه او نېټه وټاکئ.\n2. خپله بیه پخپله وټاکئ (اپني بولي): هېڅ ټاکلې بیه نشته، په ساعت کې څومره ورکول غواړئ هغه ولیکئ.\n3. وچه کرایه (ډیزل ستاسو) یا لونده کرایه (ډیزل د مالک، نږدې {d} روپۍ په لیټر) وټاکئ.\n4. پوسټ یې کړئ: نږدې مالکان په ریډار راځي او مني یې یا مقابل وړاندیز (اکثر +200 روپۍ) ورکوي.\n5. که څوک وزګار نه وي، واټن پراخ کړئ: لومړی پړاو کلی تر 15 کیلومتره، دوهم پړاو 15 تر 25 کیلومتره (60 روپۍ په کیلومتر هره خوا)، درېیم پړاو بیک اپ تر 40 کیلومتره.\n6. وړاندیز ومنئ، ټول لګښت وګورئ او تایید یې کړئ.", "bal": "اپنی بولی (درخواست پوسٹ کن ٹیب):\n1. مشین، میتگ، ساعت و تاریخ ءَ گچین کن۔\n2. وتی نرخ ءَ وت لگا (اپنی بولی): ہچ مقرریں بہا نیست، ساعت ءَ چنچو دیگ لوٹئے نبشتہ کن۔\n3. ڈرائی رینٹ (ڈیزل شمئیگ) یا ویٹ رینٹ (ڈیزل واجہ ءِ، نزیک {d} کلدار لیٹر ءَ) گچین کن۔\n4. پوسٹ کن: نزیکیں واجہ ریڈار ءَ کاینت و منّنت یا پدی پیشکش (باز وہد +200 کلدار) دینت۔\n5. اگاں کس واندہ مہ بیت دائرہ ءَ مزن کن: درجہ 1 میتگ 15 کلومیٹر تان، درجہ 2 15 چہ 25 کلومیٹر (60 کلدار کلومیٹر ءَ ہر نیمگ)، درجہ 3 بیک اپ 40 کلومیٹر تان۔\n6. پیشکش ءَ منّ، کُلیں خرچ ءَ بگند و تصدیق کن۔"}};
 const HELPER_CHIPS = {"en": ["How do I lease farmland?", "How is commission split on my bill?", "How do I add a work photo or video proof?", "Apni Boli: can I set my own rate?", "Today's diesel and petrol rate?", "How do I sell my wheat?", "I only have a basic phone", "When is the Govt Portal coming?"], "ur": ["زمین ٹھیکے پر کیسے لوں؟", "بل میں کمیشن کیسے الگ ہوتا ہے؟", "کام کی تصویر یا ویڈیو ثبوت کیسے لگاؤں؟", "اپنی بولی: کیا اپنا ریٹ خود لگا سکتا ہوں؟", "آج ڈیزل اور پیٹرول کا ریٹ؟", "اپنی گندم کیسے بیچوں؟", "سادہ فون سے بکنگ؟ ہیلپ لائن", "سرکاری پورٹل کب آئے گا؟"], "pa": ["زمین ٹھیکے تے کیویں لواں؟", "بل وچ کمیشن کیویں وکھرا ہوندا اے؟", "کم دی تصویر یا ویڈیو ثبوت کیویں لاواں؟", "اپنی بولی: کی اپنا ریٹ آپ لا سکدا آں؟", "اج ڈیزل تے پیٹرول دا ریٹ؟", "اپنی کنک منڈی وچ کیویں ویچاں؟", "سادے فون نال بکنگ؟ ہیلپ لائن", "سرکاری پورٹل کدوں آوے گا؟"], "sd": ["زمين ٺيڪي تي ڪيئن وٺان؟", "بل ۾ ڪميشن ڪيئن الڳ ٿئي ٿي؟", "ڪم جي تصوير يا وڊيو ثبوت ڪيئن لڳايان؟", "پنهنجي ٻولي: ڇا پنهنجو اگهه پاڻ لڳائي سگهان ٿو؟", "اڄ ڊيزل ۽ پيٽرول جو اگهه؟", "پنهنجي ڪڻڪ منڊي ۾ ڪيئن وڪڻان؟", "سادي فون سان بڪنگ؟ هيلپ لائن", "سرڪاري پورٽل ڪڏهن ايندو؟"], "ps": ["ځمکه په اجاره څنګه واخلم؟", "په بل کې کمیشن څنګه جلا کېږي؟", "د کار انځور یا ویډیو ثبوت څنګه ورزیات کړم؟", "اپني بولي: ایا خپله بیه پخپله ټاکلی شم؟", "نن د ډیزلو او پټرولو نرخ؟", "خپل غنم په منډۍ کې څنګه وپلورم؟", "ساده ټیلیفون لرم، هېلپ لاین؟", "دولتي پورټل کله راځي؟"], "bal": ["زمین ءَ ٹھیکہ ءَ چون گراں؟", "بل ءَ کمیشن چون جتا بیت؟", "کار ءِ عکس یا ویڈیو ثبوت ءَ چون لگاں؟", "اپنی بولی: وتی نرخ ءَ وت لگت کناں؟", "مرچی ڈیزل و پیٹرول ءِ نرخ؟", "وتی گندم ءَ منڈی ءَ چون بہا کناں؟", "سادگیں فون ہست، ہیلپ لائن؟", "سرکاری پورٹل کدی کئیت؟"]};
 const HELPER_FUEL_PP = {"en": ", Petrol (Super) Rs {p} per litre", "ro": ", Petrol (Super) Rs {p} fi litre", "ur": "، پیٹرول (سپر) {p} روپے فی لیٹر", "pa": "، پیٹرول (سپر) {p} روپے فی لیٹر", "sd": "، پيٽرول (سپر) {p} رپيا في ليٽر", "ps": "، پټرول (سوپر) {p} روپۍ په لیټر", "bal": "، پیٹرول (سپر) {p} کلدار لیٹر ءَ"};
 // petrol price for the helper (set by KisanHelper from the live fuel feed)
@@ -10573,15 +10590,15 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
     const rate = avgRate(c);
     const litres0 = Math.round(DIESEL_L_PER_HR[c] * hrs);
     if (!rate) return L({
-      en: `• ${name(c)}: ${hrs} h. There is no fixed price: each owner sets a negotiable asking rate, or post your own rate with Apni Boli.\n• Platform commission is 2.5% of the agreed rent (0% on your first deals under the Launch Offer)\n• Dry rent: diesel is extra, roughly ${litres0} litres (rule of thumb)`,
-      ur: `• ${name(c)}: ${hrs} گھنٹے۔ کوئی مقررہ قیمت نہیں: ہر مالک اپنا قابلِ بات چیت ریٹ لکھتا ہے، یا اپنی بولی میں اپنا ریٹ دیں۔\n• پلیٹ فارم کمیشن طے شدہ کرائے کا 2.5% ہے (لانچ آفر میں پہلی ڈیلز پر 0%)\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres0} لیٹر`,
-      ro: `• ${name(c)}: ${hrs} ghante. Koi fixed qeemat nahi: har maalik apna rate likhta hai jis par baat ho sakti hai, ya Apni Boli mein apna rate dein.\n• Platform commission tay shuda kiraye ka 2.5% hai (Launch Offer mein pehli deals par 0%)\n• Dry rent: diesel alag hai, andazan ${litres0} litre`,
+      en: `• ${name(c)}: ${hrs} h. There is no fixed price: each owner sets a negotiable asking rate, or post your own rate with Apni Boli.\n• Platform service fee is a flat 1% of the agreed rent (0% on your first deals under the Launch Offer)\n• Dry rent: diesel is extra, roughly ${litres0} litres (rule of thumb)`,
+      ur: `• ${name(c)}: ${hrs} گھنٹے۔ کوئی مقررہ قیمت نہیں: ہر مالک اپنا قابلِ بات چیت ریٹ لکھتا ہے، یا اپنی بولی میں اپنا ریٹ دیں۔\n• پلیٹ فارم سروس فیس طے شدہ کرائے کا صرف 1% ہے (لانچ آفر میں پہلی ڈیلز پر 0%)\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres0} لیٹر`,
+      ro: `• ${name(c)}: ${hrs} ghante. Koi fixed qeemat nahi: har maalik apna rate likhta hai jis par baat ho sakti hai, ya Apni Boli mein apna rate dein.\n• Platform service fee tay shuda kiraye ka sirf 1% hai (Launch Offer mein pehli deals par 0%)\n• Dry rent: diesel alag hai, andazan ${litres0} litre`,
     });
     const base = rate * hrs, comm = Math.round(base * COMMISSION), total = base + comm, litres = Math.round(DIESEL_L_PER_HR[c] * hrs);
     return L({
-      en: `• ${name(c)}: about ${hrs} h × ${money(rate)}/hr = ${money(base)}\n• + 2.5% platform commission ${money(comm)} → total about ${money(total)}\n• Dry rent: diesel is extra, roughly ${litres} litres (rule of thumb)\n• Operator, if optional, adds Rs 500/hr; transport, if optional, adds Rs 1,500`,
-      ur: `• ${name(c)}: تقریباً ${hrs} گھنٹے × ${money(rate)} فی گھنٹہ = ${money(base)}\n• + 2.5% پلیٹ فارم کمیشن ${money(comm)} → کل تقریباً ${money(total)}\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres} لیٹر\n• اختیاری آپریٹر 500 روپے فی گھنٹہ، اختیاری ٹرانسپورٹ 1,500 روپے`,
-      ro: `• ${name(c)}: taqreeban ${hrs} ghante × ${money(rate)}/ghanta = ${money(base)}\n• + 2.5% platform commission ${money(comm)} → kul taqreeban ${money(total)}\n• Dry rent: diesel alag hai, andazan ${litres} litre\n• Optional operator Rs 500/ghanta, optional transport Rs 1,500`,
+      en: `• ${name(c)}: about ${hrs} h × ${money(rate)}/hr = ${money(base)}\n• + 1% platform service fee ${money(comm)} → total about ${money(total)}\n• Dry rent: diesel is extra, roughly ${litres} litres (rule of thumb)\n• Operator, if optional, adds Rs 500/hr; transport, if optional, adds Rs 1,500`,
+      ur: `• ${name(c)}: تقریباً ${hrs} گھنٹے × ${money(rate)} فی گھنٹہ = ${money(base)}\n• + 1% پلیٹ فارم سروس فیس ${money(comm)} → کل تقریباً ${money(total)}\n• ڈرائی رینٹ: ڈیزل الگ ہے، اندازاً ${litres} لیٹر\n• اختیاری آپریٹر 500 روپے فی گھنٹہ، اختیاری ٹرانسپورٹ 1,500 روپے`,
+      ro: `• ${name(c)}: taqreeban ${hrs} ghante × ${money(rate)}/ghanta = ${money(base)}\n• + 1% platform service fee ${money(comm)} → kul taqreeban ${money(total)}\n• Dry rent: diesel alag hai, andazan ${litres} litre\n• Optional operator Rs 500/ghanta, optional transport Rs 1,500`,
     });
   };
 
@@ -10610,10 +10627,10 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   const negotiating = /kam kar|kam kai?s|kam ke?s|kum kar|kam ho|zya?ada lag|ziada lag|zya?ada h[ae]i?\b|bohat zya?ada|bahut zya?ada|zya?da|کم کیسے|کم کر|کم ہو|زیادہ لگ|زیادہ ہے|بہت زیادہ|negotiat|bargain|discount|sasta|سستا|رعایت|mehe?n?ga|مہنگا|too (high|much)/i.test(text);
   // New features (land lease, split bill, proofs, Govt Portal, fuel rates): checked before rate questions
   if (has(/proof|sab+[ou]+t|ثبوت|handover|hand over|before.{0,6}after|meter reading|\bvideo|ویڈیو|ويڊيو|ویډیو|وڈیو/i)) return LX("proof", { en: "Photo and video proof protects both sides. Open the deal in My Bookings, in Owner Portal (your confirmed jobs) or in Thaikay Te Zameen > My land deals, and tap Add Photo / Video Proof.\n1. Choose the stage: Before work / handover, After work / completion, Meter or fuel reading, or Land condition.\n2. Add a photo, a short video (up to 650 KB) or a YouTube / Google Drive link, plus a short note.\n3. Save: it appears in the Verified Work & Handover Proofs gallery with who added it and when.\nOnly that deal's farmer, owner and the PakAgriShare team can see these proofs, and they cannot be edited later.", ur: "تصویر اور ویڈیو ثبوت دونوں فریقوں کی حفاظت کرتا ہے۔ معاملہ میری بکنگز، اونر پورٹل (کنفرم کام) یا ٹھیکے تے زمین > میرے زمین کے معاملات میں کھولیں اور \"تصویر / ویڈیو ثبوت لگائیں\" دبائیں۔\n1. مرحلہ چنیں: کام سے پہلے / حوالگی، کام کے بعد، میٹر یا ڈیزل ریڈنگ، یا زمین کی حالت۔\n2. تصویر، چھوٹی ویڈیو (650 KB تک) یا یوٹیوب / گوگل ڈرائیو لنک اور مختصر نوٹ لگائیں۔\n3. محفوظ کریں: یہ گیلری میں کس نے اور کب لگایا کے ساتھ نظر آتا ہے۔\nصرف اسی معاملے کا کسان، مالک اور پاک ایگری شیئر ٹیم یہ ثبوت دیکھ سکتے ہیں، اور بعد میں بدلا نہیں جا سکتا۔", ro: "Photo aur video saboot dono taraf ki hifazat karta hai. Deal ko My Bookings, Owner Portal (confirmed kaam) ya Thaikay Te Zameen > My land deals mein kholein aur \"Add Photo / Video Proof\" dabayein.\n1. Marhala chunein: kaam se pehle / handover, kaam ke baad, meter ya diesel reading, ya zameen ki halat.\n2. Photo, chhoti video (650 KB tak) ya YouTube / Google Drive link aur chhota note dalein.\n3. Save karein: ye gallery mein kis ne aur kab dala ke saath nazar aata hai.\nSirf us deal ka kisan, maalik aur PakAgriShare team ye saboot dekh sakte hain, aur baad mein badla nahi ja sakta." });
-  if (has(/agri.?wallet|\bwall?et\b|top.?up|recharge|wallet balance|balance (kam|low|kaise|kese|kitna)|والٹ|ٹاپ اپ|ری چارج|بیلنس|والٽ|ٽاپ اپ|بيلنس|والټ|ټاپ اپ|بیلانس/i)) return LX("wallet", {"en": "Agri-Wallet, prepaid balance for commission (like inDrive or Foodpanda):\n1. Open Owner Portal: your Agri-Wallet balance and transactions are at the top.\n2. Tap Top Up Agri-Wallet. Send money to the PakAgriShare Official Collection Account shown there (bank, IBAN, Raast, JazzCash or EasyPaisa).\n3. Choose the amount (PKR 500 to 10,000, or any amount from 100), enter the transaction ID and add the receipt photo, then submit.\n4. Our team checks the receipt and credits your wallet.\nAfter your free launch deals are used, the commission is taken from the wallet automatically when you confirm a booking (2.5%), confirm a crop sale (3.5%) or accept a land lease (4.5%). If the balance is too low you will see \"Low Agri-Wallet Balance. Top up to accept orders\". Help: 0322-4729249 or 0370-0318574.", "ur": "ایگری والٹ، کمیشن کے لیے پیشگی بیلنس (اِن ڈرائیو یا فوڈ پانڈا کی طرح):\n1. اونر پورٹل کھولیں: سب سے اوپر آپ کا ایگری والٹ بیلنس اور لین دین ہے۔\n2. \"ایگری والٹ ٹاپ اپ کریں\" دبائیں۔ وہاں لکھے پاک ایگری شیئر کے سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) میں رقم بھیجیں۔\n3. رقم چنیں (500 سے 10,000 روپے، یا 100 سے اوپر کوئی بھی رقم)، ٹرانزیکشن آئی ڈی لکھیں، رسید کی تصویر لگائیں اور بھیج دیں۔\n4. ہماری ٹیم رسید دیکھ کر آپ کے والٹ میں رقم ڈال دیتی ہے۔\nمفت لانچ ڈیلز ختم ہونے کے بعد کمیشن خود بخود والٹ سے کٹتا ہے: بکنگ کی تصدیق پر 2.5%، فصل کی فروخت پر 3.5%، زمین ٹھیکہ قبول کرنے پر 4.5%۔ بیلنس کم ہو تو \"ایگری والٹ بیلنس کم ہے، آرڈر قبول کرنے کے لیے ٹاپ اپ کریں\" نظر آئے گا۔ مدد: 0322-4729249 یا 0370-0318574۔", "ro": "Agri-Wallet, commission ke liye pehle se jama balance (inDrive ya Foodpanda ki tarah):\n1. Owner Portal kholein: sab se upar aap ka Agri-Wallet balance aur len-den hai.\n2. \"Top Up Agri-Wallet\" dabayein. Wahan likhe PakAgriShare Official Collection Account (bank, IBAN, Raast, JazzCash ya EasyPaisa) mein paise bhejein.\n3. Raqam chunein (Rs 500 se 10,000, ya 100 se upar koi bhi raqam), transaction ID likhein, raseed ki photo lagayein aur bhej dein.\n4. Team raseed check kar ke wallet mein raqam daal deti hai.\nMuft launch deals khatam hone ke baad commission khud wallet se katta hai: booking confirm par 2.5%, fasal sale par 3.5%, zameen thaika accept par 4.5%. Balance kam ho to \"Low Agri-Wallet Balance, top up to accept orders\" nazar aayega. Madad: 0322-4729249 ya 0370-0318574."});
-  if (has(/launch|promo|free (deal|commission|booking|lease|sale)|commission.{0,25}(free|muft|maaf|zero)|(zero|0 ?%) ?commission|muft (deal|commission|booking)|bina commission|first (5|3|deal)|مفت.{0,15}(ڈیل|کمیشن|بکنگ|ٹھیک)|(کمیشن|ڈیل).{0,15}مفت|بغیر کمیشن|لانچ|مفت ڊيل|ڪميشن.{0,15}مفت|وړیا|مُفت/i)) return LX("promo", {"en": "Launch Offer, 0% commission on your first deals:\n• Machinery owners: first 5 confirmed bookings are free of commission. After that 2.5% (2% for smallholders under 5 acres).\n• Agri-Market sellers: first 3 crop sales are free. After that 3.5% of the sale amount, taken from your Agri-Wallet.\n• Zameen Thaika landowners: the first accepted lease is free. After that the one-time 4.5% fee.\nOn a free deal the bill shows PakAgriShare Platform Commission PKR 0 (0% · Launch Promo: Free Deal 2 of 5, for example) and 100% of the total goes to the owner or seller, so there is nothing to pay or upload. See how many free deals you have left on the Launch Offer card in Owner Portal and Agri-Market.", "ur": "لانچ آفر، پہلی ڈیلز پر 0% کمیشن:\n• مشینری مالکان: پہلی 5 تصدیق شدہ بکنگز پر کوئی کمیشن نہیں۔ اس کے بعد 2.5% (5 ایکڑ سے کم والے چھوٹے کسان 2%)۔\n• فصل منڈی میں فروخت کنندہ: پہلی 3 فصل فروخت مفت۔ اس کے بعد فروخت کی رقم کا 3.5%، ایگری والٹ سے۔\n• زمین ٹھیکہ مالکان: پہلا منظور شدہ ٹھیکہ مفت۔ اس کے بعد ایک بار 4.5% فیس۔\nمفت ڈیل پر بل میں \"پاک ایگری شیئر پلیٹ فارم کمیشن 0 روپے (0% · لانچ آفر: مفت ڈیل 2 از 5)\" لکھا ہوتا ہے اور پوری رقم کا 100% مالک یا فروخت کنندہ کو ملتا ہے، کچھ جمع یا رسید اپ لوڈ نہیں کرنی۔ باقی مفت ڈیلز اونر پورٹل اور فصل منڈی میں \"لانچ آفر\" کارڈ پر دیکھیں۔", "ro": "Launch Offer, pehli deals par 0% commission:\n• Machinery maalik: pehli 5 confirmed bookings par koi commission nahi. Uske baad 2.5% (5 acre se kam wale chhote kisan 2%).\n• Agri-Market mein fasal bechne wale: pehli 3 fasal sales muft. Uske baad sale ki raqam ka 3.5%, Agri-Wallet se.\n• Zameen Thaika ke maalik: pehla accept hua thaika muft. Uske baad ek dafa 4.5% fees.\nMuft deal par bill mein \"PakAgriShare Platform Commission PKR 0 (0% · Launch Promo: Free Deal 2 of 5)\" likha hota hai aur poori raqam ka 100% maalik ya bechne wale ko milta hai, kuch jama ya raseed upload nahi karni. Baqi muft deals Owner Portal aur Agri-Market mein \"Launch Offer\" card par dekhein."});
-  if (has(/receipt|raseed|rasid|رسید|رسيد|collection account|official account|company account|\biban\b|raast|راسٹ|payout|split|ledger|net owner|commission.{0,20}(due|kahan|kidhar|jama|deposit|bill)|bill.{0,12}commission|کمیشن.{0,20}(جمع|ادا|کہاں|رسید|بل)|بل.{0,15}(کمیشن|ڪميشن)|ڪميشن.{0,20}(جمع|ادا|بل)/i)) return LX("split", { en: "Split bill: every machinery bill and land lease agreement shows two separate lines, PakAgriShare Platform Commission and Net Owner Payout (what the owner keeps).\n• Machinery: commission is 2.5% (2% for smallholders under 5 acres), added on top of the rent.\n• Land lease: the one-time 4.5% fee comes out of the lease total.\nPaying the commission: the bill shows the PakAgriShare Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa). After paying, tap Upload Commission Payment Receipt and add the receipt photo and transaction ID. It shows Receipt under review until our team verifies it, then Commission received. Owners see every due amount in Owner Portal > Commission.", ur: "بل کی تقسیم: ہر مشینری بل اور زمین کے اقرار نامے میں دو الگ لائنیں ہیں: پاک ایگری شیئر پلیٹ فارم کمیشن اور مالک کو خالص ادائیگی (جو مالک کو ملتی ہے)۔\n• مشینری: کمیشن 2.5% (5 ایکڑ سے کم والے چھوٹے کسان 2%)، کرائے کے اوپر۔\n• زمین ٹھیکہ: صرف ایک بار 4.5% فیس، ٹھیکے کی کل رقم میں سے۔\nکمیشن کیسے جمع کریں: بل پر پاک ایگری شیئر کا سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھا ہے۔ ادائیگی کے بعد \"کمیشن ادائیگی کی رسید اپ لوڈ کریں\" دبائیں اور رسید کی تصویر اور ٹرانزیکشن آئی ڈی لکھیں۔ ٹیم کی تصدیق تک \"رسید کی جانچ جاری ہے\"، پھر \"کمیشن وصول ہو گیا\"۔ مالکان تمام واجبات اونر پورٹل > کمیشن میں دیکھتے ہیں۔", ro: "Split bill: har machinery bill aur zameen ke iqrarnama mein do alag lines hain: PakAgriShare Platform Commission aur Net Owner Payout (jo maalik ko milta hai).\n• Machinery: commission 2.5% (5 acre se kam wale chhote kisan 2%), kiraye ke upar.\n• Zameen ka thaika: sirf ek dafa 4.5% fees, thaike ki kul raqam mein se.\nCommission kaise jama karein: bill par PakAgriShare Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa) likha hai. Payment ke baad \"Upload Commission Payment Receipt\" dabayein aur raseed ki photo aur transaction ID dalein. Team ke verify karne tak \"Receipt under review\", phir \"Commission received\". Maalik saare baqaya Owner Portal > Commission mein dekhte hain." });
-  if (has(/\b(thaika|thaikay|thaike|theka|thekay|theeka)\b|ٹھیکہ|ٹھیکے|ٹھیکا|ٺيڪو|ٺيڪي|ټیکه|اجاره|\blease|iqrar|اقرار|stamp ?paper|اسٹامپ|barani|بارانی|باراني|للمي|nehri|نہری|نهري|farm ?land|ecosystem|\b360\b|rebate/i) || (has(/zameen|zamin|زمین|زمين|ځمکه|ځمکې|\bland\b/i) && !machine && !/prep|tayy?ar|تیار|تيار/i.test(text))) return LX("land", { en: "Zameen Thaika, farmland lease (Thaikay Te Zameen tab):\n1. Landowners: tap List my land and enter village, district, acres or kanals, water source (Canal / Nehri, Solar tubewell, Electric or diesel tubewell, or Barani rain-fed), soil type (fertile loam, laser leveled, sandy, saline), road access, lease months and your expected rate. Our team verifies the listing.\n2. Farmers: tap Find land, filter by radius, acres and budget, then Request lease. Or post Zameen Ki Boli: the land you need and your own rate, and owners send offers.\n3. When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is ready to print and sign.\n4. Fee: a one-time 4.5% facilitation commission on the total lease value, shown before you confirm. No hidden charges.\n5. 360° Ecosystem Benefit: while you hold an active land lease, your machinery commission drops by 0.50% (never below 2.0%).", ur: "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین کے مالک: اپنی زمین درج کریں اور گاؤں، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی (میرا، لیزر لیول، ریتلی، کلر)، سڑک، ٹھیکے کے مہینے اور اپنا ریٹ لکھیں۔ ہماری ٹیم تصدیق کرتی ہے۔\n2. کسان: فاصلے، ایکڑ اور بجٹ سے زمین تلاش کریں اور ٹھیکے کی درخواست بھیجیں۔ یا \"زمین کی بولی\" لگائیں: جتنی زمین چاہیے اور اپنا ریٹ، مالکان پیشکش بھیجتے ہیں۔\n3. مالک کے قبول کرنے پر دو زبانوں میں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ اور دستخط کے لیے تیار ہوتا ہے۔\n4. فیس: ٹھیکے کی کل رقم پر صرف ایک بار 4.5% سہولت کمیشن، تصدیق سے پہلے دکھایا جاتا ہے۔ کوئی چھپی فیس نہیں۔\n5. 360° فائدہ: فعال ٹھیکہ ہونے پر مشینری کمیشن میں 0.50% کمی (کبھی 2.0% سے کم نہیں)۔", ro: "Zameen Thaika (Thaikay Te Zameen tab):\n1. Zameen ke maalik: \"List my land\" mein gaon, zila, acre ya kanal, pani ka zariya (Nehri / canal, Solar tubewell, bijli ya diesel tubewell, ya Barani), mitti (mera, laser level, retli, kallar), sarak, thaike ke mahine aur apna rate likhein. Team listing verify karti hai.\n2. Kisan: \"Find land\" mein radius, acre aur budget se zameen dhoondein aur Request lease karein. Ya \"Zameen Ki Boli\" post karein: jitni zameen chahiye aur apna rate, maalik offer bhejte hain.\n3. Maalik ke accept karne par do-zabani stamp paper Iqrarnama Thaika Arazi print aur sign ke liye tayyar hota hai.\n4. Fees: thaike ki kul raqam par sirf ek dafa 4.5% facilitation commission, confirm se pehle dikhaya jata hai.\n5. 360° faida: active thaika hone par machinery commission 0.50% kam (kabhi 2.0% se neeche nahi)." });
+  if (has(/agri.?wallet|\bwall?et\b|top.?up|recharge|wallet balance|balance (kam|low|kaise|kese|kitna)|والٹ|ٹاپ اپ|ری چارج|بیلنس|والٽ|ٽاپ اپ|بيلنس|والټ|ټاپ اپ|بیلانس/i)) return LX("wallet", {"en": "Agri-Wallet, prepaid balance for commission (like inDrive or Foodpanda):\n1. Open Owner Portal: your Agri-Wallet balance and transactions are at the top.\n2. Tap Top Up Agri-Wallet. Send money to the PakAgriShare Official Collection Account shown there (bank, IBAN, Raast, JazzCash or EasyPaisa).\n3. Choose the amount (PKR 500 to 10,000, or any amount from 100), enter the transaction ID and add the receipt photo, then submit.\n4. Our team checks the receipt and credits your wallet.\nAfter your free launch deals are used, the commission is taken from the wallet automatically when you confirm a booking (1%), confirm a crop sale (1%) or accept a land lease (1%). If the balance is too low you will see \"Low Agri-Wallet Balance. Top up to accept orders\". Help: 0322-4729249 or 0370-0318574.", "ur": "ایگری والٹ، کمیشن کے لیے پیشگی بیلنس (اِن ڈرائیو یا فوڈ پانڈا کی طرح):\n1. اونر پورٹل کھولیں: سب سے اوپر آپ کا ایگری والٹ بیلنس اور لین دین ہے۔\n2. \"ایگری والٹ ٹاپ اپ کریں\" دبائیں۔ وہاں لکھے پاک ایگری شیئر کے سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش یا ایزی پیسہ) میں رقم بھیجیں۔\n3. رقم چنیں (500 سے 10,000 روپے، یا 100 سے اوپر کوئی بھی رقم)، ٹرانزیکشن آئی ڈی لکھیں، رسید کی تصویر لگائیں اور بھیج دیں۔\n4. ہماری ٹیم رسید دیکھ کر آپ کے والٹ میں رقم ڈال دیتی ہے۔\nمفت لانچ ڈیلز ختم ہونے کے بعد کمیشن خود بخود والٹ سے کٹتا ہے: بکنگ کی تصدیق پر 1%، فصل کی فروخت پر 1%، زمین ٹھیکہ قبول کرنے پر 1%۔ بیلنس کم ہو تو \"ایگری والٹ بیلنس کم ہے، آرڈر قبول کرنے کے لیے ٹاپ اپ کریں\" نظر آئے گا۔ مدد: 0322-4729249 یا 0370-0318574۔", "ro": "Agri-Wallet, commission ke liye pehle se jama balance (inDrive ya Foodpanda ki tarah):\n1. Owner Portal kholein: sab se upar aap ka Agri-Wallet balance aur len-den hai.\n2. \"Top Up Agri-Wallet\" dabayein. Wahan likhe PakAgriShare Official Collection Account (bank, IBAN, Raast, JazzCash ya EasyPaisa) mein paise bhejein.\n3. Raqam chunein (Rs 500 se 10,000, ya 100 se upar koi bhi raqam), transaction ID likhein, raseed ki photo lagayein aur bhej dein.\n4. Team raseed check kar ke wallet mein raqam daal deti hai.\nMuft launch deals khatam hone ke baad commission khud wallet se katta hai: booking confirm par 1%, fasal sale par 1%, zameen thaika accept par 1%. Balance kam ho to \"Low Agri-Wallet Balance, top up to accept orders\" nazar aayega. Madad: 0322-4729249 ya 0370-0318574."});
+  if (has(/launch|promo|free (deal|commission|booking|lease|sale)|commission.{0,25}(free|muft|maaf|zero)|(zero|0 ?%) ?commission|muft (deal|commission|booking)|bina commission|first (5|3|deal)|مفت.{0,15}(ڈیل|کمیشن|بکنگ|ٹھیک)|(کمیشن|ڈیل).{0,15}مفت|بغیر کمیشن|لانچ|مفت ڊيل|ڪميشن.{0,15}مفت|وړیا|مُفت/i)) return LX("promo", {"en": "Launch Offer, 0% commission on your first deals:\n• Machinery owners: first 5 confirmed bookings are free of commission. After that 1%.\n• Agri-Market sellers: first 3 crop sales are free. After that 1% of the sale amount, taken from your Agri-Wallet.\n• Zameen Thaika landowners: the first accepted lease is free. After that the one-time 1% fee.\nOn a free deal the bill shows a green line, Launch Bonus: 1% Service Fee Waived (Saved PKR ...), and 100% of the total goes to the owner or seller, so there is nothing to pay or upload. See how many free deals you have left on the Launch Offer card in Owner Portal and Agri-Market.", "ur": "لانچ آفر، پہلی ڈیلز پر 0% کمیشن:\n• مشینری مالکان: پہلی 5 تصدیق شدہ بکنگز پر کوئی کمیشن نہیں۔ اس کے بعد 1%۔\n• فصل منڈی میں فروخت کنندہ: پہلی 3 فصل فروخت مفت۔ اس کے بعد فروخت کی رقم کا 1%، ایگری والٹ سے۔\n• زمین ٹھیکہ مالکان: پہلا منظور شدہ ٹھیکہ مفت۔ اس کے بعد ایک بار 1% فیس۔\nمفت ڈیل پر بل میں \"لانچ بونس: 1% سروس فیس معاف (... روپے کی بچت)\" لکھا ہوتا ہے اور پوری رقم کا 100% مالک یا فروخت کنندہ کو ملتا ہے، کچھ جمع یا رسید اپ لوڈ نہیں کرنی۔ باقی مفت ڈیلز اونر پورٹل اور فصل منڈی میں \"لانچ آفر\" کارڈ پر دیکھیں۔", "ro": "Launch Offer, pehli deals par 0% commission:\n• Machinery maalik: pehli 5 confirmed bookings par koi commission nahi. Uske baad 1%.\n• Agri-Market mein fasal bechne wale: pehli 3 fasal sales muft. Uske baad sale ki raqam ka 1%, Agri-Wallet se.\n• Zameen Thaika ke maalik: pehla accept hua thaika muft. Uske baad ek dafa 1% fees.\nMuft deal par bill mein \"Launch Bonus: 1% Service Fee Waived (Saved PKR ...)\" likha hota hai aur poori raqam ka 100% maalik ya bechne wale ko milta hai, kuch jama ya raseed upload nahi karni. Baqi muft deals Owner Portal aur Agri-Market mein \"Launch Offer\" card par dekhein."});
+  if (has(/receipt|raseed|rasid|رسید|رسيد|collection account|official account|company account|\biban\b|raast|راسٹ|payout|split|ledger|net owner|commission.{0,20}(due|kahan|kidhar|jama|deposit|bill)|bill.{0,12}commission|کمیشن.{0,20}(جمع|ادا|کہاں|رسید|بل)|بل.{0,15}(کمیشن|ڪميشن)|ڪميشن.{0,20}(جمع|ادا|بل)/i)) return LX("split", { en: "Split bill: every machinery bill and land lease agreement shows two separate lines, PakAgriShare Platform Commission and Net Owner Payout (what the owner keeps).\n• Machinery: commission is 1%, added on top of the rent.\n• Land lease: the one-time 1% fee comes out of the lease total.\nPaying the commission: the bill shows the PakAgriShare Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa). After paying, tap Upload Commission Payment Receipt and add the receipt photo and transaction ID. It shows Receipt under review until our team verifies it, then Commission received. Owners see every due amount in Owner Portal > Commission.", ur: "بل کی تقسیم: ہر مشینری بل اور زمین کے اقرار نامے میں دو الگ لائنیں ہیں: پاک ایگری شیئر پلیٹ فارم کمیشن اور مالک کو خالص ادائیگی (جو مالک کو ملتی ہے)۔\n• مشینری: کمیشن 1%، کرائے کے اوپر۔\n• زمین ٹھیکہ: صرف ایک بار 1% فیس، ٹھیکے کی کل رقم میں سے۔\nکمیشن کیسے جمع کریں: بل پر پاک ایگری شیئر کا سرکاری وصولی اکاؤنٹ (بینک، IBAN، راست، جاز کیش، ایزی پیسہ) لکھا ہے۔ ادائیگی کے بعد \"کمیشن ادائیگی کی رسید اپ لوڈ کریں\" دبائیں اور رسید کی تصویر اور ٹرانزیکشن آئی ڈی لکھیں۔ ٹیم کی تصدیق تک \"رسید کی جانچ جاری ہے\"، پھر \"کمیشن وصول ہو گیا\"۔ مالکان تمام واجبات اونر پورٹل > کمیشن میں دیکھتے ہیں۔", ro: "Split bill: har machinery bill aur zameen ke iqrarnama mein do alag lines hain: PakAgriShare Platform Commission aur Net Owner Payout (jo maalik ko milta hai).\n• Machinery: commission 1%, kiraye ke upar.\n• Zameen ka thaika: sirf ek dafa 1% fees, thaike ki kul raqam mein se.\nCommission kaise jama karein: bill par PakAgriShare Official Collection Account (bank, IBAN, Raast, JazzCash, EasyPaisa) likha hai. Payment ke baad \"Upload Commission Payment Receipt\" dabayein aur raseed ki photo aur transaction ID dalein. Team ke verify karne tak \"Receipt under review\", phir \"Commission received\". Maalik saare baqaya Owner Portal > Commission mein dekhte hain." });
+  if (has(/\b(thaika|thaikay|thaike|theka|thekay|theeka)\b|ٹھیکہ|ٹھیکے|ٹھیکا|ٺيڪو|ٺيڪي|ټیکه|اجاره|\blease|iqrar|اقرار|stamp ?paper|اسٹامپ|barani|بارانی|باراني|للمي|nehri|نہری|نهري|farm ?land|ecosystem|\b360\b|rebate/i) || (has(/zameen|zamin|زمین|زمين|ځمکه|ځمکې|\bland\b/i) && !machine && !/prep|tayy?ar|تیار|تيار/i.test(text))) return LX("land", { en: "Zameen Thaika, farmland lease (Thaikay Te Zameen tab):\n1. Landowners: tap List my land and enter village, district, acres or kanals, water source (Canal / Nehri, Solar tubewell, Electric or diesel tubewell, or Barani rain-fed), soil type (fertile loam, laser leveled, sandy, saline), road access, lease months and your expected rate. Our team verifies the listing.\n2. Farmers: tap Find land, filter by radius, acres and budget, then Request lease. Or post Zameen Ki Boli: the land you need and your own rate, and owners send offers.\n3. When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is ready to print and sign.\n4. Fee: a one-time 1% facilitation commission on the total lease value, shown before you confirm. No hidden charges.", ur: "زمین ٹھیکہ (ٹھیکے تے زمین ٹیب):\n1. زمین کے مالک: اپنی زمین درج کریں اور گاؤں، ضلع، ایکڑ یا کنال، پانی (نہری، سولر ٹیوب ویل، بجلی یا ڈیزل ٹیوب ویل، یا بارانی)، مٹی (میرا، لیزر لیول، ریتلی، کلر)، سڑک، ٹھیکے کے مہینے اور اپنا ریٹ لکھیں۔ ہماری ٹیم تصدیق کرتی ہے۔\n2. کسان: فاصلے، ایکڑ اور بجٹ سے زمین تلاش کریں اور ٹھیکے کی درخواست بھیجیں۔ یا \"زمین کی بولی\" لگائیں: جتنی زمین چاہیے اور اپنا ریٹ، مالکان پیشکش بھیجتے ہیں۔\n3. مالک کے قبول کرنے پر دو زبانوں میں اسٹامپ پیپر \"اقرار نامہ ٹھیکہ اراضی\" پرنٹ اور دستخط کے لیے تیار ہوتا ہے۔\n4. فیس: ٹھیکے کی کل رقم پر صرف ایک بار 1% سہولت کمیشن، تصدیق سے پہلے دکھایا جاتا ہے۔ کوئی چھپی فیس نہیں۔", ro: "Zameen Thaika (Thaikay Te Zameen tab):\n1. Zameen ke maalik: \"List my land\" mein gaon, zila, acre ya kanal, pani ka zariya (Nehri / canal, Solar tubewell, bijli ya diesel tubewell, ya Barani), mitti (mera, laser level, retli, kallar), sarak, thaike ke mahine aur apna rate likhein. Team listing verify karti hai.\n2. Kisan: \"Find land\" mein radius, acre aur budget se zameen dhoondein aur Request lease karein. Ya \"Zameen Ki Boli\" post karein: jitni zameen chahiye aur apna rate, maalik offer bhejte hain.\n3. Maalik ke accept karne par do-zabani stamp paper Iqrarnama Thaika Arazi print aur sign ke liye tayyar hota hai.\n4. Fees: thaike ki kul raqam par sirf ek dafa 1% facilitation commission, confirm se pehle dikhaya jata hai." });
   if (has(/govt|government|sarkar|سرکار|سرڪار|حکومت|دولتي|subsidy|سبسڈی|سبسڊي|kis+an card|کسان کارڈ/i)) return LX("govt", { en: "The Govt Portal is coming soon. It is planned to bring government loans and subsidy support into one place on PakAgriShare, but it is not live yet, so we cannot apply for any scheme for you today. For help now, call or WhatsApp our consultants on 0322-4729249 or 0370-0318574.", ur: "سرکاری پورٹل جلد آ رہا ہے۔ اس میں سرکاری قرض اور سبسڈی کی مدد ایک جگہ لانے کا منصوبہ ہے، لیکن یہ ابھی فعال نہیں، اس لیے ابھی کسی اسکیم کی درخواست نہیں ہو سکتی۔ ابھی مدد کے لیے ہمارے کنسلٹنٹ کو 0322-4729249 یا 0370-0318574 پر کال یا واٹس ایپ کریں۔", ro: "Govt Portal jald aa raha hai (coming soon). Is mein sarkari qarzon aur subsidy ki madad ek jagah lane ka mansooba hai, lekin abhi live nahi, is liye abhi kisi scheme ki darkhwast nahi ho sakti. Abhi madad ke liye hamare consultant ko 0322-4729249 ya 0370-0318574 par call ya WhatsApp karein." });
   if (CUR.id === "PK" && has(/petrol|diesel|ڈیزل|پیٹرول|ڊيزل|پيٽرول|ډیزل|پټرول/i) && has(/rate|price|qeemat|keemat|bha+o|aaj|today|kitn|کتن|قیمت|ریٹ|نرخ|اگهه|بہا|بھاؤ|آج|اڄ/i)) {
     const num = (n) => String(Math.round(Number(n) * 100) / 100);
@@ -10644,7 +10661,7 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
   }
   if (has(/apni boli|\bboli\b|name your price|own rate|اپنی بولی|بولی|اپني بولي|پنهنجي ٻولي|post (a )?request|live request|apni qeemat|wet rent|\bwet\b|radius|tier|40 ?km|100 ?km|door se|دور سے|ویٹ رینٹ|درخواست پوسٹ/i)) {
     return (HELPER_EXTRA.boli[lang] ? HELPER_EXTRA.boli[lang].replace("{d}", String(dieselPrice)) : null) || steps({
-      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Set your own rate (Apni boli lagayein): there are no fixed prices, enter what you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 15 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 40 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 2.5% commission, grand total) and confirm.`,
+      en: `Apni Boli, Name Your Price (Post a Request tab):\n1. Choose machine, village, hours and date.\n2. Set your own rate (Apni boli lagayein): there are no fixed prices, enter what you want to pay per hour.\n3. Pick Dry rent (you buy diesel) or Wet rent (owner adds diesel at market rate, about Rs ${dieselPrice}/L).\n4. Post: nearby owners appear on the live radar and accept or counter (often +Rs 200/hr).\n5. If nobody is free, expand: Tier 1 village 1 to 15 km (transport 0 to 500), Tier 2 pilot zone 15 to 25 km (Rs 60/km each way), Tier 3 regional backup up to 40 km.\n6. Accept an offer, check the cost breakdown (rent, transport, diesel, 1% commission, grand total) and confirm.`,
       ur: `اپنی بولی (درخواست پوسٹ کریں ٹیب):\n1. مشین، گاؤں، گھنٹے اور تاریخ چنیں۔\n2. اپنا ریٹ خود لگائیں (اپنی بولی لگائیں): کوئی مقررہ قیمت نہیں، فی گھنٹہ جتنا دینا چاہیں لکھیں۔\n3. ڈرائی رینٹ (ڈیزل آپ کا) یا ویٹ رینٹ (ڈیزل مالک کا، تقریباً ${dieselPrice} روپے فی لیٹر، تخمینی) چنیں۔\n4. پوسٹ کریں: قریبی مالکان ریڈار پر آ کر قبول یا جوابی پیشکش (اکثر +200 روپے) دیتے ہیں۔\n5. کوئی فارغ نہ ہو تو دائرہ بڑھائیں: درجہ 1 گاؤں 1 سے 15 کلومیٹر، درجہ 2 پائلٹ علاقہ 15 سے 25 کلومیٹر (60 روپے فی کلومیٹر ہر طرف)، درجہ 3 بیک اپ 40 کلومیٹر تک۔\n6. پیشکش قبول کریں، مکمل خرچ دیکھیں اور کنفرم کریں۔`,
       ro: `Apni Boli (Post a Request tab):\n1. Machine, gaon, ghante aur date chunein.\n2. Apna rate khud lagayein (Apni boli lagayein): koi fixed qeemat nahi, ghante ka jitna dena chahein likhein.\n3. Dry rent (diesel aap ka) ya Wet rent (diesel maalik ka, taqreeban Rs ${dieselPrice}/L, andaza) chunein.\n4. Post karein: qareebi maalik radar par aa kar accept ya counter (aksar +Rs 200) dete hain.\n5. Koi free na ho to expand karein: Tier 1 gaon 1 se 15 km, Tier 2 pilot zone 15 se 25 km (Rs 60/km har taraf), Tier 3 backup 40 km tak.\n6. Offer accept karein, poora kharcha dekhein aur confirm karein.`,
     });
@@ -10748,10 +10765,10 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
     });
   }
   if (/commission|fee|charges|کمیشن|فیس/i.test(text)) {
-    return L({ en: "Launch Offer: your first 5 machinery bookings, first 3 crop sales and first land lease carry 0% commission (ask me about the launch offer for details).", ur: "لانچ آفر: پہلی 5 مشینری بکنگز، پہلی 3 فصل فروخت اور پہلا زمین ٹھیکہ 0% کمیشن پر (تفصیل کے لیے لانچ آفر کا پوچھیں)۔", ro: "Launch Offer: pehli 5 machinery bookings, pehli 3 fasal sales aur pehla zameen thaika 0% commission par (tafseel ke liye launch offer ka poochein)." }) + "\n\n" + L({
-      en: "The platform commission is 2.5%. Smallholders farming under 5 acres pay a subsidised 2%: tick the smallholder box in the booking form. It is shown as a separate line and added to the renter's bill before confirmation, so there are no hidden charges. The bill shows it as PakAgriShare Platform Commission next to Net Owner Payout. Land leases have a separate one-time 4.5% fee.",
-      ur: "پلیٹ فارم کمیشن 2.5% ہے۔ 5 ایکڑ سے کم والے چھوٹے کسانوں کے لیے رعایتی 2%، بکنگ فارم میں چھوٹے کسان کا خانہ منتخب کریں۔ یہ تصدیق سے پہلے الگ لائن میں دکھایا جاتا ہے اور کسان کے بل میں شامل ہوتا ہے، کوئی چھپی فیس نہیں۔ بل میں یہ پاک ایگری شیئر پلیٹ فارم کمیشن کے نام سے مالک کی خالص ادائیگی کے ساتھ الگ دکھایا جاتا ہے۔ زمین ٹھیکے پر الگ سے صرف ایک بار 4.5% فیس ہے۔",
-      ro: "Platform commission 2.5% hai. 5 acre se kam wale chhote kisanon ke liye riayati 2%, booking form mein smallholder box tick karein. Ye confirm se pehle alag line mein dikhaya jata hai aur kisan ke bill mein shamil hota hai, koi chhupi fees nahi. Bill mein ye PakAgriShare Platform Commission ke naam se Net Owner Payout ke saath alag dikhta hai. Zameen ke thaike par alag se sirf ek dafa 4.5% fees hai.",
+    return L({ en: "Launch Offer: your first 5 machinery bookings, first 3 crop sales and first land lease carry a 0% service fee (ask me about the launch offer for details).", ur: "لانچ آفر: پہلی 5 مشینری بکنگز، پہلی 3 فصل فروخت اور پہلا زمین ٹھیکہ 0% سروس فیس پر (تفصیل کے لیے لانچ آفر کا پوچھیں)۔", ro: "Launch Offer: pehli 5 machinery bookings, pehli 3 fasal sales aur pehla zameen thaika 0% service fee par (tafseel ke liye launch offer ka poochein)." }) + "\n\n" + L({
+      en: "PakAgriShare charges one flat 1% Platform Service Fee on machinery, crop and land deals, the same for every farmer. On a machinery bill it is a separate line, \"Platform Service & Support (1%)\", added to the renter's bill before confirmation, so there are no hidden charges and the owner keeps the full rent. On a land lease it is a one-time 1% of the lease total.",
+      ur: "پاک ایگری شیئر مشینری، فصل اور زمین کی ڈیلز پر صرف 1% فلیٹ پلیٹ فارم سروس فیس لیتا ہے، ہر کسان کے لیے ایک جیسی۔ مشینری بل میں یہ \"پلیٹ فارم سروس اور سپورٹ (1%)\" کے نام سے الگ لائن میں تصدیق سے پہلے دکھائی جاتی ہے، کوئی چھپی فیس نہیں اور مالک کو پورا کرایہ ملتا ہے۔ زمین کے ٹھیکے پر کل رقم کا صرف ایک بار 1%۔",
+      ro: "PakAgriShare machinery, fasal aur zameen ki deals par sirf 1% flat Platform Service Fee leta hai, har kisan ke liye aik jaisi. Machinery bill mein ye \"Platform Service & Support (1%)\" ke naam se alag line mein confirm se pehle dikhti hai, koi chhupi fees nahi aur maalik ko poora kiraya milta hai. Zameen ke thaike par kul raqam ka sirf ek dafa 1%.",
     });
   }
   if (/operator|driver|ڈرائیور|آپریٹر|chalane/i.test(text)) {
@@ -10786,9 +10803,9 @@ function ruleAnswer(raw, listings, dieselPrice = DIESEL_BENCHMARK, uiLang = "en"
     }) + near;
   }
   return LX("menu", {
-    en: "I can help with:\n• Using the website: sign up, sign in, booking, price offers, listing a machine\n• Hours needed: \"How long to harvest 5 acres of wheat?\"\n• Cost: \"Tractor for 6 hours, how much?\"\n• Dry rent, operator, transport, commission, payment, Agri-Agents\n• Zameen Thaika land lease, Zameen Ki Boli and the stamp-paper Iqrarnama (4.5% fee)\n• Commission split on your bill, the official collection account and receipts\n• Photo and video work / handover proofs\n• Apni Boli (set your own rate), the 15 / 25 / 40 km radius and today's diesel and petrol rates\n• Consultants: 0322-4729249 or 0370-0318574",
-    ur: "میں ان میں مدد کر سکتا ہوں:\n• ویب سائٹ کا استعمال: سائن اپ، سائن ان، بکنگ، قیمت کی پیشکش، مشین درج کرنا\n• گھنٹے: \"5 ایکڑ گندم کی کٹائی میں کتنا وقت؟\"\n• خرچ: \"ٹریکٹر 6 گھنٹے کتنے کا؟\"\n• ڈرائی رینٹ، آپریٹر، کمیشن، ادائیگی، ایگری ایجنٹ\n• زمین ٹھیکہ، زمین کی بولی اور اسٹامپ پیپر اقرار نامہ (4.5% فیس)\n• بل میں کمیشن کی تقسیم، سرکاری وصولی اکاؤنٹ اور رسید\n• کام / حوالگی کے تصویر اور ویڈیو ثبوت\n• اپنی بولی (اپنا ریٹ خود)، 15 / 25 / 40 کلومیٹر دائرہ اور آج کے ڈیزل / پیٹرول ریٹ\n• کنسلٹنٹ: 0322-4729249 یا 0370-0318574",
-    ro: "Main in mein madad kar sakta hoon:\n• Website: sign up, sign in, booking, price offer, machine list karna\n• Ghante: \"5 acre gandum ki katai mein kitna waqt?\"\n• Kharcha: \"Tractor 6 ghante kitne ka?\"\n• Dry rent, operator, commission, payment, Agri-Agent\n• Zameen Thaika, Zameen Ki Boli aur stamp paper Iqrarnama (4.5% fees)\n• Bill mein commission ki taqseem, official account aur raseed\n• Kaam / handover ke photo aur video saboot\n• Apni Boli (apna rate khud), 15 / 25 / 40 km radius aur aaj ke diesel / petrol rate\n• Consultant: 0322-4729249 ya 0370-0318574",
+    en: "I can help with:\n• Using the website: sign up, sign in, booking, price offers, listing a machine\n• Hours needed: \"How long to harvest 5 acres of wheat?\"\n• Cost: \"Tractor for 6 hours, how much?\"\n• Dry rent, operator, transport, commission, payment, Agri-Agents\n• Zameen Thaika land lease, Zameen Ki Boli and the stamp-paper Iqrarnama (1% fee)\n• Commission split on your bill, the official collection account and receipts\n• Photo and video work / handover proofs\n• Apni Boli (set your own rate), the 15 / 25 / 40 km radius and today's diesel and petrol rates\n• Consultants: 0322-4729249 or 0370-0318574",
+    ur: "میں ان میں مدد کر سکتا ہوں:\n• ویب سائٹ کا استعمال: سائن اپ، سائن ان، بکنگ، قیمت کی پیشکش، مشین درج کرنا\n• گھنٹے: \"5 ایکڑ گندم کی کٹائی میں کتنا وقت؟\"\n• خرچ: \"ٹریکٹر 6 گھنٹے کتنے کا؟\"\n• ڈرائی رینٹ، آپریٹر، کمیشن، ادائیگی، ایگری ایجنٹ\n• زمین ٹھیکہ، زمین کی بولی اور اسٹامپ پیپر اقرار نامہ (1% فیس)\n• بل میں کمیشن کی تقسیم، سرکاری وصولی اکاؤنٹ اور رسید\n• کام / حوالگی کے تصویر اور ویڈیو ثبوت\n• اپنی بولی (اپنا ریٹ خود)، 15 / 25 / 40 کلومیٹر دائرہ اور آج کے ڈیزل / پیٹرول ریٹ\n• کنسلٹنٹ: 0322-4729249 یا 0370-0318574",
+    ro: "Main in mein madad kar sakta hoon:\n• Website: sign up, sign in, booking, price offer, machine list karna\n• Ghante: \"5 acre gandum ki katai mein kitna waqt?\"\n• Kharcha: \"Tractor 6 ghante kitne ka?\"\n• Dry rent, operator, commission, payment, Agri-Agent\n• Zameen Thaika, Zameen Ki Boli aur stamp paper Iqrarnama (1% fees)\n• Bill mein commission ki taqseem, official account aur raseed\n• Kaam / handover ke photo aur video saboot\n• Apni Boli (apna rate khud), 15 / 25 / 40 km radius aur aaj ke diesel / petrol rate\n• Consultant: 0322-4729249 ya 0370-0318574",
   });
 }
 
@@ -10818,13 +10835,13 @@ LANGUAGE RULE (most important): mirror the language of the farmer's LATEST messa
 PRICING RULE (very important, every language): PakAgriShare has NO fixed, typical or average machinery rental prices. Never state, estimate or invent any hourly rent figure or price range for a tractor, thresher, harvester, leveler, drone or any machine, in English, Roman Urdu or any regional language. Every owner sets their own asking rate on their listing and it is always negotiable. When asked "how much", "kitne ka", "kiraya kya hai" or similar: (1) explain there is no fixed price, (2) the farmer can open a live listing and negotiate the owner's asking rate or tap Make Own Offer, (3) or post their own price with Apni Boli (Post a Request) and nearby owners send offers. You may mention the asking rate of a specific live listing shown below only as that owner's negotiable asking rate.
 MACHINE TYPES ON PAKAGRISHARE (${({ PK: "Pakistan", CN: "China", IN: "India", US: "USA / Europe", ME: "Middle East / Africa" })[CUR.id] || CUR.id}; names only):
 ${rateCardText()}
-Platform fee: 2.5% standard, 2% for smallholders under 5 acres, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
+Platform fee: one flat 1% Platform Service Fee on every deal (machinery, crops and land), the same for every farmer, shown before confirmation. Dry rent: rates exclude diesel (current diesel benchmark Rs ${dieselPrice}/L). Harvest Now, Pay Later: farmer pays 30% now, 70% is financed by a third-party microfinance partner and repaid after harvest (60 to 180 days). Apni Boli ("Name Your Price", Post a Request tab): the farmer enters his own lower hourly offer and nearby owners send offers or counter-offers; best tip when someone says the rent is too high.`;
   const base = `${ctry ? "CONTEXT:" + ctry + "\n\n" : ""}${persona}
 Rules of the platform:
 - Categories: tractors, threshers, harvesters. Farmers anywhere in Pakistan can set their location (province, district, village, map pin or GPS). 15 km default in-app search, up to 40 km catchment; Apni Boli requests search up to 40 km.
 - Dry rent: hourly rate EXCLUDES diesel/fuel; renter supplies fuel. Overtime and late-return terms agreed with owner before confirmation.
 - Operator terms = who drives the machine: "included" (owner's driver, already in rate), "optional" (+PKR 500/hr for the owner's driver), "none" (renter brings own driver).
-- Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform commission 2.5% standard, 2% subsidised for smallholders under 5 acres, added to the subtotal (except the owner's first 5 bookings under the Launch Offer, which carry 0%).
+- Transport is distance based: PKR 100 per km, minimum PKR 500 (some owners include it). Platform Service Fee: a flat 1%, added to the subtotal (except the owner's first 5 bookings under the Launch Offer, which carry 0%).
 - Price offers: in the booking form the renter can turn on "Suggest your own price" (hourly offer at least 60% of listed rate, plus a transport offer and a note). The owner can Accept, Counter or Decline in Owner Portal > Requests; counters appear in My Bookings to accept or decline.
 - Payments: EasyPaisa, JazzCash, cash via local Agri-Agent. Do not promise escrow or insurance cover.
 - Rough rules of thumb: tractor about 1 h/acre for land prep; combine harvester about 0.8 h/acre; thresher about 1.5 h/acre of crop. Diesel roughly tractor 4 L/h, thresher 3 L/h, harvester 10 L/h.
@@ -10835,8 +10852,8 @@ How to use the website (guide users step by step when they ask):
 - Sign out: click your name/initials at top right > Sign out.
 - Book: Marketplace > filters (category, district, radius 15 km default up to 40 km, search) > "Request Booking" > date, hours, operator/transport toggles, optional price offer, tick dry-rent terms, choose planned payment (EasyPaisa, JazzCash, cash via Agri-Agent) > send. Track in My Bookings: Request Sent > Owner Confirmed > Rental Completed > Feedback Submitted. Cancel while waiting.
 - List a machine: Owner Portal > "List Available Machinery" > name, category, hourly rate, district, village, distance, operator and transport terms > "Add to marketplace". Earnings Estimator in Owner Portal.
-- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer; farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 2.5% commission, grand total). "No match, expand search" button moves to the next tier.
-- Commission: 2.5% standard; smallholders under 5 acres tick a box for a subsidised 2%.
+- Apni Boli, "Name Your Price" ("Post a Request" tab; Urdu اپنی بولی): farmer picks machine, village, hours, date, his own offered rate, and Dry rent (farmer buys diesel) or Wet rent (owner supplies diesel at market rate; current admin benchmark Rs ${dieselPrice}/L, prices change almost daily). Owners appear on a live radar and accept or counter-offer; farmer accepts or declines. 3-tier smart radius: Tier 1 village 1 to 15 km (transport Rs 0 to 500), Tier 2 pilot catchment 15 to 25 km (Rs 60/km each way), Tier 3 regional emergency backup up to 40 km with a full cost breakdown (rent, transport, diesel, 1% commission, grand total). "No match, expand search" button moves to the next tier.
+- Platform Service Fee: a flat 1% for every farmer; there is no separate smallholder rate.
 - Harvest Now, Pay Later: payment option in the booking form (and the Apni Boli confirm step). Farmer pays 30% now; 70% is lent by a third-party microfinance partner (proposed only, no agreement: JazzCash Credit, EasyPaisa, ZTBL), due after harvest (60 to 180 days). Partner carries the credit risk, PakAgriShare carries none.
 - Agri-Market tab (called Agri-Mandi / منڈی in Urdu and regional languages) (Sell Harvest): farmer posts wheat, rice, maize or cotton with quantity in mann (40 kg), quality, village, expected PKR per mann and JazzCash/EasyPaisa wallet. Real buyers and mills are still being onboarded: say so honestly and never claim live bids from registered mills (simulated buyer bids appear only in the founder's Sample Demo Data mode). Closed-Loop Settlement: on sale, pending 70% machinery credit is repaid first and the net profit goes to the farmer's wallet. Guide prices per mann: wheat about Rs 5,000, cotton phutti about Rs 8,900 (recent Punjab reports); rice paddy about Rs 4,200 and maize about Rs 2,900.
 - Keypad phones: call or WhatsApp the PakAgriShare consultants on 0322-4729249 or 0370-0318574 (there is no toll-free helpline or 24/7 line; never mention 0800 numbers). A USSD short code is not allocated yet ("coming soon"): never give out a USSD code.
@@ -10844,17 +10861,17 @@ How to use the website (guide users step by step when they ask):
 - Language menu at top right: English, Urdu, Punjabi, Sindhi, Pashto, Balochi.
 - Privacy: only name, email, mobile and district are collected, with consent; passwords are handled by Firebase Authentication; only PakAgriShare administrators see member details.
 NEW PAKAGRISHARE FEATURES (explain these accurately when asked; never invent features that are not listed here):
-- Zameen Thaika / Thaikay Te Zameen (farmland lease tab): landowners tap "List my land" and enter village, district, tehsil, acres or kanals, water source (Canal / Nehri + tubewell, Solar tubewell, Electric or diesel tubewell, Barani rain-fed), soil type (fertile loam / Mera, laser leveled, sandy / Retli, saline / Kallar), road access (paved or kacha), lease months, rate per acre per month or a total, payment schedule and an optional Featured boost (PKR 999 per acre). The PakAgriShare team verifies listings. Farmers use "Find land" (radius, minimum acres, budget) and "Request lease", or post "Zameen Ki Boli" (the land they need plus their own rate) so owners send offers; both sides follow deals in "My land deals". When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is generated to print and sign. Fee: a transparent one-time 4.5% facilitation commission on the total lease value, whatever the lease length, shown before confirmation. 360° Ecosystem Benefit: a tenant with an accepted land lease gets 0.50% off the machinery commission, never below a 2.0% floor (2.5% becomes 2.0%; the smallholder 2% already sits at the floor).
-- Split-bill commission: every machinery bill (booking voucher) and land lease agreement automatically shows two lines, "PakAgriShare Platform Commission" and "Net Owner Payout". Machinery: the commission is added on top of the rent, so the owner keeps his full rate. Land: the 4.5% fee is taken out of the lease total, so the owner receives 95.5%. The commission is paid into the "PakAgriShare Official Collection Account" shown on the bill (bank, account title, IBAN, Raast, JazzCash, EasyPaisa; set by the founder; if not set yet, the card says to call a consultant). Then the farmer or owner taps "Upload Commission Payment Receipt" (receipt photo plus optional transaction ID). Status is "Receipt under review" until the PakAgriShare team ticks "Verify Commission Received", then "Commission received". Owners see Due / Under review / Paid totals in Owner Portal > Commission (Commission Due Wallet).
+- Zameen Thaika / Thaikay Te Zameen (farmland lease tab): landowners tap "List my land" and enter village, district, tehsil, acres or kanals, water source (Canal / Nehri + tubewell, Solar tubewell, Electric or diesel tubewell, Barani rain-fed), soil type (fertile loam / Mera, laser leveled, sandy / Retli, saline / Kallar), road access (paved or kacha), lease months, rate per acre per month or a total, payment schedule and an optional Featured boost (PKR 999 per acre). The PakAgriShare team verifies listings. Farmers use "Find land" (radius, minimum acres, budget) and "Request lease", or post "Zameen Ki Boli" (the land they need plus their own rate) so owners send offers; both sides follow deals in "My land deals". When the owner accepts, a bilingual stamp-paper Iqrarnama (اقرار نامہ ٹھیکہ اراضی) is generated to print and sign. Fee: a transparent one-time 1% facilitation commission on the total lease value, whatever the lease length, shown before confirmation. 360° Ecosystem: tenants, owners and buyers use one account for land, machinery and crops at the same flat 1% fee (there is no separate rebate).
+- Split-bill commission: every machinery bill (booking voucher) and land lease agreement automatically shows two lines, "Platform Service & Support (1%)" and "Net Owner Payout". Machinery: the commission is added on top of the rent, so the owner keeps his full rate. Land: the 1% fee is taken out of the lease total, so the owner receives 99%. The commission is paid into the "PakAgriShare Official Collection Account" shown on the bill (bank, account title, IBAN, Raast, JazzCash, EasyPaisa; set by the founder; if not set yet, the card says to call a consultant). Then the farmer or owner taps "Upload Commission Payment Receipt" (receipt photo plus optional transaction ID). Status is "Receipt under review" until the PakAgriShare team ticks "Verify Commission Received", then "Commission received". Owners see Due / Under review / Paid totals in Owner Portal > Commission (Commission Due Wallet).
 - Photo & Video Work / Handover Proofs: on confirmed or completed bookings in My Bookings, on responded jobs in Owner Portal, on the booking voucher, and on accepted leases in Thaikay Te Zameen > My land deals, tap "Add Photo / Video Proof". Stages: Before work / handover, After work / completion, Meter or fuel reading, Land condition. Attach a photo, a short video up to 650 KB, or a YouTube / Google Drive link, plus a note. Proofs appear in the "Verified Work & Handover Proofs" gallery. Only that deal's farmer, owner and the PakAgriShare founder admin can see or add them, and proofs cannot be edited afterwards.
 - Apni Boli has NO fixed prices: its machine cards say "Set your own rate · Apni boli lagayein"; the farmer names his own hourly rate and owners accept or counter. Smart matching radius 15 / 25 / 40 km (Tier 1 village up to 15 km, Tier 2 15 to 25 km, Tier 3 backup up to 40 km); never promise matches beyond 40 km.
 - Live Pakistan fuel rates: diesel and petrol prices update automatically about twice a day from the official notified prices and show at the top of the app. Today: diesel Rs ${dieselPrice}/L${HELPER_FUEL.petrol ? `, petrol Rs ${HELPER_FUEL.petrol}/L` : ""}.
-- COMMISSION LADDER (lowest on daily services, highest on yearly land deals): machinery rentals 2.5% (smallholders under 5 acres 2%), Agri-Market crop and vegetable sales 3.5%, Zameen Thaika land lease 4.5% one-time facilitation fee. 360° benefit: a tenant with an accepted land lease gets 0.50% off machinery commission, never below 2.0%.
-- Prepaid Agri-Wallet (like inDrive / Foodpanda): every owner and seller has an Agri-Wallet balance in PKR in Owner Portal with a transaction list. Top Up Agri-Wallet: send money to the PakAgriShare Official Collection Account shown in the top-up screen (bank, IBAN, Raast, JazzCash, EasyPaisa), choose the amount (PKR 500, 1,000, 2,500, 5,000, 10,000 or any amount from 100), enter the transaction ID and add the receipt photo. The founder checks the receipt and credits the wallet, usually the same day. After the free launch deals are used, the commission (2.5% machinery, 3.5% crops, 4.5% land) is taken from the wallet automatically when the owner confirms a booking, accepts a lease or confirms a crop sale, and the bill then says "Commission paid from Agri-Wallet" (no separate receipt needed). If the balance is too low, the app shows "Low Agri-Wallet Balance. Top up to accept orders" and the deal cannot be accepted until the wallet is topped up.
+- PLATFORM SERVICE FEE: one flat 1% across machinery rentals, Agri-Market crop and vegetable sales, and Zameen Thaika land leases (one time, on the lease total). There is no fee ladder, no smallholder rate and no rebate; never quote 2.5%, 3.5% or 4.5%. Do not lead with the fee: lead with direct farmer-to-owner and buyer deals with zero middleman, and mention the 1% only when the user asks about fees, commission or bills.
+- Prepaid Agri-Wallet (like inDrive / Foodpanda): every owner and seller has an Agri-Wallet balance in PKR in Owner Portal with a transaction list. Top Up Agri-Wallet: send money to the PakAgriShare Official Collection Account shown in the top-up screen (bank, IBAN, Raast, JazzCash, EasyPaisa), choose the amount (PKR 500, 1,000, 2,500, 5,000, 10,000 or any amount from 100), enter the transaction ID and add the receipt photo. The founder checks the receipt and credits the wallet, usually the same day. After the free launch deals are used, the commission (1% machinery, 1% crops, 1% land) is taken from the wallet automatically when the owner confirms a booking, accepts a lease or confirms a crop sale, and the bill then says "Commission paid from Agri-Wallet" (no separate receipt needed). If the balance is too low, the app shows "Low Agri-Wallet Balance. Top up to accept orders" and the deal cannot be accepted until the wallet is topped up.
 - Agri-Market crops and vegetables: farmers can sell Wheat (Gandum), Rice (Chawal), Maize (Makai), Cotton (Kapas), Sugarcane (Ganna), Potato (Aloo), Onion (Pyaz), Tomato (Tamatar), Mango (Aam), Kinnow / citrus, Mustard / canola (Sarson), Chickpea / gram (Chana), green or red chilli (Mirch), garlic and ginger (Lehsan / Adrak), or "Other crop / vegetable" with their own crop name. Buyers can filter Buy Crops by any of these.
 - Agri-Market (Sell Crop): after posting, the farmer sees a confirmation card with a reference ID (AM-...), crop, quantity, rate and total payout; the listing is live for verified buyers and the team aims to respond within 2 to 6 hours.
 - Agri-Agent & USSD tab: offline booking through a village Agri-Agent; the USSD short code is not allocated yet (coming soon), so never quote a code.
-- Launch Offer (0% commission on first deals, per user): machinery owners pay no commission on their first 5 confirmed bookings (then 2.5%, or 2% for smallholders); Agri-Market sellers pay none on their first 3 crop sales (then 3.5% of the sale amount, taken from the seller's Agri-Wallet); landowners pay none on their first accepted Zameen Thaika lease (then the one-time 4.5%). Deals confirmed before the offer started count as already used. On a free deal the bill reads "PakAgriShare Platform Commission PKR 0 (0% · Launch Promo: Free Deal X of Y)" and 100% of the total goes to the owner or seller, with nothing to pay or upload. Owner Portal and Agri-Market show a "Launch Offer: Free Commission Remaining" card, for example "Machinery: 5/5 free · Crop Market: 3/3 free · Zameen Thaika: 1/1 free".
+- Launch Offer (0% commission on first deals, per user): machinery owners pay no commission on their first 5 confirmed bookings (then the flat 1%); Agri-Market sellers pay none on their first 3 crop sales (then 1% of the sale amount, taken from the seller's Agri-Wallet); landowners pay none on their first accepted Zameen Thaika lease (then the one-time 1%). Deals confirmed before the offer started count as already used. On a free deal the bill shows a green line "Launch Bonus: 1% Service Fee Waived (Saved PKR ...)" and 100% of the total goes to the owner or seller, with nothing to pay or upload. Owner Portal and Agri-Market show a "Launch Offer: Free Service Fee Deals Remaining" card, for example "Machinery: 5/5 free · Crop Market: 3/3 free · Zameen Thaika: 1/1 free".
 - Govt Portal: Coming Soon (loans and subsidy support). It is not live; never say users can apply through it today.
 - Direct consultant support: call or WhatsApp 0322-4729249 or 0370-0318574.
 ${session ? `The farmer is signed in as ${session.name} (${session.role}).` : "The farmer is not signed in."}
@@ -12761,9 +12778,9 @@ const landTotal = (l, months) => {
 };
 const addMonthsISO = (iso, m) => { const d = new Date((iso || todayISO()) + "T00:00:00"); d.setMonth(d.getMonth() + Math.max(1, Number(m) || 1)); return d.toISOString().slice(0, 10); };
 
-/* Land lease commission: a flat 4.5% one-time facilitation fee,
-   charged once on the total lease value, whatever the lease length. */
-const LAND_COMMISSION_PCT = 4.5;
+/* Land lease: the same flat 1% Platform Service Fee, charged once on the total
+   lease value, whatever the lease length. */
+const LAND_COMMISSION_PCT = 1;
 const monthsLabel = (t, n) => t(Number(n) === 1 ? "ld_month_one" : "ld_months_n").replace("{n}", Number(n) || 0);
 // listing location without repeating its title (older listings saved the title as the village)
 const landPlace = (l, dn) => uniqPlaces(l.village && l.village !== l.title ? l.village : "", l.tehsil, dn ? dn(l.district || "") : l.district) || (dn ? dn(l.district || "") : l.district) || "";
@@ -12775,8 +12792,8 @@ function landCommission(total) {
 // a lease stamped with the launch promo: 0%, the owner keeps 100%
 const landCommFor = (b) => (b && b.promo ? { pct: 0, amount: 0, promo: b.promo } : landCommission(b && b.total));
 
-/* 360° ecosystem rebate: tenants with an accepted land lease get 0.50% off machinery commission, never below 2.0% */
-const ECO_REBATE = 0.005, ECO_FLOOR = 0.02;
+/* 360° ecosystem: with one flat 1% fee there is no separate rebate any more (the fee never changes) */
+const ECO_REBATE = 0, ECO_FLOOR = COMMISSION;
 const ecoCommission = (base, eligible) => (eligible ? Math.max(ECO_FLOOR, base - ECO_REBATE) : base);
 
 function CommissionCard({ t, total, promo = null }) {
@@ -12785,7 +12802,9 @@ function CommissionCard({ t, total, promo = null }) {
     <div className="rounded-xl bg-ivory p-3 ring-1 ring-soil/10">
       <p className="text-sm font-bold text-forest">{t("cm_title")}</p>
       <p className="mt-0.5 text-[11px] text-soil/80">{t("cm_sub")}</p>
-      <p className="mt-2 flex justify-between border-t border-soil/15 pt-1 text-sm font-extrabold text-forest" dir="ltr"><span dir="auto">{t("cm_total")} · {c.pct.toFixed(2)}%</span><span className="tabular-nums">{pkr(c.amount)}</span></p>
+      {promo
+        ? <p className="mt-2 flex items-center justify-between gap-2 rounded-lg bg-leaf/15 px-2 py-1.5 text-sm font-extrabold text-forest ring-1 ring-leaf/30 rtl:leading-[2]"><span className="inline-flex items-center gap-1.5"><Gift className="h-4 w-4 shrink-0" aria-hidden="true" />{promoSavedLine(t, landCommission(total).amount)}</span><span className="tabular-nums" dir="ltr">{pkr(0)}</span></p>
+        : <p className="mt-2 flex justify-between border-t border-soil/15 pt-1 text-sm font-extrabold text-forest" dir="ltr"><span dir="auto">{t("cm_total")} ({c.pct.toFixed(2)}%)</span><span className="tabular-nums">{pkr(c.amount)}</span></p>}
       {promo && <p className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-leaf/15 px-2 py-0.5 text-[11px] font-bold text-forest rtl:leading-[2]"><Gift className="h-3 w-3" aria-hidden="true" />{promoText(t, promo)}</p>}
     </div>
   );
@@ -14047,12 +14066,12 @@ function AgriMandi({ notifyFounder = () => {}, walletBal = 0, onLowWallet = () =
     pendingCredit.forEach((b) => { if (b.financing.balance <= left) { left -= b.financing.balance; settled += b.financing.balance; ids.push(b.id); } });
     return { ids, settled, net: gross - settled, unsettled: creditTotal - settled };
   };
-  // 3.5% Agri-Market commission from the seller's proceeds, 0% on the seller's first 3 sales (launch promo)
+  // flat 1% Platform Service Fee from the seller's proceeds, 0% on the seller's first 3 sales (launch promo)
   const cropComm = (gross) => {
     const slot = promoSlot("crop", cropPromoUsed(mandiPosts, uid));
-    return slot ? { amount: 0, pct: 0, promo: slot } : { amount: Math.round(gross * CROP_COMMISSION), pct: CROP_COMMISSION, promo: null };
+    return slot ? { amount: 0, pct: 0, promo: slot, saved: Math.round(gross * CROP_COMMISSION) } : { amount: Math.round(gross * CROP_COMMISSION), pct: CROP_COMMISSION, promo: null };
   };
-  const cropCommLabel = (cc) => (cc.promo ? t("promo_comm_line").replace("{x}", promoText(t, cc.promo)) : t("bk_comm").replace("{p}", pctLabel(cc.pct)));
+  const cropCommLabel = (cc) => (cc.promo ? promoSavedLine(t, cc.saved || 0) : t("bk_comm").replace("{p}", pctLabel(cc.pct)));
   const confirmSale = () => {
     if (!pickedBid || !post) return;
     const gross = pickedBid.rate * bidQty(pickedBid);
@@ -14313,7 +14332,7 @@ function AgriMandi({ notifyFounder = () => {}, walletBal = 0, onLowWallet = () =
               <dl className="mt-3 grid gap-2 text-sm text-soil sm:grid-cols-2" dir="ltr">
                 <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_sold_to")}</dt><dd className="font-bold">{receipt.buyer} · {receipt.qty} {t("am_mann")} × {pkr(receipt.rate)}</dd></div>
                 <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_gross")}</dt><dd className="font-bold">{pkr(receipt.gross)}</dd></div>
-                <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80" dir="auto">{receipt.promo ? t("promo_comm_line").replace("{x}", promoText(t, receipt.promo)) : t("bk_comm").replace("{p}", pctLabel(receipt.commissionRate || CROP_COMMISSION))}</dt><dd className="font-bold">{pkr(receipt.commission || 0)}</dd></div>
+                <div className={`rounded-xl p-3 ${receipt.promo ? "bg-leaf/15 ring-1 ring-leaf/30" : "bg-white"}`}><dt className={`text-xs ${receipt.promo ? "font-bold text-forest" : "text-soil/80"}`} dir="auto">{receipt.promo ? promoSavedLine(t, Math.round((Number(receipt.gross) || 0) * CROP_COMMISSION)) : t("bk_comm").replace("{p}", pctLabel(receipt.commissionRate || CROP_COMMISSION))}</dt><dd className="font-bold">{pkr(receipt.commission || 0)}</dd></div>
                 <div className="rounded-xl bg-white p-3"><dt className="text-xs text-soil/80">{t("am_minus_credit")}</dt><dd className="font-bold">{pkr(receipt.settled)} ({receipt.ids.length})</dd></div>
                 <div className="rounded-xl bg-forest p-3 text-ivory"><dt className="text-xs text-ivory/80">{t("am_net")}</dt><dd className="font-display text-xl font-extrabold text-gold">{pkr(receipt.net)}</dd></div>
               </dl>
@@ -16550,7 +16569,7 @@ function App() {
     else saveLandBooking({ id: rec.id, ...stamp });
     toast(t("adz_marked"));
   };
-  // 360° benefit: an accepted land lease as tenant -> 0.50% off machinery commission (floor 2.0%)
+  // 360° member: an accepted land lease as tenant (the fee stays the flat 1%; kept for the badge)
   const ecoActive = Boolean(uid && landBookings.some((b) => b.tenantUid === uid && b.status === "accepted"));
   // launch promo (see PROMO_FREE): preview a free slot on bills, and show each owner what is left
   const machinePromoFor = (ownerUid) => (ownerUid && ownerUid !== uid ? promoSlot("machinery", machineryPromoUsed(bookings, ownerUid)) : null);
@@ -16624,7 +16643,7 @@ function App() {
     const nextReq = freeLeft ? 0 : Math.max(0, ...bookings.filter((b) => b.ownerUid === uid && ["sent", "countered"].includes(b.status) && !(b.quote && b.quote.promo)).map((b) => Math.round((b.quote && b.quote.commission) || 0)));
     return owed + nextReq;
   }, [uid, bookings, walletDues]);
-  // land: the owner accepting a lease needs the 4.5% in the wallet once the free lease is used
+  // land: the owner accepting a lease needs the 1% service fee in the wallet once the free lease is used
   const saveLandBookingChecked = (patch) => {
     if (patch.status === "accepted") {
       const cur = landBookings.find((x) => x.id === patch.id);
